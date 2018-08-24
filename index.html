@@ -2,7 +2,20 @@
 <html>
 <body>
 <h1>Alvin's GitHub.io</h1>
-  <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQvzzHtW7-sXmadg4gvFuV3XrF22jmR7tGVIC52Gs6reZkL_pR8Bx_rEDf3cxOvUd_25g_1HyiyZWco/pubhtml?widget=true&amp;headers=false"></iframe>
+  <?php
+echo "Here are our files";
+$path = "/Users/alvin/Documents/GitHub/a-hartono.github.io/Previews";
+$dh = opendir($path);
+$i=1;
+while (($file = readdir($dh)) !== false) {
+    if($file != "/Users/alvin/Documents/GitHub/a-hartono.github.io/Previews" && $file != ".." && $file != "index.php" && $file != ".htaccess" && $file != "error_log" && $file != "cgi-bin") {
+        echo "<a href='$path/$file'>$file</a><br /><br />";
+        $i++;
+    }
+}
+closedir($dh);
+?> 
+
 <p>Still under construction...</p>
 </body>
 </html>
