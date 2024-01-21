@@ -1,30 +1,53 @@
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
     margin: 20px;
+    background-color: #f5f5f5;
 }
 
-label {
-    display: block;
-    margin-bottom: 5px;
+#instructions {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #333;
+}
+
+p, ol {
+    color: #555;
+}
+
+ol {
+    padding-left: 20px;
+}
+
+strong {
+    color: #007bff;
 }
 
 input, select {
     width: 100%;
-    padding: 8px;
-    margin-bottom: 15px;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f8f8f8;
 }
 
 button {
-    background-color: #4CAF50;
+    background-color: #007bff;
     color: white;
-    padding: 10px 15px;
+    padding: 15px 25px;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #0056b3;
 }
 
 #result {
@@ -41,27 +64,36 @@ h2 {
 
 .task {
     display: flex;
-    flex-wrap: wrap; /* Allow task items to wrap on smaller screens */
+    flex-wrap: wrap;
     gap: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .task input {
     flex: 1;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f8f8f8;
 }
 
 .task button {
-    background-color: #f44336;
+    background-color: #dc3545;
     color: white;
+    padding: 15px 25px;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
 }
 
 .task button:hover {
-    background-color: #d32f2f;
+    background-color: #c82333;
 }
 
 #kickoffDateSection {
     margin-top: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
 }
