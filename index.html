@@ -1,21 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Back Schedule Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
-<h1>Alvin's GitHub.io</h1>
-  <?php
-echo "Here are our files";
-$path = "/Users/alvin/Documents/GitHub/a-hartono.github.io/Previews";
-$dh = opendir($path);
-$i=1;
-while (($file = readdir($dh)) !== false) {
-    if($file != "/Users/alvin/Documents/GitHub/a-hartono.github.io/Previews" && $file != ".." && $file != "index.php" && $file != ".htaccess" && $file != "error_log" && $file != "cgi-bin") {
-        echo "<a href='$path/$file'>$file</a><br /><br />";
-        $i++;
-    }
-}
-closedir($dh);
-?> 
+    <label for="projectEndDate">Project End Date:</label>
+    <input type="date" id="projectEndDate">
 
-<p>Still under construction...</p>
+    <div id="tasksContainer">
+        <label for="tasks">Tasks:</label>
+        <div class="task">
+            <input type="text" class="taskName" placeholder="Task Name">
+            <input type="number" class="taskDuration" placeholder="Duration (days)">
+            <button onclick="removeTask(this)">Remove</button>
+        </div>
+    </div>
+
+    <button onclick="addTask()">Add Task</button>
+    
+    <label for="excludeWeekends">Exclude Weekends:</label>
+    <input type="checkbox" id="excludeWeekends">
+
+    <label for="excludeHolidays">Exclude Statutory Holidays:</label>
+    <input type="checkbox" id="excludeHolidays">
+
+    <label for="country">Country:</label>
+    <select id="country">
+        <!-- Add options for different countries -->
+        <option value="usa">United States</option>
+        <option value="canada">Canada</option>
+        <!-- Add more options as needed -->
+    </select>
+
+    <label for="provinceState">Province/State:</label>
+    <select id="provinceState">
+        <!-- Add options for different provinces/states based on the selected country -->
+        <option value="ny">New York</option>
+        <option value="ca">California</option>
+        <!-- Add more options as needed -->
+    </select>
+
+    <button onclick="calculateSchedule()">Calculate Schedule</button>
+
+    <div id="result"></div>
+
+    <script src="script.js"></script>
 </body>
 </html>
