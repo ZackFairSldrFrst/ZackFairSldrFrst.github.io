@@ -127,4 +127,19 @@ function calculateKickoffDate() {
         totalDuration = calculateAdjustedDuration(projectEndDate, tasks, excludeWeekends, excludeHolidays);
     }
 
-    const kickoffDate = calculateNewDate(projectEndDate, totalDuration, excludeWeekends, excludeHolidays
+    const kickoffDate = calculateNewDate(projectEndDate, totalDuration, excludeWeekends, excludeHolidays);
+    document.getElementById('kickoffDate').textContent = kickoffDate.toDateString();
+}
+
+function calculateAdjustedDuration(endDate, tasks, excludeWeekends, excludeHolidays) {
+    let adjustedDuration = 0;
+    let currentDate = new Date(endDate);
+
+    for (let i = tasks.length - 1; i >= 0; i--) {
+        const duration = tasks[i].duration;
+        currentDate = calculateNewDate(currentDate, duration, excludeWeekends, excludeHolidays);
+        adjustedDuration += duration;
+    }
+
+    return adjustedDuration;
+}
