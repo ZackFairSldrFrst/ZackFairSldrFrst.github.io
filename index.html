@@ -3,65 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Work Back Schedule Calculator</title>
+    <title>Project Schedule Calculator</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>    
-  <div id="instructions">
-  <h2>Welcome to the Work Back Schedule Calculator!</h2>
-  <p>Planning your project just got easier. Follow these steps to create your customized schedule:</p>
-  <ol>
-      <li><strong>Enter Project End Date:</strong> Start by selecting the date you plan to finish your project.</li>
-      <li><strong>Add Your Tasks:</strong> List the tasks needed for your project and estimate their durations.</li>
-      <li><strong>Customize Your Schedule:</strong> Choose options to exclude weekends, skip statutory holidays, and set your location.</li>
-      <li><strong>Hit "Calculate Schedule":</strong> Watch the magic happen! Your task dates will be calculated instantly.</li>
-      <li><strong>Suggested Kick-off Date:</strong> See the recommended project kick-off date at the end.</li>
-  </ol>
-  <p>Ready to get started? Let's make your project planning a breeze!</p>
-</div>
-    <label for="projectEndDate">Project End Date:</label>
-    <input type="date" id="projectEndDate">
+<body>
+    <div id="calculatorSelector">
+        <label for="calculatorType">Choose Calculator:</label>
+        <select id="calculatorType" onchange="changeCalculator()">
+            <option value="workBack">Work Back Schedule</option>
+            <option value="forward">Forward Schedule</option>
+        </select>
+    </div>
 
-    <div id="tasksContainer">
-        <label for="tasks">Tasks:</label>
-        <div class="task">
-            <input type="text" class="taskName" placeholder="Task Name">
-            <input type="number" class="taskDuration" placeholder="Duration (days)">
-            <button onclick="removeTask(this)">Remove</button>
+    <div id="workBackCalculator">
+        <!-- Work Back Schedule Calculator -->
+        <div id="instructions">
+            <h2>Welcome to the Work Back Schedule Calculator!</h2>
+            <p>Planning your project just got easier. Follow these steps to create your customized schedule:</p>
+            <ol>
+                <li><strong>Enter Project End Date:</strong> Start by selecting the date you plan to finish your project.</li>
+                <li><strong>Add Your Tasks:</strong> List the tasks needed for your project and estimate their durations.</li>
+                <li><strong>Customize Your Schedule:</strong> Choose options to exclude weekends, skip statutory holidays, and set your location.</li>
+                <li><strong>Hit "Calculate Schedule":</strong> Watch the magic happen! Your task dates will be calculated instantly.</li>
+                <li><strong>Suggested Kick-off Date:</strong> See the recommended project kick-off date at the end.</li>
+            </ol>
+            <p>Ready to get started? Let's make your project planning a breeze!</p>
+        </div>
+        
+        <label for="projectEndDate">Project End Date:</label>
+        <input type="date" id="projectEndDate">
+
+        <div id="tasksContainer">
+            <label for="tasks">Tasks:</label>
+            <div class="task">
+                <input type="text" class="taskName" placeholder="Task Name">
+                <input type="number" class="taskDuration" placeholder="Duration (days)">
+                <button onclick="removeTask(this)">Remove</button>
+            </div>
+        </div>
+
+        <button onclick="addTask()">Add Task</button>
+        
+        <label for="excludeWeekends">Exclude Weekends:</label>
+        <input type="checkbox" id="excludeWeekends">
+
+        <label for="excludeHolidays">Exclude Statutory Holidays:</label>
+        <input type="checkbox" id="excludeHolidays">
+
+        <label for="country">Country:</label>
+        <select id="country">
+            <!-- Add options for different countries -->
+            <option value="usa">United States</option>
+            <option value="canada">Canada</option>
+            <!-- Add more options as needed -->
+        </select>
+
+        <label for="provinceState">Province/State:</label>
+        <select id="provinceState">
+            <!-- Add options for different provinces/states based on the selected country -->
+            <option value="ny">New York</option>
+            <option value="ca">California</option>
+            <!-- Add more options as needed -->
+        </select>
+
+        <button onclick="calculateSchedule()">Calculate Schedule</button>
+
+        <div id="result"></div>
+
+        <div id="kickoffDateSection">
+            <h2>Suggested Project Kick-off Date:</h2>
+            <p id="kickoffDate"></p>
         </div>
     </div>
 
-    <button onclick="addTask()">Add Task</button>
-    
-    <label for="excludeWeekends">Exclude Weekends:</label>
-    <input type="checkbox" id="excludeWeekends">
+    <div id="forwardCalculator" style="display: none;">
+        <!-- Forward Schedule Calculator -->
+        <div id="instructions">
+            <h2>Welcome to the Forward Schedule Calculator!</h2>
+            <p>Plan your project from the start date and find out when it will finish. Follow these steps:</p>
+            <ol>
+                <li><strong>Enter Project Start Date:</strong> Choose the date when you want to begin your project.</li>
+                <li><strong>Add Your Tasks:</strong> List the tasks and estimate their durations.</li>
+                <li><strong>Customize Your Schedule:</strong> Exclude weekends, skip statutory holidays, and set your location.</li>
+                <li><strong>Hit "Calculate Schedule":</strong> Your task dates and earliest possible finish date will be calculated.</li>
+            </ol>
+            <p>Ready to plan ahead? Let's make your project scheduling efficient!</p>
+        </div>
+        
+        <label for="projectStartDate">Project Start Date:</label>
+        <input type="date" id="projectStartDate">
 
-    <label for="excludeHolidays">Exclude Statutory Holidays:</label>
-    <input type="checkbox" id="excludeHolidays">
+        <div id="tasksContainerForward">
+            <label for="tasksForward">Tasks:</label>
+            <div class="task">
+                <input type="text" class="taskName" placeholder="Task Name">
+                <input type="number" class="taskDuration" placeholder="Duration (days)">
+                <button onclick="removeTask(this)">Remove</button>
+            </div>
+        </div>
 
-    <label for="country">Country:</label>
-    <select id="country">
-        <!-- Add options for different countries -->
-        <option value="usa">United States</option>
-        <option value="canada">Canada</option>
-        <!-- Add more options as needed -->
-    </select>
+        <button onclick="addTask()">Add Task</button>
+        
+        <label for="excludeWeekendsForward">Exclude Weekends:</label>
+        <input type="checkbox" id="excludeWeekendsForward">
 
-    <label for="provinceState">Province/State:</label>
-    <select id="provinceState">
-        <!-- Add options for different provinces/states based on the selected country -->
-        <option value="ny">New York</option>
-        <option value="ca">California</option>
-        <!-- Add more options as needed -->
-    </select>
+        <label for="excludeHolidaysForward">Exclude Statutory Holidays:</label>
+        <input type="checkbox" id="excludeHolidaysForward">
 
-    <button onclick="calculateSchedule()">Calculate Schedule</button>
+        <label for="countryForward">Country:</label>
+        <select id="countryForward">
+            <!-- Add options for different countries -->
+            <option value="usa">United States</option>
+            <option value="canada">Canada</option>
+            <!-- Add more options as needed -->
+        </select>
 
-    <div id="result"></div>
+        <label for="provinceStateForward">Province/State:</label>
+        <select id="provinceStateForward">
+            <!-- Add options for different provinces/states based on the selected country -->
+            <option value="ny">New York</option>
+            <option value="ca">California</option>
+            <!-- Add more options as needed -->
+        </select>
 
-    <div id="kickoffDateSection">
-        <h2>Suggested Project Kick-off Date:</h2>
-        <p id="kickoffDate"></p>
+        <button onclick="calculateScheduleForward()">Calculate Schedule</button>
+
+        <div id="resultForward"></div>
+
+        <div id="finishDateSection">
+            <h2>Earliest Possible Finish Date:</h2>
+            <p id="earliestFinishDate"></p>
+        </div>
     </div>
 
     <script src="script.js"></script>

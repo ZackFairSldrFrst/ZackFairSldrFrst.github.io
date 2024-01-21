@@ -1,3 +1,16 @@
+function changeCalculator() {
+    const calculatorSelector = document.getElementById('calculatorType');
+    const workBackCalculator = document.getElementById('workBackCalculator');
+    const forwardCalculator = document.getElementById('forwardCalculator');
+
+    if (calculatorSelector.value === 'workBack') {
+        workBackCalculator.style.display = 'block';
+        forwardCalculator.style.display = 'none';
+    } else {
+        workBackCalculator.style.display = 'none';
+        forwardCalculator.style.display = 'block';
+    }
+}
 // Assume that statutory holidays are defined for each country and state
 const statutoryHolidays = {
     usa: {
@@ -142,4 +155,21 @@ function calculateAdjustedDuration(endDate, tasks, excludeWeekends, excludeHolid
     }
 
     return adjustedDuration;
+}
+function calculateEarliestFinishDate() {
+    const projectStartDate = new Date(document.getElementById('projectStartDate').value);
+    const tasks = getTasks();
+    const excludeWeekends = document.getElementById('excludeWeekends').checked;
+    const excludeHolidays = document.getElementById('excludeHolidays').checked;
+
+    let totalDuration = tasks.reduce((acc, task) => acc + task.duration, 0);
+    if (excludeWeekends || excludeHolidays) {
+        totalDuration = calculateAdjustedDuration(projectStartDate, tasks, excludeWeekends, excludeHolidays);
+    }
+
+    const earliestFinishDate = calculateNewDate(projectStartDate, totalDuration, excludeWeekends, excludeHolidays);
+    document.getElementById('earliestFinishDate').textContent = earliestFinishDate.toDateString();
+
+    // Show the result section
+    document.getElementById('kickoffDateSection').style.display = 'block';
 }
