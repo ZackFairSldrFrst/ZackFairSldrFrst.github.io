@@ -19,39 +19,27 @@
         <!-- Work Back Schedule Calculator -->
         <div id="instructions">
             <h2>Welcome to the Work Back Schedule Calculator!</h2>
-            <p>Plan your project by working backward from the end date. Follow these steps to create your customized schedule:</p>
+            <p>Planning your project just got easier. Follow these steps to create your customized schedule:</p>
             <ol>
-                <li><strong>Enter Project End Date:</strong> Choose the date you plan to finish your project, e.g., product launch date.</li>
-                <li><strong>Add Your Tasks:</strong> List the tasks needed for your project, such as market research, content creation, and design.</li>
-                <li><strong>Customize Your Schedule:</strong> Exclude weekends, skip statutory holidays, and set your location.</li>
-                <li><strong>Hit "Calculate Schedule":</strong> Your task dates will be calculated instantly, aiding in project planning.</li>
+                <li><strong>Enter Project End Date:</strong> Start by selecting the date you plan to finish your project.</li>
+                <li><strong>Add Your Tasks:</strong> List the tasks needed for your project and estimate their durations.</li>
+                <li><strong>Customize Your Schedule:</strong> Choose options to exclude weekends, skip statutory holidays, and set your location.</li>
+                <li><strong>Hit "Calculate Schedule":</strong> Watch the magic happen! Your task dates will be calculated instantly.</li>
                 <li><strong>Suggested Kick-off Date:</strong> See the recommended project kick-off date at the end.</li>
             </ol>
-            <p>Ready to get started? Let's make your marketing project planning a breeze!</p>
+            <p>Ready to get started? Let's make your project planning a breeze!</p>
         </div>
         
-        <label for="projectEndDate">Project End Date (e.g., product launch):</label>
+        <label for="projectEndDate">Project End Date:</label>
         <input type="date" id="projectEndDate">
 
         <div id="tasksContainer">
             <label for="tasks">Tasks:</label>
-            <!-- Default tasks with stages -->
             <div class="task">
-                <input type="text" class="taskName" placeholder="Market Research">
-                <input type="number" class="taskDuration" placeholder="Duration (days)" value="5">
+                <input type="text" class="taskName" placeholder="Task Name">
+                <input type="number" class="taskDuration" placeholder="Duration (days)">
                 <button onclick="removeTask(this)">Remove</button>
             </div>
-            <div class="task">
-                <input type="text" class="taskName" placeholder="Content Creation">
-                <input type="number" class="taskDuration" placeholder="Duration (days)" value="7">
-                <button onclick="removeTask(this)">Remove</button>
-            </div>
-            <div class="task">
-                <input type="text" class="taskName" placeholder="Design">
-                <input type="number" class="taskDuration" placeholder="Duration (days)" value="10">
-                <button onclick="removeTask(this)">Remove</button>
-            </div>
-            <!-- End of default tasks -->
         </div>
 
         <button onclick="addTask()">Add Task</button>
@@ -90,16 +78,16 @@
 
     <div id="forwardCalculator" style="display: none;">
         <!-- Forward Schedule Calculator -->
-        <div id="instructionsForward">
+        <div id="instructions">
             <h2>Welcome to the Forward Schedule Calculator!</h2>
             <p>Plan your project from the start date and find out when it will finish. Follow these steps:</p>
             <ol>
                 <li><strong>Enter Project Start Date:</strong> Choose the date when you want to begin your project.</li>
-                <li><strong>Add Your Tasks:</strong> List the tasks and estimate their durations, e.g., campaign planning, content creation, and execution.</li>
+                <li><strong>Add Your Tasks:</strong> List the tasks and estimate their durations.</li>
                 <li><strong>Customize Your Schedule:</strong> Exclude weekends, skip statutory holidays, and set your location.</li>
                 <li><strong>Hit "Calculate Schedule":</strong> Your task dates and earliest possible finish date will be calculated.</li>
             </ol>
-            <p>Ready to plan ahead? Let's make your marketing project scheduling efficient!</p>
+            <p>Ready to plan ahead? Let's make your project scheduling efficient!</p>
         </div>
         
         <label for="projectStartDate">Project Start Date:</label>
@@ -107,23 +95,11 @@
 
         <div id="tasksContainerForward">
             <label for="tasksForward">Tasks:</label>
-            <!-- Default tasks with stages -->
             <div class="task">
-                <input type="text" class="taskName" placeholder="Campaign Planning">
-                <input type="number" class="taskDuration" placeholder="Duration (days)" value="10">
+                <input type="text" class="taskName" placeholder="Task Name">
+                <input type="number" class="taskDuration" placeholder="Duration (days)">
                 <button onclick="removeTask(this)">Remove</button>
             </div>
-            <div class="task">
-                <input type="text" class="taskName" placeholder="Content Creation">
-                <input type="number" class="taskDuration" placeholder="Duration (days)" value="7">
-                <button onclick="removeTask(this)">Remove</button>
-            </div>
-            <div class="task">
-                <input type="text" class="taskName" placeholder="Execution">
-                <input type="number" class="taskDuration" placeholder="Duration (days)" value="14">
-                <button onclick="removeTask(this)">Remove</button>
-            </div>
-            <!-- End of default tasks -->
         </div>
 
         <button onclick="addTask()">Add Task</button>

@@ -11,6 +11,7 @@ function changeCalculator() {
         forwardCalculator.style.display = 'block';
     }
 }
+
 // Assume that statutory holidays are defined for each country and state
 const statutoryHolidays = {
     usa: {
@@ -156,7 +157,12 @@ function calculateAdjustedDuration(endDate, tasks, excludeWeekends, excludeHolid
 
     return adjustedDuration;
 }
+
 function calculateEarliestFinishDate() {
+    if (!validateForwardInputs()) {
+        return;
+    }
+
     const projectStartDate = new Date(document.getElementById('projectStartDate').value);
     const tasks = getTasks();
     const excludeWeekends = document.getElementById('excludeWeekends').checked;
@@ -173,3 +179,4 @@ function calculateEarliestFinishDate() {
     // Show the result section
     document.getElementById('kickoffDateSection').style.display = 'block';
 }
+
