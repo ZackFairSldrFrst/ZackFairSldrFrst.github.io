@@ -97,3 +97,87 @@ h2 {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     padding: 20px;
 }
+<<<<<<< Updated upstream
+=======
+/* Tooltip styling */
+.tooltip {
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    z-index: 999;
+}
+#instructions, #instructionsForward {
+    opacity: 1;
+    animation: fadeIn 1s forwards;
+}
+/* Gantt Chart Container */
+.ganttChartContainer {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.ganttChart {
+    width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow-x: auto;
+}
+
+/* Task Bar in the Gantt Chart */
+.taskBar {
+    background-color: #007bff;
+    color: white;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 4px;
+    margin-top: 5px;
+    position: absolute;
+}
+
+/* Labels for Task Bars */
+.taskBar::before {
+    content: attr(data-task);
+    position: absolute;
+    left: 5px;
+}
+
+/* Time Scale above the chart (Optional) */
+.timeScale {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    margin-bottom: 5px;
+}
+
+.timeScale div {
+    text-align: center;
+    color: #555;
+}
+
+/* Tooltips for Task Bars (Optional) */
+.taskBar:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    z-index: 999;
+    margin-top: 5px;
+}
+>>>>>>> Stashed changes

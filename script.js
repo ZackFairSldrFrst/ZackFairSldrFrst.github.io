@@ -180,3 +180,139 @@ function calculateEarliestFinishDate() {
     document.getElementById('kickoffDateSection').style.display = 'block';
 }
 
+<<<<<<< Updated upstream
+=======
+// Function to dynamically add tooltips
+function addTooltips() {
+    const inputs = document.querySelectorAll('input, select');
+    inputs.forEach(input => {
+        input.addEventListener('focus', () => {
+            const tooltipMessage = tooltips[input.id];
+            if (tooltipMessage) {
+                showTooltip(input, tooltipMessage);
+            }
+        });
+        input.addEventListener('blur', hideTooltip);
+    });
+
+    // Add tooltips for dynamic tasks
+    addTaskTooltips();
+}
+// Function to validate the form
+function validateForm() {
+    const projectEndDateInput = document.getElementById('projectEndDate');
+    const projectStartDateInput = document.getElementById('projectStartDate');
+    const taskNameInputs = document.querySelectorAll('.taskName');
+    const taskDurationInputs = document.querySelectorAll('.taskDuration');
+
+    // Placeholder for validation messages
+    let validationMessages = [];
+
+    // Validate project end/start date
+    if (!projectEndDateInput.value && !projectStartDateInput.value) {
+        validationMessages.push('Please enter either the project end date or the project start date.');
+    }
+
+    // Validate task names and durations
+    taskNameInputs.forEach((taskNameInput, index) => {
+        const taskDurationInput = taskDurationInputs[index];
+        if (!taskNameInput.value || !taskDurationInput.value) {
+            validationMessages.push('All tasks must have both a name and a duration.');
+        }
+    });
+
+    // Display error messages if any
+    if (validationMessages.length > 0) {
+        const errorMessage = validationMessages.join('\n');
+        alert(errorMessage);
+        return false;
+    }
+
+    return true;
+}
+
+// Event listener for the Calculate Schedule button
+document.getElementById('calculateScheduleButton').addEventListener('click', () => {
+    if (validateForm()) {
+        calculateSchedule();
+        calculateKickoffDate();
+    }
+});
+// Define tooltips for each input/select element
+const tooltips = {
+    calculatorType: 'Choose the type of calculator: Work Back Schedule or Forward Schedule.',
+    projectEndDate: 'Choose the date you plan to finish your project, e.g., product launch date.',
+    tasks: 'List the tasks needed for your project, such as market research, content creation, and design.',
+    excludeWeekends: 'Check this box to exclude weekends from the schedule.',
+    excludeHolidays: 'Check this box to exclude statutory holidays from the schedule.',
+    country: 'Select your country for holiday considerations.',
+    provinceState: 'Select your province/state for more accurate holiday considerations.',
+    projectStartDate: 'Choose the date when you want to begin your project.',
+    tasksForward: 'List the tasks and estimate their durations, e.g., campaign planning, content creation, and execution.',
+    excludeWeekendsForward: 'Check this box to exclude weekends from the schedule.',
+    excludeHolidaysForward: 'Check this box to exclude statutory holidays from the schedule.',
+    countryForward: 'Select your country for holiday considerations.',
+    provinceStateForward: 'Select your province/state for more accurate holiday considerations.'
+};
+
+// Function to show tooltips
+function showTooltip(element, message) {
+    const tooltipContainer = document.getElementById('tooltipContainer');
+    tooltipContainer.innerHTML = `<div class="tooltip">${message}</div>`;
+    const tooltip = document.querySelector('.tooltip');
+    const rect = element.getBoundingClientRect();
+    tooltip.style.top = rect.top - tooltip.offsetHeight + 'px';
+    tooltip.style.left = rect.left + rect.width / 2 - tooltip.offsetWidth / 2 + 'px';
+}
+
+// Function to hide tooltips
+function hideTooltip() {
+    const tooltipContainer = document.getElementById('tooltipContainer');
+    tooltipContainer.innerHTML = '';
+}
+
+// Function to dynamically add tooltips
+function addTooltips() {
+    const inputs = document.querySelectorAll('input, select');
+    inputs.forEach(input => {
+        input.addEventListener('focus', () => {
+            const tooltipMessage = tooltips[input.id];
+            if (tooltipMessage) {
+                showTooltip(input, tooltipMessage);
+            }
+        });
+        input.addEventListener('blur', hideTooltip);
+    });
+
+    // Add tooltips for dynamic tasks
+    addTaskTooltips();
+}
+
+// Call the addTooltips function when the DOM is ready
+document.addEventListener('DOMContentLoaded', addTooltips);
+function generateGanttChart(schedule, chartId) {
+    const ganttChartContainer = document.getElementById(chartId);
+    ganttChartContainer.innerHTML = ''; // Clear previous chart
+
+    const startDate = schedule[0].date;
+    const endDate = schedule[schedule.length - 1].date;
+    const totalDays = (endDate - startDate) / (1000 * 3600 * 24);
+
+    schedule.forEach(task => {
+        const taskStart = (task.date - startDate) / (1000 * 3600 * 24);
+        const taskDuration = task.duration;
+        const taskBar = document.createElement('div');
+        taskBar.classList.add('taskBar');
+        taskBar.style.width = `${(taskDuration / totalDays) * 100}%`;
+        taskBar.style.marginLeft = `${(taskStart / totalDays) * 100}%`;
+        taskBar.textContent = task.name;
+        ganttChartContainer.appendChild(taskBar);
+    });
+}
+
+// Update your calculateSchedule function to call generateGanttChart
+function calculateSchedule() {
+    // ... existing code ...
+    generateGanttChart(schedule, 'ganttChartWorkBack');
+}
+>>>>>>> Stashed changes
