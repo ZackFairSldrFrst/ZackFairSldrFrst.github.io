@@ -69,6 +69,9 @@ function calculateSchedule() {
     const schedule = calculateTaskDates(projectEndDate, tasks, excludeWeekends, excludeHolidays);
 
     displaySchedule(schedule);
+    
+    // Calculate and display the suggested kick-off date
+    calculateKickoffDate();
 }
 
 function calculateTaskDates(endDate, tasks, excludeWeekends, excludeHolidays) {
@@ -112,3 +115,16 @@ function displaySchedule(schedule) {
         resultContainer.appendChild(taskElement);
     });
 }
+
+function calculateKickoffDate() {
+    const projectEndDate = new Date(document.getElementById('projectEndDate').value);
+    const tasks = getTasks();
+    const excludeWeekends = document.getElementById('excludeWeekends').checked;
+    const excludeHolidays = document.getElementById('excludeHolidays').checked;
+
+    let totalDuration = tasks.reduce((acc, task) => acc + task.duration, 0);
+    if (excludeWeekends || excludeHolidays) {
+        totalDuration = calculateAdjustedDuration(projectEndDate, tasks, excludeWeekends, excludeHolidays);
+    }
+
+    const kickoffDate = calculateNewDate(projectEndDate, totalDuration, excludeWeekends, excludeHolidays
