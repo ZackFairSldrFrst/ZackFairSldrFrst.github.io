@@ -1,34 +1,47 @@
-body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    margin: 20px;
-    background-color: #f5f5f5;
-}
+<style>
+            input[type="text"], input[type="date"], input[type="number"], button {
+            font-size: 16px;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle drop shadow */
+        }
 
-#instructions {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin-bottom: 20px;
-}
+        button {
+            background-color: #007aff; /* Apple's default blue */
+            color: white;
+            cursor: pointer;
+        }
 
-h2 {
-    color: #333;
-}
+        button:hover {
+            background-color: #005ecb;
+        }
 
-p, ol {
-    color: #555;
-}
+        .gantt-chart {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
 
-ol {
-    padding-left: 20px;
-}
+        .gantt-chart th, .gantt-chart td {
+            border: 1px solid #ddd; /* Light borders for the table */
+            padding: 8px;
+            text-align: left;
+        }
 
-strong {
-    color: #007bff;
-}
+        .gantt-chart th {
+            background-color: #f8f8f8; /* Light grey background for headers */
+            color: #333;
+        }
 
-input, select {
+        .gantt-bar {
+            background-color: #4CAF50; /* Green color for Gantt bars */
+            color: white;
+            text-align: center;
+            border-radius: 5px; /* Slightly rounded corners for bars */
+        }
+        input, select {
     width: 100%;
     padding: 15px;
     margin-bottom: 20px;
@@ -97,3 +110,17 @@ h2 {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     padding: 20px;
 }
+#excludedDatesList {
+    margin-top: 20px;
+}
+
+#excludedDatesDisplay li {
+    list-style-type: none;
+    padding: 5px;
+    margin-bottom: 5px;
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+    </style>

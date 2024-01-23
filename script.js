@@ -1,181 +1,111 @@
-function changeCalculator() {
-    const calculatorSelector = document.getElementById('calculatorType');
-    const workBackCalculator = document.getElementById('workBackCalculator');
-    const forwardCalculator = document.getElementById('forwardCalculator');
+document.addEventListener('DOMContentLoaded', function() {
+    var excludedDates = [];
 
-    if (calculatorSelector.value === 'workBack') {
-        workBackCalculator.style.display = 'block';
-        forwardCalculator.style.display = 'none';
-    } else {
-        workBackCalculator.style.display = 'none';
-        forwardCalculator.style.display = 'block';
-    }
-}
+    // Function to add a new task
+    window.addTask = function() {
+        const tasksContainer = document.getElementById('tasksContainer');
+        const newTask = document.createElement('div');
+        newTask.className = 'task';
+        newTask.innerHTML = `
+            <input type="text" class="taskName" placeholder="Task Name">
+            <input type="text" class="taskOwner" placeholder="Task Owner">
+            <input type="number" class="taskDuration" placeholder="Duration (days)">
+            <label><input type="checkbox" class="taskDependency"> Dependent on previous task</label>
+            <button onclick="removeTask(this)">Remove</button>
+        `;
+        tasksContainer.appendChild(newTask);
+    };
 
-// Assume that statutory holidays are defined for each country and state
-const statutoryHolidays = {
-    usa: {
-        ny: ['2024-01-01', '2024-07-04', '2024-12-25'], // Example holidays for New York
-        ca: ['2024-01-01', '2024-07-04', '2024-12-25']  // Example holidays for California
-        // Add more states and their respective holidays as needed
-    },
-    canada: {
-        on: ['2024-01-01', '2024-07-01', '2024-12-25'], // Example holidays for Ontario
-        bc: ['2024-01-01', '2024-07-01', '2024-12-25']  // Example holidays for British Columbia
-        // Add more provinces and their respective holidays as needed
-    }
-    // Add more countries and their respective holidays as needed
-};
+    // Function to remove a task
+    window.removeTask = function(button) {
+        const task = button.parentNode;
+        task.parentNode.removeChild(task);
+    };
 
-function calculateNewDate(currentDate, duration, excludeWeekends, excludeHolidays) {
-    const newDate = new Date(currentDate);
-
-    while (duration > 0) {
-        newDate.setDate(newDate.getDate() - 1);
-
-        const isWeekend = excludeWeekends && (newDate.getDay() === 0 || newDate.getDay() === 6);
-        const isHoliday = excludeHolidays && isStatutoryHoliday(newDate);
-
-        if (!(isWeekend || isHoliday)) {
-            duration--;
+    // Function to add excluded date
+    window.addExcludedDate = function() {
+        const excludedDate = document.getElementById('excludedDates').value;
+        if (excludedDate && !excludedDates.includes(excludedDate)) {
+            excludedDates.push(excludedDate);
+            updateExcludedDatesDisplay();
         }
-    }
+    };
 
-    return newDate;
-}
+    // Function to update the display of excluded dates
+    function updateExcludedDatesDisplay() {
+        const list = document.getElementById('excludedDatesDisplay');
+        list.innerHTML = ''; // Clear current list
+        excludedDates.forEach(function(date) {
+            const listItem = document.createElement('li');
+            listItem.textContent = date;
+            list.appendChild(listItem);
+        });
+    };
 
-function isStatutoryHoliday(date) {
-    const country = document.getElementById('country').value;
-    const state = document.getElementById('provinceState').value;
+    // Function to check if two dates are the same
+    function isSameDate(date1, date2) {
+        return date1.getDate() === date2.getDate() &&
+               date1.getMonth() === date2.getMonth() &&
+               date1.getFullYear() === date2.getFullYear();
+    };
 
-    const holidays = statutoryHolidays[country]?.[state] || [];
-    const holidayDates = holidays.map(holiday => new Date(holiday));
+    // Function to calculate the schedule
+    window.calculateSchedule = function() {
+        const endDate = new Date(document.getElementById('projectEndDate').value);
+        const excludeWeekends = document.getElementById('excludeWeekends').checked;
+        let tasks = Array.from(document.querySelectorAll('.task'));
+        let taskDetails = [];
 
-    return holidayDates.some(holidayDate => date.toDateString() === holidayDate.toDateString());
-}
+        // Convert excludedDates to Date objects for comparison
+        let excludedDatesFormatted = excludedDates.map(date => new Date(date));
 
-function addTask() {
-    const tasksContainer = document.getElementById('tasksContainer');
-    
-    const newTask = document.createElement('div');
-    newTask.classList.add('task');
+        let previousTaskEndDate = new Date(endDate);
 
-    newTask.innerHTML = `
-        <input type="text" class="taskName" placeholder="Task Name">
-        <input type="number" class="taskDuration" placeholder="Duration (days)">
-        <button onclick="removeTask(this)">Remove</button>
-    `;
+        tasks.reverse().forEach((task, index) => {
+            const taskDuration = parseInt(task.querySelector('.taskDuration').value, 10) || 0;
+            const taskName = task.querySelector('.taskName').value;
+            const taskOwner = task.querySelector('.taskOwner').value;
+            const isDependent = task.querySelector('.taskDependency').checked;
+            let taskEndDate = new Date(previousTaskEndDate);
 
-    tasksContainer.appendChild(newTask);
-}
+            if (!isDependent || index === 0) { // If it's the first task or not dependent
+                taskEndDate = new Date(endDate);
+            }
 
-function removeTask(button) {
-    const taskDiv = button.parentElement;
-    taskDiv.remove();
-}
+            for (let i = 0; i < taskDuration; ) {
+                taskEndDate.setDate(taskEndDate.getDate() - 1);
 
-function calculateSchedule() {
-    const projectEndDate = new Date(document.getElementById('projectEndDate').value);
-    const tasks = getTasks();
-    const excludeWeekends = document.getElementById('excludeWeekends').checked;
-    const excludeHolidays = document.getElementById('excludeHolidays').checked;
+                if (excludeWeekends && (taskEndDate.getDay() === 6 || taskEndDate.getDay() === 0)) {
+                    continue;
+                }
 
-    const schedule = calculateTaskDates(projectEndDate, tasks, excludeWeekends, excludeHolidays);
+                if (excludedDatesFormatted.some(excludedDate => isSameDate(excludedDate, taskEndDate))) {
+                    continue;
+                }
 
-    displaySchedule(schedule);
-    
-    // Calculate and display the suggested kick-off date
-    calculateKickoffDate();
-}
+                i++;
+            }
 
-function calculateTaskDates(endDate, tasks, excludeWeekends, excludeHolidays) {
-    const schedule = [];
-    let currentDate = new Date(endDate);
+            taskDetails.push({ name: taskName, owner: taskOwner, endDate: taskEndDate });
 
-    for (let i = tasks.length - 1; i >= 0; i--) {
-        const task = tasks[i].name;
-        const duration = tasks[i].duration;
+            // If the task is dependent, the next task's end date is this task's end date
+            if (isDependent) {
+                previousTaskEndDate = new Date(taskEndDate);
+            }
+        });
 
-        currentDate = calculateNewDate(currentDate, duration, excludeWeekends, excludeHolidays);
-        schedule.push({ task, date: new Date(currentDate) });
-    }
+        // Reverse back to original order for displaying
+        taskDetails.reverse();
 
-    return schedule.reverse();
-}
+        // Update the result display
+        const result = document.getElementById('result');
+        result.innerHTML = '<h3>Task Details:</h3>';
+        taskDetails.forEach((task, index) => {
+            result.innerHTML += `<p>Task ${index + 1}: ${task.name} - Owner: ${task.owner}, Due Date: ${task.endDate.toDateString()}</p>`;
+        });
 
-function getTasks() {
-    const taskElements = document.querySelectorAll('.task');
-    const tasks = [];
-
-    taskElements.forEach(taskElement => {
-        const taskName = taskElement.querySelector('.taskName').value;
-        const taskDuration = parseInt(taskElement.querySelector('.taskDuration').value, 10);
-
-        if (taskName && !isNaN(taskDuration)) {
-            tasks.push({ name: taskName, duration: taskDuration });
-        }
-    });
-
-    return tasks;
-}
-
-function displaySchedule(schedule) {
-    const resultContainer = document.getElementById('result');
-    resultContainer.innerHTML = '';
-
-    schedule.forEach(task => {
-        const taskElement = document.createElement('div');
-        taskElement.textContent = `${task.task}: ${task.date.toDateString()}`;
-        resultContainer.appendChild(taskElement);
-    });
-}
-
-function calculateKickoffDate() {
-    const projectEndDate = new Date(document.getElementById('projectEndDate').value);
-    const tasks = getTasks();
-    const excludeWeekends = document.getElementById('excludeWeekends').checked;
-    const excludeHolidays = document.getElementById('excludeHolidays').checked;
-
-    let totalDuration = tasks.reduce((acc, task) => acc + task.duration, 0);
-    if (excludeWeekends || excludeHolidays) {
-        totalDuration = calculateAdjustedDuration(projectEndDate, tasks, excludeWeekends, excludeHolidays);
-    }
-
-    const kickoffDate = calculateNewDate(projectEndDate, totalDuration, excludeWeekends, excludeHolidays);
-    document.getElementById('kickoffDate').textContent = kickoffDate.toDateString();
-}
-
-function calculateAdjustedDuration(endDate, tasks, excludeWeekends, excludeHolidays) {
-    let adjustedDuration = 0;
-    let currentDate = new Date(endDate);
-
-    for (let i = tasks.length - 1; i >= 0; i--) {
-        const duration = tasks[i].duration;
-        currentDate = calculateNewDate(currentDate, duration, excludeWeekends, excludeHolidays);
-        adjustedDuration += duration;
-    }
-
-    return adjustedDuration;
-}
-
-function calculateEarliestFinishDate() {
-    if (!validateForwardInputs()) {
-        return;
-    }
-
-    const projectStartDate = new Date(document.getElementById('projectStartDate').value);
-    const tasks = getTasks();
-    const excludeWeekends = document.getElementById('excludeWeekends').checked;
-    const excludeHolidays = document.getElementById('excludeHolidays').checked;
-
-    let totalDuration = tasks.reduce((acc, task) => acc + task.duration, 0);
-    if (excludeWeekends || excludeHolidays) {
-        totalDuration = calculateAdjustedDuration(projectStartDate, tasks, excludeWeekends, excludeHolidays);
-    }
-
-    const earliestFinishDate = calculateNewDate(projectStartDate, totalDuration, excludeWeekends, excludeHolidays);
-    document.getElementById('earliestFinishDate').textContent = earliestFinishDate.toDateString();
-
-    // Show the result section
-    document.getElementById('kickoffDateSection').style.display = 'block';
-}
+        // Update kickoff date display
+        let kickoffDate = taskDetails.length > 0 ? new Date(taskDetails[0].endDate) : new Date();
+        document.getElementById('kickoffDate').textContent = kickoffDate.toDateString();
+    };
+});
