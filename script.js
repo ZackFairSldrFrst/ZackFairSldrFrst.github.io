@@ -125,4 +125,24 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('kickoffDate').textContent = kickoffDate.toDateString();
     }
 });
+// Function to reset the schedule
+window.resetSchedule = function() {
+    // Clear existing task details
+    document.getElementById('tasksContainer').innerHTML = '';
+
+    // Clear excluded dates
+    excludedDates = [];
+    updateExcludedDatesDisplay();
+
+    // Clear schedule display (assuming you have a table or similar for displaying the schedule)
+    const tableBody = document.getElementById('taskTable').getElementsByTagName('tbody')[0];
+    tableBody.innerHTML = '';
+
+    // Reset kickoff date display
+    document.getElementById('kickoffDate').textContent = '';
+
+    // Optionally, reset other inputs like project end date and exclude weekends checkbox
+    document.getElementById('projectEndDate').value = '';
+    document.getElementById('excludeWeekends').checked = false;
+};
 </script>
