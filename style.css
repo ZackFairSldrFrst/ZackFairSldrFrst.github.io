@@ -18,38 +18,6 @@
             background-color: #005ecb;
         }
 
-        .gantt-chart {
-            width: 100%;
-            border-collapse: collapse;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .gantt-chart th, .gantt-chart td {
-            border: 1px solid #ddd; /* Light borders for the table */
-            padding: 8px;
-            text-align: left;
-        }
-
-        .gantt-chart th {
-            background-color: #f8f8f8; /* Light grey background for headers */
-            color: #333;
-        }
-
-        .gantt-bar {
-            background-color: #4CAF50; /* Green color for Gantt bars */
-            color: white;
-            text-align: center;
-            border-radius: 5px; /* Slightly rounded corners for bars */
-        }
-        input, select {
-    width: 100%;
-    padding: 15px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f8f8f8;
-}
-
 button {
     background-color: #007bff;
     color: white;
@@ -122,5 +90,35 @@ h2 {
     border: 1px solid #ddd;
     border-radius: 5px;
 }
+#taskTable {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 10px;
+    font-family: Arial, Helvetica, sans-serif; /* Apple uses San Francisco, this is a close alternative */
+    color: #333;
+    background-color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+#taskTable th, #taskTable td {
+    border-bottom: 1px solid #e0e0e0; /* Light grey border for a subtle separation */
+    padding: 12px 15px; /* Ample padding for space */
+    text-align: left;
+}
+
+#taskTable th {
+    background-color: #fafafa; /* Very light grey for headers */
+    color: #333; /* Slightly darker text for contrast */
+    font-weight: normal;
+}
+
+#taskTable tr:hover {
+    background-color: #f5f5f5; /* Slight hover effect */
+}
+
+#taskTable tr:last-child td {
+    border-bottom: none;
+}
+
 
     </style>

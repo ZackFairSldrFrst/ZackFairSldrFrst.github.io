@@ -1,3 +1,4 @@
+<script>
 document.addEventListener('DOMContentLoaded', function() {
     var excludedDates = [];
 
@@ -59,18 +60,15 @@ document.addEventListener('DOMContentLoaded', function() {
         // Convert excludedDates to Date objects for comparison
         let excludedDatesFormatted = excludedDates.map(date => new Date(date));
 
-        let previousTaskEndDate = new Date(endDate);
+        let currentEndDate = new Date(endDate);
 
         tasks.reverse().forEach((task, index) => {
             const taskDuration = parseInt(task.querySelector('.taskDuration').value, 10) || 0;
             const taskName = task.querySelector('.taskName').value;
             const taskOwner = task.querySelector('.taskOwner').value;
             const isDependent = task.querySelector('.taskDependency').checked;
-            let taskEndDate = new Date(previousTaskEndDate);
-
-            if (!isDependent || index === 0) { // If it's the first task or not dependent
-                taskEndDate = new Date(endDate);
-            }
+            let taskStartDate = new Date(currentEndDate);
+            let taskEndDate = new Date(currentEndDate);
 
             for (let i = 0; i < taskDuration; ) {
                 taskEndDate.setDate(taskEndDate.getDate() - 1);
@@ -86,26 +84,41 @@ document.addEventListener('DOMContentLoaded', function() {
                 i++;
             }
 
-            taskDetails.push({ name: taskName, owner: taskOwner, endDate: taskEndDate });
+            taskStartDate.setDate(taskEndDate.getDate() - taskDuration + 1);
+            taskDetails.push({ name: taskName, owner: taskOwner, startDate: taskStartDate, endDate: taskEndDate });
 
             // If the task is dependent, the next task's end date is this task's end date
             if (isDependent) {
-                previousTaskEndDate = new Date(taskEndDate);
+                currentEndDate = new Date(taskEndDate);
             }
         });
 
         // Reverse back to original order for displaying
         taskDetails.reverse();
 
-        // Update the result display
-        const result = document.getElementById('result');
-        result.innerHTML = '<h3>Task Details:</h3>';
+        // Update the table display
+        const tableBody = document.getElementById('taskTable').getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = ''; // Clear existing rows
+
         taskDetails.forEach((task, index) => {
-            result.innerHTML += `<p>Task ${index + 1}: ${task.name} - Owner: ${task.owner}, Due Date: ${task.endDate.toDateString()}</p>`;
+            let row = tableBody.insertRow();
+
+            let cellTaskNumber = row.insertCell(0);
+            let cellTaskName = row.insertCell(1);
+            let cellTaskOwner = row.insertCell(2);
+            let cellStartDate = row.insertCell(3);
+            let cellEndDate = row.insertCell(4);
+
+            cellTaskNumber.innerHTML = index + 1;
+            cellTaskName.innerHTML = task.name;
+            cellTaskOwner.innerHTML = task.owner;
+            cellStartDate.innerHTML = task.startDate.toDateString();
+            cellEndDate.innerHTML = task.endDate.toDateString();
         });
 
         // Update kickoff date display
-        let kickoffDate = taskDetails.length > 0 ? new Date(taskDetails[0].endDate) : new Date();
+        let kickoffDate = taskDetails.length > 0 ? new Date(taskDetails[0].startDate) : new Date();
         document.getElementById('kickoffDate').textContent = kickoffDate.toDateString();
     };
 });
+</script>
