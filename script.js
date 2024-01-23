@@ -35,71 +35,78 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to update the display of excluded dates
     function updateExcludedDatesDisplay() {
         const list = document.getElementById('excludedDatesDisplay');
-        list.innerHTML = ''; // Clear current list
+        list.innerHTML = '';
         excludedDates.forEach(function(date) {
             const listItem = document.createElement('li');
             listItem.textContent = date;
             list.appendChild(listItem);
         });
-    };
+    }
 
     // Function to check if two dates are the same
     function isSameDate(date1, date2) {
         return date1.getDate() === date2.getDate() &&
                date1.getMonth() === date2.getMonth() &&
                date1.getFullYear() === date2.getFullYear();
-    };
+    }
+
+    // Function to check if a day is valid (not a weekend or excluded date)
+    function isDayValid(date) {
+        const excludeWeekends = document.getElementById('excludeWeekends').checked;
+        if (excludeWeekends && (date.getDay() === 0 || date.getDay() === 6)) {
+            return false; // It's a weekend
+        }
+        return !excludedDates.some(excludedDate => isSameDate(new Date(excludedDate), date)); // Check for excluded dates
+    }
 
     // Function to calculate the schedule
     window.calculateSchedule = function() {
         const endDate = new Date(document.getElementById('projectEndDate').value);
-        const excludeWeekends = document.getElementById('excludeWeekends').checked;
         let tasks = Array.from(document.querySelectorAll('.task'));
         let taskDetails = [];
-
-        // Convert excludedDates to Date objects for comparison
-        let excludedDatesFormatted = excludedDates.map(date => new Date(date));
-
         let currentEndDate = new Date(endDate);
 
-        tasks.reverse().forEach((task, index) => {
-            const taskDuration = parseInt(task.querySelector('.taskDuration').value, 10) || 0;
+        for (let i = tasks.length - 1; i >= 0; i--) {
+            const task = tasks[i];
             const taskName = task.querySelector('.taskName').value;
             const taskOwner = task.querySelector('.taskOwner').value;
-            const isDependent = task.querySelector('.taskDependency').checked;
-            let taskStartDate = new Date(currentEndDate);
+            const taskDuration = parseInt(task.querySelector('.taskDuration').value) - 1; // Reduce by 1 as the end date counts as a working day
+
             let taskEndDate = new Date(currentEndDate);
+            let taskStartDate = new Date(taskEndDate);
 
-         for (let i = 0; i < taskDuration; ) {
-    taskEndDate.setDate(taskEndDate.getDate() - 1);
+            taskStartDate.setDate(taskStartDate.getDate() - taskDuration);
+            while (!isDayValid(taskStartDate) || !isDayValid(taskEndDate)) {
+                if (!isDayValid(taskEndDate)) {
+                    taskEndDate.setDate(taskEndDate.getDate() - 1);
+                }
 
-    if (excludeWeekends && (taskEndDate.getDay() === 6 || taskEndDate.getDay() === 0)) {
-        continue;
-    }
+                taskStartDate = new Date(taskEndDate);
+                taskStartDate.setDate(taskStartDate.getDate() - taskDuration);
 
-    if (excludedDatesFormatted.some(excludedDate => isSameDate(excludedDate, taskEndDate))) {
-        continue;
-    }
-
-    i++; // Increment i if the day is valid
-}
-
-
-            taskStartDate.setDate(taskEndDate.getDate() - taskDuration + 1);
-            taskDetails.push({ name: taskName, owner: taskOwner, startDate: taskStartDate, endDate: taskEndDate });
-
-            // If the task is dependent, the next task's end date is this task's end date
-            if (isDependent) {
-                currentEndDate = new Date(taskEndDate);
+                for (let j = 0; j < taskDuration; ) {
+                    taskStartDate.setDate(taskStartDate.getDate() - 1);
+                    if (isDayValid(taskStartDate)) {
+                        j++;
+                    }
+                }
             }
-        });
 
-        // Reverse back to original order for displaying
-        taskDetails.reverse();
+            taskDetails.unshift({ name: taskName, owner: taskOwner, startDate: new Date(taskStartDate), endDate: new Date(taskEndDate) });
 
-        // Update the table display
+            // Update current end date for the next (actually previous) task
+            currentEndDate = new Date(taskStartDate);
+            currentEndDate.setDate(currentEndDate.getDate() - 1);
+        }
+
+        // Update the table and kick-off date display
+        updateTableDisplay(taskDetails);
+        updateKickoffDateDisplay(taskDetails);
+    };
+
+    function updateTableDisplay(taskDetails) {
         const tableBody = document.getElementById('taskTable').getElementsByTagName('tbody')[0];
-        tableBody.innerHTML = ''; // Clear existing rows
+        tableBody.innerHTML = '';
 
         taskDetails.forEach((task, index) => {
             let row = tableBody.insertRow();
@@ -116,10 +123,11 @@ document.addEventListener('DOMContentLoaded', function() {
             cellStartDate.innerHTML = task.startDate.toDateString();
             cellEndDate.innerHTML = task.endDate.toDateString();
         });
+    }
 
-        // Update kickoff date display
-        let kickoffDate = taskDetails.length > 0 ? new Date(taskDetails[0].startDate) : new Date();
+    function updateKickoffDateDisplay(taskDetails) {
+        let kickoffDate = taskDetails.length > 0 ? taskDetails[taskDetails.length - 1].startDate : new Date();
         document.getElementById('kickoffDate').textContent = kickoffDate.toDateString();
-    };
+    }
 });
 </script>
