@@ -70,19 +70,20 @@ document.addEventListener('DOMContentLoaded', function() {
             let taskStartDate = new Date(currentEndDate);
             let taskEndDate = new Date(currentEndDate);
 
-            for (let i = 0; i < taskDuration; ) {
-                taskEndDate.setDate(taskEndDate.getDate() - 1);
+         for (let i = 0; i < taskDuration; ) {
+    taskEndDate.setDate(taskEndDate.getDate() - 1);
 
-                if (excludeWeekends && (taskEndDate.getDay() === 6 || taskEndDate.getDay() === 0)) {
-                    continue;
-                }
+    if (excludeWeekends && (taskEndDate.getDay() === 6 || taskEndDate.getDay() === 0)) {
+        continue;
+    }
 
-                if (excludedDatesFormatted.some(excludedDate => isSameDate(excludedDate, taskEndDate))) {
-                    continue;
-                }
+    if (excludedDatesFormatted.some(excludedDate => isSameDate(excludedDate, taskEndDate))) {
+        continue;
+    }
 
-                i++;
-            }
+    i++; // Increment i if the day is valid
+}
+
 
             taskStartDate.setDate(taskEndDate.getDate() - taskDuration + 1);
             taskDetails.push({ name: taskName, owner: taskOwner, startDate: taskStartDate, endDate: taskEndDate });
