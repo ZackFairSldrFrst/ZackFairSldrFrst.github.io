@@ -98,7 +98,44 @@ document.addEventListener('DOMContentLoaded', function() {
         updateTableDisplay(taskDetails);
         updateKickoffDateDisplay(taskDetails);
         updateTaskScheduleDisplay(taskDetails);
+                drawGanttChart(taskDetails); // Function to draw Gantt chart
     };
+ // Function to draw the Gantt chart
+    function drawGanttChart(taskDetails) {
+        google.charts.load('current', {'packages':['gantt']});
+        google.charts.setOnLoadCallback(function() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Task ID');
+            data.addColumn('string', 'Task Name');
+            data.addColumn('date', 'Start Date');
+            data.addColumn('date', 'End Date');
+            data.addColumn('number', 'Duration');
+            data.addColumn('number', 'Percent Complete');
+            data.addColumn('string', 'Dependencies');
+
+            var ganttData = taskDetails.map((task, index) => [
+                'Task ' + (index + 1),
+                task.name,
+                task.startDate,
+                task.endDate,
+                null, // Duration, automatically calculated
+                100, // Assuming tasks are 100% complete for demo purposes
+                null // Dependencies, can be added based on your logic
+            ]);
+
+            data.addRows(ganttData);
+
+            var options = {
+                height: 400,
+                gantt: {
+                    trackHeight: 30
+                }
+            };
+
+            var chart = new google.visualization.Gantt(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        });
+    }
 
     function updateTaskScheduleDisplay(taskDetails) {
         const list = document.getElementById('taskList');
