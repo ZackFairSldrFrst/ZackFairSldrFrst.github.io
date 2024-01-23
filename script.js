@@ -97,7 +97,39 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update the table and kick-off date display
         updateTableDisplay(taskDetails);
         updateKickoffDateDisplay(taskDetails);
+        updateTaskScheduleDisplay(taskDetails);
     };
+
+    function updateTaskScheduleDisplay(taskDetails) {
+        const list = document.getElementById('taskList');
+        list.innerHTML = ''; // Clear current task list
+
+        taskDetails.forEach((task, index) => {
+            const listItem = document.createElement('li');
+
+            const taskNumber = document.createElement('span');
+            taskNumber.textContent = `Task #${index + 1}`;
+            listItem.appendChild(taskNumber);
+
+            const taskName = document.createElement('span');
+            taskName.textContent = `Name: ${task.name}`;
+            listItem.appendChild(taskName);
+
+            const taskOwner = document.createElement('span');
+            taskOwner.textContent = `Owner: ${task.owner}`;
+            listItem.appendChild(taskOwner);
+
+            const startDate = document.createElement('span');
+            startDate.textContent = `Start Date: ${task.startDate.toDateString()}`;
+            listItem.appendChild(startDate);
+
+            const endDate = document.createElement('span');
+            endDate.textContent = `End Date: ${task.endDate.toDateString()}`;
+            listItem.appendChild(endDate);
+
+            list.appendChild(listItem);
+        });
+    }
 
     function updateTableDisplay(taskDetails) {
         const tableBody = document.getElementById('taskTable').getElementsByTagName('tbody')[0];
@@ -124,25 +156,17 @@ document.addEventListener('DOMContentLoaded', function() {
         let kickoffDate = taskDetails.length > 0 ? taskDetails[0].startDate : new Date();
         document.getElementById('kickoffDate').textContent = kickoffDate.toDateString();
     }
+
+    // Function to reset the schedule
+    window.resetSchedule = function() {
+        document.getElementById('tasksContainer').innerHTML = '';
+        excludedDates = [];
+        updateExcludedDatesDisplay();
+        const tableBody = document.getElementById('taskTable').getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = '';
+        document.getElementById('kickoffDate').textContent = '';
+        document.getElementById('projectEndDate').value = '';
+        document.getElementById('excludeWeekends').checked = false;
+    };
 });
-// Function to reset the schedule
-window.resetSchedule = function() {
-    // Clear existing task details
-    document.getElementById('tasksContainer').innerHTML = '';
-
-    // Clear excluded dates
-    excludedDates = [];
-    updateExcludedDatesDisplay();
-
-    // Clear schedule display (assuming you have a table or similar for displaying the schedule)
-    const tableBody = document.getElementById('taskTable').getElementsByTagName('tbody')[0];
-    tableBody.innerHTML = '';
-
-    // Reset kickoff date display
-    document.getElementById('kickoffDate').textContent = '';
-
-    // Optionally, reset other inputs like project end date and exclude weekends checkbox
-    document.getElementById('projectEndDate').value = '';
-    document.getElementById('excludeWeekends').checked = false;
-};
 </script>

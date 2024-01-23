@@ -120,5 +120,27 @@ h2 {
     border-bottom: none;
 }
 
+#taskList {
+    list-style-type: none;
+    padding: 0;
+}
+
+#taskList li {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#taskList li span {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#taskList li span:last-child {
+    margin-bottom: 0;
+}
 
     </style>
