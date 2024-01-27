@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Terms and Conditions</title>
+    <style>
+        /* Animation Styles */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Popup Styles */
+        #customPopupContainer {
+            animation: fadeIn 0.5s;
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 1000;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            max-width: 2000px;
+        }
+
+        /* Privacy Terms and Conditions Styles */
+        #privacyTermsContainer {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        /* Close Button Styles */
+        #closePopup {
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div id="customPopupContainer">
+        <span id="closePopup" style="cursor: pointer;">&times;</span>
+        <div id="privacyTermsContainer">
+            <h1>Privacy Terms and Conditions for "Real Reviews from Reddit" Chrome Extension</h1>
+            <p><strong>Effective Date:</strong> January 27, 2024</p>
+            <p>This Privacy Terms and Conditions outlines how "Real Reviews from Reddit" (referred to as "the Extension") collects, uses, and safeguards user data. By using the Extension, you agree to the terms outlined in this document.</p>
+            <h2>Data Collection:</h2>
+            <p>The Extension may collect and process the following information:</p>
+            <ul>
+                <li><strong>Product Information:</strong> When you interact with the Extension, it may access and use product names or descriptions from the web pages you visit. This information is used solely for the purpose of providing you with relevant reviews from Reddit.</li>
+                <li><strong>Search Queries:</strong> If you initiate a search for product reviews, the Extension may collect and store the search query you enter. This data is used to fetch relevant Reddit discussions.</li>
+            </ul>
+            <h2>Data Usage:</h2>
+            <p>The data collected by the Extension is used exclusively for the following purposes:</p>
+            <ul>
+                <li><strong>Enhancing User Experience:</strong> The product information and search queries are used to provide you with real Reddit reviews related to the products you are interested in.</li>
+                <li><strong>Extension Improvement:</strong> We may analyze aggregated and anonymized data to improve the functionality and performance of the Extension.</li>
+            </ul>
+            <h2>Data Security:</h2>
+            <p>We take data security seriously and implement appropriate measures to protect your data. However, it's essential to note that the Extension does not collect or store personally identifiable information (PII) or sensitive data.</p>
+            <h2>Third-Party Services:</h2>
+            <p>The Extension may utilize third-party services, such as Google Custom Search, to retrieve Reddit discussions. Please review the privacy policies of these services to understand how they handle your data.</p>
+            <h2>User Consent:</h2>
+            <p>By using the Extension, you consent to the collection and use of data as described in this Privacy Terms and Conditions.</p>
+            <h2>Updates and Changes:</h2>
+            <p>We may update this Privacy Terms and Conditions from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons. Any updates will be effective upon posting.</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('closePopup').addEventListener('click', function() {
+            const popup = document.getElementById('customPopupContainer');
+            popup.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
