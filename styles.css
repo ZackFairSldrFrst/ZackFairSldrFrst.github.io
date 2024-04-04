@@ -46,8 +46,7 @@ nav ul li a:hover {
 
 /* Banner Styles */
 .banner {
-    background-color: #007bff;
-    color: #ffffff;
+    background-image: url('images/homepage_banner.png');
     padding: 50px;
     text-align: center;
     border-bottom-left-radius: 30px;
@@ -199,10 +198,4 @@ footer {
         opacity: 1;
         transform: translateY(0);
     }
-}
-/* Add this CSS to your existing styles.css file */
-nav img {
-    max-width: 100%;
-    height: auto;
-    vertical-align: middle; /* Align the logo vertically */
 }
