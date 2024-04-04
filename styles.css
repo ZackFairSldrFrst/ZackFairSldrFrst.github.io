@@ -36,34 +36,38 @@ nav ul li a:hover {
     color: #ffa500;
 }
 
-/* Banner Styles */
 .banner {
     background: linear-gradient(to right, #4CAF50, #2196F3);
     color: #fff;
     padding: 80px 20px; /* increased padding for better spacing */
     text-align: center;
+    display: flex; /* Display children in a flex container */
+    align-items: center; /* Align children vertically in the center */
+    justify-content: center; /* Center children horizontally */
 }
 
 .banner h1 {
     margin-bottom: 20px;
     font-size: 2.5em;
-}
-
-.banner p {
-    margin-bottom: 30px;
-    font-size: 1.1em;
-}
-.banner {
-    display: flex; /* Display children in a flex container */
-    align-items: center; /* Align children vertically in the center */
-}
-
-.banner h1 {
     margin-right: 20px; /* Add some space between the headers */
     font-size: 2.5em; /* Match the font size of the first header */
     /* Add any other styles you want to match the style of the first header */
 }
 
+.typewrite {
+    display: inline-block;
+    font-size: 1.5em; /* Adjust font size as needed */
+    color: #fff; /* Text color */
+    font-weight: bold; /* Bold font weight */
+    text-transform: uppercase; /* Uppercase text */
+}
+
+
+.cta-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Add margin to separate from the headers */
+}
 
 .cta {
     background: linear-gradient(to right, #FF5722, #FFC107); /* gradient background */
@@ -72,12 +76,13 @@ nav ul li a:hover {
     text-decoration: none;
     border-radius: 25px;
     transition: background-color 0.3s ease;
-    display: inline-block;
+    margin: 0 10px; /* Add some margin between buttons */
 }
 
 .cta:hover {
     background: linear-gradient(to right, #F44336, #FF9800); /* gradient background on hover */
 }
+
 
 /* Features Section */
 #features {
