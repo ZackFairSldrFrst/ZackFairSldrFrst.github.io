@@ -46,7 +46,8 @@ nav ul li a:hover {
 
 /* Banner Styles */
 .banner {
-    background-image: url('images/homepage_banner.png');
+    background: linear-gradient(to bottom, #007bff, #0047b3); /* Gradient from blue to darker blue */
+    color: #ffffff;
     padding: 50px;
     text-align: center;
     border-bottom-left-radius: 30px;
