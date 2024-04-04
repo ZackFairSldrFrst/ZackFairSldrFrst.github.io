@@ -129,10 +129,11 @@ footer {
     bottom: 0;
     width: 100%;
 }
-
 /* How It Works Section */
 #how-it-works {
-    background: linear-gradient(to right, #f2f2f2, #e0e0e0); /* gradient background */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
     padding: 40px 20px;
     text-align: center;
 }
@@ -156,7 +157,9 @@ footer {
 
 /* Why Choose Us Section */
 #why-choose-us {
-    background: linear-gradient(to right, #f2f2f2, #e0e0e0); /* gradient background */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
     padding: 40px 20px;
     text-align: center;
 }
@@ -180,7 +183,9 @@ footer {
 
 /* Testimonials Section */
 #testimonials {
-    background: linear-gradient(to right, #f2f2f2, #e0e0e0); /* gradient background */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
     padding: 40px 20px;
     text-align: center;
 }
@@ -204,7 +209,9 @@ footer {
 
 /* Contact Us Section */
 #contact-us {
-    background: linear-gradient(to right, #f2f2f2, #e0e0e0); /* gradient background */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
     padding: 40px 20px;
     text-align: center;
 }
@@ -234,7 +241,9 @@ footer {
 
 /* Pricing Section */
 #pricing {
-    background: linear-gradient(to right, #f2f2f2, #e0e0e0); /* gradient background */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
     padding: 40px 20px;
     text-align: center;
 }
@@ -242,4 +251,3 @@ footer {
 #pricing h2 {
     margin-bottom: 30px; /* added margin for better spacing */
 }
-
