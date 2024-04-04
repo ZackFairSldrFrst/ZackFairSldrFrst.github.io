@@ -54,15 +54,6 @@ nav ul li a:hover {
     /* Add any other styles you want to match the style of the first header */
 }
 
-.banner-text {
-    margin-bottom: 20px;
-    font-size: 2.5em;
-    margin-right: 20px; /* Add some space between the headers */
-    font-size: 2.5em; /* Match the font size of the first header */
-    /* Add any other styles you want to match the style of the first header */
-}
-
-
 .cta-container {
     display: flex;
     justify-content: center;
