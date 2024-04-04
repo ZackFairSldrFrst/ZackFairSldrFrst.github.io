@@ -84,14 +84,14 @@ nav ul li a:hover {
     text-align: center; /* centering content */
 }
 
-#features {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Each block has a minimum width of 300px and can expand to fill the available space */
-    gap: 30px; /* Gap between blocks */
-    padding: 40px 20px; /* Padding for the entire section */
-    text-align: center; /* Center align the content */
+.feature-item {
+    background: #fff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    text-align: center; /* centering content */
 }
-
 
 .feature-item:hover {
     transform: translateY(-10px);
