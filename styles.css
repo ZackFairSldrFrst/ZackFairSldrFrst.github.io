@@ -3,103 +3,110 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-  }
-  
-  body {
+}
+
+body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;
-    color: #333;
-    background-color: #f4f4f4;
-  }
-  
-  /* Navigation Styles */
-  nav ul {
+    color: #444; /* slightly lighter color for improved readability */
+    background-color: #f8f9fa; /* lighter background for a cleaner look */
+}
+
+/* Navigation Styles */
+nav ul {
     list-style: none;
     background: #333;
     text-align: center;
     padding: 0;
-  }
-  
-  nav ul li {
-    display: inline;
-  }
-  
-  nav ul li a {
+}
+
+nav ul li {
+    display: inline-block; /* changed to inline-block for better spacing */
+}
+
+nav ul li a {
     text-decoration: none;
-    color: white;
+    color: #fff;
     padding: 15px 20px;
     display: inline-block;
-  }
-  
-  /* Banner Styles */
-  .banner {
-    background: #009688;
+    transition: color 0.3s ease; /* added smooth transition for link color */
+}
+
+nav ul li a:hover {
+    color: #ffa500; /* change link color on hover */
+}
+
+/* Banner Styles */
+.banner {
+    background: linear-gradient(to right, #4CAF50, #2196F3); /* gradient background for a more dynamic look */
     color: #fff;
-    padding: 40px;
+    padding: 60px 20px; /* increased padding for better spacing */
     text-align: center;
-  }
-  
-  .banner h1 {
+}
+
+.banner h1 {
     margin-bottom: 20px;
-  }
-  
-  .banner p {
-    margin-bottom: 20px;
-  }
-  
-  .cta {
-    background: #e91e63;
+    font-size: 2.5em; /* increased font size for emphasis */
+}
+
+.banner p {
+    margin-bottom: 30px; /* increased margin bottom for better separation */
+    font-size: 1.1em; /* slightly increased font size for better readability */
+}
+
+.cta {
+    background: #FF5722; /* vibrant color for call-to-action button */
     color: #fff;
-    padding: 10px 20px;
+    padding: 15px 30px; /* increased padding for better clickability */
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 25px; /* rounded corners for a modern look */
     transition: background-color 0.3s ease;
-  }
-  
-  .cta:hover {
-    background: #c2185b;
-  }
-  
-  /* Features Section */
-  #features {
+}
+
+.cta:hover {
+    background: #F44336; /* darker shade on hover */
+}
+
+/* Features Section */
+#features {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 20px;
-  }
-  
-  .feature-item {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* adjusted min width for better alignment */
+    gap: 30px;
+    padding: 40px 20px; /* increased padding for better spacing */
+}
+
+.feature-item {
     background: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 40px;
+    border-radius: 15px; /* increased border radius for a softer look */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* increased box shadow for depth */
     transition: transform 0.3s ease;
-  }
-  
-  .feature-item:hover {
-    transform: translateY(-5px);
-  }
-  
-  /* Responsive Design */
-  @media screen and (max-width: 768px) {
+}
+
+.feature-item:hover {
+    transform: translateY(-10px); /* increased hover effect for more interaction */
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
     nav ul li {
-      display: block;
+        display: block;
+        margin-bottom: 10px; /* added margin for better spacing */
     }
-  
+
     #features {
-      grid-template-columns: 1fr;
+        grid-template-columns: 1fr;
     }
-  }
-  
-  /* Footer Styles */
-  footer {
-    background: #333;
-    color: #fff;
+}
+
+/* Footer Styles */
+footer {
+    background: #222; /* darker background for footer */
+    color: #ddd; /* lighter text color for better contrast */
     text-align: center;
-    padding: 10px;
+    padding: 20px 0;
     position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;
-  }
-  
+}
