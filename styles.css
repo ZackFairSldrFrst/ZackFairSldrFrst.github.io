@@ -53,6 +53,17 @@ nav ul li a:hover {
     margin-bottom: 30px;
     font-size: 1.1em;
 }
+.banner {
+    display: flex; /* Display children in a flex container */
+    align-items: center; /* Align children vertically in the center */
+}
+
+.banner h1 {
+    margin-right: 20px; /* Add some space between the headers */
+    font-size: 2.5em; /* Match the font size of the first header */
+    /* Add any other styles you want to match the style of the first header */
+}
+
 
 .cta {
     background: linear-gradient(to right, #FF5722, #FFC107); /* gradient background */
