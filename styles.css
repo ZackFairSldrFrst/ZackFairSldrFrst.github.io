@@ -74,7 +74,13 @@ nav ul li a:hover {
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 30px;
     padding: 40px 20px;
+    text-align: center; /* centering content */
 }
+
+#features h2 {
+    margin-bottom: 40px; /* increased margin for better spacing */
+}
+
 
 .feature-item {
     background: #fff;
