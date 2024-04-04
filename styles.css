@@ -8,8 +8,8 @@
 body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;
-    color: #444;
-    background-color: #f8f9fa;
+    color: #333;
+    background-color: #f4f4f4;
 }
 
 /* Navigation Styles */
@@ -17,84 +17,73 @@ nav ul {
     list-style: none;
     background: #333;
     text-align: center;
-    padding: 10px 0; /* added padding for better spacing */
+    padding: 0;
 }
 
 nav ul li {
-    display: inline-block;
+    display: inline;
 }
 
 nav ul li a {
     text-decoration: none;
-    color: #fff;
+    color: white;
     padding: 15px 20px;
     display: inline-block;
-    transition: color 0.3s ease;
-}
-
-nav ul li a:hover {
-    color: #ffa500;
 }
 
 /* Banner Styles */
 .banner {
-    background: linear-gradient(to right, #4CAF50, #2196F3);
+    background: #009688;
     color: #fff;
-    padding: 80px 20px; /* increased padding for better spacing */
+    padding: 40px;
     text-align: center;
 }
 
 .banner h1 {
     margin-bottom: 20px;
-    font-size: 2.5em;
 }
 
 .banner p {
-    margin-bottom: 30px;
-    font-size: 1.1em;
+    margin-bottom: 20px;
 }
 
 .cta {
-    background: #FF5722;
+    background: #e91e63;
     color: #fff;
-    padding: 15px 30px;
+    padding: 10px 20px;
     text-decoration: none;
-    border-radius: 25px;
+    border-radius: 5px;
     transition: background-color 0.3s ease;
-    display: inline-block;
 }
 
 .cta:hover {
-    background: #F44336;
+    background: #c2185b;
 }
 
 /* Features Section */
 #features {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 30px;
-    padding: 40px 20px;
-    text-align: center; /* centering content */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
 }
 
 .feature-item {
     background: #fff;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     transition: transform 0.3s ease;
-    text-align: center; /* centering content */
 }
 
 .feature-item:hover {
-    transform: translateY(-10px);
+    transform: translateY(-5px);
 }
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
     nav ul li {
         display: block;
-        margin-bottom: 10px;
     }
 
     #features {
@@ -104,120 +93,42 @@ nav ul li a:hover {
 
 /* Footer Styles */
 footer {
-    background: #222;
-    color: #ddd;
+    background: #333;
+    color: #fff;
     text-align: center;
-    padding: 20px 0;
+    padding: 10px;
     position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;
 }
 
-/* How It Works Section */
-#how-it-works {
-    padding: 40px 20px;
-    text-align: center;
+/* Additional Section Styles */
+section {
+    padding: 40px;
+    background-color: #fff;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    animation: fadeIn 1s ease;
 }
 
-#how-it-works h2 {
-    margin-bottom: 30px; /* added margin for better spacing */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
-#how-it-works p {
-    margin-bottom: 20px; /* added margin for better spacing */
+section h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
 }
 
-#how-it-works ol {
-    text-align: left; /* aligned list items to the left */
-    margin-bottom: 20px; /* added margin for better spacing */
-}
-
-#how-it-works li {
-    margin-bottom: 10px; /* added margin for better spacing */
-}
-
-/* Why Choose Us Section */
-#why-choose-us {
-    padding: 40px 20px;
-    text-align: center;
-}
-
-#why-choose-us h2 {
-    margin-bottom: 30px; /* added margin for better spacing */
-}
-
-#why-choose-us ul {
-    text-align: left; /* aligned list items to the left */
-    margin-bottom: 20px; /* added margin for better spacing */
-}
-
-#why-choose-us li {
-    margin-bottom: 10px; /* added margin for better spacing */
-}
-
-#why-choose-us li strong {
-    font-weight: bold; /* emphasized strong points */
-}
-
-/* Testimonials Section */
-#testimonials {
-    padding: 40px 20px;
-    text-align: center;
-}
-
-#testimonials h2 {
-    margin-bottom: 30px; /* added margin for better spacing */
-}
-
-.testimonial {
-    margin-bottom: 30px; /* added margin for better spacing between testimonials */
-}
-
-.testimonial blockquote {
-    font-style: italic; /* italicized testimonials for emphasis */
-    margin-bottom: 10px; /* added margin for better spacing */
-}
-
-.testimonial cite {
-    font-weight: bold; /* emphasized citation */
-}
-
-/* Contact Us Section */
-#contact-us {
-    padding: 40px 20px;
-    text-align: center;
-}
-
-#contact-us h2 {
-    margin-bottom: 30px; /* added margin for better spacing */
-}
-
-#contact-us ul {
-    list-style: none; /* removed list style */
-    margin-bottom: 20px; /* added margin for better spacing */
-}
-
-#contact-us ul li {
-    margin-bottom: 10px; /* added margin for better spacing */
-}
-
-#contact-us ul li a {
-    color: #007bff; /* changed link color */
-    text-decoration: none; /* removed underline */
-    transition: color 0.3s ease; /* smooth transition for link color */
-}
-
-#contact-us ul li a:hover {
-    color: #0056b3; /* changed link color on hover */
-}
-
-/* CSS for fade-in animations */
-.fade-in {
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-.fade-in.active {
-    opacity: 1;
+section p {
+    line-height: 1.6;
+    color: #555;
 }
