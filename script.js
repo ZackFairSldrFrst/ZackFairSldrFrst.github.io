@@ -43,3 +43,27 @@ document.addEventListener("DOMContentLoaded", function() {
         );
     }
 });
+
+// Function to add animation class when section comes into view
+function addAnimationClass(entries, observer) {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('animate__rubberBand'); // Add animation class
+            observer.unobserve(entry.target); // Stop observing once animation is applied
+        }
+    });
+}
+
+// Create an intersection observer instance
+const observer = new IntersectionObserver(addAnimationClass, {
+    root: null, // Use the viewport as the root
+    threshold: 0.5 // Trigger animation when 50% of section is visible
+});
+
+// Select all sections with the animation class
+const sections = document.querySelectorAll('.animate__rubberBand');
+
+// Observe each section
+sections.forEach(section => {
+    observer.observe(section);
+});
