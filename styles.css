@@ -212,3 +212,12 @@ footer {
     color: #0056b3; /* changed link color on hover */
 }
 
+/* CSS for fade-in animations */
+.fade-in {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.fade-in.active {
+    opacity: 1;
+}
