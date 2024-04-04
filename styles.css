@@ -3,7 +3,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #f0f0f0;
 }
 
 .container {
@@ -14,19 +14,22 @@ body {
 
 /* Header Styles */
 header {
-    background-color: #fff;
+    background-color: #ffffff;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 999;
 }
 
 nav ul {
     list-style-type: none;
-    margin: 0;
     padding: 0;
+    margin: 0;
 }
 
 nav ul li {
-    display: inline;
+    display: inline-block;
     margin-right: 20px;
 }
 
@@ -43,39 +46,40 @@ nav ul li a:hover {
 
 /* Banner Styles */
 .banner {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 50px;
     text-align: center;
-    margin-top: 50px;
 }
 
-.banner-text h1 {
-    font-size: 36px;
-    color: #333;
+.banner h1 {
+    font-size: 3em;
     margin-bottom: 20px;
 }
 
-.banner-text h2 {
-    font-size: 24px;
-    color: #666;
-    margin-bottom: 40px;
+.banner h2 {
+    font-size: 1.5em;
+    margin-bottom: 30px;
 }
 
 .cta-container {
-    margin-top: 20px;
+    margin-top: 30px;
 }
 
 .cta {
     display: inline-block;
+    background-color: #ffffff;
+    color: #007bff;
     padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    text-decoration: none;
     border-radius: 5px;
-    margin-right: 10px;
-    transition: background-color 0.3s ease;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .cta:hover {
     background-color: #0056b3;
+    color: #ffffff;
 }
 
 /* Main Content Styles */
@@ -83,55 +87,140 @@ main {
     padding: 20px;
 }
 
-/* Section Styles */
 section {
-    margin-bottom: 50px;
+    background-color: #ffffff;
+    margin-bottom: 40px;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 section h2 {
-    font-size: 28px;
-    color: #333;
+    font-size: 2em;
     margin-bottom: 20px;
 }
 
-section p {
-    font-size: 18px;
-    color: #666;
-    line-height: 1.6;
+/* Key Features Section */
+.feature-item {
+    margin-bottom: 30px;
+}
+
+.feature-item h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+/* Testimonials Section */
+.testimonial {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.testimonial blockquote {
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+.testimonial cite {
+    font-weight: bold;
+}
+
+/* How It Works Section */
+#how-it-works ol {
+    counter-reset: step;
+    list-style: none;
+    padding-left: 0;
+}
+
+#how-it-works ol li {
+    position: relative;
+    counter-increment: step;
+    padding-left: 30px;
     margin-bottom: 20px;
 }
 
-/* Fade-in Animation */
-.animated {
-    opacity: 0;
+#how-it-works ol li::before {
+    content: counter(step);
+    background-color: #007bff;
+    color: #ffffff;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translate(-50%, -50%);
 }
 
-.animated.animated-visible {
-    opacity: 1;
-    transition: opacity 0.8s ease-in-out;
+/* Who is TLDR Section */
+.target-audience {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
-/* Animation Delay */
-#features.animated-visible {
-    transition-delay: 0.2s;
+.audience-item {
+    width: 48%;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
 }
 
-#pricing.animated-visible {
-    transition-delay: 0.4s;
+.audience-item img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
 }
 
-#how-it-works.animated-visible {
-    transition-delay: 0.6s;
+/* Footer Styles */
+footer {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 20px;
+    text-align: center;
 }
 
-#why-choose-us.animated-visible {
-    transition-delay: 0.8s;
+/* Animations */
+.animate__animated {
+    animation-duration: 1s;
 }
 
-#testimonials.animated-visible {
-    transition-delay: 1s;
+.animate__rubberBand {
+    animation-name: rubberBand;
 }
 
-#contact-us.animated-visible {
-    transition-delay: 1.2s;
+@keyframes rubberBand {
+    0% {
+        transform: scale3d(1, 1, 1);
+    }
+
+    30% {
+        transform: scale3d(1.25, 0.75, 1);
+    }
+
+    40% {
+        transform: scale3d(0.75, 1.25, 1);
+    }
+
+    50% {
+        transform: scale3d(1.15, 0.85, 1);
+    }
+
+    65% {
+        transform: scale3d(0.95, 1.05, 1);
+    }
+
+    75% {
+        transform: scale3d(1.05, 0.95, 1);
+    }
+
+    100% {
+        transform: scale3d(1, 1, 1);
+    }
 }
