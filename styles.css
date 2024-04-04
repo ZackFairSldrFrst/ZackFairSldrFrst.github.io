@@ -36,86 +36,81 @@ nav ul li a:hover {
     color: #ffa500;
 }
 
+/* Banner Styles */
 .banner {
     background: linear-gradient(to right, #4CAF50, #2196F3);
     color: #fff;
     padding: 80px 20px; /* increased padding for better spacing */
     text-align: center;
     display: flex; /* Display children in a flex container */
-    align-items: center; /* Align children vertically in the center */
-    justify-content: center; /* Center children horizontally */
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Align children horizontally */
 }
 
 .banner h1 {
     margin-bottom: 20px;
     font-size: 2.5em;
-    margin-right: 20px; /* Add some space between the headers */
-    font-size: 2.5em; /* Match the font size of the first header */
-    /* Add any other styles you want to match the style of the first header */
 }
 
-.banner-text {
-    margin-bottom: 20px;
-    font-size: 2.5em;
-    margin-right: 20px; /* Add some space between the headers */
-    font-size: 2.5em; /* Match the font size of the first header */
-    /* Add any other styles you want to match the style of the first header */
-}
-
-
+/* CTA Styles */
 .cta-container {
     display: flex;
     justify-content: center;
-    margin-top: 20px; /* Add margin to separate from the headers */
+    margin-top: 20px;
 }
 
 .cta {
-    background: linear-gradient(to right, #FF5722, #FFC107); /* gradient background */
+    background: linear-gradient(to right, #FF5722, #FFC107);
     color: #fff;
     padding: 15px 30px;
     text-decoration: none;
     border-radius: 25px;
     transition: background-color 0.3s ease;
-    margin: 0 10px; /* Add some margin between buttons */
+    margin: 0 10px;
 }
 
 .cta:hover {
-    background: linear-gradient(to right, #F44336, #FF9800); /* gradient background on hover */
+    background: linear-gradient(to right, #F44336, #FF9800);
 }
 
-
-/* Features Section */
-#features {
+/* Sections Styles */
+section {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 30px;
     padding: 40px 20px;
-    text-align: center; /* centering content */
+    text-align: center;
 }
 
-.feature-item {
-    background: #fff;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-    text-align: center; /* centering content */
+section h2 {
+    margin-bottom: 30px;
 }
 
-.feature-item:hover {
-    transform: translateY(-10px);
+section ul {
+    text-align: left;
+    margin-bottom: 20px;
 }
 
-/* Responsive Design */
-@media screen and (max-width: 768px) {
-    nav ul li {
-        display: block;
-        margin-bottom: 10px;
-    }
+section li {
+    margin-bottom: 10px;
+}
 
-    #features {
-        grid-template-columns: 1fr;
-    }
+section li strong {
+    font-weight: bold;
+}
+
+/* Testimonials Styles */
+.testimonial {
+    margin-bottom: 30px;
+}
+
+.testimonial blockquote {
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+.testimonial cite {
+    font-weight: bold;
 }
 
 /* Footer Styles */
@@ -128,126 +123,4 @@ footer {
     left: 0;
     bottom: 0;
     width: 100%;
-}
-/* How It Works Section */
-#how-it-works {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 30px;
-    padding: 40px 20px;
-    text-align: center;
-}
-
-#how-it-works h2 {
-    margin-bottom: 30px; /* added margin for better spacing */
-}
-
-#how-it-works p {
-    margin-bottom: 20px; /* added margin for better spacing */
-}
-
-#how-it-works ol {
-    text-align: left; /* aligned list items to the left */
-    margin-bottom: 20px; /* added margin for better spacing */
-}
-
-#how-it-works li {
-    margin-bottom: 10px; /* added margin for better spacing */
-}
-
-/* Why Choose Us Section */
-#why-choose-us {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 30px;
-    padding: 40px 20px;
-    text-align: center;
-}
-
-#why-choose-us h2 {
-    margin-bottom: 30px; /* added margin for better spacing */
-}
-
-#why-choose-us ul {
-    text-align: left; /* aligned list items to the left */
-    margin-bottom: 20px; /* added margin for better spacing */
-}
-
-#why-choose-us li {
-    margin-bottom: 10px; /* added margin for better spacing */
-}
-
-#why-choose-us li strong {
-    font-weight: bold; /* emphasized strong points */
-}
-
-/* Testimonials Section */
-#testimonials {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 30px;
-    padding: 40px 20px;
-    text-align: center;
-}
-
-#testimonials h2 {
-    margin-bottom: 30px; /* added margin for better spacing */
-}
-
-.testimonial {
-    margin-bottom: 30px; /* added margin for better spacing between testimonials */
-}
-
-.testimonial blockquote {
-    font-style: italic; /* italicized testimonials for emphasis */
-    margin-bottom: 10px; /* added margin for better spacing */
-}
-
-.testimonial cite {
-    font-weight: bold; /* emphasized citation */
-}
-
-/* Contact Us Section */
-#contact-us {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 30px;
-    padding: 40px 20px;
-    text-align: center;
-}
-
-#contact-us h2 {
-    margin-bottom: 30px; /* added margin for better spacing */
-}
-
-#contact-us ul {
-    list-style: none; /* removed list style */
-    margin-bottom: 20px; /* added margin for better spacing */
-}
-
-#contact-us ul li {
-    margin-bottom: 10px; /* added margin for better spacing */
-}
-
-#contact-us ul li a {
-    color: #007bff; /* changed link color */
-    text-decoration: none; /* removed underline */
-    transition: color 0.3s ease; /* smooth transition for link color */
-}
-
-#contact-us ul li a:hover {
-    color: #0056b3; /* changed link color on hover */
-}
-
-/* Pricing Section */
-#pricing {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 30px;
-    padding: 40px 20px;
-    text-align: center;
-}
-
-#pricing h2 {
-    margin-bottom: 30px; /* added margin for better spacing */
 }
