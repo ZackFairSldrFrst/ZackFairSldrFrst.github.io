@@ -1,0 +1,105 @@
+/* Basic Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+  }
+  
+  /* Navigation Styles */
+  nav ul {
+    list-style: none;
+    background: #333;
+    text-align: center;
+    padding: 0;
+  }
+  
+  nav ul li {
+    display: inline;
+  }
+  
+  nav ul li a {
+    text-decoration: none;
+    color: white;
+    padding: 15px 20px;
+    display: inline-block;
+  }
+  
+  /* Banner Styles */
+  .banner {
+    background: #009688;
+    color: #fff;
+    padding: 40px;
+    text-align: center;
+  }
+  
+  .banner h1 {
+    margin-bottom: 20px;
+  }
+  
+  .banner p {
+    margin-bottom: 20px;
+  }
+  
+  .cta {
+    background: #e91e63;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .cta:hover {
+    background: #c2185b;
+  }
+  
+  /* Features Section */
+  #features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .feature-item {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .feature-item:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* Responsive Design */
+  @media screen and (max-width: 768px) {
+    nav ul li {
+      display: block;
+    }
+  
+    #features {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  /* Footer Styles */
+  footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+  }
+  
