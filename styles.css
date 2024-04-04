@@ -200,3 +200,35 @@ footer {
         transform: translateY(0);
     }
 }
+
+/* Main Content Styles */
+main {
+    padding: 20px;
+}
+
+section {
+    background-color: #ffffff;
+    margin-bottom: 40px; /* Add space between sections */
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 0.5s ease;
+}
+
+section h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+/* Key Features Section */
+.feature-item {
+    margin-bottom: 30px;
+    padding: 20px; /* Add padding to create boxes */
+    border-radius: 10px; /* Add border radius for rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add box shadow for depth */
+}
+
+.feature-item h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
