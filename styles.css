@@ -37,7 +37,8 @@ nav ul li a:hover {
 }
 
 .banner {
-    background: linear-gradient(to right, #4CAF50, #2196F3);
+    background-image: url('images/homepage_banner.png'); /* Replace 'images/homepage_banner.png' with the path to your image */
+    background-size: cover; /* Ensure the image covers the entire background */
     color: #fff;
     padding: 80px 20px; /* increased padding for better spacing */
     text-align: center;
