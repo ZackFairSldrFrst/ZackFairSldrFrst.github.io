@@ -38,7 +38,7 @@ nav ul li a:hover {
 
 .banner {
     position: relative; /* Ensure relative positioning for the overlay */
-    color: #fff;
+    background-image: url('images/homepage_banner.png');
     padding: 80px 20px; /* increased padding for better spacing */
     text-align: center;
     display: flex; /* Display children in a flex container */
@@ -57,7 +57,8 @@ nav ul li a:hover {
 }
 
 .banner h1,
-.banner h2 {
+.banner h2,
+.cta {
     position: relative; /* Ensure the text stays on top of the overlay */
     z-index: 1; /* Place the text above the overlay */
 }
