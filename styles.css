@@ -1,0 +1,147 @@
+/* Reset default margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Set black background and white text color */
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+/* Add round arches and curves */
+header, footer {
+    border-radius: 20px;
+}
+
+.banner {
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.banner-text {
+    padding: 40px;
+    text-align: center;
+}
+
+.banner-buttons {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.banner .cta {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.banner .cta:hover {
+    background-color: #45a049; /* Darker green */
+}
+
+/* Add animations */
+.typewrite > .wrap {
+    animation: typing 3.5s steps(40, end);
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 0.15em solid orange;
+    margin-bottom: 10px;
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+/* Style navigation */
+nav ul {
+    list-style-type: none;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #4CAF50; /* Green */
+}
+
+/* Style sections */
+.container {
+    padding: 50px 20px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.feature-item {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.testimonial {
+    margin-bottom: 40px;
+}
+
+.testimonial blockquote {
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+.testimonial cite {
+    font-weight: bold;
+}
+
+/* Style target audience icons */
+.target-audience {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.audience-item {
+    text-align: center;
+    margin: 0 20px;
+}
+
+.audience-item img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+/* Style how it works steps */
+ol {
+    margin-left: 30px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+}
+
