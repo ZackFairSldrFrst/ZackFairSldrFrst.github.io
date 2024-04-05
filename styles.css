@@ -7,10 +7,10 @@ body {
 }
 
 .container {
-    max-width: 1200px; /* Set maximum width */
-    margin: 0 auto; /* Center the container */
-    padding: 0 20px; /* Add padding on the sides */
-    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 
 /* Header Styles */
@@ -85,7 +85,7 @@ nav ul li a:hover {
 
 /* Main Content Styles */
 main {
-    padding: 20px 0; /* Add space at the top and bottom */
+    padding: 20px 0;
 }
 
 section {
@@ -105,6 +105,7 @@ section h2 {
 .feature-item {
     margin-bottom: 30px;
     padding: 20px;
+    border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -169,6 +170,7 @@ section h2 {
     width: 48%;
     padding: 20px;
     background-color: #ffffff;
+    border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
@@ -202,7 +204,7 @@ footer {
 /* Media Queries for Responsiveness */
 @media only screen and (max-width: 768px) {
     .container {
-        padding: 0 10px; /* Adjust padding for smaller screens */
+        padding: 0 10px;
     }
     .banner {
         padding: 30px;
