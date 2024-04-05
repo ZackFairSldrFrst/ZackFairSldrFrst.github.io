@@ -1,7 +1,6 @@
 .banner {
     display: flex;
-    background: linear-gradient(to bottom, #007bff, #0047b3);
-    color: #ffffff;
+    color: #A9A9A9;
     padding: 50px;
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
