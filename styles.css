@@ -92,7 +92,6 @@ section {
     background-color: #ffffff;
     margin-bottom: 40px;
     padding: 40px;
-    border-radius: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     animation: fadeInUp 0.5s ease;
 }
@@ -106,7 +105,6 @@ section h2 {
 .feature-item {
     margin-bottom: 30px;
     padding: 20px;
-    border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -119,7 +117,6 @@ section h2 {
 .testimonial {
     padding: 20px;
     background-color: #f9f9f9;
-    border-radius: 20px;
     margin-bottom: 30px;
 }
 
@@ -172,7 +169,6 @@ section h2 {
     width: 48%;
     padding: 20px;
     background-color: #ffffff;
-    border-radius: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
