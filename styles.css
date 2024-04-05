@@ -7,9 +7,10 @@ body {
 }
 
 .container {
-   max-width: 90%; /* Adjust the width as desired */
-    margin: 0 auto;
-    padding: 20px;
+    max-width: 1200px; /* Set maximum width */
+    margin: 0 auto; /* Center the container */
+    padding: 0 20px; /* Add padding on the sides */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
 }
 
 /* Header Styles */
@@ -17,7 +18,6 @@ header {
     background-color: #ffffff;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    top: 0;
     z-index: 999;
 }
 
@@ -45,7 +45,7 @@ nav ul li a:hover {
 
 /* Banner Styles */
 .banner {
-    background: linear-gradient(to bottom, #007bff, #0047b3); /* Gradient from blue to darker blue */
+    background: linear-gradient(to bottom, #007bff, #0047b3);
     color: #ffffff;
     padding: 50px;
     text-align: center;
@@ -85,7 +85,7 @@ nav ul li a:hover {
 
 /* Main Content Styles */
 main {
-    padding: 20px;
+    padding: 20px 0; /* Add space at the top and bottom */
 }
 
 section {
@@ -105,6 +105,9 @@ section h2 {
 /* Key Features Section */
 .feature-item {
     margin-bottom: 30px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .feature-item h3 {
@@ -200,34 +203,42 @@ footer {
     }
 }
 
-/* Main Content Styles */
-main {
-    padding: 20px;
-}
-
-section {
-    background-color: #ffffff;
-    margin-bottom: 40px; /* Add space between sections */
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    animation: fadeInUp 0.5s ease;
-}
-
-section h2 {
-    font-size: 2em;
-    margin-bottom: 20px;
-}
-
-/* Key Features Section */
-.feature-item {
-    margin-bottom: 30px;
-    padding: 20px; /* Add padding to create boxes */
-    border-radius: 10px; /* Add border radius for rounded corners */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add box shadow for depth */
-}
-
-.feature-item h3 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
+/* Media Queries for Responsiveness */
+@media only screen and (max-width: 768px) {
+    .container {
+        padding: 0 10px; /* Adjust padding for smaller screens */
+    }
+    .banner {
+        padding: 30px;
+    }
+    .banner h1 {
+        font-size: 2.5em;
+    }
+    .banner h2 {
+        font-size: 1.2em;
+    }
+    .cta-container {
+        margin-top: 20px;
+    }
+    section {
+        padding: 30px;
+    }
+    section h2 {
+        font-size: 1.5em;
+    }
+    .feature-item {
+        padding: 15px;
+    }
+    .feature-item h3 {
+        font-size: 1.2em;
+    }
+    .testimonial {
+        padding: 15px;
+    }
+    .testimonial blockquote {
+        font-size: 0.9em;
+    }
+    .audience-item {
+        width: 100%;
+    }
 }
