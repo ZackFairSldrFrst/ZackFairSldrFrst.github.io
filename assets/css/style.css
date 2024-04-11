@@ -166,7 +166,7 @@ p {
             height: 60px;
             margin: 0;
             color: #fff;
-            background: #29c4a9;
+            background: #00BF63;
             border-radius: 100%;
             font-size: 36px;
             transform: translateY(-50%);
@@ -174,7 +174,7 @@ p {
             .team .owl-nav button.owl-next:hover, .team .owl-nav button.owl-next:focus,
             .team .owl-nav button.owl-prev:hover,
             .team .owl-nav button.owl-prev:focus {
-                background: #25af97; }
+                background: #00BF63; }
         .team .owl-nav .owl-prev {
             left: 10px; }
         .team .owl-nav .owl-next {
