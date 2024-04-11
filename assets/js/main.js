@@ -1,64 +1,32 @@
-/*
-	Dopetrope by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-*/
+(function ($) {
+    'use strict';
+    $(function () {
+        /*====================================
+        //     Inpage Smooth Scroll
+        ======================================*/
+        $(document).on('click', '.ips', function (event) {
+            event.preventDefault();
 
-(function($) {
-
-	var	$window = $(window),
-		$body = $('body');
-
-	// Breakpoints.
-		breakpoints({
-			xlarge:  [ '1281px',  '1680px' ],
-			large:   [ '981px',   '1280px' ],
-			medium:  [ '737px',   '980px'  ],
-			small:   [ null,      '736px'  ]
-		});
-
-	// Play initial animations on page load.
-		$window.on('load', function() {
-			window.setTimeout(function() {
-				$body.removeClass('is-preload');
-			}, 100);
-		});
-
-	// Dropdowns.
-		$('#nav > ul').dropotron({
-			mode: 'fade',
-			noOpenerFade: true,
-			alignment: 'center'
-		});
-
-	// Nav.
-
-		// Title Bar.
-			$(
-				'<div id="titleBar">' +
-					'<a href="#navPanel" class="toggle"></a>' +
-				'</div>'
-			)
-				.appendTo($body);
-
-		// Panel.
-			$(
-				'<div id="navPanel">' +
-					'<nav>' +
-						$('#nav').navList() +
-					'</nav>' +
-				'</div>'
-			)
-				.appendTo($body)
-				.panel({
-					delay: 500,
-					hideOnClick: true,
-					hideOnSwipe: true,
-					resetScroll: true,
-					resetForms: true,
-					side: 'left',
-					target: $body,
-					visibleClass: 'navPanel-visible'
-				});
-
-})(jQuery);
+            $('html, body').animate({
+                scrollTop: $(this.hash).offset().top
+            }, 600);
+        });
+        /*====================================
+            Themes Carousel
+        ======================================*/
+        if ($('.team-carousel').length !== 0) {
+            $('.team-carousel').owlCarousel({
+                items: 3,
+                center: true,
+                loop: true,
+                mouseDrag: true,
+                touchDrag: true,
+                autoplay: true,
+                smartSpeed: 500,
+                nav: true,
+                dots: true,
+                autoWidth: true
+            });
+        }
+    });
+}(jQuery));
