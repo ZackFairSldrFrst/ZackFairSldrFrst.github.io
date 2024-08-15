@@ -9,10 +9,12 @@
 <body>
 
     <div class="container">
-        <div id="hint">Hint: A fruit that is red and sweet. (5 letters)</div>
+        <div id="hint-container">
+            <div id="hint"></div>
+            <div id="letter-boxes"></div>
+        </div>
 
-        <input type="text" id="guess" placeholder="Enter your guess">
-        <button onclick="submitGuess()">Submit</button>
+        <button onclick="submitGuess()">Submit Guess</button>
 
         <div id="result"></div>
         <div id="guess-count">Total guesses: 0</div>
@@ -78,10 +80,71 @@
             document.getElementById('global-rank').textContent = `Global rank: #${randomRank}`;
         }
 
+        function createLetterBoxes() {
+            const container = document.getElementById('letter-boxes');
+            container.innerHTML = ''; // Clear previous boxes
+            for (let i = 0; i < answerLength; i++) {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.maxLength = 1;
+                input.className = 'letter-box';
+                input.dataset.index = i;
+                input.addEventListener('input', handleInput);
+                input.addEventListener('keydown', handleKeyDown);
+                container.appendChild(input);
+            }
+            // Focus the first box initially
+            if (container.firstChild) {
+                container.firstChild.focus();
+            }
+        }
+
+        function handleInput(event) {
+            const input = event.target;
+            const index = parseInt(input.dataset.index);
+            const value = input.value;
+
+            if (value) {
+                // Move to the next box
+                const nextBox = document.querySelector(`.letter-box[data-index="${index + 1}"]`);
+                if (nextBox) {
+                    nextBox.focus();
+                }
+            }
+        }
+
+        function handleKeyDown(event) {
+            const input = event.target;
+            const index = parseInt(input.dataset.index);
+
+            if (event.key === 'Backspace') {
+                // Move to the previous box
+                if (input.value === '') {
+                    const prevBox = document.querySelector(`.letter-box[data-index="${index - 1}"]`);
+                    if (prevBox) {
+                        prevBox.focus();
+                        prevBox.value = ''; // Ensure previous box is cleared
+                    }
+                }
+            } else if (event.key === 'Enter') {
+                // Submit guess on Enter key press
+                event.preventDefault(); // Prevent default Enter key behavior
+                submitGuess();
+            }
+        }
+
         function submitGuess() {
-            const guessInput = document.getElementById('guess');
-            const guess = guessInput.value.toLowerCase().trim();
-            if (!guess) return; // If input is empty, do nothing
+            const inputs = document.querySelectorAll('#letter-boxes input');
+            let guess = '';
+            inputs.forEach(input => {
+                guess += input.value.toLowerCase();
+            });
+            guess = guess.trim();
+
+            if (guess.length !== answerLength) {
+                alert('Please fill all letter boxes.');
+                return;
+            }
 
             const guesses = loadGuesses();
 
@@ -114,7 +177,8 @@
                 result.className = "incorrect";
             }
 
-            guessInput.value = ''; // Clear the input field
+            // Clear input boxes
+            inputs.forEach(input => input.value = '');
         }
 
         function getHintFromURL() {
@@ -123,7 +187,8 @@
         }
 
         // Initialize the game with hint including letter count
-        document.getElementById('hint').textContent = `Hint: ${getHintFromURL()} (${answerLength} letters)`;
+        document.getElementById('hint').textContent = `Hint: ${getHintFromURL()}`;
+        createLetterBoxes();
         displayGuesses();
         displayGuessCount();
 
