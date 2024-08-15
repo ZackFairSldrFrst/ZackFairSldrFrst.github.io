@@ -62,9 +62,9 @@
             const list = document.getElementById('guesses-list');
             list.innerHTML = ''; // Clear current list
 
-            for (const [word, count] of Object.entries(guesses)) {
+            for (const word of Object.keys(guesses)) {
                 const listItem = document.createElement('li');
-                listItem.textContent = `${word}: ${count} guesses`;
+                listItem.textContent = `${word}`;
                 list.appendChild(listItem);
             }
         }
@@ -91,7 +91,7 @@
         }
 
         function displayGlobalRank(rank) {
-            document.getElementById('global-rank').textContent = `Global rank: #${rank}`;
+            document.getElementById('global-rank').textContent = `Global rank: #${rank} of all players today`;
             document.getElementById('global-rank').style.display = 'block';
         }
 
@@ -198,7 +198,7 @@
                     globalRank: globalRank // Save global rank
                 }));
             } else {
-                result.textContent = `Incorrect. You guessed "${guess}". It has been guessed ${guesses[guess]} times today.`;
+                result.textContent = `Incorrect. You guessed "${guess}".`;
                 result.className = "incorrect";
             }
 
@@ -214,7 +214,7 @@
                 result.className = "correct";
                 document.getElementById('time-taken').textContent = `Time taken: ${lastResult.timeTaken}`;
                 document.getElementById('time-taken').style.display = 'block';
-                document.getElementById('global-rank').textContent = `Global rank: #${lastResult.globalRank}`;
+                document.getElementById('global-rank').textContent = `Global rank: #${lastResult.globalRank} of all players today`;
                 document.getElementById('global-rank').style.display = 'block';
             }
         }
