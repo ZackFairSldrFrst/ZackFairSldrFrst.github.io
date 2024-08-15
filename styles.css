@@ -1,3 +1,4 @@
+/* Base styles */
 body {
     font-family: 'Roboto', sans-serif;
     background-color: #f2f2f2;
@@ -20,6 +21,7 @@ body {
     text-align: center;
 }
 
+/* Hint container */
 #hint-container {
     margin-bottom: 20px;
 }
@@ -31,6 +33,7 @@ body {
     color: #ff6600;
 }
 
+/* Letter boxes for guessing */
 #letter-boxes {
     display: flex;
     justify-content: center;
@@ -54,6 +57,7 @@ body {
     box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
 }
 
+/* Submit button */
 button {
     background-color: #ff6600;
     color: #fff;
@@ -70,6 +74,7 @@ button:hover {
     background-color: #e65500;
 }
 
+/* Result display */
 #result {
     font-size: 1.2rem;
     margin-bottom: 15px;
@@ -78,19 +83,27 @@ button:hover {
 .correct {
     color: #4CAF50;
     font-weight: bold;
+    animation: correctGuess 0.5s ease-in-out;
 }
 
 .incorrect {
     color: #F44336;
     font-weight: bold;
+    animation: shake 0.5s ease-in-out;
 }
 
+/* Guess count, time taken, and global rank */
 #guess-count, #time-taken, #global-rank {
     font-size: 1rem;
     margin-bottom: 10px;
     color: #333;
 }
 
+#global-rank::before {
+    content: "#";
+}
+
+/* List of guesses */
 ul {
     list-style-type: none;
     padding: 0;
@@ -105,6 +118,35 @@ li {
     color: #333;
 }
 
+/* Animations */
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    20%, 60% {
+        transform: translateX(-10px);
+    }
+    40%, 80% {
+        transform: translateX(10px);
+    }
+}
+
+@keyframes correctGuess {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Mobile-friendly adjustments */
 @media (max-width: 480px) {
     .letter-box {
         width: 35px;
