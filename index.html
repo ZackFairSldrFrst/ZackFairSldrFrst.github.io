@@ -18,7 +18,7 @@
 
         <div id="result"></div>
         <div id="guess-count">Total guesses: 0</div>
-        <div id="time-taken" style="display:none;">Time taken: 0 ms</div>
+        <div id="time-taken" style="display:none;">Time taken: 0</div>
         <div id="global-rank" style="display:none;">Global rank: #0</div>
 
         <ul id="guesses-list"></ul>
@@ -29,6 +29,7 @@
         const defaultHint = "A fruit that is red and sweet."; // Default hint
         const answer = "apple"; // Correct answer
         const answerLength = answer.length; // Length of the answer word
+        const totalPlayers = 1000000; // Total number of players globally
         let startTime = performance.now(); // Record start time
 
         function loadGuesses() {
@@ -73,11 +74,25 @@
             document.getElementById('guess-count').textContent = `Total guesses: ${guessCount}`;
         }
 
-        function displayGlobalRank() {
-            // Mock global rank calculation
-            const guessCount = getGuessCount();
-            const randomRank = Math.floor(Math.random() * 1000) + 1; // Mock rank
-            document.getElementById('global-rank').textContent = `Global rank: #${randomRank}`;
+        function formatTime(milliseconds) {
+            const totalSeconds = Math.floor(milliseconds / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            const ms = milliseconds % 1000;
+
+            return `${hours}h ${minutes}m ${seconds}s ${Math.floor(ms / 10)}ms`;
+        }
+
+        function calculateGlobalRank(timeTaken) {
+            // Increase rank as the time taken increases
+            const rank = Math.min(totalPlayers, Math.ceil(totalPlayers * (timeTaken / 60000)));
+            return rank;
+        }
+
+        function displayGlobalRank(rank) {
+            document.getElementById('global-rank').textContent = `Global rank: #${rank}`;
+            document.getElementById('global-rank').style.display = 'block';
         }
 
         function createLetterBoxes() {
@@ -165,21 +180,20 @@
                 const endTime = performance.now();
                 const timeTaken = endTime - startTime;
 
-                result.textContent = `Correct! You guessed "${guess}" in ${timeTaken.toFixed(2)} milliseconds, taking ${guessCount} guesses.`;
+                result.textContent = `Correct! You guessed "${guess}" in ${formatTime(timeTaken)}, taking ${guessCount} guesses.`;
                 result.className = "correct";
 
-                document.getElementById('time-taken').textContent = `Time taken: ${timeTaken.toFixed(2)} ms`;
+                document.getElementById('time-taken').textContent = `Time taken: ${formatTime(timeTaken)}`;
                 document.getElementById('time-taken').style.display = 'block';
-                
+
                 // Calculate and display global rank
-                const globalRank = Math.floor(Math.random() * 1000) + 1; // Mock rank
-                document.getElementById('global-rank').textContent = `Global rank: #${globalRank}`;
-                document.getElementById('global-rank').style.display = 'block';
+                const globalRank = calculateGlobalRank(timeTaken);
+                displayGlobalRank(globalRank);
 
                 // Save result in localStorage
                 localStorage.setItem('lastResult', JSON.stringify({
                     correctGuess: guess,
-                    timeTaken: timeTaken.toFixed(2),
+                    timeTaken: formatTime(timeTaken),
                     guessCount: guessCount,
                     globalRank: globalRank // Save global rank
                 }));
@@ -196,9 +210,9 @@
             const lastResult = JSON.parse(localStorage.getItem('lastResult'));
             if (lastResult) {
                 const result = document.getElementById('result');
-                result.textContent = `Your last result: Guessed "${lastResult.correctGuess}" in ${lastResult.timeTaken} milliseconds, taking ${lastResult.guessCount} guesses.`;
+                result.textContent = `Your last result: Guessed "${lastResult.correctGuess}" in ${lastResult.timeTaken}, taking ${lastResult.guessCount} guesses.`;
                 result.className = "correct";
-                document.getElementById('time-taken').textContent = `Time taken: ${lastResult.timeTaken} ms`;
+                document.getElementById('time-taken').textContent = `Time taken: ${lastResult.timeTaken}`;
                 document.getElementById('time-taken').style.display = 'block';
                 document.getElementById('global-rank').textContent = `Global rank: #${lastResult.globalRank}`;
                 document.getElementById('global-rank').style.display = 'block';
