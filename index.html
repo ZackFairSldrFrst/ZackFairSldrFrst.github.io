@@ -170,14 +170,18 @@
 
                 document.getElementById('time-taken').textContent = `Time taken: ${timeTaken.toFixed(2)} ms`;
                 document.getElementById('time-taken').style.display = 'block';
-                displayGlobalRank();
+                
+                // Calculate and display global rank
+                const globalRank = Math.floor(Math.random() * 1000) + 1; // Mock rank
+                document.getElementById('global-rank').textContent = `Global rank: #${globalRank}`;
                 document.getElementById('global-rank').style.display = 'block';
 
                 // Save result in localStorage
                 localStorage.setItem('lastResult', JSON.stringify({
                     correctGuess: guess,
                     timeTaken: timeTaken.toFixed(2),
-                    guessCount: guessCount
+                    guessCount: guessCount,
+                    globalRank: globalRank // Save global rank
                 }));
             } else {
                 result.textContent = `Incorrect. You guessed "${guess}". It has been guessed ${guesses[guess]} times today.`;
@@ -196,7 +200,7 @@
                 result.className = "correct";
                 document.getElementById('time-taken').textContent = `Time taken: ${lastResult.timeTaken} ms`;
                 document.getElementById('time-taken').style.display = 'block';
-                displayGlobalRank();
+                document.getElementById('global-rank').textContent = `Global rank: #${lastResult.globalRank}`;
                 document.getElementById('global-rank').style.display = 'block';
             }
         }
