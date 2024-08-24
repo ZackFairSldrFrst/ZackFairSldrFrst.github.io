@@ -26,8 +26,8 @@
 
     <script>
         const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
-        const defaultHint = "Stringed instrument played with a bow."; // Default hint
-        const answer = "violin"; // Correct answer
+        const defaultHint = "A large, majestic mammal often seen in African safaris."; // New hint
+        const answer = "elephant"; // New correct answer
         const answerLength = answer.length; // Length of the answer word
         const totalPlayers = 1000000; // Total number of players globally
         let startTime = performance.now(); // Record start time
@@ -224,13 +224,34 @@
             return params.get('hint') || defaultHint;
         }
 
+        function checkNotificationPermission() {
+            if (Notification.permission === "granted") {
+                // Notifications are already allowed
+                console.log("Notifications are already enabled.");
+            } else if (Notification.permission === "denied") {
+                // Notifications are explicitly denied
+                console.log("Notifications are denied.");
+            } else {
+                // Notifications permission is not yet granted or denied
+                if (confirm("Would you like to receive notifications for new words?")) {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === "granted") {
+                            alert("Thank you! Notifications are now enabled.");
+                        } else {
+                            alert("Notifications are not enabled. You may not receive updates about new words.");
+                        }
+                    });
+                }
+            }
+        }
+
         // Initialize the game with hint including letter count
         document.getElementById('hint').textContent = `Hint: ${getHintFromURL()}`;
         createLetterBoxes();
         displayGuesses();
         displayGuessCount();
         loadLastResult();
-
+        checkNotificationPermission(); // Check for notification permission
     </script>
 
 </body>
