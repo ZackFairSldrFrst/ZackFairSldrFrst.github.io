@@ -5,8 +5,6 @@ const shortlist = [];
 // Set default filters
 const defaultFilters = {
   type: 'restaurant',
-  distance: 3000,
-  distanceUnit: 'meters',
   rating: 4.5,
   closingTime: '',  // Empty means 'open now'
   price: ''
@@ -41,24 +39,15 @@ document.getElementById('settings-form').addEventListener('submit', function(e) 
 function getSettings() {
   return {
     type: document.getElementById('type').value,
-    distance: parseFloat(document.getElementById('distance').value) || 3000, // Default to 3000 meters
-    distanceUnit: document.getElementById('distance-unit').value,
     rating: parseFloat(document.getElementById('rating').value) || 4.5,
     closingTime: document.getElementById('closing-time').value,
     price: document.getElementById('price').value || ''
   };
 }
 
-// Convert distance to meters if necessary
-function convertDistanceToMeters(distance, unit) {
-  return unit === 'feet' ? distance * 0.3048 : distance;
-}
-
 // Apply default filters to settings form
 function applyDefaultFilters() {
   document.getElementById('type').value = defaultFilters.type;
-  document.getElementById('distance').value = defaultFilters.distance;
-  document.getElementById('distance-unit').value = defaultFilters.distanceUnit;
   document.getElementById('rating').value = defaultFilters.rating;
   document.getElementById('closing-time').value = defaultFilters.closingTime;
   document.getElementById('price').value = defaultFilters.price;
@@ -75,7 +64,7 @@ function findRestaurants(filters) {
       const service = new google.maps.places.PlacesService(document.createElement('div'));
       const request = {
         location: location,
-        radius: convertDistanceToMeters(filters.distance, filters.distanceUnit),
+        radius: 3000, // Default radius
         type: [filters.type]
       };
 
