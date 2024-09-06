@@ -25,7 +25,15 @@ document.getElementById('find-restaurants').addEventListener('click', function()
 // Event listener for opening and closing settings menu
 document.getElementById('open-settings').addEventListener('click', function() {
   const settingsContainer = document.getElementById('settings');
-  settingsContainer.classList.toggle('hidden');
+  const resultsContainer = document.getElementById('results');
+  
+  if (settingsContainer.classList.contains('hidden')) {
+    settingsContainer.classList.remove('hidden');
+    resultsContainer.classList.add('hidden'); // Hide cards when settings are opened
+  } else {
+    settingsContainer.classList.add('hidden');
+    resultsContainer.classList.remove('hidden'); // Show cards when settings are closed
+  }
 });
 
 // Event listener for applying filters from the settings menu
