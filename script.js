@@ -5,7 +5,7 @@ const shortlist = [];
 // Set default filters
 const defaultFilters = {
   type: 'restaurant',
-  rating: 4.5,
+  rating: 4,
   closingTime: '',  // Empty means 'open now'
   price: ''
 };
