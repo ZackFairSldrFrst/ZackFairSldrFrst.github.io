@@ -1,7 +1,8 @@
+/* General body and container styling */
 body {
   font-family: Arial, sans-serif;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   height: 100vh;
   margin: 0;
@@ -14,75 +15,91 @@ body {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 800px;
   position: relative;
 }
 
-#results {
-  position: relative;
-  height: 400px; /* Adjust height as needed */
-  width: 100%;
-  max-width: 500px;
-  overflow: hidden;
-}
-
+/* Styling for swipeable cards */
 .card {
   position: absolute;
   width: 100%;
-  height: 100%;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  margin: 0 auto;
   background: white;
-  transition: transform 0.3s, opacity 0.3s;
-  display: flex;
-  flex-direction: column;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  will-change: transform, opacity;
+  transition: transform 0.3s, opacity 0.3s;
+  transform: translateY(0) rotate(0);
+  z-index: 1;
 }
 
 .card img {
   width: 100%;
-  height: 60%;
-  object-fit: cover;
+  height: auto;
 }
 
 .card-content {
-  padding: 10px;
-  flex: 1;
+  padding: 15px;
 }
 
-.card h3 {
-  margin: 0 0 10px;
+/* Card animation for swipe effects */
+.card.enter {
+  transform: scale(1.1);
 }
 
-.card p {
-  margin: 0;
-}
-
-.card.left {
-  transform: translateX(-120%) rotate(-15deg);
+.card.left, .card.right {
   opacity: 0;
-}
-
-.card.right {
-  transform: translateX(120%) rotate(15deg);
-  opacity: 0;
-}
-
-.card.active {
-  transform: translateX(0);
-}
-
-.card-enter {
-  transform: translateX(100%);
-  opacity: 0;
-}
-
-.card-enter-active {
-  transform: translateX(0);
-  opacity: 1;
-  transition: transform 0.3s, opacity 0.3s;
+  transform: translateX(100vw) rotate(15deg);
 }
 
 .card.tilt {
-  transition: transform 0.2s;
+  transition: transform 0.1s;
+}
+
+/* Styling for the shortlist section */
+#shortlist {
+  margin-top: 30px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+#shortlist h2 {
+  margin-top: 0;
+}
+
+.shortlist-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.shortlist-item img {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  margin-right: 15px;
+  border-radius: 4px;
+}
+
+.shortlist-item h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.shortlist-item p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.hidden {
+  display: none;
 }

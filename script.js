@@ -5,15 +5,13 @@ document.getElementById('find-restaurants').addEventListener('click', function()
           const lng = position.coords.longitude;
           const location = new google.maps.LatLng(lat, lng);
 
-          // Create a Places service instance
           const service = new google.maps.places.PlacesService(document.createElement('div'));
           const request = {
               location: location,
-              radius: '5000', // 5 km radius
-              type: ['restaurant'] // Type of places to search
+              radius: '5000',
+              type: ['restaurant']
           };
 
-          // Perform the nearby search
           service.nearbySearch(request, function(results, status) {
               if (status === google.maps.places.PlacesServiceStatus.OK) {
                   displayResults(results);
@@ -32,6 +30,7 @@ document.getElementById('find-restaurants').addEventListener('click', function()
 });
 
 let currentCardIndex = 0;
+const shortlist = [];
 
 function displayResults(results) {
   const resultsContainer = document.getElementById('results');
@@ -45,13 +44,12 @@ function displayResults(results) {
   results.forEach((result) => {
       const card = document.createElement('div');
       card.className = 'card active card-enter';
-      
-      // Fetch details to include image, reviews, etc.
+
       const request = {
           placeId: result.place_id,
           fields: ['name', 'vicinity', 'photos', 'reviews', 'rating']
       };
-      
+
       const service = new google.maps.places.PlacesService(document.createElement('div'));
       service.getDetails(request, function(placeResult, status) {
           if (status === google.maps.places.PlacesServiceStatus.OK) {
@@ -66,15 +64,14 @@ function displayResults(results) {
               `;
               resultsContainer.appendChild(card);
 
-              // Handle swipe functionality
-              handleSwipes(card);
+              handleSwipes(card, placeResult);
           }
       });
   });
 }
 
-function handleSwipes(card) {
-  let startX, startY, endX, endY;
+function handleSwipes(card, placeResult) {
+  let startX, startY;
   
   card.classList.add('card-enter');
   setTimeout(() => card.classList.remove('card-enter'), 300);
@@ -89,7 +86,7 @@ function handleSwipes(card) {
       const deltaX = e.touches[0].clientX - startX;
       const deltaY = e.touches[0].clientY - startY;
 
-      const tiltAmount = Math.min(15, Math.abs(deltaX) / 10); // Tilt up to 15 degrees
+      const tiltAmount = Math.min(15, Math.abs(deltaX) / 10);
 
       card.style.transform = `translateX(${deltaX}px) rotate(${deltaX > 0 ? tiltAmount : -tiltAmount}deg)`;
   });
@@ -100,22 +97,60 @@ function handleSwipes(card) {
       if (Math.abs(deltaX) > 100) {
           if (deltaX > 0) {
               card.classList.add('right');
+              shortlist.push(placeResult);
+              updateShortlist();
           } else {
               card.classList.add('left');
           }
           setTimeout(() => {
-              card.remove(); 
-              // Logic to load new cards if needed
+              card.remove();
               currentCardIndex++;
               if (currentCardIndex < document.querySelectorAll('.card').length) {
                   document.querySelectorAll('.card')[currentCardIndex].classList.add('active');
               }
-          }, 300); // Remove card after animation
+          }, 300);
       } else {
-          card.classList.remove('active'); // Reset card position if swipe is not detected
+          card.classList.remove('active');
       }
 
       card.classList.remove('tilt');
-      card.style.transform = ''; // Reset transform
+      card.style.transform = '';
   });
 }
+
+function updateShortlist() {
+  const shortlistContainer = document.getElementById('shortlist');
+  shortlistContainer.innerHTML = '';
+
+  if (shortlist.length === 0) {
+      shortlistContainer.innerHTML = '<p>No restaurants in your shortlist.</p>';
+      return;
+  }
+
+  shortlist.forEach((place) => {
+      const item = document.createElement('div');
+      item.className = 'shortlist-item';
+      item.innerHTML = `
+          <img src="${place.photos ? place.photos[0].getUrl() : 'https://via.placeholder.com/80x60'}" alt="${place.name}">
+          <div>
+              <h3>${place.name}</h3>
+              <p>${place.vicinity}</p>
+              <p>Rating: ${place.rating || 'N/A'}</p>
+              <p>${place.reviews ? place.reviews[0].text : 'No reviews available.'}</p>
+          </div>
+      `;
+      shortlistContainer.appendChild(item);
+  });
+}
+
+// Toggle shortlist visibility
+document.getElementById('toggle-shortlist').addEventListener('click', function() {
+  const shortlistContainer = document.getElementById('shortlist');
+  if (shortlistContainer.classList.contains('hidden')) {
+      shortlistContainer.classList.remove('hidden');
+      this.textContent = 'Hide Shortlist';
+  } else {
+      shortlistContainer.classList.add('hidden');
+      this.textContent = 'Show Shortlist';
+  }
+});
