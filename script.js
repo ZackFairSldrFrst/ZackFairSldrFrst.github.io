@@ -3,37 +3,25 @@ document.getElementById('find-restaurants').addEventListener('click', function()
       navigator.geolocation.getCurrentPosition(function(position) {
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
-          
-          // Construct a search query using location data
-          const query = `restaurants near ${lat},${lng}`;
-          const cx = '11edd75b3cc154a50'; // Replace with your Custom Search Engine ID
-          const apiKey = 'AIzaSyBLVKhhZwlSmeKUAQ8J9cQNbz0E7yichiA'; // Your Google Custom Search API Key
+          const location = new google.maps.LatLng(lat, lng);
 
-          // Encode the query parameter properly
-          const encodedQuery = encodeURIComponent(query);
+          // Create a Places service instance
+          const service = new google.maps.places.PlacesService(document.createElement('div'));
+          const request = {
+              location: location,
+              radius: '5000', // 5 km radius
+              type: ['restaurant'] // Type of places to search
+          };
 
-          // Fetch request to Google Custom Search Engine with API Key
-          fetch(`https://www.googleapis.com/customsearch/v1?q=${encodedQuery}&cx=${cx}&key=${apiKey}`)
-              .then(response => {
-                  if (!response.ok) {
-                      throw new Error(`HTTP error! status: ${response.status}`);
-                  }
-                  return response.json();
-              })
-              .then(data => {
-                  console.log('API Response:', data); // Log the full response for debugging
-
-                  if (data.items) {
-                      displayResults(data.items);
-                  } else {
-                      console.error('No items found in the response:', data);
-                      alert('No restaurants found.');
-                  }
-              })
-              .catch(error => {
-                  console.error('Error fetching data:', error);
+          // Perform the nearby search
+          service.nearbySearch(request, function(results, status) {
+              if (status === google.maps.places.PlacesServiceStatus.OK) {
+                  displayResults(results);
+              } else {
+                  console.error('Places API request failed:', status);
                   alert('Error fetching data. Please check console for details.');
-              });
+              }
+          });
       }, function(error) {
           console.error('Error getting location:', error);
           alert(`Could not get your location. Error: ${error.message}`);
@@ -56,8 +44,8 @@ function displayResults(results) {
       const resultDiv = document.createElement('div');
       resultDiv.className = 'restaurant';
       resultDiv.innerHTML = `
-          <h3><a href="${result.link}" target="_blank">${result.title}</a></h3>
-          <p>${result.snippet}</p>
+          <h3><a href="${result.place_id}" target="_blank">${result.name}</a></h3>
+          <p>${result.vicinity}</p>
       `;
       resultsContainer.appendChild(resultDiv);
   });
