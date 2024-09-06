@@ -19,7 +19,7 @@ document.getElementById('find-restaurants').addEventListener('click', function()
                   displayResults(results);
               } else {
                   console.error('Places API request failed:', status);
-                  alert('Error fetching data. Please check console for details.');
+                  alert('Error fetching data. Please check the console for details.');
               }
           });
       }, function(error) {
@@ -40,13 +40,61 @@ function displayResults(results) {
       return;
   }
 
-  results.forEach(result => {
-      const resultDiv = document.createElement('div');
-      resultDiv.className = 'restaurant';
-      resultDiv.innerHTML = `
-          <h3><a href="${result.place_id}" target="_blank">${result.name}</a></h3>
-          <p>${result.vicinity}</p>
-      `;
-      resultsContainer.appendChild(resultDiv);
+  results.forEach((result, index) => {
+      const card = document.createElement('div');
+      card.className = 'card active';
+      
+      // Fetch details to include image, reviews, etc.
+      const request = {
+          placeId: result.place_id,
+          fields: ['name', 'vicinity', 'photos', 'reviews', 'rating']
+      };
+      
+      const service = new google.maps.places.PlacesService(document.createElement('div'));
+      service.getDetails(request, function(placeResult, status) {
+          if (status === google.maps.places.PlacesServiceStatus.OK) {
+              card.innerHTML = `
+                  <img src="${placeResult.photos ? placeResult.photos[0].getUrl() : 'https://via.placeholder.com/400x300'}" alt="${placeResult.name}">
+                  <div class="card-content">
+                      <h3>${placeResult.name}</h3>
+                      <p>${placeResult.vicinity}</p>
+                      <p>Rating: ${placeResult.rating || 'N/A'}</p>
+                      <p>${placeResult.reviews ? placeResult.reviews[0].text : 'No reviews available.'}</p>
+                  </div>
+              `;
+              resultsContainer.appendChild(card);
+
+              // Handle swipe functionality
+              handleSwipes(card);
+          }
+      });
+  });
+}
+
+function handleSwipes(card) {
+  let startX, startY, endX, endY;
+
+  card.addEventListener('touchstart', function(e) {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+  });
+
+  card.addEventListener('touchend', function(e) {
+      endX = e.changedTouches[0].clientX;
+      endY = e.changedTouches[0].clientY;
+
+      const deltaX = endX - startX;
+      const deltaY = endY - startY;
+
+      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 100) {
+          if (deltaX > 0) {
+              card.classList.add('right');
+          } else {
+              card.classList.add('left');
+          }
+          setTimeout(() => card.remove(), 300); // Remove card after animation
+      } else {
+          card.classList.remove('active'); // Reset card position if swipe is not detected
+      }
   });
 }
