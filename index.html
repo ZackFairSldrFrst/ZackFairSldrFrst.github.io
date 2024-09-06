@@ -8,15 +8,24 @@
 </head>
 <body>
   <div class="container">
-    <h1>What Should I Eat?</h1>
+    <!-- Title and Description -->
+    <h1>Where Should I Eat?</h1>
+    
+    <!-- Buttons -->
     <button id="find-restaurants">Find Restaurants Near Me</button>
     <button id="toggle-shortlist">Show Shortlist</button>
     <button id="open-settings">Settings</button>
+
+    <!-- Results Container -->
     <div id="results"></div>
+
+    <!-- Shortlist Section -->
     <div id="shortlist" class="hidden">
       <h2>Your Shortlist</h2>
       <!-- Shortlisted restaurants will be displayed here -->
     </div>
+
+    <!-- Settings Menu -->
     <div id="settings" class="hidden">
       <h2>Settings</h2>
       <form id="settings-form">
@@ -36,21 +45,21 @@
         <label for="price">Price Level:</label>
         <select id="price">
           <option value="">Any</option>
-          <option value="1">€</option>
-          <option value="2">€€</option>
-          <option value="3">€€€</option>
-          <option value="4">€€€€</option>
+          <option value="1">$</option>
+          <option value="2">$$</option>
+          <option value="3">$$$</option>
+          <option value="4">$$$$</option>
         </select>
         <br>
         <button type="submit">Apply Filters</button>
       </form>
     </div>
-    <!-- Expanded View Container -->
-<div id="expanded-view" class="hidden">
-  <button id="close-expanded-view">Close</button>
-  <div id="expanded-content"></div>
-</div>
 
+    <!-- Expanded View Container -->
+    <div id="expanded-view" class="hidden">
+      <button id="close-expanded-view">Close</button>
+      <div id="expanded-content"></div>
+    </div>
   </div>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLVKhhZwlSmeKUAQ8J9cQNbz0E7yichiA&libraries=places"></script>
   <script src="script.js"></script>
