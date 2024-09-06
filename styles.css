@@ -14,21 +14,21 @@ body {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 #results {
   position: relative;
   height: 400px; /* Adjust height as needed */
+  width: 100%;
+  max-width: 500px;
   overflow: hidden;
 }
 
 .card {
   position: absolute;
   width: 100%;
-  max-width: 400px;
   height: 100%;
-  max-height: 300px;
-  margin: auto;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   background: white;
@@ -36,6 +36,7 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  will-change: transform, opacity;
 }
 
 .card img {
@@ -58,15 +59,30 @@ body {
 }
 
 .card.left {
-  transform: translateX(-100%) rotate(-10deg);
-  opacity: 0.5;
+  transform: translateX(-120%) rotate(-15deg);
+  opacity: 0;
 }
 
 .card.right {
-  transform: translateX(100%) rotate(10deg);
-  opacity: 0.5;
+  transform: translateX(120%) rotate(15deg);
+  opacity: 0;
 }
 
 .card.active {
   transform: translateX(0);
+}
+
+.card-enter {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.card-enter-active {
+  transform: translateX(0);
+  opacity: 1;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.card.tilt {
+  transition: transform 0.2s;
 }

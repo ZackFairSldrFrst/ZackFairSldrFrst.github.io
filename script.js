@@ -31,6 +31,8 @@ document.getElementById('find-restaurants').addEventListener('click', function()
   }
 });
 
+let currentCardIndex = 0;
+
 function displayResults(results) {
   const resultsContainer = document.getElementById('results');
   resultsContainer.innerHTML = '';
@@ -40,9 +42,9 @@ function displayResults(results) {
       return;
   }
 
-  results.forEach((result, index) => {
+  results.forEach((result) => {
       const card = document.createElement('div');
-      card.className = 'card active';
+      card.className = 'card active card-enter';
       
       // Fetch details to include image, reviews, etc.
       const request = {
@@ -73,28 +75,47 @@ function displayResults(results) {
 
 function handleSwipes(card) {
   let startX, startY, endX, endY;
+  
+  card.classList.add('card-enter');
+  setTimeout(() => card.classList.remove('card-enter'), 300);
 
   card.addEventListener('touchstart', function(e) {
       startX = e.touches[0].clientX;
       startY = e.touches[0].clientY;
+      card.classList.add('tilt');
+  });
+
+  card.addEventListener('touchmove', function(e) {
+      const deltaX = e.touches[0].clientX - startX;
+      const deltaY = e.touches[0].clientY - startY;
+
+      const tiltAmount = Math.min(15, Math.abs(deltaX) / 10); // Tilt up to 15 degrees
+
+      card.style.transform = `translateX(${deltaX}px) rotate(${deltaX > 0 ? tiltAmount : -tiltAmount}deg)`;
   });
 
   card.addEventListener('touchend', function(e) {
-      endX = e.changedTouches[0].clientX;
-      endY = e.changedTouches[0].clientY;
+      const deltaX = e.changedTouches[0].clientX - startX;
 
-      const deltaX = endX - startX;
-      const deltaY = endY - startY;
-
-      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 100) {
+      if (Math.abs(deltaX) > 100) {
           if (deltaX > 0) {
               card.classList.add('right');
           } else {
               card.classList.add('left');
           }
-          setTimeout(() => card.remove(), 300); // Remove card after animation
+          setTimeout(() => {
+              card.remove(); 
+              // Logic to load new cards if needed
+              currentCardIndex++;
+              if (currentCardIndex < document.querySelectorAll('.card').length) {
+                  document.querySelectorAll('.card')[currentCardIndex].classList.add('active');
+              }
+          }, 300); // Remove card after animation
       } else {
           card.classList.remove('active'); // Reset card position if swipe is not detected
       }
+
+      card.classList.remove('tilt');
+      card.style.transform = ''; // Reset transform
   });
 }
