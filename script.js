@@ -26,13 +26,12 @@ document.getElementById('find-restaurants').addEventListener('click', function()
 document.getElementById('open-settings').addEventListener('click', function() {
   const settingsContainer = document.getElementById('settings');
   const resultsContainer = document.getElementById('results');
-  
+  settingsContainer.classList.toggle('hidden');
+
   if (settingsContainer.classList.contains('hidden')) {
-    settingsContainer.classList.remove('hidden');
-    resultsContainer.classList.add('hidden'); // Hide cards when settings are opened
+    resultsContainer.classList.remove('hidden');
   } else {
-    settingsContainer.classList.add('hidden');
-    resultsContainer.classList.remove('hidden'); // Show cards when settings are closed
+    resultsContainer.classList.add('hidden');
   }
 });
 
@@ -41,6 +40,8 @@ document.getElementById('settings-form').addEventListener('submit', function(e) 
   e.preventDefault();
   const settings = getSettings();
   findRestaurants(settings);
+  document.getElementById('settings').classList.add('hidden');
+  document.getElementById('results').classList.remove('hidden');
 });
 
 // Function to get settings values from the form
@@ -111,6 +112,7 @@ function displayResults(results, closingTime) {
   results.forEach((result) => {
     const card = document.createElement('div');
     card.className = 'card active card-enter';
+    card.dataset.placeId = result.place_id;
 
     const request = {
       placeId: result.place_id,
@@ -121,7 +123,7 @@ function displayResults(results, closingTime) {
     service.getDetails(request, function(placeResult, status) {
       if (status === google.maps.places.PlacesServiceStatus.OK) {
         const isOpen = !closingTime || isRestaurantOpen(placeResult.opening_hours, closingTime);
-        
+
         if (isOpen) {
           card.innerHTML = `
             <img src="${placeResult.photos ? placeResult.photos[0].getUrl() : 'https://via.placeholder.com/400x300'}" alt="${placeResult.name}">
@@ -135,6 +137,7 @@ function displayResults(results, closingTime) {
           resultsContainer.appendChild(card);
 
           handleSwipes(card, placeResult);
+          handleExpandCard(card, placeResult);
         }
       }
     });
@@ -208,6 +211,33 @@ function handleSwipes(card, placeResult) {
   });
 }
 
+// Function to handle expanding and collapsing of cards
+function handleExpandCard(card, placeResult) {
+  card.addEventListener('click', function() {
+    const expandedView = document.getElementById('expanded-view');
+    const expandedContent = document.getElementById('expanded-content');
+
+    expandedContent.innerHTML = `
+      <h2>${placeResult.name}</h2>
+      <p>${placeResult.vicinity}</p>
+      <p>Rating: ${placeResult.rating || 'N/A'}</p>
+      <div class="expanded-images">
+        ${placeResult.photos ? placeResult.photos.map(photo => `<img src="${photo.getUrl()}" alt="${placeResult.name}">`).join('') : 'No images available.'}
+      </div>
+      <div class="expanded-reviews">
+        ${placeResult.reviews ? placeResult.reviews.map(review => `<p>${review.text}</p>`).join('') : 'No reviews available.'}
+      </div>
+    `;
+    expandedView.classList.remove('hidden');
+    document.getElementById('results').classList.add('hidden');
+
+    document.getElementById('close-expanded-view').addEventListener('click', function() {
+      expandedView.classList.add('hidden');
+      document.getElementById('results').classList.remove('hidden');
+    });
+  });
+}
+
 // Function to update and display the shortlist
 function updateShortlist() {
   const shortlistContainer = document.getElementById('shortlist');
@@ -232,6 +262,8 @@ function updateShortlist() {
     `;
     shortlistContainer.appendChild(item);
   });
+
+  shortlistContainer.classList.remove('hidden');
 }
 
 // Toggle visibility of the shortlist
