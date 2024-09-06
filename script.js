@@ -145,12 +145,16 @@ function updateShortlist() {
 
 // Toggle shortlist visibility
 document.getElementById('toggle-shortlist').addEventListener('click', function() {
+  const resultsContainer = document.getElementById('results');
   const shortlistContainer = document.getElementById('shortlist');
+  
   if (shortlistContainer.classList.contains('hidden')) {
       shortlistContainer.classList.remove('hidden');
+      resultsContainer.classList.add('hidden');
       this.textContent = 'Hide Shortlist';
   } else {
       shortlistContainer.classList.add('hidden');
+      resultsContainer.classList.remove('hidden');
       this.textContent = 'Show Shortlist';
   }
 });

@@ -54,6 +54,10 @@ body {
   transform: translateX(100vw) rotate(15deg);
 }
 
+.card.left {
+  transform: translateX(-100vw) rotate(-15deg);
+}
+
 .card.tilt {
   transition: transform 0.1s;
 }
@@ -100,6 +104,7 @@ body {
   font-size: 14px;
 }
 
+/* Hidden class for toggling visibility */
 .hidden {
   display: none;
 }
