@@ -23,10 +23,8 @@ body {
 
 /* Styling for swipeable cards */
 .card {
-  position: absolute;
-  width: calc(100% - 40px); /* Padding around the card */
-  max-width: 350px; /* Increase max-width for larger cards */
-  max-height: 500px; /* Increase max-width for larger cards */
+  position: left;
+  max-height: 500px; /* Adjust max-height for larger cards */
   margin: 0 auto;
   background: white;
   border-radius: 8px;
@@ -37,12 +35,13 @@ body {
   z-index: 1;
   padding: 20px; /* Add padding for content inside the card */
   box-sizing: border-box; /* Include padding in width calculation */
+  margin-top: 30px;
 }
 
 .card img {
   width: 100%;
   height: auto;
-  max-height: 300px; /* Increase max-height for larger images */
+  max-height: 300px; /* Adjust max-height for larger images */
   object-fit: cover;
 }
 
@@ -82,6 +81,7 @@ body {
 
 #shortlist h2 {
   margin-top: 0;
+  font-size: 1.5em; /* Adjust font size for better readability */
 }
 
 .shortlist-item {
@@ -93,8 +93,8 @@ body {
 }
 
 .shortlist-item img {
-  width: 100px; /* Larger image size in shortlist */
-  height: 75px; /* Adjust height accordingly */
+  width: 80px; /* Adjust image size in shortlist */
+  height: 60px; /* Adjust height accordingly */
   object-fit: cover;
   margin-right: 15px;
   border-radius: 4px;
@@ -102,12 +102,13 @@ body {
 
 .shortlist-item h3 {
   margin: 0;
-  font-size: 16px;
+  font-size: 18px; /* Increase font size for better readability */
 }
 
 .shortlist-item p {
   margin: 5px 0;
   font-size: 14px;
+  color: #666; /* Slightly lighter text color */
 }
 
 /* Hidden class for toggling visibility */
@@ -130,8 +131,20 @@ body {
   }
 
   .shortlist-item img {
-    width: 80px; /* Adjust image size in shortlist */
-    height: 60px; /* Adjust height accordingly */
+    width: 70px; /* Adjust image size in shortlist */
+    height: 50px; /* Adjust height accordingly */
+  }
+
+  #shortlist h2 {
+    font-size: 1.25em; /* Adjust font size for better readability on small screens */
+  }
+
+  .shortlist-item h3 {
+    font-size: 16px; /* Adjust font size for better readability on small screens */
+  }
+
+  #settings button {
+    font-size: 16px; /* Increase font size for better readability */
   }
 }
 
@@ -147,6 +160,7 @@ body {
 
 #settings h2 {
   margin-top: 0;
+  font-size: 1.5em; /* Adjust font size for better readability */
 }
 
 #settings form {
@@ -161,17 +175,19 @@ body {
 
 #settings input, #settings select {
   width: 100%;
-  padding: 8px;
+  padding: 12px; /* Increased padding for better touch targets */
   box-sizing: border-box;
 }
 
 #settings button {
-  padding: 10px;
+  padding: 12px;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 16px; /* Increase font size for better readability */
+  transition: background-color 0.3s;
 }
 
 #settings button:hover {
@@ -211,6 +227,8 @@ body {
 
 #expanded-view .expanded-reviews p {
   margin: 10px 0;
+  font-size: 16px; /* Increase font size for better readability */
+  color: #333; /* Slightly darker text color */
 }
 
 #expanded-view #close-expanded-view {
@@ -221,10 +239,13 @@ body {
   color: white;
   border: none;
   border-radius: 4px;
-  padding: 10px;
+  padding: 12px;
   cursor: pointer;
+  font-size: 16px; /* Increase font size for better readability */
+  transition: background-color 0.3s;
 }
 
 #expanded-view #close-expanded-view:hover {
   background: #0056b3;
 }
+
