@@ -6,26 +6,70 @@
     <title>My Projects</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8, #c1c8e4);
+            color: #333;
             text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            font-size: 3em;
+            margin: 20px 0;
+            color: #2c3e50;
+        }
+        p {
+            font-size: 1.2em;
+            color: #34495e;
+            margin-bottom: 40px;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
             padding: 20px;
         }
-        a {
-            display: block;
-            margin: 10px;
-            text-decoration: none;
-            color: #007bff;
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 250px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
         }
-        a:hover {
-            text-decoration: underline;
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .card a {
+            display: block;
+            text-decoration: none;
+            color: #3498db;
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        .card a:hover {
+            color: #2980b9;
         }
     </style>
+    <!-- Link to Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
 </head>
 <body>
     <h1>Welcome to My Projects</h1>
     <p>Click on a project to view it:</p>
-    <a href="dnd-roller/index.html">DND Roller</a>
-    <a href="hinted/index.html">Hinted</a>
-    <a href="where-to-eat/index.html">Where to Eat</a>
+    <div class="container">
+        <div class="card">
+            <a href="dnd-roller/index.html">DND Roller</a>
+        </div>
+        <div class="card">
+            <a href="hinted/index.html">Hinted</a>
+        </div>
+        <div class="card">
+            <a href="where-to-eat/index.html">Where to Eat</a>
+        </div>
+    </div>
 </body>
 </html>
