@@ -1,0 +1,12 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+#game-container {
+    width: 100vw;
+    height: 100vh;
+    background-color: #f0f0f0;
+    position: relative;
+}
