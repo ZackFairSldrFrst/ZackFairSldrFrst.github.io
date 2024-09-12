@@ -1,0 +1,251 @@
+/* General body and container styling */
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f4f4f4;
+  overflow: hidden; /* Prevent scrollbars on the body */
+}
+
+.container {
+  text-align: center;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 800px;
+  position: relative;
+}
+
+/* Styling for swipeable cards */
+.card {
+  position: left;
+  max-height: 500px; /* Adjust max-height for larger cards */
+  margin: 0 auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: transform 0.3s, opacity 0.3s;
+  transform: translateY(0) rotate(0);
+  z-index: 1;
+  padding: 20px; /* Add padding for content inside the card */
+  box-sizing: border-box; /* Include padding in width calculation */
+  margin-top: 30px;
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+  max-height: 300px; /* Adjust max-height for larger images */
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 15px;
+}
+
+/* Card animation for swipe effects */
+.card.enter {
+  transform: scale(1.1);
+}
+
+.card.left, .card.right {
+  opacity: 0;
+  transform: translateX(100vw) rotate(15deg);
+}
+
+.card.left {
+  transform: translateX(-100vw) rotate(-15deg);
+}
+
+.card.tilt {
+  transition: transform 0.1s;
+}
+
+/* Styling for the shortlist section */
+#shortlist {
+  margin-top: 30px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+#shortlist h2 {
+  margin-top: 0;
+  font-size: 1.5em; /* Adjust font size for better readability */
+}
+
+.shortlist-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.shortlist-item img {
+  width: 80px; /* Adjust image size in shortlist */
+  height: 60px; /* Adjust height accordingly */
+  object-fit: cover;
+  margin-right: 15px;
+  border-radius: 4px;
+}
+
+.shortlist-item h3 {
+  margin: 0;
+  font-size: 18px; /* Increase font size for better readability */
+}
+
+.shortlist-item p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #666; /* Slightly lighter text color */
+}
+
+/* Hidden class for toggling visibility */
+.hidden {
+  display: none;
+}
+
+/* Media Queries for better mobile responsiveness */
+@media (max-width: 600px) {
+  .card {
+    width: calc(100% - 20px); /* Adjust padding on smaller screens */
+  }
+
+  .card img {
+    max-height: 250px; /* Adjust image height for smaller screens */
+  }
+
+  .card-content {
+    padding: 10px; /* Adjust content padding */
+  }
+
+  .shortlist-item img {
+    width: 70px; /* Adjust image size in shortlist */
+    height: 50px; /* Adjust height accordingly */
+  }
+
+  #shortlist h2 {
+    font-size: 1.25em; /* Adjust font size for better readability on small screens */
+  }
+
+  .shortlist-item h3 {
+    font-size: 16px; /* Adjust font size for better readability on small screens */
+  }
+
+  #settings button {
+    font-size: 16px; /* Increase font size for better readability */
+  }
+}
+
+/* Styling for the settings menu */
+#settings {
+  margin-top: 30px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+#settings h2 {
+  margin-top: 0;
+  font-size: 1.5em; /* Adjust font size for better readability */
+}
+
+#settings form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#settings label {
+  font-weight: bold;
+}
+
+#settings input, #settings select {
+  width: 100%;
+  padding: 12px; /* Increased padding for better touch targets */
+  box-sizing: border-box;
+}
+
+#settings button {
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px; /* Increase font size for better readability */
+  transition: background-color 0.3s;
+}
+
+#settings button:hover {
+  background-color: #0056b3;
+}
+
+/* Expanded View Styling */
+#expanded-view {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  overflow: auto;
+  z-index: 1000;
+  padding: 20px;
+  box-sizing: border-box;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+#expanded-view.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+#expanded-view #expanded-content {
+  margin-top: 20px;
+}
+
+#expanded-view .expanded-images img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+#expanded-view .expanded-reviews p {
+  margin: 10px 0;
+  font-size: 16px; /* Increase font size for better readability */
+  color: #333; /* Slightly darker text color */
+}
+
+#expanded-view #close-expanded-view {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 12px;
+  cursor: pointer;
+  font-size: 16px; /* Increase font size for better readability */
+  transition: background-color 0.3s;
+}
+
+#expanded-view #close-expanded-view:hover {
+  background: #0056b3;
+}
+

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What Should I Eat?</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8VCBWSEEK9"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8VCBWSEEK9');
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-11481751058">
+</script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-11481751058');
+</script>
+</head>
+<body>
+  <div class="container">
+    <!-- Title and Description -->
+    <h1>Where Should I Eat?</h1>
+    
+    <!-- Buttons -->
+    <button id="find-restaurants">Find Restaurants Near Me</button>
+    <button id="toggle-shortlist">Show Shortlist</button>
+    <button id="open-settings">Settings</button>
+
+    <!-- Results Container -->
+    <div id="results"></div>
+
+    <!-- Shortlist Section -->
+    <div id="shortlist" class="hidden">
+      <h2>Your Shortlist</h2>
+      <!-- Shortlisted restaurants will be displayed here -->
+    </div>
+
+    <!-- Settings Menu -->
+    <div id="settings" class="hidden">
+      <h2>Settings</h2>
+      <form id="settings-form">
+        <label for="type">Type:</label>
+        <select id="type">
+          <option value="restaurant">Restaurant</option>
+          <option value="bar">Bar</option>
+          <option value="cafe">Cafe</option>
+        </select>
+        <br>
+        <label for="rating">Minimum Rating:</label>
+        <input type="number" id="rating" min="1" max="5" step="0.1" />
+        <br>
+        <label for="closing-time">Closing Time:</label>
+        <input type="time" id="closing-time" />
+        <br>
+        <label for="price">Price Level:</label>
+        <select id="price">
+          <option value="">Any</option>
+          <option value="1">$</option>
+          <option value="2">$$</option>
+          <option value="3">$$$</option>
+          <option value="4">$$$$</option>
+        </select>
+        <br>
+        <button type="submit">Apply Filters</button>
+      </form>
+    </div>
+
+    <!-- Expanded View Container -->
+    <div id="expanded-view" class="hidden">
+      <button id="close-expanded-view">Close</button>
+      <div id="expanded-content"></div>
+    </div>
+  </div>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLVKhhZwlSmeKUAQ8J9cQNbz0E7yichiA&libraries=places"></script>
+  <script src="script.js"></script>
+</body>
+</html>
