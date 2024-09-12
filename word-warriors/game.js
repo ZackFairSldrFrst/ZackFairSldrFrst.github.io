@@ -2,6 +2,7 @@ const config = {
     type: Phaser.AUTO,
     width: 800,
     height: 600,
+    parent: 'game-container',  // Ensure Phaser renders inside this div
     physics: {
         default: 'arcade',
         arcade: {
