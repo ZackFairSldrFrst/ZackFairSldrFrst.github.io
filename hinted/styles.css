@@ -1,34 +1,33 @@
-/* Base styles for popup */
+/* Base styles */
 body {
     font-family: 'Roboto', sans-serif;
     background-color: #f2f2f2;
     color: #333;
-    margin: 0;
-    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
 }
 
-/* Popup container */
 .container {
     background-color: #fff;
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    width: 800px; /* Fixed width for popup */
-    box-sizing: border-box; /* Ensure padding is included in width */
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
 }
 
 /* Hint container */
 #hint-container {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 #hint {
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: bold;
     margin-bottom: 10px;
     color: #ff6600;
@@ -42,10 +41,10 @@ body {
 }
 
 .letter-box {
-    width: 30px;
-    height: 40px;
-    margin: 0 4px;
-    font-size: 1.2rem;
+    width: 40px;
+    height: 50px;
+    margin: 0 5px;
+    font-size: 1.5rem;
     text-align: center;
     border: 2px solid #ccc;
     border-radius: 5px;
@@ -64,11 +63,11 @@ button {
     color: #fff;
     border: none;
     border-radius: 10px;
-    padding: 8px 15px;
-    font-size: 0.9rem;
+    padding: 10px 20px;
+    font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 button:hover {
@@ -77,8 +76,8 @@ button:hover {
 
 /* Result display */
 #result {
-    font-size: 1rem;
-    margin-bottom: 10px;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
 }
 
 .correct {
@@ -95,7 +94,7 @@ button:hover {
 
 /* Guess count, time taken, and global rank */
 #guess-count, #time-taken, #global-rank {
-    font-size: 0.9rem;
+    font-size: 1rem;
     margin-bottom: 10px;
     color: #333;
 }
@@ -108,13 +107,12 @@ button:hover {
 ul {
     list-style-type: none;
     padding: 0;
-    margin: 0;
 }
 
 li {
     background-color: #ffebcc;
     border-radius: 10px;
-    padding: 8px;
+    padding: 10px;
     margin-bottom: 5px;
     font-weight: bold;
     color: #333;
@@ -151,13 +149,13 @@ li {
 /* Mobile-friendly adjustments */
 @media (max-width: 480px) {
     .letter-box {
-        width: 28px;
-        height: 35px;
-        font-size: 1rem;
+        width: 35px;
+        height: 45px;
+        font-size: 1.2rem;
     }
 
     button {
-        padding: 6px 12px;
-        font-size: 0.8rem;
+        padding: 8px 15px;
+        font-size: 0.9rem;
     }
 }

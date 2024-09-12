@@ -22,10 +22,239 @@
     </style>
 </head>
 <body>
+<<<<<<< HEAD
     <h1>Welcome to My Projects</h1>
     <p>Click on a project to view it:</p>
     <a href="dnd-roller/index.html">DND Roller</a>
     <a href="hinted/index.html">Hinted</a>
     <a href="where-should-i-eat/index.html">Where Should I Eat</a>
+=======
+
+    <div class="container">
+        <div id="hint-container">
+            <div id="hint"></div>
+            <div id="letter-boxes"></div>
+        </div>
+
+        <button onclick="submitGuess()">Submit Guess</button>
+
+        <div id="result"></div>
+        <div id="guess-count">Total guesses: 0</div>
+        <div id="time-taken" style="display:none;">Time taken: 0</div>
+        <div id="global-rank" style="display:none;">Global rank: #0</div>
+
+        <ul id="guesses-list"></ul>
+    </div>
+
+    <script>
+        const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+        const defaultHint = "A fruit that is red and sweet."; // Default hint
+        const answer = "apple"; // Correct answer
+        const answerLength = answer.length; // Length of the answer word
+        const totalPlayers = 1000000; // Total number of players globally
+        let startTime = performance.now(); // Record start time
+
+        function loadGuesses() {
+            const storedDate = localStorage.getItem('date');
+            if (storedDate !== today) {
+                localStorage.clear(); // Clear storage if the date has changed
+                localStorage.setItem('date', today);
+            }
+
+            const guesses = JSON.parse(localStorage.getItem('guesses')) || {};
+            return guesses;
+        }
+
+        function saveGuesses(guesses) {
+            localStorage.setItem('guesses', JSON.stringify(guesses));
+        }
+
+        function getGuessCount() {
+            return parseInt(localStorage.getItem('guessCount')) || 0;
+        }
+
+        function incrementGuessCount() {
+            const guessCount = getGuessCount() + 1;
+            localStorage.setItem('guessCount', guessCount);
+            return guessCount;
+        }
+
+        function displayGuesses() {
+            const guesses = loadGuesses();
+            const list = document.getElementById('guesses-list');
+            list.innerHTML = ''; // Clear current list
+
+            for (const word of Object.keys(guesses)) {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${word}`;
+                list.appendChild(listItem);
+            }
+        }
+
+        function displayGuessCount() {
+            const guessCount = getGuessCount();
+            document.getElementById('guess-count').textContent = `Total guesses: ${guessCount}`;
+        }
+
+        function formatTime(milliseconds) {
+            const totalSeconds = Math.floor(milliseconds / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            const ms = milliseconds % 1000;
+
+            return `${hours}h ${minutes}m ${seconds}s ${Math.floor(ms / 10)}ms`;
+        }
+
+        function calculateGlobalRank(timeTaken) {
+            // Increase rank as the time taken increases
+            const rank = Math.min(totalPlayers, Math.ceil(totalPlayers * (timeTaken / 60000)));
+            return rank;
+        }
+
+        function displayGlobalRank(rank) {
+            document.getElementById('global-rank').textContent = `Global rank: #${rank} of all players today`;
+            document.getElementById('global-rank').style.display = 'block';
+        }
+
+        function createLetterBoxes() {
+            const container = document.getElementById('letter-boxes');
+            container.innerHTML = ''; // Clear previous boxes
+            for (let i = 0; i < answerLength; i++) {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.maxLength = 1;
+                input.className = 'letter-box';
+                input.dataset.index = i;
+                input.addEventListener('input', handleInput);
+                input.addEventListener('keydown', handleKeyDown);
+                container.appendChild(input);
+            }
+            // Focus the first box initially
+            if (container.firstChild) {
+                container.firstChild.focus();
+            }
+        }
+
+        function handleInput(event) {
+            const input = event.target;
+            const index = parseInt(input.dataset.index);
+            const value = input.value;
+
+            if (value) {
+                // Move to the next box
+                const nextBox = document.querySelector(`.letter-box[data-index="${index + 1}"]`);
+                if (nextBox) {
+                    nextBox.focus();
+                }
+            }
+        }
+
+        function handleKeyDown(event) {
+            const input = event.target;
+            const index = parseInt(input.dataset.index);
+
+            if (event.key === 'Backspace') {
+                // Move to the previous box
+                if (input.value === '') {
+                    const prevBox = document.querySelector(`.letter-box[data-index="${index - 1}"]`);
+                    if (prevBox) {
+                        prevBox.focus();
+                        prevBox.value = ''; // Ensure previous box is cleared
+                    }
+                }
+            } else if (event.key === 'Enter') {
+                // Submit guess on Enter key press
+                event.preventDefault(); // Prevent default Enter key behavior
+                submitGuess();
+            }
+        }
+
+        function submitGuess() {
+            const inputs = document.querySelectorAll('#letter-boxes input');
+            let guess = '';
+            inputs.forEach(input => {
+                guess += input.value.toLowerCase();
+            });
+            guess = guess.trim();
+
+            if (guess.length !== answerLength) {
+                alert('Please fill all letter boxes.');
+                return;
+            }
+
+            const guesses = loadGuesses();
+
+            if (guesses[guess]) {
+                guesses[guess]++;
+            } else {
+                guesses[guess] = 1;
+            }
+
+            saveGuesses(guesses);
+            displayGuesses();
+
+            const result = document.getElementById('result');
+            const guessCount = incrementGuessCount();
+            displayGuessCount();
+
+            if (guess === answer) {
+                const endTime = performance.now();
+                const timeTaken = endTime - startTime;
+
+                result.textContent = `Correct! You guessed "${guess}" in ${formatTime(timeTaken)}, taking ${guessCount} guesses.`;
+                result.className = "correct";
+
+                document.getElementById('time-taken').textContent = `Time taken: ${formatTime(timeTaken)}`;
+                document.getElementById('time-taken').style.display = 'block';
+
+                // Calculate and display global rank
+                const globalRank = calculateGlobalRank(timeTaken);
+                displayGlobalRank(globalRank);
+
+                // Save result in localStorage
+                localStorage.setItem('lastResult', JSON.stringify({
+                    correctGuess: guess,
+                    timeTaken: formatTime(timeTaken),
+                    guessCount: guessCount,
+                    globalRank: globalRank // Save global rank
+                }));
+            } else {
+                result.textContent = `Incorrect. You guessed "${guess}".`;
+                result.className = "incorrect";
+            }
+
+            // Clear input boxes
+            inputs.forEach(input => input.value = '');
+        }
+
+        function loadLastResult() {
+            const lastResult = JSON.parse(localStorage.getItem('lastResult'));
+            if (lastResult) {
+                const result = document.getElementById('result');
+                result.textContent = `Your last result: Guessed "${lastResult.correctGuess}" in ${lastResult.timeTaken}, taking ${lastResult.guessCount} guesses.`;
+                result.className = "correct";
+                document.getElementById('time-taken').textContent = `Time taken: ${lastResult.timeTaken}`;
+                document.getElementById('time-taken').style.display = 'block';
+                document.getElementById('global-rank').textContent = `Global rank: #${lastResult.globalRank} of all players today`;
+                document.getElementById('global-rank').style.display = 'block';
+            }
+        }
+
+        function getHintFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('hint') || defaultHint;
+        }
+
+        // Initialize the game with hint including letter count
+        document.getElementById('hint').textContent = `Hint: ${getHintFromURL()}`;
+        createLetterBoxes();
+        displayGuesses();
+        displayGuessCount();
+        loadLastResult();
+
+    </script>
+
+>>>>>>> parent of 21616af (violin)
 </body>
 </html>
