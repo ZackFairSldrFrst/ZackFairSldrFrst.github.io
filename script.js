@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Create dice buttons
   [4, 6, 8, 10, 12, 20].forEach(sides => {
       const dice = document.createElement('div');
-      dice.className = 'dice';
+      dice.className = `dice d${sides}`;
       dice.id = `dice-${sides}`;
       dice.innerText = `d${sides}`;
       dice.addEventListener('click', () => rollDice(dice, sides));

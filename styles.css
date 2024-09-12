@@ -43,14 +43,37 @@ main {
   border-radius: 10px;
   cursor: pointer;
   line-height: 80px;
-  font-size: 36px;
+  font-size: 24px;
   font-weight: bold;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s, transform 0.3s;
 }
 
+.dice.d4 {
+  background-color: #e74c3c; /* Red */
+}
+
+.dice.d6 {
+  background-color: #f39c12; /* Orange */
+}
+
+.dice.d8 {
+  background-color: #27ae60; /* Green */
+}
+
+.dice.d10 {
+  background-color: #1abc9c; /* Teal */
+}
+
+.dice.d12 {
+  background-color: #9b59b6; /* Purple */
+}
+
+.dice.d20 {
+  background-color: #3498db; /* Blue */
+}
+
 .dice:hover {
-  background-color: #2980b9;
   transform: scale(1.1);
 }
 
