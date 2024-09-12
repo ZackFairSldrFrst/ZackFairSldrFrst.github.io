@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D Dice Roller</title>
+    <link rel="stylesheet" href="styles.css">
+<script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <header>
+        <h1>D&D Dice Roller</h1>
+        <p>Roll your dice with style!</p>
+    </header>
+    <main>
+        <section id="dice-container">
+            <!-- Dice buttons will be injected here -->
+        </section>
+        <section id="results">
+            <!-- Results will be displayed here -->
+        </section>
+        <section id="statistics">
+            <h2>Roll Statistics</h2>
+            <p id="avg-roll">Average Roll: N/A</p>
+            <p id="max-roll">Highest Roll: N/A</p>
+            <p id="min-roll">Lowest Roll: N/A</p>
+        </section>
+        <section id="history">
+            <h2>Roll History</h2>
+            <!-- Roll history will be displayed here -->
+        </section>
+        <section id="preferences">
+            <h2>Preferences</h2>
+            <label for="sound-toggle">Sound Effects:</label>
+            <input type="checkbox" id="sound-toggle" checked>
+            <label for="theme-toggle">Dark Theme:</label>
+            <input type="checkbox" id="theme-toggle">
+        </section>
+        <!-- Add these sections in index.html -->
+<section id="room-management">
+    <h2>Room Management</h2>
+    <label for="room-name">Room Name:</label>
+    <input type="text" id="room-name">
+    <button id="create-room">Create Room</button>
+    <button id="join-room">Join Room</button>
+    <button id="leave-room">Leave Room</button>
+    <p id="room-status"></p>
+  </section>  
+        <section id="save-share">
+            <h2>Save and Share</h2>
+            <button id="save-results">Save Results</button>
+            <button id="share-results">Share Results</button>
+        </section>
+    </main>
+    <audio id="roll-sound" src="sounds/roll.mp3"></audio>
+    <script src="script.js"></script>
+</body>
+</html>
