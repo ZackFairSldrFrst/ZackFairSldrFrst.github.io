@@ -1,4 +1,4 @@
-/* styles.css */
+/* General body styles */
 body {
   font-family: 'Arial', sans-serif;
   margin: 0;
@@ -9,16 +9,18 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
+/* Dark theme styles */
 .dark-theme {
   background-color: #2c3e50;
   color: #ecf0f1;
 }
 
+/* Header styles */
 header {
-  background-color: #2c3e50;
+  background-color: #34495e;
   color: #ecf0f1;
   padding: 20px;
-  border-bottom: 5px solid #3498db;
+  border-bottom: 5px solid #2980b9;
 }
 
 header h1 {
@@ -31,10 +33,12 @@ header p {
   margin: 10px 0 0;
 }
 
+/* Main content padding */
 main {
   padding: 20px;
 }
 
+/* Dice container styles */
 #dice-container {
   display: flex;
   flex-wrap: wrap;
@@ -42,12 +46,12 @@ main {
   margin-bottom: 20px;
 }
 
+/* Dice styles */
 .dice {
   display: inline-block;
   width: 80px;
   height: 80px;
   margin: 10px;
-  background-color: #3498db;
   color: #ecf0f1;
   border-radius: 10px;
   cursor: pointer;
@@ -62,6 +66,7 @@ main {
   justify-content: center;
 }
 
+/* Dice faces */
 .dice.d4 {
   background: #e74c3c;
   clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
@@ -96,6 +101,7 @@ main {
   transform: scale(1.1);
 }
 
+/* Rolling animation */
 .rolling {
   animation: roll 0.5s ease-out;
 }
@@ -105,28 +111,48 @@ main {
   100% { transform: rotate(360deg); }
 }
 
+/* Section styles */
 #results, #statistics, #preferences, #save-share {
   font-size: 1.2em;
   margin-top: 20px;
   padding: 10px;
   background-color: #ecf0f1;
+  color: #333;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Dark theme section styles */
+.dark-theme #results, 
+.dark-theme #statistics, 
+.dark-theme #preferences, 
+.dark-theme #save-share {
+  background-color: #34495e;
+  color: #ecf0f1;
+}
+
+/* Preferences input styles */
 #preferences input {
   margin: 10px;
 }
 
+/* History section styles */
 #history {
   font-size: 1.2em;
   margin-top: 20px;
   max-height: 300px;
   overflow-y: auto;
   background-color: #ecf0f1;
+  color: #333;
   border-radius: 10px;
   padding: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark theme history styles */
+.dark-theme #history {
+  background-color: #34495e;
+  color: #ecf0f1;
 }
 
 #history h2 {
@@ -139,4 +165,9 @@ main {
   background-color: #bdc3c7;
   padding: 5px;
   border-radius: 5px;
+}
+
+/* Dark theme history entries */
+.dark-theme #history div {
+  background-color: #2c3e50;
 }
