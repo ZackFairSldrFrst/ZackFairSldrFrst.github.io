@@ -6,6 +6,12 @@ body {
   background-color: #f0f0f0;
   color: #333;
   text-align: center;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.dark-theme {
+  background-color: #2c3e50;
+  color: #ecf0f1;
 }
 
 header {
@@ -30,6 +36,9 @@ main {
 }
 
 #dice-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   margin-bottom: 20px;
 }
 
@@ -47,30 +56,40 @@ main {
   font-weight: bold;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s, transform 0.3s;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .dice.d4 {
-  background-color: #e74c3c; /* Red */
+  background: #e74c3c;
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
 }
 
 .dice.d6 {
-  background-color: #f39c12; /* Orange */
+  background: #f39c12;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
 }
 
 .dice.d8 {
-  background-color: #27ae60; /* Green */
+  background: #27ae60;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
 
 .dice.d10 {
-  background-color: #1abc9c; /* Teal */
+  background: #1abc9c;
+  clip-path: polygon(50% 0%, 100% 30%, 100% 70%, 50% 100%, 0% 70%, 0% 30%);
 }
 
 .dice.d12 {
-  background-color: #9b59b6; /* Purple */
+  background: #9b59b6;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
 }
 
 .dice.d20 {
-  background-color: #3498db; /* Blue */
+  background: #3498db;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
 }
 
 .dice:hover {
@@ -86,13 +105,17 @@ main {
   100% { transform: rotate(360deg); }
 }
 
-#results {
-  font-size: 1.5em;
+#results, #statistics, #preferences, #save-share {
+  font-size: 1.2em;
   margin-top: 20px;
   padding: 10px;
   background-color: #ecf0f1;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#preferences input {
+  margin: 10px;
 }
 
 #history {
