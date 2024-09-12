@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D&D Dice Roller</title>
     <link rel="stylesheet" href="styles.css">
-<script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
     <header>
@@ -13,6 +12,15 @@
         <p>Roll your dice with style!</p>
     </header>
     <main>
+        <section id="room-management">
+            <h2>Room Management</h2>
+            <label for="room-name">Room Name:</label>
+            <input type="text" id="room-name" placeholder="Enter room name">
+            <button id="create-room">Create Room</button>
+            <button id="join-room">Join Room</button>
+            <button id="leave-room">Leave Room</button>
+            <p id="room-status"></p>
+        </section>
         <section id="dice-container">
             <!-- Dice buttons will be injected here -->
         </section>
@@ -36,16 +44,6 @@
             <label for="theme-toggle">Dark Theme:</label>
             <input type="checkbox" id="theme-toggle">
         </section>
-        <!-- Add these sections in index.html -->
-<section id="room-management">
-    <h2>Room Management</h2>
-    <label for="room-name">Room Name:</label>
-    <input type="text" id="room-name">
-    <button id="create-room">Create Room</button>
-    <button id="join-room">Join Room</button>
-    <button id="leave-room">Leave Room</button>
-    <p id="room-status"></p>
-  </section>  
         <section id="save-share">
             <h2>Save and Share</h2>
             <button id="save-results">Save Results</button>
