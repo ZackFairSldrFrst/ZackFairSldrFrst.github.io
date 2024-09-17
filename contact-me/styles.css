@@ -2,8 +2,9 @@ body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    color: #333;
+    color: #333333;
     line-height: 1.6;
+    background: #f4f4f4;
 }
 
 .container {
@@ -13,11 +14,11 @@ body {
 }
 
 header {
-    background: #333;
-    color: #fff;
+    background: #003366;
+    color: #ffffff;
     padding-top: 30px;
     min-height: 70px;
-    border-bottom: #e8491d 3px solid;
+    border-bottom: 3px solid #ff6600;
     text-align: center;
 }
 
@@ -29,8 +30,8 @@ header h1 {
 .btn {
     display: inline-block;
     font-size: 1em;
-    color: #fff;
-    background: #e8491d;
+    color: #ffffff;
+    background: #ff6600;
     padding: 10px 20px;
     text-decoration: none;
     border-radius: 5px;
@@ -38,11 +39,12 @@ header h1 {
 }
 
 .btn:hover {
-    background: #c63d1f;
+    background: #cc5200;
 }
 
 .hero {
-    background: #f4f4f4;
+    background: #003366;
+    color: #ffffff;
     padding: 50px 0;
     text-align: center;
 }
@@ -71,7 +73,7 @@ header h1 {
 
 .section h2 {
     font-size: 2em;
-    color: #e8491d;
+    color: #003366;
     margin-bottom: 1em;
 }
 
@@ -83,7 +85,7 @@ header h1 {
 }
 
 .how-it-works-item, .feature-item {
-    background: #f4f4f4;
+    background: #ffffff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -91,7 +93,7 @@ header h1 {
 
 .how-it-works-item i, .feature-item i {
     font-size: 2em;
-    color: #e8491d;
+    color: #ff6600;
     margin-bottom: 10px;
 }
 
@@ -113,7 +115,7 @@ header h1 {
 }
 
 .comparison-card {
-    background: #f4f4f4;
+    background: #ffffff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -121,7 +123,7 @@ header h1 {
 }
 
 .comparison-card h3 {
-    color: #e8491d;
+    color: #003366;
     margin: 0.5em 0;
 }
 
@@ -148,14 +150,14 @@ header h1 {
 }
 
 .pricing-card {
-    background: #f4f4f4;
+    background: #ffffff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 .pricing-card h3 {
-    color: #e8491d;
+    color: #003366;
     margin: 0.5em 0;
 }
 
@@ -169,8 +171,8 @@ form input, form textarea {
 
 form button {
     padding: 10px;
-    background: #e8491d;
-    color: #fff;
+    background: #ff6600;
+    color: #ffffff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -178,12 +180,12 @@ form button {
 }
 
 form button:hover {
-    background: #c63d1f;
+    background: #cc5200;
 }
 
 footer {
-    background: #333;
-    color: #fff;
+    background: #003366;
+    color: #ffffff;
     text-align: center;
     padding: 20px 0;
     position: relative;
