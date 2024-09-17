@@ -8,24 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
-
-    // Form Validation
-    document.getElementById('contact-form').addEventListener('submit', function (e) {
-        e.preventDefault(); // Prevent actual form submission
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const subject = document.getElementById('subject').value.trim();
-        const message = document.getElementById('message').value.trim();
-
-        if (name === '' || email === '' || message === '') {
-            alert('Please fill in all required fields.');
-            return;
-        }
-
-        alert('Thank you for your message! We will get back to you soon.');
-        this.reset(); // Reset form after submission
-    });
-
     // Scroll Animations
     const animateOnScroll = () => {
         const elements = document.querySelectorAll('.section');

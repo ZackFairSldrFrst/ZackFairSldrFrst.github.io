@@ -161,28 +161,6 @@ header h1 {
     margin: 0.5em 0;
 }
 
-form input, form textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-form button {
-    padding: 10px;
-    background: #ff6600;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-form button:hover {
-    background: #cc5200;
-}
-
 footer {
     background: #003366;
     color: #ffffff;
