@@ -54,6 +54,7 @@ header h1 {
 
 .hero p {
     font-size: 1.2em;
+    margin-bottom: 1.5em;
 }
 
 .section {
@@ -102,6 +103,41 @@ header h1 {
 .how-it-works-item p, .feature-item p {
     font-size: 1em;
     margin: 0;
+}
+
+.comparison-table {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    text-align: center;
+}
+
+.comparison-card {
+    background: #f4f4f4;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    width: 250px;
+}
+
+.comparison-card h3 {
+    color: #e8491d;
+    margin: 0.5em 0;
+}
+
+.comparison-card p {
+    font-size: 1.5em;
+    margin: 0.5em 0;
+}
+
+.comparison-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.comparison-card ul li {
+    font-size: 1em;
+    margin: 0.5em 0;
 }
 
 .pricing-table {
