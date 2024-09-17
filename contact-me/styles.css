@@ -23,8 +23,6 @@ header {
     color: #fff;
     padding: 2rem 0;
     text-align: center;
-    position: relative;
-    overflow: hidden;
 }
 
 header h1 {
@@ -53,6 +51,63 @@ header p {
     color: #fff;
 }
 
+/* Hero Section */
+.hero {
+    background: #e9ecef;
+    padding: 3rem 0;
+    text-align: center;
+}
+
+.hero h2 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+/* Features Section */
+.feature-grid {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+}
+
+.feature-card {
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+    flex: 1;
+    transition: transform 0.3s;
+}
+
+.feature-card:hover {
+    transform: scale(1.05);
+}
+
+/* Testimonial Section */
+.testimonial-card {
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+    margin: 1rem 0;
+}
+
+.testimonial-card p {
+    font-style: italic;
+}
+
+.testimonial-card cite {
+    display: block;
+    text-align: right;
+    margin-top: 0.5rem;
+    font-weight: bold;
+}
+
 /* Section styles */
 .section {
     padding: 2rem 0;
@@ -61,19 +116,6 @@ header p {
 h2 {
     font-size: 2rem;
     margin-bottom: 1rem;
-}
-
-.service-card {
-    background: #fff;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    padding: 1.5rem;
-    margin: 1rem 0;
-    transition: transform 0.3s;
-}
-
-.service-card:hover {
-    transform: scale(1.05);
 }
 
 form {
@@ -107,10 +149,56 @@ form button:hover {
     background: #0056b3;
 }
 
+/* Call to Action Section */
+.cta {
+    background: #007bff;
+    color: #fff;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.cta h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.cta p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
 /* Footer styles */
 footer {
     background: #333;
     color: #fff;
     text-align: center;
     padding: 1rem 0;
+}
+
+footer p {
+    margin-bottom: 1rem;
+}
+
+footer ul.social-media {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+footer ul.social-media li {
+    display: inline;
+}
+
+footer ul.social-media a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+footer ul.social-media a:hover {
+    color: #007bff;
 }

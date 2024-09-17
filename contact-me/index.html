@@ -3,47 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real Estate Agent Landing Page</title>
-    <link rel="stylesheet" href="contact-me/styles.css">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>Welcome to Your Dream Home</h1>
-            <p>Your trusted real estate partner</p>
+            <h1>Contact Us</h1>
+            <p>We'd love to hear from you!</p>
             <a href="#contact" class="cta-button">Get in Touch</a>
         </div>
     </header>
 
-    <section id="about" class="section">
+    <section id="hero" class="hero">
         <div class="container">
-            <h2>About Me</h2>
-            <p>Hello! I’m John Doe, a dedicated real estate agent with over 10 years of experience helping clients find their perfect home. My commitment is to provide exceptional service and guidance throughout the buying and selling process.</p>
+            <h2>Welcome to Your Solution</h2>
+            <p>We're here to assist with all your needs. Whether it's a question, a concern, or a new project, just let us know!</p>
+            <a href="#contact" class="cta-button">Contact Us Now</a>
         </div>
     </section>
 
-    <section id="services" class="section">
+    <section id="features" class="section">
         <div class="container">
-            <h2>My Services</h2>
-            <div class="service-card">
-                <h3>Buying</h3>
-                <p>Find the home of your dreams with personalized assistance.</p>
+            <h2>Why Choose Us?</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>Reliable Service</h3>
+                    <p>We offer consistent and dependable service to meet your needs.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Expert Team</h3>
+                    <p>Our team consists of industry professionals with years of experience.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Customer Satisfaction</h3>
+                    <p>We prioritize your satisfaction and work hard to exceed your expectations.</p>
+                </div>
             </div>
-            <div class="service-card">
-                <h3>Selling</h3>
-                <p>Sell your property with expert advice and market knowledge.</p>
+        </div>
+    </section>
+
+    <section id="testimonial" class="section">
+        <div class="container">
+            <h2>What Our Clients Say</h2>
+            <div class="testimonial-card">
+                <p>"The team was incredible! They went above and beyond to ensure our project was a success."</p>
+                <cite>- Alex Johnson</cite>
             </div>
-            <div class="service-card">
-                <h3>Consulting</h3>
-                <p>Get professional advice on real estate investments and market trends.</p>
+            <div class="testimonial-card">
+                <p>"Professional, efficient, and friendly. I couldn't have asked for a better experience."</p>
+                <cite>- Jamie Lee</cite>
             </div>
         </div>
     </section>
 
     <section id="contact" class="section">
         <div class="container">
-            <h2>Contact Me</h2>
-            <form>
+            <h2>Get in Touch</h2>
+            <form action="submit_form.php" method="post">
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" required>
                 <label for="email">Email:</label>
@@ -55,9 +72,23 @@
         </div>
     </section>
 
+    <section id="cta" class="cta">
+        <div class="container">
+            <h2>Ready to Start?</h2>
+            <p>If you have any questions or need immediate assistance, don't hesitate to reach out to us.</p>
+            <a href="#contact" class="cta-button">Contact Us Today</a>
+        </div>
+    </section>
+
     <footer>
         <div class="container">
-            <p>&copy; 2024 John Doe Real Estate. All rights reserved.</p>
+            <p>&copy; 2024 Your Business Name. All rights reserved.</p>
+            <ul class="social-media">
+                <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
+                <li><a href="https://twitter.com" target="_blank">Twitter</a></li>
+                <li><a href="https://linkedin.com" target="_blank">LinkedIn</a></li>
+                <li><a href="https://instagram.com" target="_blank">Instagram</a></li>
+            </ul>
         </div>
     </footer>
 </body>
