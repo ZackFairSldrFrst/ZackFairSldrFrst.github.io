@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pacific Derm BOGO Offer</title>
+    <style>
+        body {
+            background-color: #E7E2DC;
+            font-family: 'Gotham', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            color: #000000;
+        }
+        p {
+            color: #000000;
+            line-height: 1.6;
+        }
+        .cta-button {
+            background-color: #A5B2B8;
+            color: #FFFFFF;
+            padding: 15px 25px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .image-slider {
+            position: relative;
+            max-width: 100%;
+            height: 300px; /* Fixed height for square images */
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        .image-slider img {
+            width: 100%;
+            height: 100%; /* Make images square */
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        .image-slider img.active {
+            opacity: 1; /* Show active image */
+        }
+        @keyframes fade {
+            0% { opacity: 0; }
+            10% { opacity: 1; }
+            35% { opacity: 1; }
+            45% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+        /* Animation for images */
+        .image-slider img {
+            animation: fade 8s infinite; /* Change duration for speed */
+        }
+        .image-slider img:nth-child(2) {
+            animation-delay: 4s; /* Delay for second image */
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BOGO ($2,000 value): Reverse Sun Damage with Pacific Derm!</h1>
+        
+        <p><strong>Exclusive Offer:</strong> For a limited time, enjoy our Buy 1 Treatment, Get 2nd Free! Each treatment typically valued between $2,000 and $4,000.</p>
+        
+        <div class="image-slider">
+            <img src="before.jpg" alt="Before Treatment" class="active">
+            <img src="after.jpg" alt="After Treatment">
+        </div>
+
+        <p>Sun exposure, environmental pollutants, and the natural aging process can take a toll on your skin, leading to uneven texture, discoloration, and fine lines. At Pacific Derm, we understand the impact of these factors and offer advanced solutions to help you reclaim your skin’s vitality and youthfulness.</p>
+
+        <h2>Treatment Benefits:</h2>
+        <ul>
+            <li><strong>Smooth, Even Skin:</strong> Enjoy a radiant complexion that makes you feel confident.</li>
+            <li><strong>Non-Invasive:</strong> Experience transformative results without the need for surgery.</li>
+            <li><strong>Quick Results:</strong> Many clients see improvements within just a week.</li>
+            <li><strong>Effortless Experience:</strong> Treatments fit seamlessly into your busy life, lasting only 30-45 minutes.</li>
+        </ul>
+
+        <h2>Book by [insert booking deadline]</h2>
+        <p>To take advantage of this amazing offer, please book your appointment by <strong>[insert booking deadline]</strong>.</p>
+
+        <p>Ready to experience the rejuvenating power of Fraxel? <a href="https://pacificderm.com/book-now" class="cta-button">Book Now!</a></p>
+
+        <h2>How Fraxel Laser Works:</h2>
+        <p>The Fraxel Laser utilizes advanced fractional technology to precisely target damaged skin while preserving surrounding tissue. This focused approach promotes the body’s natural healing process, leading to smoother, clearer skin without extensive downtime.</p>
+
+        <h2>Treatment Types:</h2>
+        <p>We offer two exceptional Fraxel treatments tailored to your skin's needs:</p>
+        <ul>
+            <li><strong>Fraxel Re:Pair:</strong> This treatment is ideal for addressing significant skin damage. It combines CO2 laser technology with fractional treatment to effectively tighten loose skin and reduce wrinkles, particularly around the delicate eye area. Clients often appreciate the noticeable lifting effect and rejuvenated appearance.</li>
+            <li><strong>Fraxel Dual:</strong> A versatile option that uses two laser wavelengths to tackle both deep and superficial skin concerns. This treatment effectively reduces sun spots, age spots, and even scars, allowing for a fresher, more youthful complexion with minimal downtime.</li>
+        </ul>
+
+        <p>Don't miss out on our Buy 1 Treatment, Get 2nd Free offer! <a href="https://pacificderm.com/book-now" class="cta-button">Book Now!</a></p>
+
+        <div class="footer">
+            <p>Follow us on social media for the latest updates and offers!</p>
+            <p><a href="https://instagram.com/pacificderm" style="color: #A5B2B8;">Instagram</a> | <a href="https://facebook.com/pacificderm" style="color: #A5B2B8;">Facebook</a></p>
+        </div>
+    </div>
+</body>
+</html>
