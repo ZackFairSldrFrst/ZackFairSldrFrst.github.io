@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support my browser extensions</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="loading-container">
+        <div id="loading-text">Updating extension...</div>
+        <div id="loading-bar-container">
+            <div id="loading-bar"></div>
+        </div>
+    </div>
+
+    <div id="main-content" class="container" style="display:none;">
+        <header>
+            <h1>Support my browser extensions</h1>
+            <p>Your contribution helps keep the development going and ensures that future updates can continue to improve your browsing experience. Thank you for your generosity!</p>
+        </header>
+
+        <section class="donate-section">
+            <h2>How you can help</h2>
+            <p>Every bit helps! Your donation directly supports the continued development of my browser extensions. Whether it's a small or large contribution, you're helping me stay up-to-date and offer new features. As a small, independent project, I rely on users like you to keep things going.</p>
+            
+            <p>If you appreciate the functionality my browser extensions provide, please consider making a donation to ensure their future. I’m a small team with big plans, and your support helps me make that happen.</p>
+
+            <p>Your generous donation goes directly towards maintaining and improving the extensions, implementing new features, fixing bugs, and providing you with regular updates. Each donation helps keep things running smoothly, and no amount is too small!</p>
+            
+            <p>If you’ve been enjoying the features and improvements, I would be deeply grateful for your support. You can choose the donation amount that best suits your budget, and I’ll make sure it goes toward developing the best possible experience for all users.</p>
+
+            <div class="donate-options">
+                <a href="https://donate.stripe.com/dR6g0J9KbapBaZO5ko" class="donate-button">$5 donation</a>
+                <a href="https://donate.stripe.com/bIY4i1f4vdBN8RG28d" class="donate-button">$20 donation</a>
+                <a href="https://donate.stripe.com/eVaeWF09BcxJc3SfZ4" class="donate-button">$50 donation</a>
+            </div>
+        </section>
+
+        <footer>
+            <p>Thank you for supporting me!</p>
+        </footer>
+    </div>
+
+    <script>
+        // Simulate loading process (e.g., for extension update)
+        window.onload = function() {
+            setTimeout(function() {
+                document.getElementById("loading-container").style.display = "none";
+                document.getElementById("main-content").style.display = "block";
+            }, 3000); // 3 seconds delay to simulate the loading time
+        }
+    </script>
+</body>
+</html>
