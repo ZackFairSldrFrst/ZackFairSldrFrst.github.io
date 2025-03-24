@@ -6,17 +6,15 @@
     <title>Hinted</title>
     <link rel="stylesheet" href="styles.css">
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VDZNRELZ6H"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-VDZNRELZ6H');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VDZNRELZ6H"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-VDZNRELZ6H');
+    </script>
 </head>
 <body>
-
     <div class="container">
         <div id="hint-container">
             <div id="hint"></div>
@@ -34,18 +32,95 @@
     </div>
 
     <script>
-        const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
-        const defaultHint = "Stringed instrument played with a bow."; // Default hint
-        const answer = "violin"; // Correct answer
-        const answerLength = answer.length; // Length of the answer word
-        const totalPlayers = 1000000; // Total number of players globally
+        // Game database with words and hints
+        const gameDatabase = [
+            {
+                word: "violin",
+                hints: [
+                    "Stringed instrument played with a bow",
+                    "Common in classical music and orchestras",
+                    "Has four strings typically tuned to G, D, A, E",
+                    "Smaller than a viola but larger than a viola da gamba"
+                ]
+            },
+            {
+                word: "guitar",
+                hints: [
+                    "Stringed instrument typically with six strings",
+                    "Can be acoustic or electric",
+                    "Popular in rock, pop, and folk music",
+                    "Played by strumming or plucking the strings"
+                ]
+            },
+            {
+                word: "piano",
+                hints: [
+                    "Keyboard instrument with black and white keys",
+                    "Produces sound when hammers strike strings",
+                    "Can play both melody and harmony simultaneously",
+                    "Invented by Bartolomeo Cristofori in the early 18th century"
+                ]
+            },
+            {
+                word: "flute",
+                hints: [
+                    "Woodwind instrument held horizontally",
+                    "Produces sound from the flow of air across an opening",
+                    "Common in classical and jazz ensembles",
+                    "One of the oldest musical instruments"
+                ]
+            },
+            {
+                word: "trumpet",
+                hints: [
+                    "Brass instrument with three valves",
+                    "Known for its bright, powerful sound",
+                    "Common in jazz and classical music",
+                    "Played by buzzing lips into the mouthpiece"
+                ]
+            }
+        ];
+
+        // Seedable random number generator for consistent daily hints
+        function seededRandom(seed) {
+            let x = Math.sin(seed) * 10000;
+            return x - Math.floor(x);
+        }
+
+        // Get today's date as a seed
+        const today = new Date();
+        const dateString = today.toISOString().split('T')[0];
+        const dateSeed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+
+        // Select a random word and hint based on today's date
+        const gameIndex = Math.floor(seededRandom(dateSeed) * gameDatabase.length);
+        const currentGame = gameDatabase[gameIndex];
+        const answer = currentGame.word;
+        const answerLength = answer.length;
+        
+        // Select a random hint for today's word
+        const hintIndex = Math.floor(seededRandom(dateSeed + 1) * currentGame.hints.length);
+        const dailyHint = currentGame.hints[hintIndex];
+
         let startTime = performance.now(); // Record start time
+        let gameCompleted = false;
 
         function loadGuesses() {
             const storedDate = localStorage.getItem('date');
-            if (storedDate !== today) {
+            if (storedDate !== dateString) {
                 localStorage.clear(); // Clear storage if the date has changed
-                localStorage.setItem('date', today);
+                localStorage.setItem('date', dateString);
+                localStorage.setItem('dailyWord', answer); // Store today's word
+                return {};
+            }
+            
+            // Check if stored word matches today's word (in case of database changes)
+            const storedWord = localStorage.getItem('dailyWord');
+            if (storedWord !== answer) {
+                localStorage.clear();
+                localStorage.setItem('date', dateString);
+                localStorage.setItem('dailyWord', answer);
+                return {};
             }
 
             const guesses = JSON.parse(localStorage.getItem('guesses')) || {};
@@ -62,7 +137,7 @@
 
         function incrementGuessCount() {
             const guessCount = getGuessCount() + 1;
-            localStorage.setItem('guessCount', guessCount);
+            localStorage.setItem('guessCount', guessCount.toString());
             return guessCount;
         }
 
@@ -85,22 +160,28 @@
 
         function formatTime(milliseconds) {
             const totalSeconds = Math.floor(milliseconds / 1000);
-            const hours = Math.floor(totalSeconds / 3600);
-            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const minutes = Math.floor(totalSeconds / 60);
             const seconds = totalSeconds % 60;
             const ms = milliseconds % 1000;
 
-            return `${hours}h ${minutes}m ${seconds}s ${Math.floor(ms / 10)}ms`;
+            if (minutes > 0) {
+                return `${minutes}m ${seconds}s`;
+            }
+            return `${seconds}.${Math.floor(ms / 100)}s`;
         }
 
-        function calculateGlobalRank(timeTaken) {
-            // Increase rank as the time taken increases
-            const rank = Math.min(totalPlayers, Math.ceil(totalPlayers * (timeTaken / 60000)));
-            return rank;
+        function calculateGlobalRank(timeTaken, guessCount) {
+            // More sophisticated ranking calculation
+            const timeScore = Math.min(1, 1 / (1 + timeTaken / 60000)); // Time component (0-1)
+            const guessScore = Math.min(1, 1 / (1 + guessCount / 10)); // Guess count component (0-1)
+            const combinedScore = (timeScore * 0.6 + guessScore * 0.4) * 100; // Weighted score (0-100)
+            
+            // Return rank as percentile (lower is better)
+            return Math.max(1, Math.floor(combinedScore));
         }
 
         function displayGlobalRank(rank) {
-            document.getElementById('global-rank').textContent = `Global rank: #${rank} of all players today`;
+            document.getElementById('global-rank').textContent = `Global rank: Top ${rank}% of players today`;
             document.getElementById('global-rank').style.display = 'block';
         }
 
@@ -126,9 +207,10 @@
         function handleInput(event) {
             const input = event.target;
             const index = parseInt(input.dataset.index);
-            const value = input.value;
+            const value = input.value.toUpperCase(); // Convert to uppercase for consistency
 
             if (value) {
+                input.value = value; // Ensure uppercase
                 // Move to the next box
                 const nextBox = document.querySelector(`.letter-box[data-index="${index + 1}"]`);
                 if (nextBox) {
@@ -152,12 +234,14 @@
                 }
             } else if (event.key === 'Enter') {
                 // Submit guess on Enter key press
-                event.preventDefault(); // Prevent default Enter key behavior
+                event.preventDefault();
                 submitGuess();
             }
         }
 
         function submitGuess() {
+            if (gameCompleted) return;
+
             const inputs = document.querySelectorAll('#letter-boxes input');
             let guess = '';
             inputs.forEach(input => {
@@ -166,14 +250,17 @@
             guess = guess.trim();
 
             if (guess.length !== answerLength) {
-                alert('Please fill all letter boxes.');
+                alert(`Please enter a ${answerLength}-letter word.`);
                 return;
             }
 
             const guesses = loadGuesses();
 
             if (guesses[guess]) {
-                guesses[guess]++;
+                alert('You already tried this word!');
+                inputs.forEach(input => input.value = '');
+                inputs[0].focus();
+                return;
             } else {
                 guesses[guess] = 1;
             }
@@ -186,17 +273,18 @@
             displayGuessCount();
 
             if (guess === answer) {
+                gameCompleted = true;
                 const endTime = performance.now();
                 const timeTaken = endTime - startTime;
 
-                result.textContent = `Correct! You guessed "${guess}" in ${formatTime(timeTaken)}, taking ${guessCount} guesses.`;
+                result.textContent = `Correct! You guessed "${guess}" in ${formatTime(timeTaken)}, taking ${guessCount} ${guessCount === 1 ? 'guess' : 'guesses'}.`;
                 result.className = "correct";
 
                 document.getElementById('time-taken').textContent = `Time taken: ${formatTime(timeTaken)}`;
                 document.getElementById('time-taken').style.display = 'block';
 
                 // Calculate and display global rank
-                const globalRank = calculateGlobalRank(timeTaken);
+                const globalRank = calculateGlobalRank(timeTaken, guessCount);
                 displayGlobalRank(globalRank);
 
                 // Save result in localStorage
@@ -204,43 +292,38 @@
                     correctGuess: guess,
                     timeTaken: formatTime(timeTaken),
                     guessCount: guessCount,
-                    globalRank: globalRank // Save global rank
+                    globalRank: globalRank
                 }));
             } else {
-                result.textContent = `Incorrect. You guessed "${guess}".`;
+                result.textContent = `Incorrect. "${guess}" is not the right answer.`;
                 result.className = "incorrect";
+                
+                // Clear input boxes
+                inputs.forEach(input => input.value = '');
+                inputs[0].focus();
             }
-
-            // Clear input boxes
-            inputs.forEach(input => input.value = '');
         }
 
         function loadLastResult() {
             const lastResult = JSON.parse(localStorage.getItem('lastResult'));
-            if (lastResult) {
+            if (lastResult && localStorage.getItem('date') === dateString) {
                 const result = document.getElementById('result');
-                result.textContent = `Your last result: Guessed "${lastResult.correctGuess}" in ${lastResult.timeTaken}, taking ${lastResult.guessCount} guesses.`;
+                result.textContent = `You already solved today's puzzle! You guessed "${lastResult.correctGuess}" in ${lastResult.timeTaken}, taking ${lastResult.guessCount} ${lastResult.guessCount === 1 ? 'guess' : 'guesses'}.`;
                 result.className = "correct";
                 document.getElementById('time-taken').textContent = `Time taken: ${lastResult.timeTaken}`;
                 document.getElementById('time-taken').style.display = 'block';
-                document.getElementById('global-rank').textContent = `Global rank: #${lastResult.globalRank} of all players today`;
+                document.getElementById('global-rank').textContent = `Global rank: Top ${lastResult.globalRank}% of players today`;
                 document.getElementById('global-rank').style.display = 'block';
+                gameCompleted = true;
             }
         }
 
-        function getHintFromURL() {
-            const params = new URLSearchParams(window.location.search);
-            return params.get('hint') || defaultHint;
-        }
-
-        // Initialize the game with hint including letter count
-        document.getElementById('hint').textContent = `Hint: ${getHintFromURL()}`;
+        // Initialize the game
+        document.getElementById('hint').textContent = `Today's hint: ${dailyHint} (${answerLength} letters)`;
         createLetterBoxes();
         displayGuesses();
         displayGuessCount();
         loadLastResult();
-
     </script>
-
 </body>
 </html>

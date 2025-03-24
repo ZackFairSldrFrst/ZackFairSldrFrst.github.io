@@ -1,161 +1,284 @@
-/* Base styles */
+/* Base styles with modern color scheme */
+:root {
+    --primary-color: #4361ee;
+    --primary-dark: #3a56d4;
+    --secondary-color: #4cc9f0;
+    --success-color: #4ad66d;
+    --error-color: #f72585;
+    --background-color: #f8f9fa;
+    --card-color: #ffffff;
+    --text-color: #2b2d42;
+    --text-light: #8d99ae;
+    --border-radius: 12px;
+    --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f2f2f2;
-    color: #333;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
-    padding: 0;
+    padding: 20px;
+    line-height: 1.6;
 }
 
 .container {
-    background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    max-width: 400px;
+    background-color: var(--card-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    max-width: 480px;
     width: 100%;
     text-align: center;
+    transition: transform 0.3s ease;
 }
 
-/* Hint container */
+.container:hover {
+    transform: translateY(-5px);
+}
+
+/* Hint container with improved styling */
 #hint-container {
-    margin-bottom: 20px;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #f0f4ff 0%, #e6f0ff 100%);
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--primary-color);
 }
 
 #hint {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #ff6600;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    line-height: 1.5;
 }
 
-/* Letter boxes for guessing */
+/* Letter boxes with interactive feedback */
 #letter-boxes {
     display: flex;
     justify-content: center;
-    margin-bottom: 15px;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
 }
 
 .letter-box {
-    width: 40px;
-    height: 50px;
-    margin: 0 5px;
-    font-size: 1.5rem;
+    width: 3.5rem;
+    height: 4rem;
+    font-size: 2rem;
+    font-weight: bold;
     text-align: center;
-    border: 2px solid #ccc;
-    border-radius: 5px;
+    text-transform: uppercase;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
     outline: none;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    caret-color: transparent;
+    background-color: #f8f9fa;
+    color: var(--text-color);
 }
 
 .letter-box:focus {
-    border-color: #ff6600;
-    box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    transform: translateY(-2px);
 }
 
-/* Submit button */
+.letter-box.filled {
+    background-color: #ffffff;
+    border-color: var(--primary-color);
+    animation: popIn 0.2s ease-out;
+}
+
+/* Submit button with gradient and hover effects */
 button {
-    background-color: #ff6600;
-    color: #fff;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
     border: none;
-    border-radius: 10px;
-    padding: 10px 20px;
-    font-size: 1rem;
+    border-radius: var(--border-radius);
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
 }
 
 button:hover {
-    background-color: #e65500;
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
 }
 
-/* Result display */
+button:active {
+    transform: translateY(0);
+}
+
+button:disabled {
+    background: #e9ecef;
+    color: #adb5bd;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Result display with enhanced animations */
 #result {
     font-size: 1.2rem;
-    margin-bottom: 15px;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border-radius: var(--border-radius);
 }
 
 .correct {
-    color: #4CAF50;
-    font-weight: bold;
-    animation: correctGuess 0.5s ease-in-out;
+    color: var(--success-color);
+    font-weight: 700;
+    background-color: rgba(74, 214, 109, 0.1);
+    animation: correctGuess 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .incorrect {
-    color: #F44336;
-    font-weight: bold;
-    animation: shake 0.5s ease-in-out;
+    color: var(--error-color);
+    font-weight: 700;
+    background-color: rgba(247, 37, 133, 0.1);
+    animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
 }
 
-/* Guess count, time taken, and global rank */
+/* Stats display */
 #guess-count, #time-taken, #global-rank {
     font-size: 1rem;
-    margin-bottom: 10px;
-    color: #333;
+    margin-bottom: 0.75rem;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
-#global-rank::before {
-    content: "#";
+#global-rank {
+    font-weight: 600;
+    color: var(--primary-color);
 }
 
-/* List of guesses */
+/* List of guesses with modern styling */
 ul {
     list-style-type: none;
     padding: 0;
+    margin: 1.5rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 li {
-    background-color: #ffebcc;
-    border-radius: 10px;
-    padding: 10px;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #333;
+    background-color: #f0f4ff;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: relative;
 }
 
-/* Animations */
+li:before {
+    content: "→";
+    margin-right: 0.75rem;
+    color: var(--primary-color);
+}
+
+li:hover {
+    background-color: #e6f0ff;
+    transform: translateX(5px);
+}
+
+/* Enhanced animations */
 @keyframes shake {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    20%, 60% {
-        transform: translateX(-10px);
-    }
-    40%, 80% {
-        transform: translateX(10px);
-    }
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); }
+    20%, 40%, 60%, 80% { transform: translateX(8px); }
 }
 
 @keyframes correctGuess {
-    0% {
-        transform: scale(1);
-        opacity: 1;
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.9; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.8); opacity: 0.5; }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Loading animation */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.loading {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Modern responsive adjustments */
+@media (max-width: 480px) {
+    .container {
+        padding: 1.5rem;
     }
-    50% {
-        transform: scale(1.2);
-        opacity: 0.8;
+    
+    #hint {
+        font-size: 1.1rem;
     }
-    100% {
-        transform: scale(1);
-        opacity: 1;
+    
+    .letter-box {
+        width: 3rem;
+        height: 3.5rem;
+        font-size: 1.75rem;
+    }
+    
+    button {
+        padding: 0.9rem;
+        font-size: 1rem;
     }
 }
 
-/* Mobile-friendly adjustments */
-@media (max-width: 480px) {
-    .letter-box {
-        width: 35px;
-        height: 45px;
-        font-size: 1.2rem;
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: #121212;
+        --card-color: #1e1e1e;
+        --text-color: #e1e1e1;
+        --text-light: #a1a1a1;
     }
-
-    button {
-        padding: 8px 15px;
-        font-size: 0.9rem;
+    
+    #hint-container {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }
+    
+    .letter-box {
+        background-color: #2d2d2d;
+        border-color: #444;
+        color: white;
+    }
+    
+    li {
+        background-color: #2a2a42;
+        color: white;
+    }
+    
+    li:hover {
+        background-color: #3a3a5a;
     }
 }
