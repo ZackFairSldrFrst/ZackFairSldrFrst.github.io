@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D&D Dice Roller</title>
-    <meta name="description" content="A stylish digital dice roller for Dungeons & Dragons with statistics tracking">
+    <meta name="description" content="A stylish digital dice roller for Dungeons & Dragons with statistics tracking and character sheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
@@ -24,76 +24,467 @@
             <h1>D&D Dice Roller</h1>
             <p>Roll your dice with style and track your luck!</p>
         </header>
+
+        <!-- Tab Navigation -->
+        <div class="tab-navigation">
+            <button class="tab-btn active" data-tab="dice-roller">Dice Roller</button>
+            <button class="tab-btn" data-tab="character-sheet">Character Sheet</button>
+        </div>
         
-        <main>
-            <!-- Dice Section -->
-            <section class="section" id="dice-section">
-                <h2>Choose Your Dice</h2>
-                <div id="dice-container"></div>
-            </section>
-            
-            <!-- Current Roll Display -->
-            <section class="section" id="current-roll-section">
-                <h2>Current Roll</h2>
-                <div id="current-roll">-</div>
-                <div id="results"></div>
-            </section>
-            
-            <!-- Statistics Section -->
-            <section class="section" id="statistics">
-                <h2>Roll Statistics</h2>
-                <div class="stats-grid" id="stats-container">
-                    <!-- Stats will be populated by JavaScript -->
-                    <div class="stat-card">
-                        <h3>Total Rolls</h3>
-                        <p>0</p>
+        <!-- Dice Roller Tab -->
+        <div class="tab-content active" id="dice-roller">
+            <main>
+                <!-- Quick Roll Section -->
+                <section class="section" id="quick-roll-section">
+                    <h2>Quick Roll</h2>
+                    <div class="quick-roll-container">
+                        <div class="quick-roll-input">
+                            <input type="number" id="dice-count" min="1" max="100" value="1">
+                            <select id="dice-type">
+                                <option value="4">d4</option>
+                                <option value="6">d6</option>
+                                <option value="8">d8</option>
+                                <option value="10">d10</option>
+                                <option value="12">d12</option>
+                                <option value="20">d20</option>
+                            </select>
+                            <button id="quick-roll-btn" class="btn btn-primary">Roll</button>
+                        </div>
+                        <div class="modifier-input">
+                            <label for="modifier">Modifier:</label>
+                            <input type="number" id="modifier" value="0">
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <h3>Average</h3>
-                        <p>N/A</p>
+                </section>
+
+                <!-- Dice Section -->
+                <section class="section" id="dice-section">
+                    <h2>Choose Your Dice</h2>
+                    <div id="dice-container"></div>
+                </section>
+                
+                <!-- Current Roll Display -->
+                <section class="section" id="current-roll-section">
+                    <h2>Current Roll</h2>
+                    <div id="current-roll">-</div>
+                    <div id="results"></div>
+                    <div class="roll-details">
+                        <div class="roll-breakdown"></div>
+                        <div class="roll-total"></div>
                     </div>
-                    <div class="stat-card">
-                        <h3>Highest</h3>
-                        <p>0</p>
+                </section>
+                
+                <!-- Statistics Section -->
+                <section class="section" id="statistics">
+                    <h2>Roll Statistics</h2>
+                    <div class="stats-grid" id="stats-container">
+                        <div class="stat-card">
+                            <h3>Total Rolls</h3>
+                            <p>0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Average</h3>
+                            <p>N/A</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Highest</h3>
+                            <p>0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Lowest</h3>
+                            <p>0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Critical Successes</h3>
+                            <p>0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Critical Failures</h3>
+                            <p>0</p>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <h3>Lowest</h3>
-                        <p>0</p>
+                    <div class="dice-distribution">
+                        <h3>Dice Distribution</h3>
+                        <div class="distribution-chart"></div>
                     </div>
-                </div>
-            </section>
-            
-            <!-- History Section -->
-            <section class="section" id="history-section">
-                <h2>Roll History</h2>
-                <div id="history"></div>
-                <div class="btn-group">
-                    <button id="clear-history" class="btn btn-secondary">Clear History</button>
-                </div>
-            </section>
-            
-            <!-- Preferences Section -->
-            <section class="section" id="preferences">
-                <h2>Preferences</h2>
-                <div class="preference-item">
-                    <input type="checkbox" id="sound-toggle" checked>
-                    <label for="sound-toggle">Sound Effects</label>
-                </div>
-                <div class="preference-item">
-                    <input type="checkbox" id="theme-toggle">
-                    <label for="theme-toggle">Dark Theme</label>
-                </div>
-            </section>
-            
-            <!-- Save/Share Section -->
-            <section class="section" id="save-share">
-                <h2>Save & Share</h2>
-                <div class="btn-group">
-                    <button id="save-results" class="btn">Save Results</button>
-                    <button id="share-results" class="btn">Share Results</button>
-                </div>
-            </section>
-        </main>
+                </section>
+                
+                <!-- History Section -->
+                <section class="section" id="history-section">
+                    <h2>Roll History</h2>
+                    <div class="history-filters">
+                        <select id="history-dice-filter">
+                            <option value="all">All Dice</option>
+                            <option value="4">d4</option>
+                            <option value="6">d6</option>
+                            <option value="8">d8</option>
+                            <option value="10">d10</option>
+                            <option value="12">d12</option>
+                            <option value="20">d20</option>
+                        </select>
+                        <input type="text" id="history-search" placeholder="Search history...">
+                    </div>
+                    <div id="history"></div>
+                    <div class="btn-group">
+                        <button id="clear-history" class="btn btn-secondary">Clear History</button>
+                        <button id="export-history" class="btn">Export History</button>
+                    </div>
+                </section>
+                
+                <!-- Preferences Section -->
+                <section class="section" id="preferences">
+                    <h2>Preferences</h2>
+                    <div class="preferences-grid">
+                        <div class="preference-item">
+                            <input type="checkbox" id="sound-toggle" checked>
+                            <label for="sound-toggle">Sound Effects</label>
+                        </div>
+                        <div class="preference-item">
+                            <input type="checkbox" id="theme-toggle">
+                            <label for="theme-toggle">Dark Theme</label>
+                        </div>
+                        <div class="preference-item">
+                            <input type="checkbox" id="animation-toggle" checked>
+                            <label for="animation-toggle">Animations</label>
+                        </div>
+                        <div class="preference-item">
+                            <input type="checkbox" id="auto-save-toggle" checked>
+                            <label for="auto-save-toggle">Auto-save History</label>
+                        </div>
+                    </div>
+                    <div class="sound-options">
+                        <label for="sound-volume">Sound Volume:</label>
+                        <input type="range" id="sound-volume" min="0" max="100" value="50">
+                    </div>
+                </section>
+                
+                <!-- Save/Share Section -->
+                <section class="section" id="save-share">
+                    <h2>Save & Share</h2>
+                    <div class="btn-group">
+                        <button id="save-results" class="btn">Save Results</button>
+                        <button id="share-results" class="btn">Share Results</button>
+                        <button id="generate-report" class="btn">Generate Report</button>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Character Sheet Tab -->
+        <div class="tab-content" id="character-sheet">
+            <main>
+                <!-- Character Info Section -->
+                <section class="section" id="character-info">
+                    <h2>Character Information</h2>
+                    <div class="character-info-grid">
+                        <div class="info-group">
+                            <label for="char-name">Character Name:</label>
+                            <input type="text" id="char-name" placeholder="Enter character name">
+                        </div>
+                        <div class="info-group">
+                            <label for="char-class">Class:</label>
+                            <select id="char-class">
+                                <option value="">Select Class</option>
+                                <option value="barbarian">Barbarian</option>
+                                <option value="bard">Bard</option>
+                                <option value="cleric">Cleric</option>
+                                <option value="druid">Druid</option>
+                                <option value="fighter">Fighter</option>
+                                <option value="monk">Monk</option>
+                                <option value="paladin">Paladin</option>
+                                <option value="ranger">Ranger</option>
+                                <option value="rogue">Rogue</option>
+                                <option value="sorcerer">Sorcerer</option>
+                                <option value="warlock">Warlock</option>
+                                <option value="wizard">Wizard</option>
+                            </select>
+                        </div>
+                        <div class="info-group">
+                            <label for="char-level">Level:</label>
+                            <input type="number" id="char-level" min="1" max="20" value="1">
+                        </div>
+                        <div class="info-group">
+                            <label for="char-race">Race:</label>
+                            <input type="text" id="char-race" placeholder="Enter race">
+                        </div>
+                        <div class="info-group">
+                            <label for="char-background">Background:</label>
+                            <input type="text" id="char-background" placeholder="Enter background">
+                        </div>
+                        <div class="info-group">
+                            <label for="char-alignment">Alignment:</label>
+                            <select id="char-alignment">
+                                <option value="">Select Alignment</option>
+                                <option value="lg">Lawful Good</option>
+                                <option value="ng">Neutral Good</option>
+                                <option value="cg">Chaotic Good</option>
+                                <option value="ln">Lawful Neutral</option>
+                                <option value="nn">True Neutral</option>
+                                <option value="cn">Chaotic Neutral</option>
+                                <option value="le">Lawful Evil</option>
+                                <option value="ne">Neutral Evil</option>
+                                <option value="ce">Chaotic Evil</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Ability Scores Section -->
+                <section class="section" id="ability-scores">
+                    <h2>Ability Scores</h2>
+                    <div class="ability-scores-grid">
+                        <div class="ability-score">
+                            <h3>Strength</h3>
+                            <div class="score-input">
+                                <input type="number" id="str-score" min="3" max="20" value="10">
+                                <div class="modifier" id="str-mod">+0</div>
+                            </div>
+                            <div class="saving-throw">
+                                <input type="checkbox" id="str-save">
+                                <label for="str-save">Proficient</label>
+                            </div>
+                        </div>
+                        <div class="ability-score">
+                            <h3>Dexterity</h3>
+                            <div class="score-input">
+                                <input type="number" id="dex-score" min="3" max="20" value="10">
+                                <div class="modifier" id="dex-mod">+0</div>
+                            </div>
+                            <div class="saving-throw">
+                                <input type="checkbox" id="dex-save">
+                                <label for="dex-save">Proficient</label>
+                            </div>
+                        </div>
+                        <div class="ability-score">
+                            <h3>Constitution</h3>
+                            <div class="score-input">
+                                <input type="number" id="con-score" min="3" max="20" value="10">
+                                <div class="modifier" id="con-mod">+0</div>
+                            </div>
+                            <div class="saving-throw">
+                                <input type="checkbox" id="con-save">
+                                <label for="con-save">Proficient</label>
+                            </div>
+                        </div>
+                        <div class="ability-score">
+                            <h3>Intelligence</h3>
+                            <div class="score-input">
+                                <input type="number" id="int-score" min="3" max="20" value="10">
+                                <div class="modifier" id="int-mod">+0</div>
+                            </div>
+                            <div class="saving-throw">
+                                <input type="checkbox" id="int-save">
+                                <label for="int-save">Proficient</label>
+                            </div>
+                        </div>
+                        <div class="ability-score">
+                            <h3>Wisdom</h3>
+                            <div class="score-input">
+                                <input type="number" id="wis-score" min="3" max="20" value="10">
+                                <div class="modifier" id="wis-mod">+0</div>
+                            </div>
+                            <div class="saving-throw">
+                                <input type="checkbox" id="wis-save">
+                                <label for="wis-save">Proficient</label>
+                            </div>
+                        </div>
+                        <div class="ability-score">
+                            <h3>Charisma</h3>
+                            <div class="score-input">
+                                <input type="number" id="cha-score" min="3" max="20" value="10">
+                                <div class="modifier" id="cha-mod">+0</div>
+                            </div>
+                            <div class="saving-throw">
+                                <input type="checkbox" id="cha-save">
+                                <label for="cha-save">Proficient</label>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Skills Section -->
+                <section class="section" id="skills">
+                    <h2>Skills</h2>
+                    <div class="skills-grid">
+                        <div class="skill">
+                            <div class="skill-header">
+                                <input type="checkbox" id="acrobatics">
+                                <label for="acrobatics">Acrobatics (Dex)</label>
+                            </div>
+                            <div class="skill-modifier" id="acrobatics-mod">+0</div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-header">
+                                <input type="checkbox" id="animal-handling">
+                                <label for="animal-handling">Animal Handling (Wis)</label>
+                            </div>
+                            <div class="skill-modifier" id="animal-handling-mod">+0</div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-header">
+                                <input type="checkbox" id="arcana">
+                                <label for="arcana">Arcana (Int)</label>
+                            </div>
+                            <div class="skill-modifier" id="arcana-mod">+0</div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-header">
+                                <input type="checkbox" id="athletics">
+                                <label for="athletics">Athletics (Str)</label>
+                            </div>
+                            <div class="skill-modifier" id="athletics-mod">+0</div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-header">
+                                <input type="checkbox" id="deception">
+                                <label for="deception">Deception (Cha)</label>
+                            </div>
+                            <div class="skill-modifier" id="deception-mod">+0</div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-header">
+                                <input type="checkbox" id="history">
+                                <label for="history">History (Int)</label>
+                            </div>
+                            <div class="skill-modifier" id="history-mod">+0</div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-header">
+                                <input type="checkbox" id="insight">
+                                <label for="insight">Insight (Wis)</label>
+                            </div>
+                            <div class="skill-modifier" id="insight-mod">+0</div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-header">
+                                <input type="checkbox" id="intimidation">
+                                <label for="intimidation">Intimidation (Cha)</label>
+                            </div>
+                            <div class="skill-modifier" id="intimidation-mod">+0</div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-header">
+                                <input type="checkbox" id="investigation">
+                                <label for="investigation">Investigation (Int)</label>
+                            </div>
+                            <div class="skill-modifier" id="investigation-mod">+0</div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-header">
+                                <input type="checkbox" id="medicine">
+                                <label for="medicine">Medicine (Wis)</label>
+                            </div>
+                            <div class="skill-modifier" id="medicine-mod">+0</div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-header">
+                                <input type="checkbox" id="nature">
+                                <label for="nature">Nature (Int)</label>
+                            </div>
+                            <div class="skill-modifier" id="nature-mod">+0</div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-header">
+                                <input type="checkbox" id="perception">
+                                <label for="perception">Perception (Wis)</label>
+                            </div>
+                            <div class="skill-modifier" id="perception-mod">+0</div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-header">
+                                <input type="checkbox" id="performance">
+                                <label for="performance">Performance (Cha)</label>
+                            </div>
+                            <div class="skill-modifier" id="performance-mod">+0</div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-header">
+                                <input type="checkbox" id="persuasion">
+                                <label for="persuasion">Persuasion (Cha)</label>
+                            </div>
+                            <div class="skill-modifier" id="persuasion-mod">+0</div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-header">
+                                <input type="checkbox" id="religion">
+                                <label for="religion">Religion (Int)</label>
+                            </div>
+                            <div class="skill-modifier" id="religion-mod">+0</div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-header">
+                                <input type="checkbox" id="sleight-of-hand">
+                                <label for="sleight-of-hand">Sleight of Hand (Dex)</label>
+                            </div>
+                            <div class="skill-modifier" id="sleight-of-hand-mod">+0</div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-header">
+                                <input type="checkbox" id="stealth">
+                                <label for="stealth">Stealth (Dex)</label>
+                            </div>
+                            <div class="skill-modifier" id="stealth-mod">+0</div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-header">
+                                <input type="checkbox" id="survival">
+                                <label for="survival">Survival (Wis)</label>
+                            </div>
+                            <div class="skill-modifier" id="survival-mod">+0</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quick Actions Section -->
+                <section class="section" id="quick-actions">
+                    <h2>Quick Actions</h2>
+                    <div class="quick-actions-grid">
+                        <div class="action-group">
+                            <h3>Ability Checks</h3>
+                            <div class="action-buttons">
+                                <button class="btn btn-secondary" data-action="str-check">Strength Check</button>
+                                <button class="btn btn-secondary" data-action="dex-check">Dexterity Check</button>
+                                <button class="btn btn-secondary" data-action="con-check">Constitution Check</button>
+                                <button class="btn btn-secondary" data-action="int-check">Intelligence Check</button>
+                                <button class="btn btn-secondary" data-action="wis-check">Wisdom Check</button>
+                                <button class="btn btn-secondary" data-action="cha-check">Charisma Check</button>
+                            </div>
+                        </div>
+                        <div class="action-group">
+                            <h3>Saving Throws</h3>
+                            <div class="action-buttons">
+                                <button class="btn btn-secondary" data-action="str-save">Strength Save</button>
+                                <button class="btn btn-secondary" data-action="dex-save">Dexterity Save</button>
+                                <button class="btn btn-secondary" data-action="con-save">Constitution Save</button>
+                                <button class="btn btn-secondary" data-action="int-save">Intelligence Save</button>
+                                <button class="btn btn-secondary" data-action="wis-save">Wisdom Save</button>
+                                <button class="btn btn-secondary" data-action="cha-save">Charisma Save</button>
+                            </div>
+                        </div>
+                        <div class="action-group">
+                            <h3>Common Skills</h3>
+                            <div class="action-buttons">
+                                <button class="btn btn-secondary" data-action="perception">Perception</button>
+                                <button class="btn btn-secondary" data-action="stealth">Stealth</button>
+                                <button class="btn btn-secondary" data-action="acrobatics">Acrobatics</button>
+                                <button class="btn btn-secondary" data-action="athletics">Athletics</button>
+                                <button class="btn btn-secondary" data-action="investigation">Investigation</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Save Character Section -->
+                <section class="section" id="save-character">
+                    <h2>Save & Load Character</h2>
+                    <div class="btn-group">
+                        <button id="save-character-btn" class="btn btn-primary">Save Character</button>
+                        <button id="load-character-btn" class="btn">Load Character</button>
+                        <button id="export-character-btn" class="btn">Export Character</button>
+                    </div>
+                </section>
+            </main>
+        </div>
         
         <!-- Theme Toggle Button -->
         <button id="theme-toggle-btn" class="theme-toggle" aria-label="Toggle theme">
@@ -103,8 +494,13 @@
             </svg>
         </button>
         
-        <!-- Audio Element -->
+        <!-- Audio Elements -->
         <audio id="roll-sound" src="sounds/roll.mp3" preload="auto"></audio>
+        <audio id="crit-success-sound" src="sounds/crit-success.mp3" preload="auto"></audio>
+        <audio id="crit-fail-sound" src="sounds/crit-fail.mp3" preload="auto"></audio>
+        
+        <!-- Toast Notifications -->
+        <div id="toast-container"></div>
         
         <script src="script.js"></script>
     </div>
