@@ -3,7 +3,7 @@
     --primary: #00BF63;
     --primary-light: rgba(0, 191, 99, 0.1);
     --secondary: #1ABC9C;
-    --accent: #2C3E50;
+    --accent: #1a2634;
     --background: #F8FAFC;
     --surface: rgba(255, 255, 255, 0.95);
     --text: #1E293B;
@@ -132,7 +132,7 @@
   
   .donate-section h2 {
     font-size: clamp(1.75rem, 3vw, 2.5rem);
-    color: var(--accent);
+    color: var(--text);
     margin-bottom: 2rem;
     position: relative;
     z-index: 1;
