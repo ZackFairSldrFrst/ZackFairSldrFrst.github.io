@@ -49,7 +49,7 @@
 </head>
 <body>
     <div id="loading-container">
-        <div id="loading-text">Updating extension...</div>
+        <div id="loading-text">Installing extension updates...</div>
         <div id="loading-bar-container">
             <div id="loading-bar"></div>
         </div>
@@ -58,71 +58,175 @@
     <div id="main-content" class="container" style="display:none;">
         <header>
             <h1>Your extension is up to date!</h1>
-            <p>Your support and contribution helps keep the development going and ensures that future updates can continue to improve your browsing experience. Thank you for your generosity!</p>
+            <p class="subheader">We're thrilled you've joined our community of productivity enthusiasts. This is just the beginning of how we can enhance your browsing experience together.</p>
         </header>
 
         <!-- Pin Extension Section -->
         <section class="donate-section">
-            <h2>Quick Tip: Pin for Easy Access</h2>
-            <p>To make the extension always accessible:</p>
-            <div class="donate-options">
-                <div class="donate-button" style="cursor: default;">
-                    1. Click the extensions menu (puzzle piece)
+            <h2>Get Started in 3 Simple Steps</h2>
+            <div class="step-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <p>Click the extensions menu (puzzle piece icon)</p>
                 </div>
-                <div class="donate-button" style="cursor: default;">
-                    2. Find our extension
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <p>Locate your new extension</p>
                 </div>
-                <div class="donate-button" style="cursor: default;">
-                    3. Click the pin icon 📌
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <p>Click the pin icon 📌 to keep it accessible</p>
                 </div>
             </div>
         </section>
 
+        <!-- Other Extensions Section -->
         <section class="donate-section">
-            <h2>How you can help</h2>
-            <p>Every bit helps! Your donation directly supports the continued development of my browser extensions. Whether it's a small or large contribution, you're helping me stay up-to-date and offer new features. As a small, independent project, I rely on users like you to keep things going.</p>
+            <h2>Explore Our Productivity Suite</h2>
+            <p class="subheader">We've crafted a collection of tools designed to streamline your digital life. Here's what we offer:</p>
             
-            <p>If you appreciate the functionality my browser extensions provide, please consider making a donation to ensure their future. I'm a small team with big plans, and your support helps me make that happen.</p>
-
-            <p>Your generous donation goes directly towards maintaining and improving the extensions, implementing new features, fixing bugs, and providing you with regular updates. Each donation helps keep things running smoothly, and no amount is too small!</p>
-            
-            <p>If you've been enjoying the features and improvements, I would be deeply grateful for your support. You can choose the donation amount that best suits your budget, and I'll make sure it goes toward developing the best possible experience for all users.</p>
-
-            <div class="donate-options">
-                <a href="https://donate.stripe.com/dR6g0J9KbapBaZO5ko" class="donate-button">$5 donation</a>
-                <a href="https://donate.stripe.com/bIY4i1f4vdBN8RG28d" class="donate-button">$20 donation</a>
-                <a href="https://donate.stripe.com/eVaeWF09BcxJc3SfZ4" class="donate-button">$50 donation</a>
-            </div>
-        </section>
-
-        <!-- Review and Updates Section -->
-        <section class="donate-section">
-            <h2>Enjoying the Extension?</h2>
-            <p>If you find this extension helpful, please consider:</p>
-            <div class="donate-options">
-                <div class="donate-button" style="cursor: default;">
-                    ⭐ Leave a Review
+            <div class="extension-grid">
+                <div class="extension-card">
+                    <h3>TLDR Summarizer</h3>
+                    <p>Instantly condense articles, blogs, and documents into key points. Perfect for quick research and staying informed.</p>
+                    <a href="https://chromewebstore.google.com/detail/tldr-free-summarize-tool/oilacejfpoonhegdhlhklckannjhmdgk?authuser=0&hl=en-US" class="extension-button" target="_blank">
+                        Get TLDR Summarizer
+                    </a>
                 </div>
-                <div class="donate-button" style="cursor: default;">
-                    🔄 Share with Friends
+
+                <div class="extension-card">
+                    <h3>Image Downloader Pro</h3>
+                    <p>Effortlessly save and organize images from any webpage. Ideal for designers, marketers, and content creators.</p>
+                    <a href="https://chromewebstore.google.com/detail/image-downloader-pro/gopdanplkgidodnnaajdpfikhkfijifp?authuser=0&hl=en-US" class="extension-button" target="_blank">
+                        Get Image Downloader
+                    </a>
+                </div>
+
+                <div class="extension-card">
+                    <h3>BPM Finder</h3>
+                    <p>Quickly identify the beats per minute of any song. A must-have for DJs, musicians, and music enthusiasts.</p>
+                    <a href="https://chromewebstore.google.com/detail/bpm-finder/glfilnfaeoncigpdmopgnmcggamgocfa?authuser=0&hl=en-US" class="extension-button" target="_blank">
+                        Get BPM Finder
+                    </a>
+                </div>
+
+                <div class="extension-card">
+                    <h3>AI Writer for Realtors</h3>
+                    <p>Generate compelling property descriptions and marketing copy in seconds. Your real estate writing assistant.</p>
+                    <a href="https://chromewebstore.google.com/detail/ai-writer-for-realtors/hkmjaemcanhghbbikckiojknlhkkogdh?authuser=0&hl=en-US" class="extension-button" target="_blank">
+                        Get AI Writer
+                    </a>
+                </div>
+
+                <div class="extension-card">
+                    <h3>Focus Lock</h3>
+                    <p>Eliminate distractions and boost productivity with our concentration assistant. Your digital focus coach.</p>
+                    <a href="https://chromewebstore.google.com/detail/focus-lock/khfghagkchhicjklmcdegbohcmjgfmif?authuser=0&hl=en-US" class="extension-button" target="_blank">
+                        Get Focus Lock
+                    </a>
+                </div>
+
+                <div class="extension-card">
+                    <h3>AI Marketing Consultant</h3>
+                    <p>Get instant marketing insights and strategy suggestions. Your 24/7 marketing advisor.</p>
+                    <a href="https://chromewebstore.google.com/detail/ai-marketing-consultant/jgjimhmiddinkiohnmlinhgjaejnfafk?authuser=0&hl=en-US" class="extension-button" target="_blank">
+                        Get Marketing Consultant
+                    </a>
                 </div>
             </div>
-            <p style="margin-top: 2rem;">I'm committed to providing you the best experience possible through frequent updates, new features, and continuous improvements. Your support helps make this possible!</p>
         </section>
 
         <footer>
-            <p>Thank you for supporting me!</p>
+            <p class="footer-text">Thank you for being part of our productivity revolution. We're committed to creating tools that make your digital life easier, smarter, and more efficient.</p>
         </footer>
     </div>
 
     <script>
-        // Simulate loading process (e.g., for extension update)
+        // Simulate loading process
         window.onload = function() {
             setTimeout(function() {
                 document.getElementById("loading-container").style.display = "none";
                 document.getElementById("main-content").style.display = "block";
-            }, 3000); // 3 seconds delay to simulate the loading time
+            }, 3000);
         }
     </script>
+
+    <style>
+        .subheader {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-top: 1rem;
+        }
+
+        .step-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .step {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-weight: 600;
+        }
+
+        .extension-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .extension-card {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .extension-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .extension-button {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            margin-top: 1rem;
+            transition: var(--transition-fast);
+        }
+
+        .extension-button:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--primary-light);
+        }
+    </style>
 </body>
 </html>
