@@ -143,13 +143,11 @@
 
   <script>
     function initMap() {
-      if (window.initializeApp) {
-        window.initializeApp();
-      }
+      // Will be implemented in script.js
     }
   </script>
   <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLVKhhZwlSmeKUAQ8J9cQNbz0E7yichiA&libraries=places&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLVKhhZwlSmeKUAQ8J9cQNbz0E7yichiA&libraries=places,core&v=beta&callback=initMap">
   </script>
   <script src="script.js"></script>
 </body>

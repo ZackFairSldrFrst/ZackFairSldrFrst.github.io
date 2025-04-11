@@ -24,6 +24,33 @@ const defaultFilters = {
   price: ''
 };
 
+// First, let's create a proper initialization for Google Maps
+let placesClient;
+
+function initMap() {
+  // Create a dummy map element if it doesn't exist
+  if (!document.getElementById('map')) {
+    const mapDiv = document.createElement('div');
+    mapDiv.id = 'map';
+    mapDiv.style.display = 'none';
+    document.body.appendChild(mapDiv);
+  }
+
+  // Initialize the map
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: { lat: 0, lng: 0 }, // Will be updated when we get user's location
+    zoom: 15
+  });
+
+  // Initialize Places client
+  placesClient = new google.maps.places.Place();
+
+  // Now initialize the app
+  if (window.initializeApp) {
+    window.initializeApp();
+  }
+}
+
 // UI Helper Functions
 function showLoadingOverlay(message = 'Loading...') {
   const overlay = document.getElementById('loading-overlay');
@@ -644,7 +671,7 @@ function requestLocationAndFindRestaurants() {
     });
 }
 
-// Add these styles to your CSS
+// Add this styles to your CSS
 const locationStyles = document.createElement('style');
 locationStyles.innerHTML = `
   .error-container {
@@ -774,109 +801,213 @@ function setupFilterControls() {
 }
 
 // Location and Restaurant Functions
-function requestLocationAndFindRestaurants() {
-  showLoadingOverlay('Requesting location access...');
-  
-  if (!navigator.geolocation) {
-    hideLoadingOverlay();
-    showError('Geolocation is not supported by your browser');
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(
-    // Success callback
-    position => {
-      currentLocation = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
-      showLoadingOverlay('Finding restaurants near you...');
-      findRestaurants();
-    },
-    // Error callback
-    error => {
-      hideLoadingOverlay();
-      let errorMessage;
-      switch (error.code) {
-        case error.PERMISSION_DENIED:
-          errorMessage = 'Please enable location access in your browser settings.';
-          break;
-        case error.POSITION_UNAVAILABLE:
-          errorMessage = 'Location information is unavailable.';
-          break;
-        case error.TIMEOUT:
-          errorMessage = 'Location request timed out.';
-          break;
-        default:
-          errorMessage = 'An unknown error occurred.';
-      }
-      showError(errorMessage);
-    },
-    // Options
-    {
-      enableHighAccuracy: true,
-      timeout: 10000,
-      maximumAge: 0
-    }
-  );
-}
-
-function findRestaurants() {
+async function findRestaurants() {
   if (!currentLocation) {
-    requestLocationAndFindRestaurants();
+    await requestLocationAndFindRestaurants();
     return;
   }
 
-  const service = new google.maps.places.PlacesService(document.createElement('div'));
-  const request = {
-    location: new google.maps.LatLng(currentLocation.lat, currentLocation.lng),
-    radius: currentFilters.distance,
-    type: [currentFilters.cuisineType],
-    openNow: currentFilters.openNow
-  };
+  showLoadingOverlay('Finding restaurants near you...');
 
-  service.nearbySearch(request, (results, status) => {
-    hideLoadingOverlay();
+  try {
+    // Create the search request
+    const searchRequest = {
+      locationBias: {
+        circle: {
+          center: currentLocation,
+          radius: currentFilters.distance || 3000
+        }
+      },
+      includedType: currentFilters.cuisineType || 'restaurant',
+      maxResultCount: 20,
+      openNow: currentFilters.openNow
+    };
+
+    // Perform the search
+    const { places } = await placesClient.searchNearby(searchRequest);
     
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-      currentRestaurants = results.filter(place => 
-        (!currentFilters.minRating || place.rating >= currentFilters.minRating) &&
-        (!currentFilters.priceLevel || place.price_level === parseInt(currentFilters.priceLevel))
-      );
-      
+    if (places && places.length > 0) {
+      // Filter results based on rating and price level
+      currentRestaurants = places.filter(place => {
+        const meetsRating = !currentFilters.minRating || place.rating >= currentFilters.minRating;
+        const meetsPrice = !currentFilters.priceLevel || place.priceLevel === parseInt(currentFilters.priceLevel);
+        return meetsRating && meetsPrice;
+      });
+
       if (currentRestaurants.length > 0) {
-        renderRestaurantCards(currentRestaurants);
+        await renderRestaurantCards(currentRestaurants);
       } else {
         showNoResultsMessage();
       }
     } else {
-      showError('Failed to find restaurants. Please try again.');
+      showNoResultsMessage();
     }
-  });
+  } catch (error) {
+    console.error('Error searching for places:', error);
+    showError('Failed to find restaurants. Please try again.');
+  } finally {
+    hideLoadingOverlay();
+  }
 }
 
-// Initialize the app (called by Google Maps callback)
-window.initializeApp = function() {
-  showLoadingOverlay('Initializing...');
-  
-  // Setup UI and event listeners
-  setupUIElements();
-  
-  // Load saved favorites
-  loadFavorites();
-  
-  // Set up initial filter values
-  updateStarRating(currentFilters.minRating);
-  
-  // Start location request automatically
-  requestLocationAndFindRestaurants();
-};
+async function renderRestaurantCards(restaurants) {
+  const resultsContainer = document.getElementById('results');
+  if (!resultsContainer) return;
 
-// Add this to your HTML just before the closing </body> tag
-document.addEventListener('DOMContentLoaded', function() {
-  // If Google Maps is already loaded, initialize the app
-  if (window.google && window.google.maps) {
-    window.initializeApp();
+  resultsContainer.innerHTML = '';
+
+  for (let i = 0; i < restaurants.length; i++) {
+    const restaurant = restaurants[i];
+    try {
+      // Get full place details
+      const placeResult = await placesClient.fetchFields({
+        fields: [
+          'displayName',
+          'formattedAddress',
+          'photos',
+          'rating',
+          'userRatingCount',
+          'priceLevel',
+          'currentOpeningHours',
+          'websiteUri',
+          'formattedPhoneNumber'
+        ]
+      });
+
+      const card = createRestaurantCard(placeResult, i);
+      resultsContainer.appendChild(card);
+    } catch (error) {
+      console.error('Error fetching place details:', error);
+    }
   }
-  // Otherwise, it will be initialized by the Google Maps callback
-});
+}
+
+function createRestaurantCard(place, index) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.style.zIndex = 1000 - index;
+
+  const photoUrl = place.photos && place.photos.length > 0 
+    ? place.photos[0].getUrl()
+    : 'https://via.placeholder.com/500x300?text=No+Image';
+
+  card.innerHTML = `
+    <img src="${photoUrl}" class="card-image" alt="${place.displayName.text}">
+    <div class="card-content">
+      <h3 class="card-title">${place.displayName.text}</h3>
+      <div class="card-meta">
+        <span class="meta-item">
+          <i class="fas fa-star"></i> ${place.rating || 'N/A'} 
+          (${place.userRatingCount || 0})
+        </span>
+        <span class="meta-item">
+          <i class="fas fa-dollar-sign"></i> ${getPriceLevel(place.priceLevel)}
+        </span>
+        ${place.currentOpeningHours ? `
+          <span class="meta-item">
+            <i class="fas fa-clock"></i> 
+            ${place.currentOpeningHours.isOpen() ? 'Open' : 'Closed'}
+          </span>
+        ` : ''}
+      </div>
+      <p class="card-address">${place.formattedAddress || ''}</p>
+    </div>
+  `;
+
+  // Add click handler for details
+  card.addEventListener('click', () => showPlaceDetails(place));
+
+  return card;
+}
+
+async function showPlaceDetails(place) {
+  const detailsPanel = document.getElementById('details-panel');
+  if (!detailsPanel) return;
+
+  try {
+    // Fetch additional details if needed
+    const placeDetails = await placesClient.fetchFields({
+      fields: [
+        'reviews',
+        'photos',
+        'editorialSummary',
+        'currentOpeningHours',
+        'deliveryTags',
+        'dineInTags',
+        'takeoutTags'
+      ]
+    });
+
+    const content = document.getElementById('details-content');
+    if (content) {
+      content.innerHTML = createDetailsHTML(place, placeDetails);
+    }
+
+    detailsPanel.classList.add('active');
+  } catch (error) {
+    console.error('Error fetching place details:', error);
+    showError('Failed to load restaurant details.');
+  }
+}
+
+function createDetailsHTML(place, details) {
+  return `
+    <div class="details-header">
+      <h2>${place.displayName.text}</h2>
+      ${details.editorialSummary ? `
+        <p class="editorial-summary">${details.editorialSummary.text}</p>
+      ` : ''}
+    </div>
+
+    ${details.photos ? `
+      <div class="photo-gallery">
+        ${details.photos.slice(0, 5).map(photo => `
+          <img src="${photo.getUrl()}" alt="${place.displayName.text}">
+        `).join('')}
+      </div>
+    ` : ''}
+
+    <div class="details-info">
+      <div class="info-section">
+        <h3><i class="fas fa-info-circle"></i> Basic Info</h3>
+        <p><i class="fas fa-map-marker-alt"></i> ${place.formattedAddress}</p>
+        ${place.formattedPhoneNumber ? `
+          <p><i class="fas fa-phone"></i> ${place.formattedPhoneNumber}</p>
+        ` : ''}
+        ${place.websiteUri ? `
+          <p><i class="fas fa-globe"></i> <a href="${place.websiteUri}" target="_blank">Website</a></p>
+        ` : ''}
+      </div>
+
+      ${details.currentOpeningHours ? `
+        <div class="info-section">
+          <h3><i class="fas fa-clock"></i> Hours</h3>
+          <div class="hours-list">
+            ${details.currentOpeningHours.weekdayDescriptions.map(day => `
+              <p>${day}</p>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      ${details.reviews ? `
+        <div class="info-section">
+          <h3><i class="fas fa-star"></i> Reviews</h3>
+          <div class="reviews-list">
+            ${details.reviews.map(review => `
+              <div class="review">
+                <div class="review-header">
+                  <strong>${review.authorName}</strong>
+                  <span>${review.rating} ⭐</span>
+                </div>
+                <p>${review.text}</p>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+// Update the HTML to load the new Places library
