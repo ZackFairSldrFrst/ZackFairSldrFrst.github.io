@@ -674,3 +674,209 @@ locationStyles.innerHTML = `
   }
 `;
 document.head.appendChild(locationStyles);
+
+// View Management Functions
+function toggleFavoritesView() {
+  const favView = document.getElementById('favorites-view');
+  if (favView) {
+    if (favView.classList.contains('active-view')) {
+      switchView('card-view');
+    } else {
+      renderFavorites();
+      switchView('favorites-view');
+    }
+  }
+}
+
+function toggleMapView() {
+  const mapView = document.getElementById('map-view');
+  if (mapView) {
+    if (mapView.classList.contains('active-view')) {
+      switchView('card-view');
+    } else {
+      if (!map) {
+        initMap();
+      }
+      renderMap(currentRestaurants);
+      switchView('map-view');
+    }
+  }
+}
+
+function switchView(viewId) {
+  document.querySelectorAll('.view-container').forEach(view => {
+    view.classList.remove('active-view');
+  });
+  const targetView = document.getElementById(viewId);
+  if (targetView) {
+    targetView.classList.add('active-view');
+  }
+}
+
+// Filter Management Functions
+function openFiltersPanel() {
+  const panel = document.getElementById('filters-panel');
+  if (panel) {
+    panel.classList.add('active');
+  }
+}
+
+function closeFiltersPanel() {
+  const panel = document.getElementById('filters-panel');
+  if (panel) {
+    panel.classList.remove('active');
+  }
+}
+
+function updateStarRating(rating) {
+  const stars = document.querySelectorAll('.star');
+  stars.forEach(star => {
+    const value = parseInt(star.dataset.value);
+    if (value <= rating) {
+      star.classList.remove('far');
+      star.classList.add('fas');
+    } else {
+      star.classList.remove('fas');
+      star.classList.add('far');
+    }
+  });
+}
+
+function setupFilterControls() {
+  // Star rating
+  document.querySelectorAll('.star').forEach(star => {
+    star.addEventListener('click', function() {
+      const value = parseInt(this.dataset.value);
+      document.getElementById('min-rating').value = value;
+      updateStarRating(value);
+    });
+  });
+
+  // Price buttons
+  document.querySelectorAll('.price-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.price-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      document.getElementById('price-level').value = this.dataset.value;
+    });
+  });
+
+  // Distance slider
+  const distanceSlider = document.getElementById('distance');
+  if (distanceSlider) {
+    distanceSlider.addEventListener('input', function() {
+      const output = document.querySelector('output[for="distance"]');
+      if (output) {
+        output.value = (this.value / 1000) + ' km';
+      }
+    });
+  }
+}
+
+// Location and Restaurant Functions
+function requestLocationAndFindRestaurants() {
+  showLoadingOverlay('Requesting location access...');
+  
+  if (!navigator.geolocation) {
+    hideLoadingOverlay();
+    showError('Geolocation is not supported by your browser');
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    // Success callback
+    position => {
+      currentLocation = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      showLoadingOverlay('Finding restaurants near you...');
+      findRestaurants();
+    },
+    // Error callback
+    error => {
+      hideLoadingOverlay();
+      let errorMessage;
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          errorMessage = 'Please enable location access in your browser settings.';
+          break;
+        case error.POSITION_UNAVAILABLE:
+          errorMessage = 'Location information is unavailable.';
+          break;
+        case error.TIMEOUT:
+          errorMessage = 'Location request timed out.';
+          break;
+        default:
+          errorMessage = 'An unknown error occurred.';
+      }
+      showError(errorMessage);
+    },
+    // Options
+    {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0
+    }
+  );
+}
+
+function findRestaurants() {
+  if (!currentLocation) {
+    requestLocationAndFindRestaurants();
+    return;
+  }
+
+  const service = new google.maps.places.PlacesService(document.createElement('div'));
+  const request = {
+    location: new google.maps.LatLng(currentLocation.lat, currentLocation.lng),
+    radius: currentFilters.distance,
+    type: [currentFilters.cuisineType],
+    openNow: currentFilters.openNow
+  };
+
+  service.nearbySearch(request, (results, status) => {
+    hideLoadingOverlay();
+    
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      currentRestaurants = results.filter(place => 
+        (!currentFilters.minRating || place.rating >= currentFilters.minRating) &&
+        (!currentFilters.priceLevel || place.price_level === parseInt(currentFilters.priceLevel))
+      );
+      
+      if (currentRestaurants.length > 0) {
+        renderRestaurantCards(currentRestaurants);
+      } else {
+        showNoResultsMessage();
+      }
+    } else {
+      showError('Failed to find restaurants. Please try again.');
+    }
+  });
+}
+
+// Initialize the app (called by Google Maps callback)
+window.initializeApp = function() {
+  showLoadingOverlay('Initializing...');
+  
+  // Setup UI and event listeners
+  setupUIElements();
+  
+  // Load saved favorites
+  loadFavorites();
+  
+  // Set up initial filter values
+  updateStarRating(currentFilters.minRating);
+  
+  // Start location request automatically
+  requestLocationAndFindRestaurants();
+};
+
+// Add this to your HTML just before the closing </body> tag
+document.addEventListener('DOMContentLoaded', function() {
+  // If Google Maps is already loaded, initialize the app
+  if (window.google && window.google.maps) {
+    window.initializeApp();
+  }
+  // Otherwise, it will be initialized by the Google Maps callback
+});
