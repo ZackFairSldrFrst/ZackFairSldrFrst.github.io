@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Planner</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Google Maps API will be added here -->
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>Trip Planner</h1>
+            <nav class="main-nav">
+                <button class="nav-btn active" data-view="explore">
+                    <span class="material-icons">explore</span>
+                    Explore
+                </button>
+                <button class="nav-btn" data-view="trips">
+                    <span class="material-icons">map</span>
+                    My Trips
+                </button>
+                <button class="nav-btn" data-view="saved">
+                    <span class="material-icons">favorite</span>
+                    Saved
+                </button>
+            </nav>
+        </header>
+
+        <main class="app-main">
+            <div class="view" id="explore-view">
+                <div class="search-container">
+                    <div class="search-box">
+                        <span class="material-icons">search</span>
+                        <input type="text" id="place-search" placeholder="Search destinations...">
+                    </div>
+                </div>
+                <div id="map"></div>
+                <div id="places-list" class="places-container"></div>
+            </div>
+
+            <div class="view hidden" id="trips-view">
+                <div class="trips-list">
+                    <!-- Trips will be dynamically added here -->
+                </div>
+            </div>
+
+            <div class="view hidden" id="saved-view">
+                <div class="saved-places">
+                    <!-- Saved places will be dynamically added here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/main.js"></script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initMap">
+    </script>
+</body>
+</html> 
