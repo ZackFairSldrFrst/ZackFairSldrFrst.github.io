@@ -1,3 +1,17 @@
+// Global variables
+let currentLocation;
+let map;
+let mapMarkers = [];
+let favorites = [];
+let currentRestaurants = [];
+let currentFilters = {
+  cuisineType: 'restaurant',
+  distance: 3000,
+  minRating: 4,
+  priceLevel: '',
+  openNow: true
+};
+
 // Original variables
 let currentCardIndex = 0;
 const shortlist = [];
@@ -10,11 +24,122 @@ const defaultFilters = {
   price: ''
 };
 
-// Initialize with default filters on page load
+// UI Helper Functions
+function showLoadingOverlay(message = 'Loading...') {
+  const overlay = document.getElementById('loading-overlay');
+  if (overlay) {
+    const messageEl = overlay.querySelector('.loading-message');
+    if (messageEl) {
+      messageEl.textContent = message;
+    }
+    overlay.classList.add('active');
+  }
+}
+
+function hideLoadingOverlay() {
+  const overlay = document.getElementById('loading-overlay');
+  if (overlay) {
+    overlay.classList.remove('active');
+  }
+}
+
+function showError(message) {
+  const errorDiv = document.createElement('div');
+  errorDiv.className = 'error-message';
+  errorDiv.innerHTML = `
+    <i class="fas fa-exclamation-circle"></i>
+    <span>${message}</span>
+  `;
+  document.body.appendChild(errorDiv);
+  
+  setTimeout(() => {
+    errorDiv.classList.add('fade-out');
+    setTimeout(() => {
+      errorDiv.remove();
+    }, 300);
+  }, 5000);
+}
+
+// Wait for DOM to be ready
 document.addEventListener('DOMContentLoaded', function() {
-  applyDefaultFilters();
-  findRestaurants(defaultFilters);
+  // Set up initial UI elements
+  setupUIElements();
+  
+  // Load favorites from localStorage
+  loadFavorites();
 });
+
+// Setup UI Elements
+function setupUIElements() {
+  // Only set up event listeners for elements that exist
+  const findRestaurantsBtn = document.getElementById('find-restaurants');
+  if (findRestaurantsBtn) {
+    findRestaurantsBtn.addEventListener('click', () => {
+      if (currentLocation) {
+        findRestaurants();
+      } else {
+        requestLocationAndFindRestaurants();
+      }
+    });
+  }
+
+  const toggleFavoritesBtn = document.getElementById('toggle-favorites');
+  if (toggleFavoritesBtn) {
+    toggleFavoritesBtn.addEventListener('click', toggleFavoritesView);
+  }
+
+  const toggleMapBtn = document.getElementById('toggle-map');
+  if (toggleMapBtn) {
+    toggleMapBtn.addEventListener('click', toggleMapView);
+  }
+
+  const openFiltersBtn = document.getElementById('open-filters');
+  if (openFiltersBtn) {
+    openFiltersBtn.addEventListener('click', openFiltersPanel);
+  }
+
+  const closeFiltersBtn = document.getElementById('close-filters');
+  if (closeFiltersBtn) {
+    closeFiltersBtn.addEventListener('click', closeFiltersPanel);
+  }
+
+  const filtersForm = document.getElementById('filters-form');
+  if (filtersForm) {
+    filtersForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      applyFilters();
+    });
+  }
+
+  // Set up other UI elements and event listeners
+  setupFilterControls();
+}
+
+// Initialize the app (called by Google Maps callback)
+window.initializeApp = function() {
+  showLoadingOverlay('Initializing...');
+  
+  // Set up initial filter values
+  updateStarRating(currentFilters.minRating);
+  if (currentFilters.priceLevel) {
+    const priceBtn = document.querySelector(`.price-btn[data-value="${currentFilters.priceLevel}"]`);
+    if (priceBtn) {
+      priceBtn.classList.add('active');
+    }
+  }
+
+  const distanceSlider = document.getElementById('distance');
+  if (distanceSlider) {
+    distanceSlider.value = currentFilters.distance;
+    const output = document.querySelector('output[for="distance"]');
+    if (output) {
+      output.value = (currentFilters.distance / 1000) + ' km';
+    }
+  }
+
+  // Start location request
+  requestLocationAndFindRestaurants();
+};
 
 // Event listener for finding restaurants
 document.getElementById('find-restaurants').addEventListener('click', function() {
@@ -381,25 +506,6 @@ function getStarRatingHtml(rating) {
   return html;
 }
 
-// Show error message
-function showError(message) {
-  const errorDiv = document.createElement('div');
-  errorDiv.className = 'error-message';
-  errorDiv.innerHTML = `
-    <i class="fas fa-exclamation-circle"></i>
-    <span>${message}</span>
-  `;
-  
-  document.body.appendChild(errorDiv);
-  
-  setTimeout(() => {
-    errorDiv.classList.add('fade-out');
-    setTimeout(() => {
-      errorDiv.remove();
-    }, 300);
-  }, 5000);
-}
-
 // Add CSS for error messages
 const errorStyles = document.createElement('style');
 errorStyles.innerHTML = `
@@ -435,3 +541,136 @@ errorStyles.innerHTML = `
   }
 `;
 document.head.appendChild(errorStyles);
+
+// Update the getCurrentLocation function
+function getCurrentLocation() {
+  return new Promise((resolve, reject) => {
+    showLoadingOverlay('Requesting location access...');
+
+    // First check if geolocation is supported
+    if (!navigator.geolocation) {
+      hideLoadingOverlay();
+      showError('Geolocation is not supported by your browser. Please use a modern browser with location services.');
+      reject(new Error('Geolocation not supported'));
+      return;
+    }
+
+    // Check for permissions first
+    if (navigator.permissions && navigator.permissions.query) {
+      navigator.permissions.query({ name: 'geolocation' })
+        .then(permission => {
+          if (permission.state === 'denied') {
+            hideLoadingOverlay();
+            showError('Location access is blocked. Please enable location services in your browser settings and refresh the page.');
+            reject(new Error('Location permission denied'));
+            return;
+          }
+          requestLocation();
+        });
+    } else {
+      requestLocation();
+    }
+
+    function requestLocation() {
+      const options = {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      };
+
+      navigator.geolocation.getCurrentPosition(
+        // Success callback
+        position => {
+          const location = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          resolve(location);
+        },
+        // Error callback
+        error => {
+          hideLoadingOverlay();
+          let errorMessage;
+          
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              errorMessage = 'Location access was denied. Please enable location services in your browser settings and refresh the page.';
+              break;
+            case error.POSITION_UNAVAILABLE:
+              errorMessage = 'Location information is unavailable. Please check your device settings and try again.';
+              break;
+            case error.TIMEOUT:
+              errorMessage = 'Location request timed out. Please check your internet connection and try again.';
+              break;
+            default:
+              errorMessage = 'An unknown error occurred while trying to get your location. Please try again.';
+          }
+          
+          showError(errorMessage);
+          reject(error);
+        },
+        options
+      );
+    }
+  });
+}
+
+// New function to handle location request and restaurant search
+function requestLocationAndFindRestaurants() {
+  showLoadingOverlay('Requesting location access...');
+  
+  getCurrentLocation()
+    .then(location => {
+      currentLocation = location;
+      showLoadingOverlay('Finding delicious options near you...');
+      return findRestaurants();
+    })
+    .catch(error => {
+      console.error('Location error:', error);
+      hideLoadingOverlay();
+      
+      // Show error message with retry button
+      const errorContainer = document.getElementById('results');
+      errorContainer.innerHTML = `
+        <div class="error-container">
+          <i class="fas fa-map-marker-alt" style="font-size: 3rem; color: var(--primary-color); margin-bottom: 15px;"></i>
+          <h3>Location Access Required</h3>
+          <p>${error.message || 'We need your location to find restaurants near you.'}</p>
+          <button onclick="requestLocationAndFindRestaurants()" class="primary-btn" style="margin-top: 15px;">
+            <i class="fas fa-redo"></i> Try Again
+          </button>
+        </div>
+      `;
+    });
+}
+
+// Add these styles to your CSS
+const locationStyles = document.createElement('style');
+locationStyles.innerHTML = `
+  .error-container {
+    text-align: center;
+    padding: 40px 20px;
+    background: white;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+  }
+
+  .error-container h3 {
+    margin-bottom: 10px;
+    color: var(--text-color);
+  }
+
+  .error-container p {
+    color: var(--text-light);
+    margin-bottom: 20px;
+  }
+
+  #retry-location {
+    display: none;
+  }
+
+  #loading-overlay.show-retry #retry-location {
+    display: inline-flex;
+  }
+`;
+document.head.appendChild(locationStyles);

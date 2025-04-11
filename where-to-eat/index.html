@@ -23,7 +23,10 @@
   <!-- Loading Overlay -->
   <div id="loading-overlay">
     <div class="spinner"></div>
-    <p>Finding delicious options near you...</p>
+    <p class="loading-message">Initializing...</p>
+    <button id="retry-location" class="primary-btn" style="display: none;">
+      <i class="fas fa-redo"></i> Retry Location Access
+    </button>
   </div>
 
   <div class="app-container">
@@ -138,7 +141,17 @@
     </div>
   </div>
 
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLVKhhZwlSmeKUAQ8J9cQNbz0E7yichiA&libraries=places"></script>
+  <script>
+    function initMap() {
+      // Map initialization will be moved here
+      if (window.initializeApp) {
+        window.initializeApp();
+      }
+    }
+  </script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLVKhhZwlSmeKUAQ8J9cQNbz0E7yichiA&libraries=places&callback=initMap">
+  </script>
   <script src="script.js"></script>
 </body>
 </html>
