@@ -281,3 +281,157 @@ document.getElementById('toggle-shortlist').addEventListener('click', function()
     this.textContent = 'Show Shortlist';
   }
 });
+
+// Function to get directions
+function getDirections(place) {
+  if (place.geometry) {
+    let lat, lng;
+    if (place.geometry.location) {
+      lat = typeof place.geometry.location.lat === 'function' ? 
+        place.geometry.location.lat() : place.geometry.location.lat;
+      lng = typeof place.geometry.location.lng === 'function' ? 
+        place.geometry.location.lng() : place.geometry.location.lng;
+    } else if (place.lat && place.lng) {
+      lat = place.lat;
+      lng = place.lng;
+    } else {
+      alert('Unable to get location for directions');
+      return;
+    }
+    
+    // Open Google Maps with directions
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=driving`;
+    window.open(url, '_blank');
+  }
+}
+
+// Get distance between two points in meters
+function getDistance(point1, point2) {
+  const R = 6371e3; // Earth radius in meters
+  const φ1 = point1.lat * Math.PI / 180;
+  const φ2 = point2.lat * Math.PI / 180;
+  const Δφ = (point2.lat - point1.lat) * Math.PI / 180;
+  const Δλ = (point2.lng - point1.lng) * Math.PI / 180;
+
+  const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+            Math.cos(φ1) * Math.cos(φ2) *
+            Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  return R * c;
+}
+
+// Format distance for display
+function formatDistance(distance) {
+  if (distance < 1000) {
+    return `${Math.round(distance)} m`;
+  } else {
+    return `${(distance / 1000).toFixed(1)} km`;
+  }
+}
+
+// Get price level string
+function getPriceLevel(level) {
+  if (!level) return 'N/A';
+  return '$'.repeat(level);
+}
+
+// Get cuisine types from place types
+function getCuisineTypes(types) {
+  if (!types) return [];
+  
+  // Filter out generic types
+  const genericTypes = ['point_of_interest', 'establishment', 'food'];
+  const cuisineTypes = types.filter(type => !genericTypes.includes(type));
+  
+  // Format type names
+  return cuisineTypes.map(type => {
+    return type
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  });
+}
+
+// Get star rating HTML
+function getStarRatingHtml(rating) {
+  if (!rating) return '';
+  
+  const fullStars = Math.floor(rating);
+  const halfStar = rating % 1 >= 0.5;
+  const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+  
+  let html = '';
+  
+  // Full stars
+  for (let i = 0; i < fullStars; i++) {
+    html += '<i class="fas fa-star"></i>';
+  }
+  
+  // Half star
+  if (halfStar) {
+    html += '<i class="fas fa-star-half-alt"></i>';
+  }
+  
+  // Empty stars
+  for (let i = 0; i < emptyStars; i++) {
+    html += '<i class="far fa-star"></i>';
+  }
+  
+  return html;
+}
+
+// Show error message
+function showError(message) {
+  const errorDiv = document.createElement('div');
+  errorDiv.className = 'error-message';
+  errorDiv.innerHTML = `
+    <i class="fas fa-exclamation-circle"></i>
+    <span>${message}</span>
+  `;
+  
+  document.body.appendChild(errorDiv);
+  
+  setTimeout(() => {
+    errorDiv.classList.add('fade-out');
+    setTimeout(() => {
+      errorDiv.remove();
+    }, 300);
+  }, 5000);
+}
+
+// Add CSS for error messages
+const errorStyles = document.createElement('style');
+errorStyles.innerHTML = `
+  .error-message {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ff6b6b;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 10000;
+    animation: slide-up 0.3s ease;
+  }
+  
+  .error-message.fade-out {
+    animation: fade-out 0.3s ease forwards;
+  }
+  
+  @keyframes slide-up {
+    from { bottom: -50px; opacity: 0; }
+    to { bottom: 20px; opacity: 1; }
+  }
+  
+  @keyframes fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+`;
+document.head.appendChild(errorStyles);

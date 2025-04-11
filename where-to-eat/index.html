@@ -3,73 +3,141 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>What Should I Eat?</title>
+  <title>Where Should I Eat? | Restaurant Finder</title>
+  <meta name="description" content="Find the perfect restaurant near you with our smart restaurant finder. Filter by cuisine, rating, price and more!">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VDZNRELZ6H"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-VDZNRELZ6H');
-</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VDZNRELZ6H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-VDZNRELZ6H');
+  </script>
 </head>
 <body>
-  <div class="container">
-    <!-- Title and Description -->
-    <h1>Where Should I Eat?</h1>
-    
-    <!-- Buttons -->
-    <button id="find-restaurants">Find Restaurants Near Me</button>
-    <button id="toggle-shortlist">Show Shortlist</button>
-    <button id="open-settings">Settings</button>
+  <!-- Loading Overlay -->
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+    <p>Finding delicious options near you...</p>
+  </div>
 
-    <!-- Results Container -->
-    <div id="results"></div>
+  <div class="app-container">
+    <header>
+      <h1><i class="fas fa-utensils"></i> Where Should I Eat?</h1>
+      <div class="action-buttons">
+        <button id="find-restaurants" class="primary-btn"><i class="fas fa-search"></i> Find Places</button>
+        <button id="toggle-favorites" class="secondary-btn"><i class="fas fa-heart"></i> Favorites</button>
+        <button id="toggle-map" class="secondary-btn"><i class="fas fa-map-marker-alt"></i> Map</button>
+        <button id="open-filters" class="secondary-btn"><i class="fas fa-sliders-h"></i> Filters</button>
+      </div>
+    </header>
 
-    <!-- Shortlist Section -->
-    <div id="shortlist" class="hidden">
-      <h2>Your Shortlist</h2>
-      <!-- Shortlisted restaurants will be displayed here -->
-    </div>
+    <main>
+      <!-- Card View -->
+      <div id="card-view" class="view-container active-view">
+        <div id="results" class="card-container"></div>
+        <div id="swipe-instructions" class="hint-text">
+          <p><i class="fas fa-arrow-left"></i> Swipe left to skip</p>
+          <p>Tap for details</p>
+          <p>Swipe right to favorite <i class="fas fa-arrow-right"></i></p>
+        </div>
+      </div>
 
-    <!-- Settings Menu -->
-    <div id="settings" class="hidden">
-      <h2>Settings</h2>
-      <form id="settings-form">
-        <label for="type">Type:</label>
-        <select id="type">
-          <option value="restaurant">Restaurant</option>
-          <option value="bar">Bar</option>
-          <option value="cafe">Cafe</option>
-        </select>
-        <br>
-        <label for="rating">Minimum Rating:</label>
-        <input type="number" id="rating" min="1" max="5" step="0.1" />
-        <br>
-        <label for="closing-time">Closing Time:</label>
-        <input type="time" id="closing-time" />
-        <br>
-        <label for="price">Price Level:</label>
-        <select id="price">
-          <option value="">Any</option>
-          <option value="1">$</option>
-          <option value="2">$$</option>
-          <option value="3">$$$</option>
-          <option value="4">$$$$</option>
-        </select>
-        <br>
-        <button type="submit">Apply Filters</button>
+      <!-- Map View -->
+      <div id="map-view" class="view-container">
+        <div id="map"></div>
+        <div id="map-list"></div>
+      </div>
+
+      <!-- Favorites View -->
+      <div id="favorites-view" class="view-container">
+        <h2><i class="fas fa-heart"></i> Your Favorites</h2>
+        <div id="favorites-list"></div>
+      </div>
+    </main>
+
+    <!-- Filters Panel -->
+    <div id="filters-panel" class="panel">
+      <div class="panel-header">
+        <h2><i class="fas fa-filter"></i> Filters</h2>
+        <button id="close-filters" class="close-btn"><i class="fas fa-times"></i></button>
+      </div>
+      <form id="filters-form">
+        <div class="filter-group">
+          <label for="cuisine-type">Cuisine Type:</label>
+          <select id="cuisine-type">
+            <option value="restaurant">Any Restaurant</option>
+            <option value="cafe">Cafe</option>
+            <option value="bar">Bar</option>
+            <option value="bakery">Bakery</option>
+            <option value="meal_takeaway">Takeout</option>
+            <option value="meal_delivery">Delivery</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="distance">Distance:</label>
+          <div class="range-slider">
+            <input type="range" id="distance" min="500" max="5000" step="500" value="3000">
+            <output for="distance">3 km</output>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label for="min-rating">Minimum Rating:</label>
+          <div class="star-rating">
+            <input type="hidden" id="min-rating" value="4">
+            <i class="fas fa-star star" data-value="1"></i>
+            <i class="fas fa-star star" data-value="2"></i>
+            <i class="fas fa-star star" data-value="3"></i>
+            <i class="fas fa-star star" data-value="4"></i>
+            <i class="far fa-star star" data-value="5"></i>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label for="price-level">Price Level:</label>
+          <div class="price-buttons">
+            <button type="button" class="price-btn" data-value="">Any</button>
+            <button type="button" class="price-btn" data-value="1">$</button>
+            <button type="button" class="price-btn" data-value="2">$$</button>
+            <button type="button" class="price-btn" data-value="3">$$$</button>
+            <button type="button" class="price-btn" data-value="4">$$$$</button>
+          </div>
+          <input type="hidden" id="price-level" value="">
+        </div>
+
+        <div class="filter-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="open-now" checked>
+            <span>Open Now</span>
+          </label>
+        </div>
+
+        <button type="submit" class="primary-btn full-width">Apply Filters</button>
+        <button type="button" id="reset-filters" class="secondary-btn full-width">Reset Filters</button>
       </form>
     </div>
 
-    <!-- Expanded View Container -->
-    <div id="expanded-view" class="hidden">
-      <button id="close-expanded-view">Close</button>
-      <div id="expanded-content"></div>
+    <!-- Details Panel -->
+    <div id="details-panel" class="panel">
+      <div class="panel-header">
+        <h2>Restaurant Details</h2>
+        <button id="close-details" class="close-btn"><i class="fas fa-times"></i></button>
+      </div>
+      <div id="details-content"></div>
+      <div class="details-actions">
+        <button id="add-to-favorites" class="primary-btn"><i class="far fa-heart"></i> Add to Favorites</button>
+        <button id="get-directions" class="secondary-btn"><i class="fas fa-directions"></i> Get Directions</button>
+      </div>
     </div>
   </div>
+
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLVKhhZwlSmeKUAQ8J9cQNbz0E7yichiA&libraries=places"></script>
   <script src="script.js"></script>
 </body>
