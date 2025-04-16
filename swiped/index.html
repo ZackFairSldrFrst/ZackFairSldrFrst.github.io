@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swipe Into My DMs 😏</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-actions">
+                <button class="icon-btn">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h1>Dating Profile</h1>
+                <button class="icon-btn">
+                    <i class="fas fa-ellipsis-v"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="profile-content">
+            <!-- First Prompt -->
+            <div class="prompt-card" id="prompt1">
+                <div class="prompt-photo">
+                    <img src="assets/images/IMG_3667_Original.jpg" alt="My coding setup">
+                    <div class="prompt-overlay">
+                        <div class="prompt-text">
+                            <h3>The key to my heart is...</h3>
+                            <p>A perfectly timed dad joke and the ability to debug my code without Stack Overflow 😉</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="action-btn like" onclick="handlePromptAction('like', 1)">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                    <button class="action-btn comment" onclick="handlePromptAction('comment', 1)">
+                        <i class="fas fa-comment"></i>
+                    </button>
+                    <button class="action-btn share" onclick="handlePromptAction('share', 1)">
+                        <i class="fas fa-share"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Second Prompt -->
+            <div class="prompt-card" id="prompt2">
+                <div class="prompt-photo">
+                    <img src="assets/images/ALV03337.jpg" alt="Sunday coffee and coding">
+                    <div class="prompt-overlay">
+                        <div class="prompt-text">
+                            <h3>Typical Sunday...</h3>
+                            <p>Coding in my PJs, perfecting my coffee-to-code ratio, and pretending I'll start that workout routine tomorrow 🏃‍♂️☕</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="action-btn like" onclick="handlePromptAction('like', 2)">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                    <button class="action-btn comment" onclick="handlePromptAction('comment', 2)">
+                        <i class="fas fa-comment"></i>
+                    </button>
+                    <button class="action-btn share" onclick="handlePromptAction('share', 2)">
+                        <i class="fas fa-share"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Third Prompt -->
+            <div class="prompt-card" id="prompt3">
+                <div class="prompt-photo">
+                    <img src="assets/images/IMG_0386_Original.jpg" alt="Gaming setup">
+                    <div class="prompt-overlay">
+                        <div class="prompt-text">
+                            <h3>Two truths and a lie...</h3>
+                            <p>I can code in 5 languages, I once debugged for 48 hours straight, and I never procrastinate 🤥</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="action-btn like" onclick="handlePromptAction('like', 3)">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                    <button class="action-btn comment" onclick="handlePromptAction('comment', 3)">
+                        <i class="fas fa-comment"></i>
+                    </button>
+                    <button class="action-btn share" onclick="handlePromptAction('share', 3)">
+                        <i class="fas fa-share"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Match Dialog -->
+        <div class="match-dialog" id="matchDialog">
+            <div class="match-content">
+                <div class="match-header">
+                    <h2>Let's Make This Official! 🎉</h2>
+                    <p>I knew you had good taste! Now let's plan something fun...</p>
+                </div>
+                
+                <form id="matchForm" class="match-form">
+                    <div class="form-group">
+                        <label>How can I reach you? 📱</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Your number" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>What's your idea of a perfect first date? 🎯</label>
+                        <div class="date-options">
+                            <button type="button" class="date-option" data-value="coffee">
+                                <i class="fas fa-coffee"></i>
+                                <span>Coffee & Code</span>
+                            </button>
+                            <button type="button" class="date-option" data-value="food">
+                                <i class="fas fa-utensils"></i>
+                                <span>Food Adventure</span>
+                            </button>
+                            <button type="button" class="date-option" data-value="activity">
+                                <i class="fas fa-gamepad"></i>
+                                <span>Gaming Session</span>
+                            </button>
+                            <button type="button" class="date-option" data-value="surprise">
+                                <i class="fas fa-dice"></i>
+                                <span>Surprise Me!</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>When are you free? ⏰</label>
+                        <div class="availability-picker">
+                            <button type="button" class="time-option" data-value="weekday-evening">
+                                Weekday Evenings
+                            </button>
+                            <button type="button" class="time-option" data-value="weekend-day">
+                                Weekend Days
+                            </button>
+                            <button type="button" class="time-option" data-value="weekend-evening">
+                                Weekend Evenings
+                            </button>
+                            <button type="button" class="time-option" data-value="flexible">
+                                I'm Flexible
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group voice-message">
+                        <label>
+                            <i class="fas fa-microphone"></i>
+                            Say something clever! (Optional)
+                        </label>
+                        <div class="voice-controls">
+                            <button type="button" id="recordButton" class="record-btn">
+                                <i class="fas fa-microphone"></i>
+                                <span>Record Message</span>
+                            </button>
+                            <div id="recordingStatus"></div>
+                            <audio id="audioPlayback" controls style="display: none;"></audio>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <span>Let's Do This!</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html> 
