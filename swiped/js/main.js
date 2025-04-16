@@ -182,4 +182,111 @@ function shareProfile(platform) {
                 .catch(err => console.error('Error copying link:', err));
             break;
     }
-} 
+}
+
+// Update the hot pot guess function
+function checkHotpotGuess(button) {
+    const input = button.previousElementSibling;
+    const guess = parseFloat(input.value);
+    const resultDiv = document.getElementById('guess-result');
+    
+    if (!guess || guess <= 0) {
+        resultDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Come on, at least try to guess! 😅';
+        resultDiv.className = 'guess-result show';
+        return;
+    }
+
+    // Fun response regardless of the guess
+    resultDiv.innerHTML = `
+        <i class="fas fa-heart"></i> OOF not quite but let's go on a date anyway 😉
+        <div style="margin-top: 10px;">
+            <button onclick="handlePromptAction('like', 'hotpot')" class="action-btn like">
+                <span>Yes, let's do it!</span>
+            </button>
+        </div>
+    `;
+    resultDiv.className = 'guess-result show';
+    
+    // Clear input and disable it after guessing
+    input.value = '';
+    input.disabled = true;
+    button.disabled = true;
+}
+
+// Add this to your existing event listeners
+document.addEventListener('DOMContentLoaded', () => {
+    // ... existing initialization code ...
+
+    // Reset hot pot guess when dialog is closed
+    document.getElementById('matchDialog').addEventListener('hidden', () => {
+        const input = document.querySelector('#hotpot-prompt input');
+        const button = document.querySelector('#hotpot-prompt button');
+        const resultDiv = document.getElementById('guess-result');
+        
+        input.value = '';
+        input.disabled = false;
+        button.disabled = false;
+        resultDiv.className = 'guess-result';
+    });
+});
+
+// Update the humor scale handling
+document.addEventListener('DOMContentLoaded', () => {
+    const humorSlider = document.getElementById('humorScale');
+    const scaleValue = humorSlider.nextElementSibling.nextElementSibling;
+    const resultMessage = document.createElement('div');
+    resultMessage.className = 'scale-result';
+    scaleValue.parentNode.appendChild(resultMessage);
+
+    // Set default value to 1
+    humorSlider.value = 1;
+
+    function updateScaleValue(value) {
+        const descriptions = [
+            "Normal, sane 😊",
+            "Mild 😌",
+            "Getting there 😏",
+            "Promising 😎",
+            "Now we're talking 😈",
+            "Chaotic good 🤪",
+            "Definitely sus 👻",
+            "Certified chaotic 🌪️",
+            "Pure chaos 💀",
+            "Unhinged 🤯"
+        ];
+        
+        // Update the scale value text
+        scaleValue.textContent = `${value}/10 - ${descriptions[value-1]}`;
+        
+        // Show different messages based on score
+        if (value >= 5) {
+            resultMessage.innerHTML = `
+                <div class="match-message success">
+                    <i class="fas fa-heart"></i>
+                    Yay we're a match! Let's go on a date and be unhinged together! 🎉
+                    <button onclick="handlePromptAction('like', 'humor')" class="action-btn like">
+                        <span>Let's Do It!</span>
+                    </button>
+                </div>
+            `;
+        } else {
+            resultMessage.innerHTML = `
+                <div class="match-message gentle-reject">
+                    <i class="fas fa-star"></i>
+                    OOF you're above my league and deserve someone better. 
+                    Stay pure and wholesome! ✨
+                </div>
+            `;
+        }
+        
+        // Add animation class
+        resultMessage.classList.add('show');
+    }
+
+    humorSlider.addEventListener('input', (e) => {
+        updateScaleValue(e.target.value);
+    });
+
+    // Initialize with default value
+    updateScaleValue(humorSlider.value);
+}); 
