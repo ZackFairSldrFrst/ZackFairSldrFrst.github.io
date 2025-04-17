@@ -96,9 +96,9 @@ body {
     background: linear-gradient(transparent, rgba(0,0,0,0.8));
     padding: 20px;
     color: white;
-    transform: translateY(20px);
-    opacity: 0;
-    transition: all 0.3s ease;
+    transform: translateY(0);
+    opacity: 1;
+    transition: none;
 }
 
 .prompt-card:hover .prompt-overlay {
