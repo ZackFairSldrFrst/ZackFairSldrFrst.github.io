@@ -84,13 +84,94 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const humorSlider = document.getElementById('humorScale');
-    if (humorSlider) {
-        humorSlider.addEventListener('input', (e) => {
-            updateScaleValue(e.target.value);
-        });
-        // Initialize with default value
-        updateScaleValue(humorSlider.value);
+    const scaleValue = humorSlider.nextElementSibling.nextElementSibling;
+    const resultMessage = document.createElement('div');
+    resultMessage.className = 'scale-result';
+    scaleValue.parentNode.appendChild(resultMessage);
+
+    function updateScaleValue(value) {
+        const descriptions = [
+            "Normal, sane 😊",
+            "Mild 😌",
+            "Getting there 😏",
+            "Promising 😎",
+            "Now we're talking 😈",
+            "Chaotic good 🤪",
+            "Definitely sus 👻",
+            "Certified chaotic 🌪️",
+            "Pure chaos 💀",
+            "Unhinged 🤯"
+        ];
+        
+        // Update the scale value text
+        scaleValue.textContent = `${value}/10 - ${descriptions[value-1]}`;
+        
+        // Show different messages based on score
+        if (parseInt(value) >= 5) {
+            resultMessage.innerHTML = `
+                <div class="match-message success">
+                    <i class="fas fa-heart"></i>
+                    Yay we're a match! Let's go on a date and be unhinged together! 🎉
+                    <button class="action-btn lets-do-it" onclick="showMatchDialog()">
+                        <span>Yes, let's do it!</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            `;
+        } else {
+            resultMessage.innerHTML = `
+                <div class="match-message gentle-reject">
+                    <i class="fas fa-star"></i>
+                    OOF you're above my league and deserve someone better. 
+                    Stay pure and wholesome! ✨
+                </div>
+            `;
+        }
+        
+        resultMessage.classList.add('show');
     }
+
+    humorSlider.addEventListener('input', (e) => {
+        updateScaleValue(e.target.value);
+    });
+
+    // Initialize with default value
+    updateScaleValue(humorSlider.value);
+
+    // Initialize date options
+    document.querySelectorAll('.date-option').forEach(option => {
+        option.addEventListener('click', () => {
+            document.querySelectorAll('.date-option').forEach(btn => btn.classList.remove('selected'));
+            option.classList.add('selected');
+            
+            // Handle custom activity input
+            const customInput = document.getElementById('customActivityInput');
+            if (option.dataset.value === 'custom') {
+                customInput.classList.add('show');
+                document.getElementById('customActivity').focus();
+            } else {
+                customInput.classList.remove('show');
+            }
+        });
+    });
+
+    // Initialize time options
+    document.querySelectorAll('.time-option').forEach(option => {
+        option.addEventListener('click', () => {
+            document.querySelectorAll('.time-option').forEach(btn => btn.classList.remove('selected'));
+            option.classList.add('selected');
+        });
+    });
+
+    // Initialize close handlers for dialogs
+    window.addEventListener('click', (e) => {
+        if (e.target === document.getElementById('matchDialog')) {
+            hideMatchDialog();
+        }
+        if (e.target === document.getElementById('rejectDialog')) {
+            hideRejectDialog();
+        }
+    });
 });
 
 // Initialize selection buttons
@@ -222,13 +303,6 @@ function initializeAnimations() {
     });
 }
 
-// Close dialog when clicking outside
-document.getElementById('matchDialog').addEventListener('click', (e) => {
-    if (e.target === document.getElementById('matchDialog')) {
-        hideMatchDialog();
-    }
-});
-
 // Share Profile Functions
 function shareProfile(platform) {
     const shareUrl = window.location.href;
@@ -277,62 +351,4 @@ function checkHotpotGuess(button) {
         </div>
     `;
     resultDiv.className = 'guess-result show';
-}
-
-// Update the humor scale handler
-function updateScaleValue(value) {
-    const descriptions = [
-        "Normal, sane 😊",
-        "Mild 😌",
-        "Getting there 😏",
-        "Promising 😎",
-        "Now we're talking 😈",
-        "Chaotic good 🤪",
-        "Definitely sus 👻",
-        "Certified chaotic 🌪️",
-        "Pure chaos 💀",
-        "Unhinged 🤯"
-    ];
-    
-    const scaleValue = document.querySelector('.scale-value');
-    const resultMessage = document.querySelector('.scale-result');
-    
-    if (scaleValue && resultMessage) {
-        // Update the scale value text
-        scaleValue.textContent = `${value}/10 - ${descriptions[value-1]}`;
-        
-        // Show different messages based on score
-        if (parseInt(value) >= 5) {
-            resultMessage.innerHTML = `
-                <div class="match-message success">
-                    <i class="fas fa-heart"></i>
-                    Yay we're a match! Let's go on a date and be unhinged together! 🎉
-                    <button class="action-btn lets-do-it" onclick="showMatchDialog()">
-                        <span>Yes, let's do it!</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </button>
-                </div>
-            `;
-        } else {
-            resultMessage.innerHTML = `
-                <div class="match-message gentle-reject">
-                    <i class="fas fa-star"></i>
-                    OOF you're above my league and deserve someone better. 
-                    Stay pure and wholesome! ✨
-                </div>
-            `;
-        }
-        
-        resultMessage.classList.add('show');
-    }
-}
-
-// Close dialogs when clicking outside
-window.addEventListener('click', (e) => {
-    if (e.target === document.getElementById('matchDialog')) {
-        hideMatchDialog();
-    }
-    if (e.target === document.getElementById('rejectDialog')) {
-        hideRejectDialog();
-    }
-}); 
+} 

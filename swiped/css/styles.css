@@ -820,4 +820,38 @@ input[type="tel"] {
 .guess-result .match-message button:hover {
     background: var(--primary-light);
     transform: translateY(-2px);
+}
+
+/* Animation for intro card */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Make sure all interactive elements have hover states */
+.intro-card:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+}
+
+/* Ensure proper spacing between sections */
+.profile-intro + .profile-content {
+    margin-top: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .intro-card {
+        padding: 15px;
+    }
+    
+    .intro-card h2 {
+        font-size: 1.3em;
+    }
 } 
