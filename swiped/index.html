@@ -3,37 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIY Hinge | Because Why Not? 🤷‍♂️</title>
+    <title>No Luck with Hinge™ | Alvin 🤷‍♂️</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <div class="app-container">
         <header class="app-header">
-            <div class="header-actions">
-                <button class="icon-btn">
-                    <i class="fas fa-arrow-left"></i>
-                </button>
-                <h1>No Luck with Hinge™</h1>
-                <button class="icon-btn">
-                    <i class="fas fa-ellipsis-v"></i>
-                </button>
-            </div>
+            <h1>No Luck with Hinge™</h1>
         </header>
-
-        <div class="profile-intro">
-            <div class="intro-card">
-                <h2>Hi! I'm Alvin, and... </h2>
-                <p class="intro-text">Dignity has reached rock bottom so this is my ultimate attempt at truly online dating. 🎭</p>
-                <p class="subtitle">Swipe at your own risk</p>
-            </div>
-        </div>
 
         <div class="profile-content">
             <!-- First Photo Prompt -->
             <div class="prompt-card" id="prompt1">
                 <div class="prompt-photo">
-                    <img src="assets/images/IMG_3667_Original.jpg" alt="Fake hiking photo">
+                    <img src="assets/images/IMG_3667_Original.jpg" alt="Rare decent travel photo">
                     <div class="prompt-overlay">
                         <div class="prompt-text">
                             <h3>The rare gem of a decent photo...</h3>
@@ -42,15 +26,57 @@
                     </div>
                 </div>
                 <div class="action-buttons">
-                    <button class="action-btn like" onclick="handlePromptAction('like', 1)">
+                    <button class="action-btn reject" onclick="handleReject()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button class="action-btn like" onclick="showMatchDialog()">
                         <i class="fas fa-heart"></i>
                     </button>
-                    <button class="action-btn comment" onclick="handlePromptAction('comment', 1)">
-                        <i class="fas fa-comment"></i>
-                    </button>
-                    <button class="action-btn share" onclick="handlePromptAction('share', 1)">
-                        <i class="fas fa-share"></i>
-                    </button>
+                </div>
+            </div>
+
+            <!-- Profile Basics Section -->
+            <div class="profile-basics">
+                <div class="basic-info">
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-birthday-cake"></i></span>
+                        <span class="info-value">3 decades old</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-mars"></i></span>
+                        <span class="info-value">Man</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-heart"></i></span>
+                        <span class="info-value">Straight</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-ruler-vertical"></i></span>
+                        <span class="info-value">5'10"</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-globe-asia"></i></span>
+                        <span class="info-value">East & Southeast Asian</span>
+                    </div>
+                </div>
+
+                <div class="interests">
+                    <div class="interest-tag">
+                        <i class="fas fa-plane-departure"></i>
+                        <span>Traveling</span>
+                    </div>
+                    <div class="interest-tag">
+                        <i class="fas fa-utensils"></i>
+                        <span>Eating</span>
+                    </div>
+                    <div class="interest-tag">
+                        <i class="fas fa-gamepad"></i>
+                        <span>Gaming</span>
+                    </div>
+                    <div class="interest-tag">
+                        <i class="fas fa-camera"></i>
+                        <span>Photography</span>
+                    </div>
                 </div>
             </div>
 
@@ -60,7 +86,7 @@
                     <img src="assets/images/IMG_0271.HEIC" alt="Big Way Hot Pot">
                 </div>
                 <div class="prompt-content">
-                    <h3>Let's make a deal... 🍲</h3>
+                    <h3>Let's play...</h3>
                     <p>Guess how much my big way hot pot bowl costs, and I'll treat you to dinner</p>
                     <div class="guess-input">
                         <input type="number" placeholder="Your guess in $" min="0" step="0.01">
@@ -76,20 +102,17 @@
                     <img src="assets/images/ALV03337.jpg" alt="Travel photo">
                     <div class="prompt-overlay">
                         <div class="prompt-text">
-                            <h3>Full disclosure...</h3>
-                            <p>I don't actually hike. I drove up here, splashed water on myself and smiled for the photo 🚗💦</p>
+                            <h3>Am I fit or fake...</h3>
+                            <p>I don't actually hike. I drove up here, splashed water on myself and smiled for the photo</p>
                         </div>
                     </div>
                 </div>
                 <div class="action-buttons">
-                    <button class="action-btn like" onclick="handlePromptAction('like', 2)">
+                    <button class="action-btn reject" onclick="handleReject()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button class="action-btn like" onclick="showMatchDialog()">
                         <i class="fas fa-heart"></i>
-                    </button>
-                    <button class="action-btn comment" onclick="handlePromptAction('comment', 2)">
-                        <i class="fas fa-comment"></i>
-                    </button>
-                    <button class="action-btn share" onclick="handlePromptAction('share', 2)">
-                        <i class="fas fa-share"></i>
                     </button>
                 </div>
             </div>
@@ -98,14 +121,15 @@
             <div class="prompt-card text-prompt" id="humor-scale">
                 <div class="prompt-content">
                     <h3>Rate your humor... 🎭</h3>
-                    <p>From a scale of 1 (normal, sane) to 10 (likely to get canceled), what is your level of unhinged humor?</p>
+                    <p>From a scale of 1 (normal, sane) to 10 (unhinged), what is your level of humor?</p>
                     <div class="scale-container">
-                        <input type="range" min="1" max="10" value="5" class="humor-slider" id="humorScale">
+                        <input type="range" min="1" max="10" value="1" class="humor-slider" id="humorScale">
                         <div class="scale-labels">
                             <span>Normal</span>
                             <span>Unhinged</span>
                         </div>
                         <div class="scale-value"></div>
+                        <div class="scale-result"></div>
                     </div>
                 </div>
             </div>
@@ -117,19 +141,16 @@
                     <div class="prompt-overlay">
                         <div class="prompt-text">
                             <h3>The closer...</h3>
-                            <p>Since the first two images didn't convince you, here's a photo of my adorable dog and feet 🐕👣</p>
+                            <p>Since the first two images didn't convince you, here's a photo of my adorable dog and feet</p>
                         </div>
                     </div>
                 </div>
                 <div class="action-buttons">
-                    <button class="action-btn like" onclick="handlePromptAction('like', 3)">
+                    <button class="action-btn reject" onclick="handleReject()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button class="action-btn like" onclick="showMatchDialog()">
                         <i class="fas fa-heart"></i>
-                    </button>
-                    <button class="action-btn comment" onclick="handlePromptAction('comment', 3)">
-                        <i class="fas fa-comment"></i>
-                    </button>
-                    <button class="action-btn share" onclick="handlePromptAction('share', 3)">
-                        <i class="fas fa-share"></i>
                     </button>
                 </div>
             </div>
@@ -139,8 +160,8 @@
         <div class="match-dialog" id="matchDialog">
             <div class="match-content">
                 <div class="match-header">
-                    <h2>Let's Make This Official! 🎉</h2>
-                    <p>I knew you had good taste! Now let's plan something fun...</p>
+                    <h2>Still here?</h2>
+                    <p>I knew you had good taste! Send me a text and let's see where this goes...</p>
                 </div>
                 
                 <form id="matchForm" class="match-form">
@@ -154,20 +175,24 @@
                         <div class="date-options">
                             <button type="button" class="date-option" data-value="coffee">
                                 <i class="fas fa-coffee"></i>
-                                <span>Coffee & Code</span>
+                                <span>Coffee or bubble tea</span>
                             </button>
                             <button type="button" class="date-option" data-value="food">
                                 <i class="fas fa-utensils"></i>
-                                <span>Food Adventure</span>
+                                <span>Food at a restaurant</span>
                             </button>
-                            <button type="button" class="date-option" data-value="activity">
+                            <button type="button" class="date-option" data-value="gaming">
                                 <i class="fas fa-gamepad"></i>
-                                <span>Gaming Session</span>
+                                <span>Gaming session</span>
                             </button>
-                            <button type="button" class="date-option" data-value="surprise">
-                                <i class="fas fa-dice"></i>
-                                <span>Surprise Me!</span>
+                            <button type="button" class="date-option custom" data-value="custom">
+                                <i class="fas fa-star"></i>
+                                <span>Suggest activity</span>
                             </button>
+                        </div>
+                        <!-- Custom activity input (hidden by default) -->
+                        <div id="customActivityInput" class="custom-activity-input hidden">
+                            <input type="text" id="customActivity" placeholder="What's your idea?" maxlength="50">
                         </div>
                     </div>
 
@@ -189,26 +214,43 @@
                         </div>
                     </div>
 
-                    <div class="form-group voice-message">
-                        <label>
-                            <i class="fas fa-microphone"></i>
-                            Say something clever! (Optional)
-                        </label>
-                        <div class="voice-controls">
-                            <button type="button" id="recordButton" class="record-btn">
-                                <i class="fas fa-microphone"></i>
-                                <span>Record Message</span>
-                            </button>
-                            <div id="recordingStatus"></div>
-                            <audio id="audioPlayback" controls style="display: none;"></audio>
-                        </div>
+                    <div class="form-group">
+                        <label>Want to say something? 💌</label>
+                        <textarea id="message" placeholder="Your message here..." rows="3"></textarea>
                     </div>
 
                     <button type="submit" class="submit-btn">
-                        <span>Let's Do This!</span>
-                        <i class="fas fa-arrow-right"></i>
+                        <span>Send Message</span>
+                        <i class="fas fa-paper-plane"></i>
                     </button>
                 </form>
+            </div>
+        </div>
+
+        <!-- Add Reject Dialog -->
+        <div class="reject-dialog" id="rejectDialog">
+            <div class="reject-content">
+                <h2>Not interested? Not a problem! 🤝</h2>
+                <p>Share my profile with a friend who might just be desperate enough to give me a chance...</p>
+                
+                <div class="share-options">
+                    <button onclick="shareProfile('messages')" class="share-btn messages">
+                        <i class="fas fa-comment"></i>
+                        <span>Messages</span>
+                    </button>
+                    <button onclick="shareProfile('whatsapp')" class="share-btn whatsapp">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>WhatsApp</span>
+                    </button>
+                    <button onclick="shareProfile('instagram')" class="share-btn instagram">
+                        <i class="fab fa-instagram"></i>
+                        <span>Instagram</span>
+                    </button>
+                    <button onclick="shareProfile('copy')" class="share-btn copy">
+                        <i class="fas fa-link"></i>
+                        <span>Copy Link</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

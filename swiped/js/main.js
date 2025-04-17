@@ -42,11 +42,34 @@ function toggleLike(promptId) {
 
 // Match Dialog Functions
 function showMatchDialog() {
-    document.getElementById('matchDialog').style.display = 'flex';
+    const dialog = document.getElementById('matchDialog');
+    dialog.style.display = 'flex';
+    
+    // Reset form if needed
+    const form = document.getElementById('matchForm');
+    if (form) form.reset();
+    
+    // Ensure custom activity input is hidden initially
+    const customInput = document.getElementById('customActivityInput');
+    if (customInput) customInput.classList.remove('show');
+    
+    // Remove any previously selected options
+    document.querySelectorAll('.date-option.selected, .time-option.selected').forEach(el => {
+        el.classList.remove('selected');
+    });
 }
 
 function hideMatchDialog() {
     document.getElementById('matchDialog').style.display = 'none';
+}
+
+// Reject Dialog Functions
+function handleReject() {
+    document.getElementById('rejectDialog').style.display = 'flex';
+}
+
+function hideRejectDialog() {
+    document.getElementById('rejectDialog').style.display = 'none';
 }
 
 // Initialize the page
@@ -54,16 +77,38 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeVoiceRecording();
     initializeSelectionButtons();
     initializeAnimations();
+
+    // Ensure all "Let's do it" buttons open the match dialog
+    document.querySelectorAll('.action-btn.lets-do-it').forEach(button => {
+        button.addEventListener('click', showMatchDialog);
+    });
+
+    const humorSlider = document.getElementById('humorScale');
+    if (humorSlider) {
+        humorSlider.addEventListener('input', (e) => {
+            updateScaleValue(e.target.value);
+        });
+        // Initialize with default value
+        updateScaleValue(humorSlider.value);
+    }
 });
 
 // Initialize selection buttons
 function initializeSelectionButtons() {
     // Date options
-    const dateOptions = document.querySelectorAll('.date-option');
-    dateOptions.forEach(option => {
+    document.querySelectorAll('.date-option').forEach(option => {
         option.addEventListener('click', () => {
-            dateOptions.forEach(btn => btn.classList.remove('selected'));
+            document.querySelectorAll('.date-option').forEach(btn => btn.classList.remove('selected'));
             option.classList.add('selected');
+            
+            // Handle custom activity input
+            const customInput = document.getElementById('customActivityInput');
+            if (option.dataset.value === 'custom') {
+                customInput.classList.add('show');
+                document.getElementById('customActivity').focus();
+            } else {
+                customInput.classList.remove('show');
+            }
         });
     });
 
@@ -136,16 +181,36 @@ function stopRecording() {
 document.getElementById('matchForm').addEventListener('submit', (e) => {
     e.preventDefault();
     
-    const formData = {
-        phone: document.getElementById('phone').value,
-        datePreference: document.querySelector('.date-option.selected')?.dataset.value,
-        availability: document.querySelector('.time-option.selected')?.dataset.value,
-        hasVoiceMessage: document.getElementById('audioPlayback').src ? true : false
-    };
+    const phone = document.getElementById('phone').value;
+    const selectedDateOption = document.querySelector('.date-option.selected');
+    const datePreference = selectedDateOption?.dataset.value;
+    const customActivity = document.getElementById('customActivity').value;
+    const availability = document.querySelector('.time-option.selected')?.dataset.value;
+    const message = document.getElementById('message').value;
 
-    // Here you would typically send this data to your server
-    console.log('Form submitted:', formData);
-    alert('Thanks for the match! I\'ll be in touch soon! 😊');
+    // Create the message text
+    let messageText = `Hey! I saw your profile and I'm interested in going on a date! `;
+    messageText += `\n\nI'm free during ${availability} `;
+    
+    // Handle date preference text
+    if (datePreference === 'custom' && customActivity) {
+        messageText += `and would love to ${customActivity}. `;
+    } else {
+        const activities = {
+            coffee: 'go for coffee and talk about code',
+            food: 'go on a food adventure',
+            gaming: 'have a gaming session'
+        };
+        messageText += `and would love to ${activities[datePreference] || 'meet up'}. `;
+    }
+    
+    if (message) {
+        messageText += `\n\nPS: ${message}`;
+    }
+
+    // Open default messaging app
+    window.location.href = `sms:6043753710?&body=${encodeURIComponent(messageText)}`;
+    
     hideMatchDialog();
 });
 
@@ -167,14 +232,18 @@ document.getElementById('matchDialog').addEventListener('click', (e) => {
 // Share Profile Functions
 function shareProfile(platform) {
     const shareUrl = window.location.href;
-    const shareText = "Check out this awesome profile! 😎";
+    const shareText = "Check out this totally unhinged dating profile! 😂";
     
-    switch (platform) {
+    switch(platform) {
+        case 'messages':
+            window.location.href = `sms:?&body=${encodeURIComponent(shareText + ' ' + shareUrl)}`;
+            break;
         case 'whatsapp':
             window.open(`https://wa.me/?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`);
             break;
-        case 'telegram':
-            window.open(`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`);
+        case 'instagram':
+            // Open Instagram app/web with share dialog
+            window.open(`instagram://share?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`);
             break;
         case 'copy':
             navigator.clipboard.writeText(shareUrl)
@@ -182,6 +251,7 @@ function shareProfile(platform) {
                 .catch(err => console.error('Error copying link:', err));
             break;
     }
+    hideRejectDialog();
 }
 
 // Update the hot pot guess function
@@ -198,74 +268,48 @@ function checkHotpotGuess(button) {
 
     // Fun response regardless of the guess
     resultDiv.innerHTML = `
-        <i class="fas fa-heart"></i> OOF not quite but let's go on a date anyway 😉
-        <div style="margin-top: 10px;">
-            <button onclick="handlePromptAction('like', 'hotpot')" class="action-btn like">
+        <div class="match-message success">
+            <i class="fas fa-heart"></i> OOF not quite but let's go on a date anyway 😉
+            <button class="action-btn lets-do-it" onclick="showMatchDialog()">
                 <span>Yes, let's do it!</span>
+                <i class="fas fa-arrow-right"></i>
             </button>
         </div>
     `;
     resultDiv.className = 'guess-result show';
-    
-    // Clear input and disable it after guessing
-    input.value = '';
-    input.disabled = true;
-    button.disabled = true;
 }
 
-// Add this to your existing event listeners
-document.addEventListener('DOMContentLoaded', () => {
-    // ... existing initialization code ...
-
-    // Reset hot pot guess when dialog is closed
-    document.getElementById('matchDialog').addEventListener('hidden', () => {
-        const input = document.querySelector('#hotpot-prompt input');
-        const button = document.querySelector('#hotpot-prompt button');
-        const resultDiv = document.getElementById('guess-result');
-        
-        input.value = '';
-        input.disabled = false;
-        button.disabled = false;
-        resultDiv.className = 'guess-result';
-    });
-});
-
-// Update the humor scale handling
-document.addEventListener('DOMContentLoaded', () => {
-    const humorSlider = document.getElementById('humorScale');
-    const scaleValue = humorSlider.nextElementSibling.nextElementSibling;
-    const resultMessage = document.createElement('div');
-    resultMessage.className = 'scale-result';
-    scaleValue.parentNode.appendChild(resultMessage);
-
-    // Set default value to 1
-    humorSlider.value = 1;
-
-    function updateScaleValue(value) {
-        const descriptions = [
-            "Normal, sane 😊",
-            "Mild 😌",
-            "Getting there 😏",
-            "Promising 😎",
-            "Now we're talking 😈",
-            "Chaotic good 🤪",
-            "Definitely sus 👻",
-            "Certified chaotic 🌪️",
-            "Pure chaos 💀",
-            "Unhinged 🤯"
-        ];
-        
+// Update the humor scale handler
+function updateScaleValue(value) {
+    const descriptions = [
+        "Normal, sane 😊",
+        "Mild 😌",
+        "Getting there 😏",
+        "Promising 😎",
+        "Now we're talking 😈",
+        "Chaotic good 🤪",
+        "Definitely sus 👻",
+        "Certified chaotic 🌪️",
+        "Pure chaos 💀",
+        "Unhinged 🤯"
+    ];
+    
+    const scaleValue = document.querySelector('.scale-value');
+    const resultMessage = document.querySelector('.scale-result');
+    
+    if (scaleValue && resultMessage) {
         // Update the scale value text
         scaleValue.textContent = `${value}/10 - ${descriptions[value-1]}`;
         
         // Show different messages based on score
-        if (value >= 5) {
+        if (parseInt(value) >= 5) {
             resultMessage.innerHTML = `
                 <div class="match-message success">
                     <i class="fas fa-heart"></i>
                     Yay we're a match! Let's go on a date and be unhinged together! 🎉
-                    <button onclick="handlePromptAction('like', 'humor')" class="action-btn like">
-                        <span>Let's Do It!</span>
+                    <button class="action-btn lets-do-it" onclick="showMatchDialog()">
+                        <span>Yes, let's do it!</span>
+                        <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
             `;
@@ -279,14 +323,16 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         }
         
-        // Add animation class
         resultMessage.classList.add('show');
     }
+}
 
-    humorSlider.addEventListener('input', (e) => {
-        updateScaleValue(e.target.value);
-    });
-
-    // Initialize with default value
-    updateScaleValue(humorSlider.value);
+// Close dialogs when clicking outside
+window.addEventListener('click', (e) => {
+    if (e.target === document.getElementById('matchDialog')) {
+        hideMatchDialog();
+    }
+    if (e.target === document.getElementById('rejectDialog')) {
+        hideRejectDialog();
+    }
 }); 
