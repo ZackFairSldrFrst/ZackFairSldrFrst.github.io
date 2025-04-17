@@ -288,31 +288,38 @@ input[type="tel"] {
 
 .date-options, .availability-picker {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
+    margin-top: 12px;
 }
 
 .date-option, .time-option {
-    padding: 15px;
-    background: var(--background-color);
-    border: 2px solid var(--primary-dark);
-    border-radius: 8px;
-    color: var(--text-color);
-    cursor: pointer;
-    transition: all 0.2s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
+    padding: 15px 10px;
+    background: var(--card-background);
+    border: 1px solid #404040;
+    border-radius: 8px;
+    color: var(--text-color);
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
 }
 
 .date-option:hover, .time-option:hover {
-    background: var(--primary-dark);
+    border-color: var(--primary-light);
+    transform: translateY(-2px);
 }
 
 .date-option.selected, .time-option.selected {
-    background: var(--primary-color);
+    background: var(--primary-dark);
     border-color: var(--primary-light);
+    color: white;
 }
 
 .voice-controls {
@@ -531,32 +538,41 @@ input[type="tel"] {
 }
 
 .scale-result {
-    margin-top: 20px;
+    margin-top: 15px;
     opacity: 0;
     transform: translateY(10px);
     transition: all 0.3s ease;
+    overflow: hidden;
+    max-height: 0;
+    visibility: hidden;
 }
 
 .scale-result.show {
     opacity: 1;
     transform: translateY(0);
+    max-height: 200px;
+    visibility: visible;
+    margin-bottom: 15px;
 }
 
 .scale-result .match-message {
-    padding: 20px;
-    border-radius: 12px;
-    text-align: center;
+    padding: 12px;
+    border-radius: 8px;
+    position: relative;
 }
 
 .scale-result .match-message.success {
-    background: var(--primary-dark);
-    border: 2px solid var(--primary-light);
+    background: linear-gradient(45deg, var(--primary-dark), var(--primary-color));
+    color: white;
 }
 
 .scale-result .match-message.gentle-reject {
-    background: var(--card-background);
-    border: 2px solid var(--primary-dark);
-    color: var(--text-secondary);
+    background: linear-gradient(45deg, #3a3a3a, #4a4a4a);
+    color: white;
+}
+
+.scale-result .match-message i {
+    margin-right: 8px;
 }
 
 .match-message {
@@ -586,22 +602,23 @@ input[type="tel"] {
 }
 
 .match-message button {
-    margin-top: 10px;
-    padding: 8px 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 8px 16px;
     background: var(--primary-color);
     border: none;
     border-radius: 20px;
     color: white;
+    font-weight: bold;
     cursor: pointer;
     transition: all 0.2s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
 }
 
 .match-message button:hover {
     background: var(--primary-light);
-    transform: scale(1.05);
+    transform: translateY(-2px);
 }
 
 @keyframes pulseIn {
@@ -620,26 +637,27 @@ input[type="tel"] {
 
 /* Add these styles for the custom activity input */
 .custom-activity-input {
-    margin-top: 15px;
-    transition: all 0.3s ease;
-    opacity: 0;
+    margin-top: 12px;
     height: 0;
+    opacity: 0;
     overflow: hidden;
+    transition: all 0.3s ease;
 }
 
 .custom-activity-input.show {
+    height: auto;
     opacity: 1;
-    height: 44px; /* Adjust based on your input height */
+    margin-top: 15px;
 }
 
 .custom-activity-input input {
     width: 100%;
     padding: 12px;
-    border: 2px solid var(--primary-dark);
+    border: 1px solid #404040;
     border-radius: 8px;
-    background: var(--background-color);
+    background: var(--card-background);
     color: var(--text-color);
-    font-size: 1em;
+    font-family: inherit;
 }
 
 /* Update share button colors */
@@ -770,7 +788,7 @@ input[type="tel"] {
     background: var(--primary-color);
     color: white;
     margin-top: 15px;
-    font-size: 1em;
+    font-size: 0.9em;
     display: inline-flex;
     align-items: center;
     gap: 8px;

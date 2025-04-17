@@ -74,20 +74,35 @@ function hideRejectDialog() {
 
 // Initialize the page
 document.addEventListener('DOMContentLoaded', () => {
+    // Scroll to top when page loads
+    window.scrollTo(0, 0);
+    
+    // Initialize components
     initializeVoiceRecording();
+    initializeHumorScale();
     initializeSelectionButtons();
     initializeAnimations();
+    initializeDialogs();
 
-    // Ensure all "Let's do it" buttons open the match dialog
-    document.querySelectorAll('.action-btn.lets-do-it').forEach(button => {
-        button.addEventListener('click', showMatchDialog);
-    });
+    // Initialize form events
+    document.getElementById('matchForm').addEventListener('submit', handleFormSubmit);
+});
 
+// Initialize humor scale
+function initializeHumorScale() {
     const humorSlider = document.getElementById('humorScale');
-    const scaleValue = humorSlider.nextElementSibling.nextElementSibling;
-    const resultMessage = document.createElement('div');
-    resultMessage.className = 'scale-result';
-    scaleValue.parentNode.appendChild(resultMessage);
+    if (!humorSlider) return;
+    
+    const scaleContainer = humorSlider.closest('.scale-container');
+    const scaleValue = scaleContainer.querySelector('.scale-value');
+    
+    // Create result message container if it doesn't exist
+    let resultMessage = document.querySelector('.scale-result');
+    if (!resultMessage) {
+        resultMessage = document.createElement('div');
+        resultMessage.className = 'scale-result';
+        scaleContainer.appendChild(resultMessage);
+    }
 
     function updateScaleValue(value) {
         const descriptions = [
@@ -111,9 +126,9 @@ document.addEventListener('DOMContentLoaded', () => {
             resultMessage.innerHTML = `
                 <div class="match-message success">
                     <i class="fas fa-heart"></i>
-                    Yay we're a match! Let's go on a date and be unhinged together! 🎉
+                    Yay! You're unhinged too. 
                     <button class="action-btn lets-do-it" onclick="showMatchDialog()">
-                        <span>Yes, let's do it!</span>
+                        <span>Let's match!</span>
                         <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
@@ -122,45 +137,47 @@ document.addEventListener('DOMContentLoaded', () => {
             resultMessage.innerHTML = `
                 <div class="match-message gentle-reject">
                     <i class="fas fa-star"></i>
-                    OOF you're above my league and deserve someone better. 
-                    Stay pure and wholesome! ✨
+                    OOF, you are above my league. Stay pure!
                 </div>
             `;
         }
         
+        // Ensure the result is visible
         resultMessage.classList.add('show');
+        
+        // Make the message immediately visible for debugging
+        console.log("Slider value updated:", value);
+        console.log("Result message:", resultMessage.innerHTML);
     }
 
+    // Add event listener for slider changes
     humorSlider.addEventListener('input', (e) => {
         updateScaleValue(e.target.value);
     });
 
-    // Initialize with default value
-    updateScaleValue(humorSlider.value);
+    // Ensure initial value gets set properly
+    setTimeout(() => {
+        updateScaleValue(humorSlider.value || 1);
+    }, 100);
+}
 
-    // Initialize date options
-    document.querySelectorAll('.date-option').forEach(option => {
-        option.addEventListener('click', () => {
-            document.querySelectorAll('.date-option').forEach(btn => btn.classList.remove('selected'));
-            option.classList.add('selected');
-            
-            // Handle custom activity input
-            const customInput = document.getElementById('customActivityInput');
-            if (option.dataset.value === 'custom') {
-                customInput.classList.add('show');
-                document.getElementById('customActivity').focus();
-            } else {
-                customInput.classList.remove('show');
-            }
+// Initialize dialog related functions
+function initializeDialogs() {
+    // Ensure all "Let's do it" buttons open the match dialog
+    document.querySelectorAll('.action-btn.lets-do-it, button.lets-do-it, .match-message button').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            showMatchDialog();
         });
     });
 
-    // Initialize time options
-    document.querySelectorAll('.time-option').forEach(option => {
-        option.addEventListener('click', () => {
-            document.querySelectorAll('.time-option').forEach(btn => btn.classList.remove('selected'));
-            option.classList.add('selected');
-        });
+    // Add click event for dynamically added buttons
+    document.addEventListener('click', function(e) {
+        if (e.target && (e.target.classList.contains('lets-do-it') || 
+                        (e.target.parentElement && e.target.parentElement.classList.contains('lets-do-it')))) {
+            e.preventDefault();
+            showMatchDialog();
+        }
     });
 
     // Initialize close handlers for dialogs
@@ -172,19 +189,21 @@ document.addEventListener('DOMContentLoaded', () => {
             hideRejectDialog();
         }
     });
-});
+}
 
-// Initialize selection buttons
+// Initialize selection buttons with fixed event handlers
 function initializeSelectionButtons() {
     // Date options
     document.querySelectorAll('.date-option').forEach(option => {
-        option.addEventListener('click', () => {
-            document.querySelectorAll('.date-option').forEach(btn => btn.classList.remove('selected'));
-            option.classList.add('selected');
+        option.addEventListener('click', function() {
+            document.querySelectorAll('.date-option').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            this.classList.add('selected');
             
             // Handle custom activity input
             const customInput = document.getElementById('customActivityInput');
-            if (option.dataset.value === 'custom') {
+            if (this.dataset.value === 'custom') {
                 customInput.classList.add('show');
                 document.getElementById('customActivity').focus();
             } else {
@@ -194,13 +213,60 @@ function initializeSelectionButtons() {
     });
 
     // Time options
-    const timeOptions = document.querySelectorAll('.time-option');
-    timeOptions.forEach(option => {
-        option.addEventListener('click', () => {
-            timeOptions.forEach(btn => btn.classList.remove('selected'));
-            option.classList.add('selected');
+    document.querySelectorAll('.time-option').forEach(option => {
+        option.addEventListener('click', function() {
+            document.querySelectorAll('.time-option').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            this.classList.add('selected');
         });
     });
+}
+
+// Form Submission
+function handleFormSubmit(e) {
+    e.preventDefault();
+    
+    // Get form values
+    const phone = document.getElementById('phone').value;
+    const selectedDateOption = document.querySelector('.date-option.selected');
+    const datePreference = selectedDateOption ? selectedDateOption.dataset.value : 'flexible';
+    const datePreferenceText = selectedDateOption ? selectedDateOption.textContent.trim() : 'Flexible';
+    const customActivity = document.getElementById('customActivity').value;
+    
+    const availabilityEl = document.querySelector('.time-option.selected');
+    const availability = availabilityEl ? availabilityEl.dataset.value : 'flexible';
+    const availabilityText = availabilityEl ? availabilityEl.textContent.trim() : 'Flexible';
+    
+    const message = document.getElementById('message').value;
+
+    // Create the message text
+    let messageText = `Hey! I saw your profile and I'm interested in going on a date! 📱 ${phone}\n\n`;
+    
+    // Add availability
+    messageText += `I'm free during ${availabilityText} `;
+    
+    // Handle date preference text
+    if (datePreference === 'custom' && customActivity) {
+        messageText += `and would love to ${customActivity}. `;
+    } else {
+        const activities = {
+            coffee: 'go for coffee and talk about code',
+            food: 'go on a food adventure',
+            gaming: 'have a gaming session',
+            flexible: 'do something fun'
+        };
+        messageText += `and would like to ${datePreferenceText}: ${activities[datePreference] || 'meet up'}. `;
+    }
+    
+    if (message) {
+        messageText += `\n\nPS: ${message}`;
+    }
+
+    // Open default messaging app
+    window.location.href = `sms:6043753710?&body=${encodeURIComponent(messageText)}`;
+    
+    hideMatchDialog();
 }
 
 // Voice Recording Functions
@@ -257,43 +323,6 @@ function stopRecording() {
     mediaRecorder.stop();
     mediaRecorder.stream.getTracks().forEach(track => track.stop());
 }
-
-// Form Submission
-document.getElementById('matchForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    const phone = document.getElementById('phone').value;
-    const selectedDateOption = document.querySelector('.date-option.selected');
-    const datePreference = selectedDateOption?.dataset.value;
-    const customActivity = document.getElementById('customActivity').value;
-    const availability = document.querySelector('.time-option.selected')?.dataset.value;
-    const message = document.getElementById('message').value;
-
-    // Create the message text
-    let messageText = `Hey! I saw your profile and I'm interested in going on a date! `;
-    messageText += `\n\nI'm free during ${availability} `;
-    
-    // Handle date preference text
-    if (datePreference === 'custom' && customActivity) {
-        messageText += `and would love to ${customActivity}. `;
-    } else {
-        const activities = {
-            coffee: 'go for coffee and talk about code',
-            food: 'go on a food adventure',
-            gaming: 'have a gaming session'
-        };
-        messageText += `and would love to ${activities[datePreference] || 'meet up'}. `;
-    }
-    
-    if (message) {
-        messageText += `\n\nPS: ${message}`;
-    }
-
-    // Open default messaging app
-    window.location.href = `sms:6043753710?&body=${encodeURIComponent(messageText)}`;
-    
-    hideMatchDialog();
-});
 
 // Initialize animations
 function initializeAnimations() {
