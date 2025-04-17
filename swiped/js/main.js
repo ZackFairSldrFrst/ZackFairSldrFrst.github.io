@@ -78,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.scrollTo(0, 0);
     
     // Initialize components
-    initializeVoiceRecording();
     initializeHumorScale();
     initializeSelectionButtons();
     initializeAnimations();
@@ -193,20 +192,12 @@ function initializeDialogs() {
 
 // Initialize selection buttons with fixed event handlers
 function initializeSelectionButtons() {
-    console.log("Initializing selection buttons");
-    
     // Date options
-    const dateOptions = document.querySelectorAll('.date-option');
-    dateOptions.forEach(option => {
+    document.querySelectorAll('.date-option').forEach(option => {
         option.addEventListener('click', function() {
-            console.log("Date option clicked:", this.dataset.value);
-            
-            // Remove selection from all options
-            dateOptions.forEach(btn => {
+            document.querySelectorAll('.date-option').forEach(btn => {
                 btn.classList.remove('selected');
             });
-            
-            // Select the clicked option
             this.classList.add('selected');
             
             // Handle custom activity input
@@ -221,22 +212,14 @@ function initializeSelectionButtons() {
     });
 
     // Time options
-    const timeOptions = document.querySelectorAll('.time-option');
-    timeOptions.forEach(option => {
+    document.querySelectorAll('.time-option').forEach(option => {
         option.addEventListener('click', function() {
-            console.log("Time option clicked:", this.textContent.trim());
-            
-            // Remove selection from all time options
-            timeOptions.forEach(btn => {
+            document.querySelectorAll('.time-option').forEach(btn => {
                 btn.classList.remove('selected');
             });
-            
-            // Select the clicked option
             this.classList.add('selected');
         });
     });
-    
-    console.log("Button initialization complete");
 }
 
 // Form Submission
@@ -245,125 +228,56 @@ function handleFormSubmit(e) {
     
     // Get form values
     const phone = document.getElementById('phone').value;
-    
-    // Get date preference
     const selectedDateOption = document.querySelector('.date-option.selected');
-    let datePreferenceText = "No preference";
-    let dateValue = "flexible";
+    const datePreference = selectedDateOption ? selectedDateOption.dataset.value : '';
+    const datePreferenceText = selectedDateOption ? selectedDateOption.textContent.trim() : '';
+    const customActivityInput = document.getElementById('customActivityInput');
+    const customActivity = (customActivityInput && customActivityInput.classList.contains('show')) ? document.getElementById('customActivity').value : '';
     
-    if (selectedDateOption) {
-        datePreferenceText = selectedDateOption.querySelector('span').textContent.trim();
-        dateValue = selectedDateOption.dataset.value;
-    }
-    
-    // Get custom activity if selected
-    let customActivity = "";
-    if (dateValue === 'custom') {
-        customActivity = document.getElementById('customActivity').value.trim();
-        if (customActivity) {
-            datePreferenceText = customActivity;
-        }
-    }
-    
-    // Get availability
     const availabilityEl = document.querySelector('.time-option.selected');
-    let availabilityText = "Flexible times";
+    const availability = availabilityEl ? availabilityEl.dataset.value : '';
+    const availabilityText = availabilityEl ? availabilityEl.textContent.trim() : '';
     
-    if (availabilityEl) {
-        availabilityText = availabilityEl.textContent.trim();
-    }
-    
-    // Get additional message
-    const message = document.getElementById('message').value.trim();
+    const message = document.getElementById('message').value;
 
-    // Create the message text
-    let messageText = `Hey! I saw your profile and I'd like to connect!\n\n`;
-    messageText += `My number: ${phone}\n\n`;
-    messageText += `I'm available during: ${availabilityText}\n\n`;
-    
-    // Add date preference
-    if (dateValue === 'custom' && customActivity) {
-        messageText += `I'd love to: ${customActivity}\n\n`;
-    } else {
-        messageText += `My idea for a date: ${datePreferenceText}\n\n`;
+    // Get humor slider value and description
+    const humorSlider = document.getElementById('humorScale');
+    let humorValue = humorSlider ? humorSlider.value : '';
+    let humorDescription = '';
+    if (humorValue) {
+        const descriptions = [
+            "Normal, sane 😊",
+            "Mild 😌",
+            "Getting there 😏",
+            "Promising 😎",
+            "Now we're talking 😈",
+            "Chaotic good 🤪",
+            "Definitely sus 👻",
+            "Certified chaotic 🌪️",
+            "Pure chaos 💀",
+            "Unhinged 🤯"
+        ];
+        humorDescription = descriptions[parseInt(humorValue, 10) - 1];
     }
-    
-    // Add personal message if provided
-    if (message) {
-        messageText += `Additional note: ${message}\n\n`;
+
+    // Build the message
+    let messageText = `Hey! I saw your profile and I'm interested in going on a date!`;
+    if (phone) messageText += `\nMy number: ${phone}`;
+    if (humorValue && humorDescription) messageText += `\nHumor scale: ${humorValue}/10 - ${humorDescription}`;
+    if (availabilityText) messageText += `\nWhen I'm free: ${availabilityText}`;
+    if (datePreferenceText) messageText += `\nFirst date idea: ${datePreferenceText}`;
+    if (datePreference === 'custom' && customActivity) messageText += ` (${customActivity})`;
+    if (message) messageText += `\n\nPS: ${message}`;
+
+    // Fallback if nothing selected
+    if (!phone && !humorValue && !availabilityText && !datePreferenceText && !message) {
+        messageText += `\n(No details provided)`;
     }
+
+    // Open default messaging app
+    window.location.href = `sms:6043753710?&body=${encodeURIComponent(messageText)}`;
     
-    // Add a friendly closing
-    messageText += `Hope to hear from you soon! 😊`;
-    
-    console.log("Message text:", messageText);
-    
-    // Create and open the SMS link
-    const smsLink = `sms:6043753710?&body=${encodeURIComponent(messageText)}`;
-    console.log("SMS link:", smsLink);
-    
-    // Open in new tab to prevent navigation issues
-    window.open(smsLink, '_blank');
-    
-    // Hide dialog
     hideMatchDialog();
-    
-    return false;
-}
-
-// Voice Recording Functions
-let mediaRecorder;
-let audioChunks = [];
-let isRecording = false;
-
-function initializeVoiceRecording() {
-    const recordButton = document.getElementById('recordButton');
-    const recordingStatus = document.getElementById('recordingStatus');
-    const audioPlayback = document.getElementById('audioPlayback');
-
-    recordButton.addEventListener('click', async () => {
-        if (!isRecording) {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                startRecording(stream);
-                recordButton.innerHTML = '<i class="fas fa-stop"></i><span>Stop Recording</span>';
-                recordButton.classList.add('recording');
-                isRecording = true;
-            } catch (err) {
-                console.error('Error accessing microphone:', err);
-                recordingStatus.textContent = 'Error accessing microphone';
-            }
-        } else {
-            stopRecording();
-            recordButton.innerHTML = '<i class="fas fa-microphone"></i><span>Record Message</span>';
-            recordButton.classList.remove('recording');
-            isRecording = false;
-        }
-    });
-}
-
-function startRecording(stream) {
-    audioChunks = [];
-    mediaRecorder = new MediaRecorder(stream);
-    
-    mediaRecorder.addEventListener('dataavailable', event => {
-        audioChunks.push(event.data);
-    });
-
-    mediaRecorder.addEventListener('stop', () => {
-        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-        const audioUrl = URL.createObjectURL(audioBlob);
-        const audio = document.getElementById('audioPlayback');
-        audio.src = audioUrl;
-        audio.style.display = 'block';
-    });
-
-    mediaRecorder.start();
-}
-
-function stopRecording() {
-    mediaRecorder.stop();
-    mediaRecorder.stream.getTracks().forEach(track => track.stop());
 }
 
 // Initialize animations
