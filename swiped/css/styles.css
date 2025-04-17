@@ -637,17 +637,19 @@ input[type="tel"] {
 
 /* Add these styles for the custom activity input */
 .custom-activity-input {
-    margin-top: 12px;
     height: 0;
     opacity: 0;
     overflow: hidden;
     transition: all 0.3s ease;
+    margin-top: 0;
 }
 
 .custom-activity-input.show {
     height: auto;
     opacity: 1;
+    visibility: visible;
     margin-top: 15px;
+    margin-bottom: 10px;
 }
 
 .custom-activity-input input {

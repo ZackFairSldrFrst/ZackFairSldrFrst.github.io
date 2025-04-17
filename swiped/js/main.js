@@ -193,12 +193,20 @@ function initializeDialogs() {
 
 // Initialize selection buttons with fixed event handlers
 function initializeSelectionButtons() {
+    console.log("Initializing selection buttons");
+    
     // Date options
-    document.querySelectorAll('.date-option').forEach(option => {
+    const dateOptions = document.querySelectorAll('.date-option');
+    dateOptions.forEach(option => {
         option.addEventListener('click', function() {
-            document.querySelectorAll('.date-option').forEach(btn => {
+            console.log("Date option clicked:", this.dataset.value);
+            
+            // Remove selection from all options
+            dateOptions.forEach(btn => {
                 btn.classList.remove('selected');
             });
+            
+            // Select the clicked option
             this.classList.add('selected');
             
             // Handle custom activity input
@@ -213,14 +221,22 @@ function initializeSelectionButtons() {
     });
 
     // Time options
-    document.querySelectorAll('.time-option').forEach(option => {
+    const timeOptions = document.querySelectorAll('.time-option');
+    timeOptions.forEach(option => {
         option.addEventListener('click', function() {
-            document.querySelectorAll('.time-option').forEach(btn => {
+            console.log("Time option clicked:", this.textContent.trim());
+            
+            // Remove selection from all time options
+            timeOptions.forEach(btn => {
                 btn.classList.remove('selected');
             });
+            
+            // Select the clicked option
             this.classList.add('selected');
         });
     });
+    
+    console.log("Button initialization complete");
 }
 
 // Form Submission
@@ -229,44 +245,70 @@ function handleFormSubmit(e) {
     
     // Get form values
     const phone = document.getElementById('phone').value;
+    
+    // Get date preference
     const selectedDateOption = document.querySelector('.date-option.selected');
-    const datePreference = selectedDateOption ? selectedDateOption.dataset.value : 'flexible';
-    const datePreferenceText = selectedDateOption ? selectedDateOption.textContent.trim() : 'Flexible';
-    const customActivity = document.getElementById('customActivity').value;
+    let datePreferenceText = "No preference";
+    let dateValue = "flexible";
     
+    if (selectedDateOption) {
+        datePreferenceText = selectedDateOption.querySelector('span').textContent.trim();
+        dateValue = selectedDateOption.dataset.value;
+    }
+    
+    // Get custom activity if selected
+    let customActivity = "";
+    if (dateValue === 'custom') {
+        customActivity = document.getElementById('customActivity').value.trim();
+        if (customActivity) {
+            datePreferenceText = customActivity;
+        }
+    }
+    
+    // Get availability
     const availabilityEl = document.querySelector('.time-option.selected');
-    const availability = availabilityEl ? availabilityEl.dataset.value : 'flexible';
-    const availabilityText = availabilityEl ? availabilityEl.textContent.trim() : 'Flexible';
+    let availabilityText = "Flexible times";
     
-    const message = document.getElementById('message').value;
+    if (availabilityEl) {
+        availabilityText = availabilityEl.textContent.trim();
+    }
+    
+    // Get additional message
+    const message = document.getElementById('message').value.trim();
 
     // Create the message text
-    let messageText = `Hey! I saw your profile and I'm interested in going on a date! 📱 ${phone}\n\n`;
+    let messageText = `Hey! I saw your profile and I'd like to connect!\n\n`;
+    messageText += `My number: ${phone}\n\n`;
+    messageText += `I'm available during: ${availabilityText}\n\n`;
     
-    // Add availability
-    messageText += `I'm free during ${availabilityText} `;
-    
-    // Handle date preference text
-    if (datePreference === 'custom' && customActivity) {
-        messageText += `and would love to ${customActivity}. `;
+    // Add date preference
+    if (dateValue === 'custom' && customActivity) {
+        messageText += `I'd love to: ${customActivity}\n\n`;
     } else {
-        const activities = {
-            coffee: 'go for coffee and talk about code',
-            food: 'go on a food adventure',
-            gaming: 'have a gaming session',
-            flexible: 'do something fun'
-        };
-        messageText += `and would like to ${datePreferenceText}: ${activities[datePreference] || 'meet up'}. `;
+        messageText += `My idea for a date: ${datePreferenceText}\n\n`;
     }
     
+    // Add personal message if provided
     if (message) {
-        messageText += `\n\nPS: ${message}`;
+        messageText += `Additional note: ${message}\n\n`;
     }
-
-    // Open default messaging app
-    window.location.href = `sms:6043753710?&body=${encodeURIComponent(messageText)}`;
     
+    // Add a friendly closing
+    messageText += `Hope to hear from you soon! 😊`;
+    
+    console.log("Message text:", messageText);
+    
+    // Create and open the SMS link
+    const smsLink = `sms:6043753710?&body=${encodeURIComponent(messageText)}`;
+    console.log("SMS link:", smsLink);
+    
+    // Open in new tab to prevent navigation issues
+    window.open(smsLink, '_blank');
+    
+    // Hide dialog
     hideMatchDialog();
+    
+    return false;
 }
 
 // Voice Recording Functions
