@@ -276,7 +276,8 @@ textarea {
     font-weight: 500;
 }
 
-input[type="tel"] {
+input[type="tel"],
+input[type="text"]#userName {
     width: 100%;
     padding: 12px;
     background: var(--background-color);
