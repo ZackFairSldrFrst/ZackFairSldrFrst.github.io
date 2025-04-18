@@ -227,6 +227,7 @@ function handleFormSubmit(e) {
     e.preventDefault();
     
     // Get form values
+    const userName = document.getElementById('userName').value;
     const phone = document.getElementById('phone').value;
     const selectedDateOption = document.querySelector('.date-option.selected');
     const datePreference = selectedDateOption ? selectedDateOption.dataset.value : '';
@@ -262,6 +263,7 @@ function handleFormSubmit(e) {
 
     // Build the message
     let messageText = `Hey! I saw your profile and I'm interested in going on a date!`;
+    if (userName) messageText += `\nName: ${userName}`;
     if (phone) messageText += `\nMy number: ${phone}`;
     if (humorValue && humorDescription) messageText += `\nHumor scale: ${humorValue}/10 - ${humorDescription}`;
     if (availabilityText) messageText += `\nWhen I'm free: ${availabilityText}`;
@@ -270,7 +272,7 @@ function handleFormSubmit(e) {
     if (message) messageText += `\n\nPS: ${message}`;
 
     // Fallback if nothing selected
-    if (!phone && !humorValue && !availabilityText && !datePreferenceText && !message) {
+    if (!userName && !phone && !humorValue && !availabilityText && !datePreferenceText && !message) {
         messageText += `\n(No details provided)`;
     }
 
