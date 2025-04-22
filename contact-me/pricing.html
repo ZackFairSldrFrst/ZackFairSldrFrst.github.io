@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing | simplecontact.me</title>
+    <meta name="description" content="Affordable subscription plans for real estate agents and agencies. Build your personal brand with our bio builder, landing page generator and review collector.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="logo"><a href="/contact-me/">RealtorBrand</a></div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="onboarding.html">Build My Bio</a>
+                <a href="templates.html">Social Templates</a>
+                <a href="reviews.html">Review Collector</a>
+                <a href="pricing.html" class="active">Pricing</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero pricing-hero">
+        <div class="container">
+            <h1>Simple, Transparent Pricing</h1>
+            <p class="subtitle">Choose the plan that fits your needs. No hidden fees, cancel anytime.</p>
+        </div>
+    </section>
+
+    <main>
+        <section class="pricing">
+            <div class="container">
+                <div class="pricing-toggle">
+                    <span>Monthly</span>
+                    <label class="switch">
+                        <input type="checkbox" id="billingToggle">
+                        <span class="slider round"></span>
+                    </label>
+                    <span>Annual <span class="save-badge">Save 20%</span></span>
+                </div>
+
+                <div class="pricing-cards">
+                    <div class="pricing-card">
+                        <div class="card-header">
+                            <h3>Free</h3>
+                            <div class="price">
+                                <span class="amount">$0</span>
+                                <span class="period">/month</span>
+                            </div>
+                            <p>Get started with basic features</p>
+                        </div>
+                        <div class="card-body">
+                            <ul class="features-list">
+                                <li><i class="fas fa-check"></i> Basic bio builder</li>
+                                <li><i class="fas fa-check"></i> 1 agent page template</li>
+                                <li><i class="fas fa-check"></i> 5 social media templates</li>
+                                <li><i class="fas fa-check"></i> Up to 3 client reviews</li>
+                                <li class="disabled"><i class="fas fa-times"></i> Custom domain</li>
+                                <li class="disabled"><i class="fas fa-times"></i> Advanced SEO tools</li>
+                                <li class="disabled"><i class="fas fa-times"></i> Analytics</li>
+                                <li class="disabled"><i class="fas fa-times"></i> Priority support</li>
+                            </ul>
+                        </div>
+                        <div class="card-footer">
+                            <a href="onboarding.html" class="btn btn-outline btn-block">Get Started</a>
+                        </div>
+                    </div>
+
+                    <div class="pricing-card popular">
+                        <div class="popular-badge">Most Popular</div>
+                        <div class="card-header">
+                            <h3>Pro</h3>
+                            <div class="price">
+                                <span class="currency">$</span>
+                                <span class="amount" id="proPriceAmount">29</span>
+                                <span class="period" id="proPricePeriod">/month</span>
+                            </div>
+                            <p>Perfect for individual agents</p>
+                        </div>
+                        <div class="card-body">
+                            <ul class="features-list">
+                                <li><i class="fas fa-check"></i> <strong>Advanced bio builder</strong></li>
+                                <li><i class="fas fa-check"></i> <strong>3 agent page templates</strong></li>
+                                <li><i class="fas fa-check"></i> <strong>20+ social media templates</strong></li>
+                                <li><i class="fas fa-check"></i> <strong>Unlimited client reviews</strong></li>
+                                <li><i class="fas fa-check"></i> Custom domain connection</li>
+                                <li><i class="fas fa-check"></i> SEO optimization tools</li>
+                                <li><i class="fas fa-check"></i> Basic analytics</li>
+                                <li><i class="fas fa-check"></i> Email support</li>
+                            </ul>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="btn btn-primary btn-block">Start 7-Day Free Trial</a>
+                            <p class="small">No credit card required to try</p>
+                        </div>
+                    </div>
+
+                    <div class="pricing-card">
+                        <div class="card-header">
+                            <h3>Agency</h3>
+                            <div class="price">
+                                <span class="currency">$</span>
+                                <span class="amount" id="agencyPriceAmount">99</span>
+                                <span class="period" id="agencyPricePeriod">/month</span>
+                            </div>
+                            <p>For agencies with multiple agents</p>
+                        </div>
+                        <div class="card-body">
+                            <ul class="features-list">
+                                <li><i class="fas fa-check"></i> <strong>Everything in Pro, plus:</strong></li>
+                                <li><i class="fas fa-check"></i> <strong>Up to 5 agent accounts</strong></li>
+                                <li><i class="fas fa-check"></i> <strong>Agency branding options</strong></li>
+                                <li><i class="fas fa-check"></i> <strong>Custom template creation</strong></li>
+                                <li><i class="fas fa-check"></i> Team management dashboard</li>
+                                <li><i class="fas fa-check"></i> Advanced SEO & analytics</li>
+                                <li><i class="fas fa-check"></i> Content calendar</li>
+                                <li><i class="fas fa-check"></i> Priority phone support</li>
+                            </ul>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="btn btn-outline btn-block">Contact Sales</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="custom-pricing">
+                    <h3>Need something different?</h3>
+                    <p>We offer custom plans for larger teams or specialized needs. Contact our sales team to discuss your requirements.</p>
+                    <a href="#" class="btn btn-primary">Contact Sales</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq">
+            <div class="container">
+                <h2>Frequently Asked Questions</h2>
+                
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <h3>Can I try before I buy?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="accordion-content">
+                            <p>Yes! Our Pro plan comes with a 7-day free trial with no credit card required. You can explore all the features and see if it's right for you before making a commitment.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <h3>Can I change plans later?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="accordion-content">
+                            <p>Absolutely. You can upgrade, downgrade, or cancel your subscription at any time. If you upgrade, you'll be prorated for the remainder of your billing cycle.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <h3>How does the agency plan work?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="accordion-content">
+                            <p>The agency plan allows for up to 5 agent accounts under a single subscription. Each agent gets their own profile and pages, but they can be managed centrally. For larger teams, contact our sales team for custom pricing.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <h3>Can I use my own domain name?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="accordion-content">
+                            <p>Yes, Pro and Agency plans allow you to connect your own custom domain to your agent page. We provide simple instructions to set this up with your domain registrar.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <h3>What payment methods do you accept?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="accordion-content">
+                            <p>We accept all major credit cards, including Visa, Mastercard, American Express, and Discover. For agency plans, we can also arrange for invoice payment.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="cta">
+            <div class="container">
+                <h2>Ready to build your real estate brand?</h2>
+                <p>Join thousands of successful agents who have boosted their online presence with our platform.</p>
+                <div class="cta-buttons">
+                    <a href="onboarding.html" class="btn btn-primary btn-large">Get Started Now</a>
+                    <a href="#" class="btn btn-outline btn-large">Schedule a Demo</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 simplecontact.me. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="scripts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle between monthly and annual pricing
+            const billingToggle = document.getElementById('billingToggle');
+            const proPriceAmount = document.getElementById('proPriceAmount');
+            const proPricePeriod = document.getElementById('proPricePeriod');
+            const agencyPriceAmount = document.getElementById('agencyPriceAmount');
+            const agencyPricePeriod = document.getElementById('agencyPricePeriod');
+            
+            billingToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    // Annual pricing
+                    proPriceAmount.textContent = '23';
+                    proPricePeriod.textContent = '/month billed annually';
+                    agencyPriceAmount.textContent = '79';
+                    agencyPricePeriod.textContent = '/month billed annually';
+                } else {
+                    // Monthly pricing
+                    proPriceAmount.textContent = '29';
+                    proPricePeriod.textContent = '/month';
+                    agencyPriceAmount.textContent = '99';
+                    agencyPricePeriod.textContent = '/month';
+                }
+            });
+            
+            // FAQ accordion functionality
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+            
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', function() {
+                    this.parentElement.classList.toggle('active');
+                    
+                    const icon = this.querySelector('i');
+                    if (this.parentElement.classList.contains('active')) {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    } else {
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

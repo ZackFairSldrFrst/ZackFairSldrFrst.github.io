@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build Your Realtor Bio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="logo"><a href="/contact-me/">RealtorBrand</a></div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="templates.html">Social Templates</a>
+                <a href="reviews.html">Review Collector</a>
+                <a href="pricing.html">Pricing</a>
+            </div>
+        </nav>
+    </header>
+    <main class="onboarding">
+        <div class="container">
+            <h1>Build Your Realtor Bio</h1>
+            <form id="onboardingForm">
+                <div class="onboarding-step" id="step-1">
+                    <h2>Step 1: Your Name & Photo</h2>
+                    <label>Name:<input type="text" id="agentName" required></label>
+                    <label>Photo:<input type="file" id="agentPhoto" accept="image/*"></label>
+                </div>
+                <div class="onboarding-step" id="step-2" style="display:none;">
+                    <h2>Step 2: Experience & Specialties</h2>
+                    <label>Years in business:<input type="number" id="years" min="0"></label>
+                    <label>Specialties:<input type="text" id="specialties" placeholder="e.g. First-time buyers, Luxury, Relocation"></label>
+                </div>
+                <div class="onboarding-step" id="step-3" style="display:none;">
+                    <h2>Step 3: Service Area</h2>
+                    <label>Service Area:<input type="text" id="serviceArea" placeholder="e.g. Greater Toronto Area"></label>
+                </div>
+                <div class="onboarding-step" id="step-4" style="display:none;">
+                    <h2>Step 4: Fun Fact & Why Real Estate?</h2>
+                    <label>Fun Fact:<input type="text" id="funFact" placeholder="e.g. I play the ukulele!" ></label>
+                    <label>Why do you love real estate?
+                        <textarea id="whyRealEstate" rows="3" placeholder="Share your passion..."></textarea>
+                    </label>
+                </div>
+                <div class="onboarding-step" id="step-5" style="display:none;">
+                    <h2>Step 5: Preview & Finish</h2>
+                    <div id="bioPreview" class="bio-preview"></div>
+                    <button type="submit" class="btn btn-primary">Finish & Generate My Page</button>
+                </div>
+                <div class="onboarding-nav">
+                    <button type="button" id="backBtn" class="btn btn-outline" style="display:none;">Back</button>
+                    <button type="button" id="nextBtn" class="btn btn-primary">Next</button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 RealtorBrand. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="scripts.js"></script>
+</body>
+</html> 

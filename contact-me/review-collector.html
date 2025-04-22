@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Collector | Zack Fair</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="../index.html">Zack Fair</a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../about.html">About</a></li>
+                    <li><a href="../portfolio.html">Portfolio</a></li>
+                    <li><a href="../contact.html">Contact</a></li>
+                    <li><a href="review-collector.html" class="active">Reviews</a></li>
+                </ul>
+            </nav>
+            <div class="hamburger">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <div class="container">
+                <h1>Share Your Experience</h1>
+                <p>Your feedback helps others and improves my services. Thank you for taking the time to share!</p>
+            </div>
+        </section>
+
+        <section class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-preview" id="reviewForm">
+                        <h3>Submit Your Review</h3>
+                        <p>Rate your experience:</p>
+                        <div class="stars">
+                            <i class="fa-solid fa-star" data-rating="1"></i>
+                            <i class="fa-solid fa-star" data-rating="2"></i>
+                            <i class="fa-solid fa-star" data-rating="3"></i>
+                            <i class="fa-solid fa-star" data-rating="4"></i>
+                            <i class="fa-solid fa-star" data-rating="5"></i>
+                            <span class="rating-text"></span>
+                        </div>
+
+                        <form id="reviewSubmitForm">
+                            <div class="form-group">
+                                <label for="reviewText">Your Review:</label>
+                                <textarea id="reviewText" placeholder="Tell me about your experience..." required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="reviewName">Your Name:</label>
+                                <input type="text" id="reviewName" placeholder="John Doe" required>
+                            </div>
+
+                            <div class="permission-options">
+                                <p>Permission to use your review:</p>
+                                <div class="permission-option">
+                                    <input type="checkbox" id="permissionWebsite" checked>
+                                    <label for="permissionWebsite">You may display my review on your website</label>
+                                </div>
+                                <div class="permission-option">
+                                    <input type="checkbox" id="permissionSocial">
+                                    <label for="permissionSocial">You may share my review on social media</label>
+                                </div>
+                                <div class="permission-option">
+                                    <input type="checkbox" id="permissionMarketing">
+                                    <label for="permissionMarketing">You may use my review in marketing materials</label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn primary-btn">Submit Review</button>
+                        </form>
+                    </div>
+
+                    <div class="form-preview success-message" id="successMessage" style="display: none;">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <h3>Thank You for Your Review!</h3>
+                        <p>Your feedback has been submitted successfully. I greatly appreciate you taking the time to share your experience.</p>
+                        <button class="btn primary-btn" id="submitAnotherBtn">Submit Another Review</button>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="dashboard-preview">
+                        <div class="dashboard-header">
+                            <h3>Recent Reviews</h3>
+                            <div>
+                                <select id="sortReviews">
+                                    <option value="newest">Newest First</option>
+                                    <option value="oldest">Oldest First</option>
+                                    <option value="highest">Highest Rated</option>
+                                    <option value="lowest">Lowest Rated</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-filters">
+                            <select id="filterRating">
+                                <option value="all">All Ratings</option>
+                                <option value="5">5 Stars</option>
+                                <option value="4">4 Stars</option>
+                                <option value="3">3 Stars</option>
+                                <option value="2">2 Stars</option>
+                                <option value="1">1 Star</option>
+                            </select>
+                            <select id="filterFeatured">
+                                <option value="all">All Reviews</option>
+                                <option value="featured">Featured Only</option>
+                            </select>
+                        </div>
+
+                        <div class="review-list">
+                            <!-- Sample Review 1 -->
+                            <div class="review-item featured" data-rating="5">
+                                <div class="review-header">
+                                    <div class="review-info">
+                                        <h4 class="review-name">Sarah Johnson <span class="featured-badge"><i class="fa-solid fa-award"></i> Featured</span></h4>
+                                        <div class="review-date">June 15, 2023</div>
+                                        <div class="review-stars">
+                                            <i class="fa-solid fa-star star-active"></i>
+                                            <i class="fa-solid fa-star star-active"></i>
+                                            <i class="fa-solid fa-star star-active"></i>
+                                            <i class="fa-solid fa-star star-active"></i>
+                                            <i class="fa-solid fa-star star-active"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="review-text">Working with Zack was an absolute pleasure! His attention to detail and creative approach resulted in a website that perfectly represents my brand. I've received numerous compliments on the design and functionality.</p>
+                                <div class="review-actions">
+                                    <button class="respond-btn"><i class="fa-solid fa-reply"></i> Respond</button>
+                                    <button class="share-btn"><i class="fa-solid fa-share-nodes"></i> Share</button>
+                                    <button class="feature-btn active"><i class="fa-solid fa-star"></i> Featured</button>
+                                </div>
+                                <div class="agent-response">
+                                    <h5 class="response-header">Response from Zack:</h5>
+                                    <p class="response-text">Thank you so much for your kind words, Sarah! It was great working with you, and I'm thrilled that you're happy with the results. I look forward to our next project together!</p>
+                                </div>
+                            </div>
+
+                            <!-- Sample Review 2 -->
+                            <div class="review-item" data-rating="4">
+                                <div class="review-header">
+                                    <div class="review-info">
+                                        <h4 class="review-name">Michael Torres</h4>
+                                        <div class="review-date">May 3, 2023</div>
+                                        <div class="review-stars">
+                                            <i class="fa-solid fa-star star-active"></i>
+                                            <i class="fa-solid fa-star star-active"></i>
+                                            <i class="fa-solid fa-star star-active"></i>
+                                            <i class="fa-solid fa-star star-active"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="review-text">Great experience overall! Zack was very responsive and delivered the project on time. The only reason I'm giving 4 stars instead of 5 is that we needed to make a few more revisions than expected, but the final result was excellent.</p>
+                                <div class="review-actions">
+                                    <button class="respond-btn"><i class="fa-solid fa-reply"></i> Respond</button>
+                                    <button class="share-btn"><i class="fa-solid fa-share-nodes"></i> Share</button>
+                                    <button class="feature-btn"><i class="fa-solid fa-star"></i> Feature</button>
+                                </div>
+                            </div>
+
+                            <!-- Sample Review 3 -->
+                            <div class="review-item" data-rating="5">
+                                <div class="review-header">
+                                    <div class="review-info">
+                                        <h4 class="review-name">Emily Chen</h4>
+                                        <div class="review-date">April 18, 2023</div>
+                                        <div class="review-stars">
+                                            <i class="fa-solid fa-star star-active"></i>
+                                            <i class="fa-solid fa-star star-active"></i>
+                                            <i class="fa-solid fa-star star-active"></i>
+                                            <i class="fa-solid fa-star star-active"></i>
+                                            <i class="fa-solid fa-star star-active"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="review-text">I can't say enough good things about working with Zack! He took my vague ideas and transformed them into a stunning portfolio website that's already helped me land new clients. His communication was excellent throughout the entire process.</p>
+                                <div class="review-actions">
+                                    <button class="respond-btn"><i class="fa-solid fa-reply"></i> Respond</button>
+                                    <button class="share-btn"><i class="fa-solid fa-share-nodes"></i> Share</button>
+                                    <button class="feature-btn"><i class="fa-solid fa-star"></i> Feature</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container">
+            <h2 class="section-title">Why Share Your Experience?</h2>
+            <div class="showcase-options">
+                <div class="showcase-option">
+                    <i class="fa-solid fa-users"></i>
+                    <h3>Help Others Decide</h3>
+                    <p>Your honest review helps potential clients make informed decisions about working with me.</p>
+                    <a href="#reviewForm" class="btn secondary-btn">Share Now</a>
+                </div>
+                <div class="showcase-option">
+                    <i class="fa-solid fa-thumbs-up"></i>
+                    <h3>Provide Valuable Feedback</h3>
+                    <p>Your feedback helps me understand what's working well and where I can improve.</p>
+                    <a href="#reviewForm" class="btn secondary-btn">Share Now</a>
+                </div>
+                <div class="showcase-option">
+                    <i class="fa-solid fa-bullhorn"></i>
+                    <h3>Spread the Word</h3>
+                    <p>Great experiences deserve to be shared! Help others discover my services.</p>
+                    <a href="#reviewForm" class="btn secondary-btn">Share Now</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3>How will my review be used?</h3>
+                    <div class="faq-content">
+                        <p>Your review may be displayed on my website, social media, or marketing materials, depending on the permissions you grant. I value your privacy and will only use your review in the ways you've approved.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <h3>Can I update or remove my review later?</h3>
+                    <div class="faq-content">
+                        <p>Yes, you can update or request removal of your review at any time. Simply contact me with your request, and I'll take care of it promptly.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <h3>Are all reviews published?</h3>
+                    <div class="faq-content">
+                        <p>I publish all authentic reviews, both positive and constructive. I believe in transparency and value all feedback. However, I reserve the right to not publish reviews containing inappropriate content.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <h3>How can I feature my success story?</h3>
+                    <div class="faq-content">
+                        <p>If you'd like to share a more detailed success story about our work together, please mention this in your review or contact me directly. I'd be happy to discuss featuring your project as a case study.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container">
+            <h2 class="section-title">What Others Are Saying</h2>
+            <div class="testimonial-carousel">
+                <div class="testimonial-item">
+                    <div class="testimonial-content">
+                        <p>Working with Zack transformed our online presence completely. His strategic approach to design not only made our website look amazing but also significantly improved our conversion rates. We've seen a 45% increase in leads since the new site launched!</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">
+                                <img src="../assets/testimonial-1.jpg" alt="James Wilson">
+                            </div>
+                            <div class="testimonial-info">
+                                <h4>James Wilson</h4>
+                                <p>CEO, Wilson & Associates</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-item">
+                    <div class="testimonial-content">
+                        <p>As a creative professional, I needed a portfolio that would showcase my work effectively while reflecting my personal style. Zack delivered exactly that and more. The intuitive design makes updating my portfolio a breeze, and I've received countless compliments on the site.</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">
+                                <img src="../assets/testimonial-2.jpg" alt="Sophia Rodriguez">
+                            </div>
+                            <div class="testimonial-info">
+                                <h4>Sophia Rodriguez</h4>
+                                <p>Freelance Photographer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-item">
+                    <div class="testimonial-content">
+                        <p>I approached Zack with a tight deadline for my startup's website launch. Not only did he meet the deadline, but he also provided valuable insights that improved our user experience. His technical expertise combined with business understanding makes him stand out from other developers I've worked with.</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">
+                                <img src="../assets/testimonial-3.jpg" alt="David Park">
+                            </div>
+                            <div class="testimonial-info">
+                                <h4>David Park</h4>
+                                <p>Founder, TechStart Solutions</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-dots">
+                    <div class="dot active" data-index="0"></div>
+                    <div class="dot" data-index="1"></div>
+                    <div class="dot" data-index="2"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Share Modal -->
+        <div class="share-modal" id="shareModal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Share This Review</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Share this review on your favorite platform:</p>
+                    <div class="share-buttons">
+                        <button class="share-btn facebook"><i class="fa-brands fa-facebook-f"></i> Facebook</button>
+                        <button class="share-btn twitter"><i class="fa-brands fa-twitter"></i> Twitter</button>
+                        <button class="share-btn linkedin"><i class="fa-brands fa-linkedin-in"></i> LinkedIn</button>
+                        <button class="share-btn instagram"><i class="fa-brands fa-instagram"></i> Instagram</button>
+                    </div>
+                    <div class="create-graphic">
+                        <h4>Create a Shareable Graphic</h4>
+                        <p>Choose a template to create a custom graphic with this review:</p>
+                        <div class="template-options">
+                            <div class="template-option selected">
+                                <img src="../assets/template-1.jpg" alt="Template 1">
+                            </div>
+                            <div class="template-option">
+                                <img src="../assets/template-2.jpg" alt="Template 2">
+                            </div>
+                            <div class="template-option">
+                                <img src="../assets/template-3.jpg" alt="Template 3">
+                            </div>
+                        </div>
+                        <button class="btn primary-btn">Generate Graphic</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Zack Fair</h3>
+                    <p>Creating digital experiences that make a difference.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="../about.html">About</a></li>
+                        <li><a href="../portfolio.html">Portfolio</a></li>
+                        <li><a href="../contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Get in Touch</h3>
+                    <p>Email: hello@zackfair.com</p>
+                    <p>Phone: (123) 456-7890</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Zack Fair. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html> 
