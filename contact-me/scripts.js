@@ -189,6 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Review Collector Page Functions
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize all components
     initStarRating();
     initFormSubmission();
     initDashboardControls();
@@ -198,344 +199,239 @@ document.addEventListener('DOMContentLoaded', function() {
     initMobileNav();
 });
 
-// Star Rating Functionality
+// Star Rating System
 function initStarRating() {
-    const stars = document.querySelectorAll('.stars i');
-    const ratingText = document.querySelector('.rating-text');
-    let currentRating = 0;
+    const ratingContainer = document.querySelector('.star-rating');
+    const stars = document.querySelectorAll('.star-rating .star');
+    const ratingValue = document.getElementById('rating-value');
     
-    const ratingTexts = {
-        1: 'Poor',
-        2: 'Fair',
-        3: 'Good',
-        4: 'Very Good',
-        5: 'Excellent'
-    };
-
-    // Add hover effect
-    stars.forEach(star => {
-        star.addEventListener('mouseover', function() {
-            const rating = parseInt(this.dataset.rating);
-            highlightStars(rating);
-            ratingText.textContent = ratingTexts[rating];
-        });
-
-        star.addEventListener('mouseout', function() {
-            if (currentRating === 0) {
-                resetStars();
-                ratingText.textContent = '';
-            } else {
-                highlightStars(currentRating);
-                ratingText.textContent = ratingTexts[currentRating];
+    if (!ratingContainer) return;
+    
+    // Store the selected rating
+    let selectedRating = 0;
+    
+    // Handle hovering over stars
+    stars.forEach((star, index) => {
+        // Hover effect
+        star.addEventListener('mouseenter', () => {
+            // Highlight all stars up to the hovered star
+            for (let i = 0; i <= index; i++) {
+                stars[i].classList.add('hover');
             }
         });
-
-        star.addEventListener('click', function() {
-            currentRating = parseInt(this.dataset.rating);
-            highlightStars(currentRating);
-            ratingText.textContent = ratingTexts[currentRating];
-            // Add hidden input with rating value
-            let ratingInput = document.getElementById('ratingValue');
-            if (!ratingInput) {
-                ratingInput = document.createElement('input');
-                ratingInput.type = 'hidden';
-                ratingInput.id = 'ratingValue';
-                ratingInput.name = 'rating';
-                document.getElementById('reviewSubmitForm').appendChild(ratingInput);
+        
+        // Remove hover effect when mouse leaves
+        star.addEventListener('mouseleave', () => {
+            stars.forEach(s => s.classList.remove('hover'));
+        });
+        
+        // Handle click on star
+        star.addEventListener('click', () => {
+            selectedRating = index + 1;
+            
+            // Update the hidden input value
+            if (ratingValue) {
+                ratingValue.value = selectedRating;
             }
-            ratingInput.value = currentRating;
+            
+            // Update visual state of stars
+            stars.forEach((s, i) => {
+                if (i < selectedRating) {
+                    s.classList.add('selected');
+                } else {
+                    s.classList.remove('selected');
+                }
+            });
         });
     });
-
-    function highlightStars(rating) {
-        stars.forEach(star => {
-            const starRating = parseInt(star.dataset.rating);
-            star.classList.remove('star-active', 'fa-solid', 'fa-regular');
-            
-            if (starRating <= rating) {
-                star.classList.add('star-active', 'fa-solid');
-            } else {
-                star.classList.add('fa-regular');
-            }
-        });
-    }
-
-    function resetStars() {
-        stars.forEach(star => {
-            star.classList.remove('star-active', 'fa-regular');
-            star.classList.add('fa-solid');
-        });
-    }
+    
+    // Remove hover effect when mouse leaves the rating container
+    ratingContainer.addEventListener('mouseleave', () => {
+        stars.forEach(star => star.classList.remove('hover'));
+    });
 }
 
 // Form Submission
 function initFormSubmission() {
-    const form = document.getElementById('reviewSubmitForm');
-    const reviewForm = document.getElementById('reviewForm');
-    const successMessage = document.getElementById('successMessage');
-    const submitAnotherBtn = document.getElementById('submitAnotherBtn');
-
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
+    const reviewForm = document.getElementById('review-form');
+    
+    if (!reviewForm) return;
+    
+    reviewForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form data
+        const formData = new FormData(reviewForm);
+        const reviewData = Object.fromEntries(formData.entries());
+        
+        // Basic validation
+        if (!validateReviewForm(reviewData)) {
+            return;
+        }
+        
+        // In a real application, you would send this data to a server
+        console.log('Review submitted:', reviewData);
+        
+        // Show success message
+        const formContainer = reviewForm.closest('.form-container');
+        const successMessage = document.createElement('div');
+        successMessage.className = 'success-message';
+        successMessage.innerHTML = `
+            <i class="fas fa-check-circle"></i>
+            <h3>Thank You!</h3>
+            <p>Your review has been submitted successfully. We appreciate your feedback!</p>
+        `;
+        
+        formContainer.innerHTML = '';
+        formContainer.appendChild(successMessage);
+        
+        // Scroll to the success message
+        successMessage.scrollIntoView({ behavior: 'smooth' });
+    });
+    
+    // Form validation function
+    function validateReviewForm(data) {
+        let isValid = true;
+        let errorMessage = '';
+        
+        // Check if name is provided
+        if (!data.name || data.name.trim() === '') {
+            errorMessage = 'Please enter your name';
+            isValid = false;
+        }
+        
+        // Check if rating is provided
+        if (!data.rating || data.rating === '0') {
+            errorMessage = 'Please select a rating';
+            isValid = false;
+        }
+        
+        // Check if review text is provided
+        if (!data.review || data.review.trim() === '') {
+            errorMessage = 'Please write your review';
+            isValid = false;
+        }
+        
+        // Display error message if validation fails
+        if (!isValid) {
+            const errorElement = document.getElementById('form-error') || document.createElement('div');
+            errorElement.id = 'form-error';
+            errorElement.className = 'error-message';
+            errorElement.textContent = errorMessage;
             
-            // Get form data
-            const rating = document.getElementById('ratingValue')?.value || 0;
-            const reviewText = document.getElementById('reviewText').value;
-            const reviewName = document.getElementById('reviewName').value;
-            const permissionWebsite = document.getElementById('permissionWebsite').checked;
-            const permissionSocial = document.getElementById('permissionSocial').checked;
-            const permissionMarketing = document.getElementById('permissionMarketing').checked;
-            
-            // Validate data
-            if (rating === 0) {
-                alert('Please select a rating before submitting.');
-                return;
+            // Add error message to form if it doesn't exist
+            if (!document.getElementById('form-error')) {
+                reviewForm.prepend(errorElement);
             }
             
-            // Here you would typically send the data to your server
-            console.log('Review submitted:', {
-                rating,
-                reviewText,
-                reviewName,
-                permissions: {
-                    website: permissionWebsite,
-                    social: permissionSocial,
-                    marketing: permissionMarketing
-                },
-                date: new Date()
-            });
-            
-            // Show success message
-            reviewForm.style.display = 'none';
-            successMessage.style.display = 'block';
-        });
-    }
-    
-    if (submitAnotherBtn) {
-        submitAnotherBtn.addEventListener('click', function() {
-            // Reset form
-            if (form) form.reset();
-            
-            // Reset star rating
-            const stars = document.querySelectorAll('.stars i');
-            stars.forEach(star => {
-                star.classList.remove('star-active', 'fa-regular');
-                star.classList.add('fa-solid');
-            });
-            document.querySelector('.rating-text').textContent = '';
-            
-            // Hide success, show form
-            successMessage.style.display = 'none';
-            reviewForm.style.display = 'block';
-        });
+            // Scroll to error message
+            errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        return isValid;
     }
 }
 
-// Dashboard Controls (Filtering and Sorting)
+// Dashboard Controls
 function initDashboardControls() {
-    const sortSelect = document.getElementById('sortReviews');
-    const filterRating = document.getElementById('filterRating');
-    const filterFeatured = document.getElementById('filterFeatured');
-    const reviewList = document.querySelector('.review-list');
+    const filterSelect = document.getElementById('filter-rating');
+    const sortSelect = document.getElementById('sort-by');
+    const featuredToggle = document.getElementById('show-featured');
     const reviewItems = document.querySelectorAll('.review-item');
     
-    // Apply filtering and sorting
-    function applyFilters() {
-        const ratingFilter = filterRating.value;
-        const featuredFilter = filterFeatured.value;
-        const sortOrder = sortSelect.value;
+    if (!filterSelect || !sortSelect || !reviewItems.length) return;
+    
+    // Apply filters and sorting
+    function updateReviewDisplay() {
+        const filterValue = parseInt(filterSelect.value) || 0;
+        const sortValue = sortSelect.value;
+        const showFeaturedOnly = featuredToggle && featuredToggle.checked;
         
-        // Clone reviews for sorting
-        const reviews = Array.from(reviewItems);
+        // Clone the reviews array for sorting
+        const reviewsArray = Array.from(reviewItems);
         
-        // Filter by rating
-        let filteredReviews = reviews.filter(review => {
-            const reviewRating = review.dataset.rating;
-            const isFeatured = review.classList.contains('featured');
+        // Filter reviews
+        reviewsArray.forEach(review => {
+            const reviewRating = parseInt(review.dataset.rating) || 0;
+            const isFeatured = review.dataset.featured === 'true';
             
-            let ratingMatch = ratingFilter === 'all' || reviewRating === ratingFilter;
-            let featuredMatch = featuredFilter === 'all' || 
-                                (featuredFilter === 'featured' && isFeatured);
+            let isVisible = true;
             
-            return ratingMatch && featuredMatch;
-        });
-        
-        // Sort reviews
-        filteredReviews.sort((a, b) => {
-            const aRating = parseInt(a.dataset.rating);
-            const bRating = parseInt(b.dataset.rating);
-            
-            // Get dates (you would need to parse these from your actual date format)
-            const aDateStr = a.querySelector('.review-date').textContent;
-            const bDateStr = b.querySelector('.review-date').textContent;
-            const aDate = new Date(aDateStr);
-            const bDate = new Date(bDateStr);
-            
-            switch(sortOrder) {
-                case 'newest':
-                    return bDate - aDate;
-                case 'oldest':
-                    return aDate - bDate;
-                case 'highest':
-                    return bRating - aRating;
-                case 'lowest':
-                    return aRating - bRating;
-                default:
-                    return 0;
+            // Apply rating filter
+            if (filterValue > 0 && reviewRating !== filterValue) {
+                isVisible = false;
             }
+            
+            // Apply featured filter
+            if (showFeaturedOnly && !isFeatured) {
+                isVisible = false;
+            }
+            
+            // Show/hide based on filters
+            review.style.display = isVisible ? 'block' : 'none';
         });
         
-        // Remove all reviews
-        while (reviewList.firstChild) {
-            reviewList.removeChild(reviewList.firstChild);
-        }
+        // Sort visible reviews
+        const reviewsContainer = reviewItems[0].parentElement;
+        const visibleReviews = reviewsArray.filter(review => review.style.display !== 'none');
         
-        // Add filtered and sorted reviews
-        filteredReviews.forEach(review => {
-            reviewList.appendChild(review);
+        visibleReviews.sort((a, b) => {
+            const aRating = parseInt(a.dataset.rating) || 0;
+            const bRating = parseInt(b.dataset.rating) || 0;
+            const aDate = new Date(a.dataset.date || 0);
+            const bDate = new Date(b.dataset.date || 0);
+            
+            if (sortValue === 'highest') {
+                return bRating - aRating;
+            } else if (sortValue === 'lowest') {
+                return aRating - bRating;
+            } else if (sortValue === 'newest') {
+                return bDate - aDate;
+            } else if (sortValue === 'oldest') {
+                return aDate - bDate;
+            }
+            return 0;
+        });
+        
+        // Re-append sorted reviews
+        visibleReviews.forEach(review => {
+            reviewsContainer.appendChild(review);
         });
     }
     
     // Add event listeners
-    if (sortSelect) sortSelect.addEventListener('change', applyFilters);
-    if (filterRating) filterRating.addEventListener('change', applyFilters);
-    if (filterFeatured) filterFeatured.addEventListener('change', applyFilters);
+    filterSelect.addEventListener('change', updateReviewDisplay);
+    sortSelect.addEventListener('change', updateReviewDisplay);
+    if (featuredToggle) {
+        featuredToggle.addEventListener('change', updateReviewDisplay);
+    }
     
-    // Feature/unfeature buttons
-    const featureButtons = document.querySelectorAll('.feature-btn');
-    featureButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const reviewItem = this.closest('.review-item');
-            
-            if (this.classList.contains('active')) {
-                // Unfeature
-                reviewItem.classList.remove('featured');
-                this.classList.remove('active');
-                this.innerHTML = '<i class="fa-solid fa-star"></i> Feature';
-                
-                // Remove featured badge
-                const badge = reviewItem.querySelector('.featured-badge');
-                if (badge) badge.remove();
-            } else {
-                // Feature
-                reviewItem.classList.add('featured');
-                this.classList.add('active');
-                this.innerHTML = '<i class="fa-solid fa-star"></i> Featured';
-                
-                // Add featured badge if it doesn't exist
-                const nameElement = reviewItem.querySelector('.review-name');
-                if (!reviewItem.querySelector('.featured-badge')) {
-                    const badge = document.createElement('span');
-                    badge.className = 'featured-badge';
-                    badge.innerHTML = '<i class="fa-solid fa-award"></i> Featured';
-                    nameElement.appendChild(badge);
-                }
-            }
-            
-            // Re-apply filters to update the view
-            applyFilters();
-        });
-    });
-    
-    // Respond buttons
-    const respondButtons = document.querySelectorAll('.respond-btn');
-    respondButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const reviewItem = this.closest('.review-item');
-            
-            // Check if response already exists
-            let responseDiv = reviewItem.querySelector('.agent-response');
-            
-            if (responseDiv) {
-                // Toggle existing response
-                responseDiv.style.display = responseDiv.style.display === 'none' ? 'block' : 'none';
-            } else {
-                // Create new response form
-                responseDiv = document.createElement('div');
-                responseDiv.className = 'agent-response';
-                responseDiv.innerHTML = `
-                    <h5 class="response-header">Your Response:</h5>
-                    <textarea class="response-input" placeholder="Write your response here..."></textarea>
-                    <div class="response-actions">
-                        <button class="btn primary-btn save-response-btn">Save Response</button>
-                        <button class="btn secondary-btn cancel-response-btn">Cancel</button>
-                    </div>
-                `;
-                reviewItem.appendChild(responseDiv);
-                
-                // Add event listeners for save/cancel
-                const saveBtn = responseDiv.querySelector('.save-response-btn');
-                const cancelBtn = responseDiv.querySelector('.cancel-response-btn');
-                
-                saveBtn.addEventListener('click', function() {
-                    const responseText = responseDiv.querySelector('.response-input').value;
-                    if (responseText.trim() === '') {
-                        alert('Please enter a response.');
-                        return;
-                    }
-                    
-                    // Replace form with saved response
-                    responseDiv.innerHTML = `
-                        <h5 class="response-header">Response from Zack:</h5>
-                        <p class="response-text">${responseText}</p>
-                    `;
-                });
-                
-                cancelBtn.addEventListener('click', function() {
-                    reviewItem.removeChild(responseDiv);
-                });
-            }
-        });
-    });
-    
-    // Share buttons
-    const shareButtons = document.querySelectorAll('.share-btn');
-    shareButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Get review data
-            const reviewItem = this.closest('.review-item');
-            const reviewText = reviewItem.querySelector('.review-text').textContent;
-            const reviewName = reviewItem.querySelector('.review-name').textContent.split(' ')[0]; // Get first name
-            
-            // Store data for use in share modal
-            window.currentReviewToShare = {
-                text: reviewText,
-                name: reviewName,
-                rating: reviewItem.dataset.rating
-            };
-            
-            // Show share modal
-            const shareModal = document.getElementById('shareModal');
-            if (shareModal) shareModal.style.display = 'block';
-        });
-    });
+    // Initial update
+    updateReviewDisplay();
 }
 
 // FAQ Accordion
 function initFaqAccordion() {
     const faqItems = document.querySelectorAll('.faq-item');
     
+    if (!faqItems.length) return;
+    
     faqItems.forEach(item => {
-        const title = item.querySelector('h3');
-        const content = item.querySelector('.faq-content');
+        const question = item.querySelector('.faq-question');
         
-        title.addEventListener('click', function() {
-            // Check if this item is already active
-            const isActive = item.classList.contains('active');
-            
-            // Close all FAQ items
-            faqItems.forEach(faq => {
-                faq.classList.remove('active');
-                faq.querySelector('.faq-content').style.maxHeight = null;
+        if (question) {
+            question.addEventListener('click', () => {
+                // Toggle active class on the clicked item
+                item.classList.toggle('active');
+                
+                // Optionally, close other items when one is opened
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item && otherItem.classList.contains('active')) {
+                        otherItem.classList.remove('active');
+                    }
+                });
             });
-            
-            // If it wasn't active, open it
-            if (!isActive) {
-                item.classList.add('active');
-                content.style.maxHeight = content.scrollHeight + "px";
-            }
-        });
+        }
     });
 }
 
@@ -544,47 +440,73 @@ function initTestimonialCarousel() {
     const carousel = document.querySelector('.testimonial-carousel');
     if (!carousel) return;
     
-    const testimonials = carousel.querySelectorAll('.testimonial-item');
+    const testimonialsContainer = carousel.querySelector('.testimonials');
+    const testimonials = carousel.querySelectorAll('.testimonial');
+    const prevBtn = carousel.querySelector('.prev-btn');
+    const nextBtn = carousel.querySelector('.next-btn');
     const dots = carousel.querySelectorAll('.dot');
+    
+    if (!testimonialsContainer || !testimonials.length) return;
+    
     let currentIndex = 0;
-    let startX, moveX;
-    let autoplayInterval;
+    const totalItems = testimonials.length;
     
     // Initialize carousel
     updateCarousel();
-    startAutoplay();
     
-    // Add event listeners for dots
-    dots.forEach(dot => {
-        dot.addEventListener('click', function() {
-            currentIndex = parseInt(this.dataset.index);
+    // Previous button click
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
             updateCarousel();
-            resetAutoplay();
         });
-    });
+    }
     
-    // Add touch events for mobile
-    carousel.addEventListener('touchstart', function(e) {
+    // Next button click
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % totalItems;
+            updateCarousel();
+        });
+    }
+    
+    // Dot navigation
+    if (dots.length) {
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentIndex = index;
+                updateCarousel();
+            });
+        });
+    }
+    
+    // Touch/swipe support
+    let startX, moveX;
+    let isDragging = false;
+    
+    testimonialsContainer.addEventListener('touchstart', (e) => {
         startX = e.touches[0].clientX;
-        clearInterval(autoplayInterval);
+        isDragging = true;
     }, { passive: true });
     
-    carousel.addEventListener('touchmove', function(e) {
-        if (!startX) return;
+    testimonialsContainer.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
         moveX = e.touches[0].clientX;
     }, { passive: true });
     
-    carousel.addEventListener('touchend', function() {
-        if (!startX || !moveX) return;
+    testimonialsContainer.addEventListener('touchend', () => {
+        if (!isDragging || !startX || !moveX) return;
         
         const diff = startX - moveX;
-        if (Math.abs(diff) > 50) { // Minimum swipe distance
+        const threshold = 50; // Minimum distance to register as swipe
+        
+        if (Math.abs(diff) > threshold) {
             if (diff > 0) {
-                // Swipe left, go to next
-                currentIndex = (currentIndex + 1) % testimonials.length;
+                // Swipe left, show next slide
+                currentIndex = (currentIndex + 1) % totalItems;
             } else {
-                // Swipe right, go to previous
-                currentIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
+                // Swipe right, show previous slide
+                currentIndex = (currentIndex - 1 + totalItems) % totalItems;
             }
             updateCarousel();
         }
@@ -592,123 +514,150 @@ function initTestimonialCarousel() {
         // Reset values
         startX = null;
         moveX = null;
-        
-        resetAutoplay();
-    }, { passive: true });
+        isDragging = false;
+    });
     
+    // Auto advance slides every 5 seconds
+    let autoplayInterval = setInterval(() => {
+        currentIndex = (currentIndex + 1) % totalItems;
+        updateCarousel();
+    }, 5000);
+    
+    // Pause auto advance on hover/touch
+    carousel.addEventListener('mouseenter', () => {
+        clearInterval(autoplayInterval);
+    });
+    
+    carousel.addEventListener('mouseleave', () => {
+        autoplayInterval = setInterval(() => {
+            currentIndex = (currentIndex + 1) % totalItems;
+            updateCarousel();
+        }, 5000);
+    });
+    
+    // Update carousel state
     function updateCarousel() {
-        // Update testimonials
-        testimonials.forEach((testimonial, index) => {
-            testimonial.style.display = index === currentIndex ? 'block' : 'none';
-        });
+        // Calculate slide position
+        const slideWidth = testimonials[0].offsetWidth;
+        testimonialsContainer.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
         
         // Update dots
-        dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === currentIndex);
-        });
-    }
-    
-    function startAutoplay() {
-        autoplayInterval = setInterval(() => {
-            currentIndex = (currentIndex + 1) % testimonials.length;
-            updateCarousel();
-        }, 5000); // Change slide every 5 seconds
-    }
-    
-    function resetAutoplay() {
-        clearInterval(autoplayInterval);
-        startAutoplay();
+        if (dots.length) {
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentIndex);
+            });
+        }
     }
 }
 
 // Share Modal
 function initShareModal() {
-    const modal = document.getElementById('shareModal');
+    const shareButtons = document.querySelectorAll('.share-review');
+    const modal = document.getElementById('share-modal');
+    const closeModal = document.querySelector('.close-modal');
+    
     if (!modal) return;
     
-    const closeBtn = modal.querySelector('.close-modal');
-    const shareButtons = modal.querySelectorAll('.share-buttons .share-btn');
-    const templateOptions = modal.querySelectorAll('.template-option');
-    const generateBtn = modal.querySelector('.generate-graphic');
-    
-    // Close button
-    closeBtn.addEventListener('click', function() {
-        modal.style.display = 'none';
+    // Open modal when share button is clicked
+    shareButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Get review data from button data attributes
+            const reviewId = button.getAttribute('data-review-id');
+            const reviewText = button.getAttribute('data-review-text');
+            const reviewAuthor = button.getAttribute('data-author');
+            const reviewRating = button.getAttribute('data-rating');
+            
+            // Set modal content based on review data
+            const reviewContentElement = modal.querySelector('.review-content');
+            if (reviewContentElement) {
+                reviewContentElement.innerHTML = `
+                    <div class="review-rating">${"★".repeat(parseInt(reviewRating))}${"☆".repeat(5 - parseInt(reviewRating))}</div>
+                    <p class="review-text">${reviewText}</p>
+                    <p class="review-author">- ${reviewAuthor}</p>
+                `;
+            }
+            
+            // Set share links with the review data
+            const shareLinks = modal.querySelectorAll('.social-share a');
+            shareLinks.forEach(link => {
+                const platform = link.getAttribute('data-platform');
+                const baseUrl = link.getAttribute('href');
+                const shareText = `Check out this ${reviewRating}-star review from ${reviewAuthor}: "${reviewText}"`;
+                
+                if (platform === 'twitter') {
+                    link.href = `${baseUrl}?text=${encodeURIComponent(shareText)}`;
+                } else if (platform === 'facebook') {
+                    link.href = `${baseUrl}?u=${encodeURIComponent(window.location.href)}&quote=${encodeURIComponent(shareText)}`;
+                } else if (platform === 'linkedin') {
+                    link.href = `${baseUrl}?url=${encodeURIComponent(window.location.href)}&summary=${encodeURIComponent(shareText)}`;
+                }
+            });
+            
+            // Show modal
+            modal.style.display = 'flex';
+        });
     });
     
-    // Close when clicking outside
-    window.addEventListener('click', function(e) {
+    // Close modal when close button is clicked
+    if (closeModal) {
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+    }
+    
+    // Close modal when clicking outside
+    window.addEventListener('click', (e) => {
         if (e.target === modal) {
             modal.style.display = 'none';
         }
     });
     
-    // Template options
-    templateOptions.forEach(template => {
-        template.addEventListener('click', function() {
-            templateOptions.forEach(t => t.classList.remove('selected'));
-            this.classList.add('selected');
-        });
-    });
-    
-    // Share buttons
-    shareButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const platform = this.classList[1]; // Get platform class (facebook, twitter, etc.)
-            const review = window.currentReviewToShare;
+    // Generate review image feature
+    const generateImageBtn = document.getElementById('generate-image');
+    if (generateImageBtn) {
+        generateImageBtn.addEventListener('click', () => {
+            const reviewContent = modal.querySelector('.review-content');
+            if (!reviewContent) return;
             
-            if (!review) return;
+            // In a real application, you would use a library like html2canvas
+            // to convert the review content to an image
+            alert('Feature coming soon: This would generate a sharable image of the review.');
             
-            let shareUrl;
-            const text = encodeURIComponent(`"${review.text}" - ${review.name}`);
-            const url = encodeURIComponent(window.location.href);
-            
-            switch(platform) {
-                case 'facebook':
-                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`;
-                    break;
-                case 'twitter':
-                    shareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
-                    break;
-                case 'linkedin':
-                    shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
-                    break;
-                case 'instagram':
-                    alert('To share on Instagram, please download the graphic and upload it manually.');
-                    return;
-            }
-            
-            // Open share window
-            if (shareUrl) {
-                window.open(shareUrl, '_blank', 'width=600,height=400');
-            }
-        });
-    });
-    
-    // Generate graphic button
-    if (generateBtn) {
-        generateBtn.addEventListener('click', function() {
-            const review = window.currentReviewToShare;
-            if (!review) return;
-            
-            const selectedTemplate = document.querySelector('.template-option.selected');
-            if (!selectedTemplate) return;
-            
-            // In a real implementation, this would create a graphic with the review text
-            // Here, we'll just simulate the generation
-            alert('Graphic generated! (In a real implementation, this would create and download an image)');
+            // Example implementation with html2canvas (would require the library)
+            /*
+            html2canvas(reviewContent).then(canvas => {
+                const imageUrl = canvas.toDataURL('image/png');
+                const downloadLink = document.createElement('a');
+                downloadLink.href = imageUrl;
+                downloadLink.download = 'review.png';
+                downloadLink.click();
+            });
+            */
         });
     }
 }
 
 // Mobile Navigation
 function initMobileNav() {
-    const hamburger = document.querySelector('.hamburger');
-    const nav = document.querySelector('nav');
+    const mobileMenuBtn = document.querySelector('.mobile-menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
     
-    hamburger.addEventListener('click', function() {
-        hamburger.classList.toggle('active');
-        nav.classList.toggle('active');
+    if (!mobileMenuBtn || !navLinks) return;
+    
+    mobileMenuBtn.addEventListener('click', () => {
+        mobileMenuBtn.classList.toggle('active');
+        navLinks.classList.toggle('active');
+    });
+    
+    // Close menu when clicking a link
+    const links = navLinks.querySelectorAll('a');
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenuBtn.classList.remove('active');
+            navLinks.classList.remove('active');
+        });
     });
 } 
 } 

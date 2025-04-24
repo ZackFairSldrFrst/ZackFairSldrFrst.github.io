@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200">
+  <rect width="300" height="200" fill="#f8f8f8" />
+  
+  <!-- Header -->
+  <rect x="0" y="0" width="300" height="40" rx="0" fill="#ffffff" />
+  <rect x="20" y="15" width="60" height="10" rx="2" fill="#333333" />
+  <rect x="200" y="15" width="25" height="10" rx="2" fill="#555555" />
+  <rect x="235" y="15" width="25" height="10" rx="2" fill="#555555" />
+  <rect x="270" y="15" width="25" height="10" rx="2" fill="#555555" />
+  
+  <!-- Page Title -->
+  <rect x="20" y="55" width="120" height="15" rx="2" fill="#333333" />
+  <rect x="20" y="75" width="180" height="8" rx="2" fill="#555555" />
+  
+  <!-- Featured Post -->
+  <rect x="20" y="95" width="180" height="80" rx="3" fill="#ffffff" stroke="#e0e0e0" />
+  <rect x="20" y="95" width="180" height="45" rx="3" fill="#e0e0e0" />
+  <rect x="30" y="150" width="100" height="8" rx="1" fill="#333333" />
+  <rect x="30" y="162" width="160" height="4" rx="1" fill="#777777" />
+  
+  <!-- Sidebar -->
+  <rect x="210" y="95" width="70" height="120" rx="3" fill="#ffffff" stroke="#e0e0e0" />
+  <rect x="220" y="105" width="50" height="8" rx="1" fill="#333333" />
+  <rect x="220" y="120" width="50" height="5" rx="1" fill="#555555" />
+  <rect x="220" y="130" width="50" height="5" rx="1" fill="#555555" />
+  <rect x="220" y="140" width="50" height="5" rx="1" fill="#555555" />
+  <rect x="220" y="155" width="50" height="8" rx="1" fill="#333333" />
+  <rect x="220" y="170" width="50" height="5" rx="1" fill="#555555" />
+  <rect x="220" y="180" width="50" height="5" rx="1" fill="#555555" />
+  <rect x="220" y="190" width="50" height="5" rx="1" fill="#555555" />
+  
+  <!-- Blog Posts -->
+  <rect x="20" y="185" width="80" height="30" rx="3" fill="#ffffff" stroke="#e0e0e0" />
+  <rect x="30" y="190" width="60" height="8" rx="1" fill="#333333" />
+  <rect x="30" y="202" width="60" height="4" rx="1" fill="#777777" />
+  
+  <rect x="110" y="185" width="80" height="30" rx="3" fill="#ffffff" stroke="#e0e0e0" />
+  <rect x="120" y="190" width="60" height="8" rx="1" fill="#333333" />
+  <rect x="120" y="202" width="60" height="4" rx="1" fill="#777777" />
+  
+  <!-- Pagination -->
+  <rect x="20" y="225" width="180" height="15" rx="0" fill="#f8f8f8" />
+  <rect x="60" y="230" width="10" height="5" rx="1" fill="#333333" />
+  <rect x="80" y="230" width="10" height="5" rx="1" fill="#e0e0e0" />
+  <rect x="100" y="230" width="10" height="5" rx="1" fill="#e0e0e0" />
+  <rect x="120" y="230" width="10" height="5" rx="1" fill="#e0e0e0" />
+  <rect x="140" y="230" width="10" height="5" rx="1" fill="#e0e0e0" />
+</svg> 

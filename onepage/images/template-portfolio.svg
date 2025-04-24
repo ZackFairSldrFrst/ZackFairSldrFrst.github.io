@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200">
+  <rect width="300" height="200" fill="#f8f8f8" />
+  
+  <!-- Header -->
+  <rect x="0" y="0" width="300" height="40" rx="0" fill="#ffffff" />
+  <rect x="20" y="15" width="60" height="10" rx="2" fill="#333333" />
+  <rect x="200" y="15" width="25" height="10" rx="2" fill="#555555" />
+  <rect x="235" y="15" width="25" height="10" rx="2" fill="#555555" />
+  <rect x="270" y="15" width="25" height="10" rx="2" fill="#555555" />
+  
+  <!-- Page Title -->
+  <rect x="20" y="55" width="120" height="15" rx="2" fill="#333333" />
+  <rect x="20" y="75" width="180" height="8" rx="2" fill="#555555" />
+  
+  <!-- Portfolio Grid -->
+  <rect x="20" y="95" width="80" height="60" rx="3" fill="#ffffff" stroke="#e0e0e0" />
+  <rect x="20" y="95" width="80" height="40" rx="3" fill="#e0e0e0" />
+  <rect x="30" y="145" width="60" height="6" rx="1" fill="#333333" />
+  
+  <rect x="110" y="95" width="80" height="60" rx="3" fill="#ffffff" stroke="#e0e0e0" />
+  <rect x="110" y="95" width="80" height="40" rx="3" fill="#e0e0e0" />
+  <rect x="120" y="145" width="60" height="6" rx="1" fill="#333333" />
+  
+  <rect x="200" y="95" width="80" height="60" rx="3" fill="#ffffff" stroke="#e0e0e0" />
+  <rect x="200" y="95" width="80" height="40" rx="3" fill="#e0e0e0" />
+  <rect x="210" y="145" width="60" height="6" rx="1" fill="#333333" />
+  
+  <rect x="20" y="165" width="80" height="60" rx="3" fill="#ffffff" stroke="#e0e0e0" />
+  <rect x="20" y="165" width="80" height="40" rx="3" fill="#e0e0e0" />
+  <rect x="30" y="215" width="60" height="6" rx="1" fill="#333333" />
+  
+  <rect x="110" y="165" width="80" height="60" rx="3" fill="#ffffff" stroke="#e0e0e0" />
+  <rect x="110" y="165" width="80" height="40" rx="3" fill="#e0e0e0" />
+  <rect x="120" y="215" width="60" height="6" rx="1" fill="#333333" />
+  
+  <rect x="200" y="165" width="80" height="60" rx="3" fill="#ffffff" stroke="#e0e0e0" />
+  <rect x="200" y="165" width="80" height="40" rx="3" fill="#e0e0e0" />
+  <rect x="210" y="215" width="60" height="6" rx="1" fill="#333333" />
+  
+  <!-- Filter Buttons -->
+  <rect x="50" y="170" width="200" height="20" rx="0" fill="#f8f8f8" />
+  <rect x="60" y="175" width="30" height="10" rx="5" fill="#333333" />
+  <rect x="100" y="175" width="30" height="10" rx="5" fill="#e0e0e0" />
+  <rect x="140" y="175" width="30" height="10" rx="5" fill="#e0e0e0" />
+  <rect x="180" y="175" width="30" height="10" rx="5" fill="#e0e0e0" />
+  <rect x="220" y="175" width="30" height="10" rx="5" fill="#e0e0e0" />
+</svg> 

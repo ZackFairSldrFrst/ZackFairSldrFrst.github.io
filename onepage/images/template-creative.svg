@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200">
+  <rect width="300" height="200" fill="#f8f4ff" />
+  
+  <!-- Header -->
+  <rect x="0" y="0" width="300" height="40" rx="0" fill="#6c3ce9" />
+  <circle cx="30" cy="20" r="10" fill="#ffffff" />
+  <rect x="180" y="15" width="30" height="10" rx="5" fill="#ffffff" />
+  <rect x="220" y="15" width="30" height="10" rx="5" fill="#ffffff" />
+  <rect x="260" y="15" width="30" height="10" rx="5" fill="#ffffff" />
+  
+  <!-- Hero section -->
+  <path d="M0,40 L300,40 L250,90 L50,90 Z" fill="#9c6dff" />
+  <circle cx="75" cy="65" r="15" fill="#ffffff" />
+  <rect x="110" y="55" width="120" height="10" rx="5" fill="#ffffff" />
+  <rect x="110" y="70" width="80" height="8" rx="4" fill="#ffffff" opacity="0.8" />
+  
+  <!-- Content sections -->
+  <rect x="20" y="110" width="80" height="70" rx="10" fill="#ffffff" stroke="#9c6dff" stroke-width="2" />
+  <rect x="110" y="110" width="80" height="70" rx="10" fill="#ffffff" stroke="#9c6dff" stroke-width="2" />
+  <rect x="200" y="110" width="80" height="70" rx="10" fill="#ffffff" stroke="#9c6dff" stroke-width="2" />
+  
+  <circle cx="40" cy="125" r="8" fill="#6c3ce9" />
+  <circle cx="130" cy="125" r="8" fill="#6c3ce9" />
+  <circle cx="220" cy="125" r="8" fill="#6c3ce9" />
+  
+  <rect x="30" y="145" width="60" height="6" rx="3" fill="#6c3ce9" opacity="0.6" />
+  <rect x="30" y="155" width="60" height="6" rx="3" fill="#6c3ce9" opacity="0.4" />
+  <rect x="120" y="145" width="60" height="6" rx="3" fill="#6c3ce9" opacity="0.6" />
+  <rect x="120" y="155" width="60" height="6" rx="3" fill="#6c3ce9" opacity="0.4" />
+  <rect x="210" y="145" width="60" height="6" rx="3" fill="#6c3ce9" opacity="0.6" />
+  <rect x="210" y="155" width="60" height="6" rx="3" fill="#6c3ce9" opacity="0.4" />
+</svg> 
