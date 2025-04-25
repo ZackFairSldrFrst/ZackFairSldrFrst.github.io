@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Style House | Beauty & Salon Template</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Template-specific styles */
+        :root {
+            --primary-color: #D65DB1;
+            --accent-color: #9F86C0;
+            --dark-color: #2D2A32;
+            --light-color: #F9F4F5;
+        }
+        
+        .hero-area {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('img/style-hero.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 140px 0;
+            text-align: center;
+        }
+        
+        .cta-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            background-color: #c049a1;
+            transform: translateY(-2px);
+        }
+        
+        .services-section {
+            padding: 80px 0;
+        }
+        
+        .section-heading {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-heading h2 {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+        
+        .section-heading h2:after {
+            content: '';
+            display: block;
+            width: 70px;
+            height: 3px;
+            background-color: var(--primary-color);
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .service-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .service-content {
+            padding: 25px;
+        }
+        
+        .service-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .service-price {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .service-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .service-details {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .service-duration {
+            display: flex;
+            align-items: center;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        .service-duration i {
+            margin-right: 5px;
+            color: var(--accent-color);
+        }
+        
+        .book-now-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .book-now-btn:hover {
+            background-color: #8974a8;
+        }
+        
+        .stylist-section {
+            background-color: var(--light-color);
+            padding: 80px 0;
+        }
+        
+        .stylists-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .stylist-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .stylist-photo {
+            height: 280px;
+            background-size: cover;
+            background-position: center top;
+        }
+        
+        .stylist-info {
+            padding: 20px;
+        }
+        
+        .stylist-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+        
+        .stylist-title {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .stylist-bio {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .social-icons a {
+            color: var(--accent-color);
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            color: var(--primary-color);
+        }
+        
+        .gallery-section {
+            padding: 80px 0;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .gallery-item {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+        
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.1);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+        
+        .booking-section {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 80px 0;
+        }
+        
+        .booking-info {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .booking-platforms {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .booking-platform {
+            display: flex;
+            align-items: center;
+            background: rgba(255,255,255,0.1);
+            padding: 15px 25px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .booking-platform:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .booking-platform img {
+            width: 30px;
+            margin-right: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .services-grid,
+            .stylists-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Style House<span class="accent">.</span></h1>
+                <p class="tagline">Beauty & Hair Salon</p>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#stylists">Stylists</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#booking" class="btn btn-accent">Book Now</a></li>
+                </ul>
+                <button class="hamburger" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-area">
+        <div class="container">
+            <h1>Discover a New You</h1>
+            <p>Expert stylists, luxurious treatments, and stunning results</p>
+            <button class="cta-button">Book Your Appointment</button>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services-section">
+        <div class="container">
+            <div class="section-heading">
+                <h2>Our Services</h2>
+                <p>Discover our range of professional services to enhance your natural beauty</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-image" style="background-image: url('img/haircut-style.jpg');"></div>
+                    <div class="service-content">
+                        <h3 class="service-title">Haircut & Style</h3>
+                        <div class="service-price">From $45</div>
+                        <p class="service-description">Professional haircut and styling tailored to your face shape and preferences by our expert stylists.</p>
+                        <div class="service-details">
+                            <span class="service-duration"><i class="far fa-clock"></i> 45-60 min</span>
+                            <button class="book-now-btn">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-image" style="background-image: url('img/color-treatment.jpg');"></div>
+                    <div class="service-content">
+                        <h3 class="service-title">Color Treatment</h3>
+                        <div class="service-price">From $85</div>
+                        <p class="service-description">Full color, highlights, balayage, or ombre techniques to enhance your natural beauty.</p>
+                        <div class="service-details">
+                            <span class="service-duration"><i class="far fa-clock"></i> 90-120 min</span>
+                            <button class="book-now-btn">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-image" style="background-image: url('img/facial-treatment.jpg');"></div>
+                    <div class="service-content">
+                        <h3 class="service-title">Facial Treatment</h3>
+                        <div class="service-price">From $65</div>
+                        <p class="service-description">Rejuvenating facials customized to your skin type, using premium products for glowing results.</p>
+                        <div class="service-details">
+                            <span class="service-duration"><i class="far fa-clock"></i> 60 min</span>
+                            <button class="book-now-btn">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-image" style="background-image: url('img/manicure-pedicure.jpg');"></div>
+                    <div class="service-content">
+                        <h3 class="service-title">Manicure & Pedicure</h3>
+                        <div class="service-price">From $55</div>
+                        <p class="service-description">Complete nail care with exfoliation, massage, and your choice of polish including gel options.</p>
+                        <div class="service-details">
+                            <span class="service-duration"><i class="far fa-clock"></i> 75 min</span>
+                            <button class="book-now-btn">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-image" style="background-image: url('img/bridal-package.jpg');"></div>
+                    <div class="service-content">
+                        <h3 class="service-title">Bridal Package</h3>
+                        <div class="service-price">From $250</div>
+                        <p class="service-description">Complete bridal beauty services including trial, day-of styling, makeup, and touch-ups.</p>
+                        <div class="service-details">
+                            <span class="service-duration"><i class="far fa-clock"></i> 3+ hours</span>
+                            <button class="book-now-btn">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-image" style="background-image: url('img/massage-therapy.jpg');"></div>
+                    <div class="service-content">
+                        <h3 class="service-title">Massage Therapy</h3>
+                        <div class="service-price">From $70</div>
+                        <p class="service-description">Relaxing full-body massages to reduce stress and tension, tailored to your preferences.</p>
+                        <div class="service-details">
+                            <span class="service-duration"><i class="far fa-clock"></i> 60 min</span>
+                            <button class="book-now-btn">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stylists Section -->
+    <section id="stylists" class="stylist-section">
+        <div class="container">
+            <div class="section-heading">
+                <h2>Meet Our Stylists</h2>
+                <p>Our team of talented professionals is dedicated to making you look and feel amazing</p>
+            </div>
+            <div class="stylists-grid">
+                <div class="stylist-card">
+                    <div class="stylist-photo" style="background-image: url('img/stylist-1.jpg');"></div>
+                    <div class="stylist-info">
+                        <h3 class="stylist-name">Sophie Martin</h3>
+                        <div class="stylist-title">Master Stylist & Color Specialist</div>
+                        <p class="stylist-bio">With 10+ years of experience, Sophie specializes in creative coloring techniques and precision cuts.</p>
+                        <div class="social-icons">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-pinterest"></i></a>
+                            <a href="#"><i class="fab fa-facebook"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="stylist-card">
+                    <div class="stylist-photo" style="background-image: url('img/stylist-2.jpg');"></div>
+                    <div class="stylist-info">
+                        <h3 class="stylist-name">James Wilson</h3>
+                        <div class="stylist-title">Senior Stylist</div>
+                        <p class="stylist-bio">James brings his passion for creative cutting and styling to every client, with a specialty in textured looks.</p>
+                        <div class="social-icons">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-pinterest"></i></a>
+                            <a href="#"><i class="fab fa-facebook"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="stylist-card">
+                    <div class="stylist-photo" style="background-image: url('img/stylist-3.jpg');"></div>
+                    <div class="stylist-info">
+                        <h3 class="stylist-name">Elena Rodriguez</h3>
+                        <div class="stylist-title">Esthetician & Makeup Artist</div>
+                        <p class="stylist-bio">Elena's expert skincare knowledge and makeup skills will leave you feeling refreshed and beautiful.</p>
+                        <div class="social-icons">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-pinterest"></i></a>
+                            <a href="#"><i class="fab fa-facebook"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="stylist-card">
+                    <div class="stylist-photo" style="background-image: url('img/stylist-4.jpg');"></div>
+                    <div class="stylist-info">
+                        <h3 class="stylist-name">Michael Tan</h3>
+                        <div class="stylist-title">Nail Technician</div>
+                        <p class="stylist-bio">Michael's artistic flair and attention to detail create stunning nail designs and perfect manicures.</p>
+                        <div class="social-icons">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-pinterest"></i></a>
+                            <a href="#"><i class="fab fa-facebook"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery-section">
+        <div class="container">
+            <div class="section-heading">
+                <h2>Our Work</h2>
+                <p>Browse our portfolio of stunning transformations and beautiful results</p>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="img/gallery-1.jpg" alt="Hairstyle example" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus" style="color: white; font-size: 2rem;"></i>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="img/gallery-2.jpg" alt="Color treatment example" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus" style="color: white; font-size: 2rem;"></i>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="img/gallery-3.jpg" alt="Makeup example" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus" style="color: white; font-size: 2rem;"></i>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="img/gallery-4.jpg" alt="Nail art example" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus" style="color: white; font-size: 2rem;"></i>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="img/gallery-5.jpg" alt="Bridal hairstyle" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus" style="color: white; font-size: 2rem;"></i>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="img/gallery-6.jpg" alt="Facial treatment" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus" style="color: white; font-size: 2rem;"></i>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="img/gallery-7.jpg" alt="Men's cut" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus" style="color: white; font-size: 2rem;"></i>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="img/gallery-8.jpg" alt="Color transformation" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus" style="color: white; font-size: 2rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section id="booking" class="booking-section">
+        <div class="container">
+            <div class="booking-info">
+                <h2>Book Your Appointment</h2>
+                <p>Schedule your visit online, by phone, or through your favorite booking platform</p>
+                <div class="booking-platforms">
+                    <a href="#" class="booking-platform">
+                        <img src="img/styleseat-icon.png" alt="StyleSeat">
+                        <span>StyleSeat</span>
+                    </a>
+                    <a href="#" class="booking-platform">
+                        <img src="img/vagaro-icon.png" alt="Vagaro">
+                        <span>Vagaro</span>
+                    </a>
+                    <a href="#" class="booking-platform">
+                        <img src="img/phone-icon.png" alt="Phone">
+                        <span>(555) 123-4567</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-logo">
+                    <h2>Style House<span class="accent">.</span></h2>
+                    <p>Beauty & Hair Salon</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h3>Quick Links</h3>
+                        <ul>
+                            <li><a href="#services">Services</a></li>
+                            <li><a href="#stylists">Stylists</a></li>
+                            <li><a href="#gallery">Gallery</a></li>
+                            <li><a href="#booking">Book Now</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Hours</h3>
+                        <ul>
+                            <li>Mon-Fri: 9am - 8pm</li>
+                            <li>Saturday: 9am - 6pm</li>
+                            <li>Sunday: 10am - 4pm</li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Find Us</h3>
+                        <ul>
+                            <li>123 Beauty Lane</li>
+                            <li>Styletown, CA 90210</li>
+                            <li>(555) 123-4567</li>
+                            <li>info@stylehouse.com</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Style House Salon. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-pinterest"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-yelp"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="powered-by">
+        <a href="index.html">Powered by 1page.site</a>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html> 

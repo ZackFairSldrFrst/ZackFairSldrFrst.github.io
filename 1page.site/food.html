@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taco Bros | Food & Restaurant Template</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Template-specific styles */
+        :root {
+            --primary-color: #FF6B35;
+            --accent-color: #4CB963;
+            --dark-color: #333333;
+            --light-color: #F9F9F9;
+        }
+        
+        .hero-area {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.5)), url('img/taco-bros-hero.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 120px 0;
+            text-align: center;
+        }
+        
+        .cta-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            background-color: #e05a2a;
+            transform: translateY(-2px);
+        }
+        
+        .menu-section {
+            padding: 80px 0;
+        }
+        
+        .menu-category {
+            margin-bottom: 40px;
+        }
+        
+        .menu-category h2 {
+            text-align: center;
+            position: relative;
+            margin-bottom: 40px;
+        }
+        
+        .menu-category h2:after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary-color);
+            margin: 15px auto;
+        }
+        
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .menu-item {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .menu-item-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .menu-item-content {
+            padding: 20px;
+        }
+        
+        .menu-item-title {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .menu-item-name {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .menu-item-price {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+        
+        .menu-item-description {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .badges {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        .badge {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 20px;
+            color: white;
+            background-color: var(--accent-color);
+        }
+        
+        .hours-location {
+            background-color: var(--light-color);
+            padding: 80px 0;
+        }
+        
+        .hours-location-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+        
+        .hours-container h2, .location-container h2 {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .hours-container h2:after, .location-container h2:after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 3px;
+            background-color: var(--primary-color);
+            margin-top: 10px;
+        }
+        
+        .hours-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .hours-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .map-container {
+            height: 300px;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .delivery-options {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .delivery-option {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .delivery-option img {
+            width: 24px;
+            margin-right: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .hours-location-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .menu-items {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Taco Bros<span class="accent">.</span></h1>
+                <p class="tagline">Authentic Street Tacos</p>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#menu">Menu</a></li>
+                    <li><a href="#location">Location</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#order" class="btn btn-accent">Order Now</a></li>
+                </ul>
+                <button class="hamburger" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-area">
+        <div class="container">
+            <h1>Fresh, Authentic Street Tacos</h1>
+            <p>Family recipes straight from Mexico City to your neighborhood</p>
+            <button class="cta-button">Order Online</button>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="menu-section">
+        <div class="container">
+            <div class="menu-category">
+                <h2>Signature Tacos</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('img/carne-asada.jpg');"></div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-title">
+                                <span class="menu-item-name">Carne Asada</span>
+                                <span class="menu-item-price">$4.50</span>
+                            </div>
+                            <p class="menu-item-description">Grilled steak, onions, cilantro, and our homemade salsa verde on a corn tortilla.</p>
+                            <div class="badges">
+                                <span class="badge">Popular</span>
+                                <span class="badge">Gluten-Free</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('img/al-pastor.jpg');"></div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-title">
+                                <span class="menu-item-name">Al Pastor</span>
+                                <span class="menu-item-price">$4.25</span>
+                            </div>
+                            <p class="menu-item-description">Marinated pork, grilled pineapple, onions, and cilantro on a corn tortilla.</p>
+                            <div class="badges">
+                                <span class="badge">House Special</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('img/pollo.jpg');"></div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-title">
+                                <span class="menu-item-name">Pollo</span>
+                                <span class="menu-item-price">$4.00</span>
+                            </div>
+                            <p class="menu-item-description">Grilled chicken, avocado crema, pickled onions, and queso fresco on a corn tortilla.</p>
+                            <div class="badges">
+                                <span class="badge">Gluten-Free</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-category">
+                <h2>Sides & Extras</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('img/guacamole.jpg');"></div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-title">
+                                <span class="menu-item-name">Fresh Guacamole</span>
+                                <span class="menu-item-price">$5.95</span>
+                            </div>
+                            <p class="menu-item-description">Made fresh daily with avocados, lime, cilantro, and a hint of jalapeño.</p>
+                            <div class="badges">
+                                <span class="badge">Vegan</span>
+                                <span class="badge">Gluten-Free</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('img/elote.jpg');"></div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-title">
+                                <span class="menu-item-name">Street Corn (Elote)</span>
+                                <span class="menu-item-price">$4.75</span>
+                            </div>
+                            <p class="menu-item-description">Grilled corn on the cob topped with mayo, cotija cheese, chile powder, and lime.</p>
+                            <div class="badges">
+                                <span class="badge">Vegetarian</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('img/churros.jpg');"></div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-title">
+                                <span class="menu-item-name">Churros</span>
+                                <span class="menu-item-price">$3.95</span>
+                            </div>
+                            <p class="menu-item-description">Fried dough pastry dusted with cinnamon sugar, served with chocolate dipping sauce.</p>
+                            <div class="badges">
+                                <span class="badge">Dessert</span>
+                                <span class="badge">Vegetarian</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hours & Location Section -->
+    <section id="location" class="hours-location">
+        <div class="container">
+            <div class="hours-location-content">
+                <div class="hours-container">
+                    <h2>Hours & Info</h2>
+                    <ul class="hours-list">
+                        <li><span>Monday-Thursday</span><span>11:00 AM - 9:00 PM</span></li>
+                        <li><span>Friday-Saturday</span><span>11:00 AM - 11:00 PM</span></li>
+                        <li><span>Sunday</span><span>12:00 PM - 8:00 PM</span></li>
+                    </ul>
+                    <p style="margin-top: 20px;"><i class="fas fa-phone"></i> (555) 123-4567</p>
+                    <p><i class="fas fa-envelope"></i> info@tacobros.com</p>
+                    
+                    <h3 style="margin-top: 30px;">Order Online</h3>
+                    <div class="delivery-options">
+                        <a href="#" class="delivery-option">
+                            <img src="img/ubereats-icon.png" alt="UberEats">
+                            <span>UberEats</span>
+                        </a>
+                        <a href="#" class="delivery-option">
+                            <img src="img/doordash-icon.png" alt="DoorDash">
+                            <span>DoorDash</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="location-container">
+                    <h2>Find Us</h2>
+                    <p>123 Taco Street, Flavortown, CA 90210</p>
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.9296252480566!2d-122.4194!3d37.7749!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzfCsDQ2JzMwLjQiTiAxMjLCsDI1JzEwLjAiVw!5e0!3m2!1sen!2sus!4v1616621946281!5m2!1sen!2sus" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-logo">
+                    <h2>Taco Bros<span class="accent">.</span></h2>
+                    <p>Authentic Street Tacos</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h3>Quick Links</h3>
+                        <ul>
+                            <li><a href="#menu">Menu</a></li>
+                            <li><a href="#location">Location</a></li>
+                            <li><a href="#about">About</a></li>
+                            <li><a href="#order">Order Online</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Our Info</h3>
+                        <ul>
+                            <li><a href="#">123 Taco Street</a></li>
+                            <li><a href="#">Flavortown, CA 90210</a></li>
+                            <li><a href="#">(555) 123-4567</a></li>
+                            <li><a href="#">info@tacobros.com</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Taco Bros. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-yelp"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="powered-by">
+        <a href="index.html">Powered by 1page.site</a>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html> 
