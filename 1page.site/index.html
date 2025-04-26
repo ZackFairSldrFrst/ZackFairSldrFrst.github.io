@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1page.site — Instant Web Presence for Local Businesses</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11481751058">
+    </script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'AW-11481751058');
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,7 +57,14 @@
                 <p class="hero-note">Ready in minutes. No credit card required to start.</p>
             </div>
             <div class="hero-image">
-                <img src="img/onepage-demo.png" alt="1page.site Demo on Mobile and Desktop">
+                <div class="desktop-mockup">
+                    <div class="desktop-frame">
+                        <div class="desktop-screen">
+                            <iframe src="index.html" title="1page.site Demo" frameborder="0"></iframe>
+                        </div>
+                    </div>
+                    <div class="desktop-stand"></div>
+                </div>
                 <div class="shareable-link">
                     <p>Your simple link: 1page.site/your-business</p>
                 </div>
@@ -212,9 +229,11 @@
                             <div class="vertical-preview">
                                 <div class="device-mockup">
                                     <div class="device-frame">
-                                        <img src="img/food-preview.jpg" alt="Food & Beverage Template Preview">
+                                        <div class="device-screen">
+                                            <iframe src="food.html" title="Food & Beverage Template" frameborder="0"></iframe>
+                                        </div>
                                     </div>
-                                    <div class="device-btns"></div>
+                                    <div class="device-home-button"></div>
                                 </div>
                             </div>
                         </div>
@@ -239,9 +258,11 @@
                             <div class="vertical-preview">
                                 <div class="device-mockup">
                                     <div class="device-frame">
-                                        <img src="img/style-preview.jpg" alt="Beauty & Style Template Preview">
+                                        <div class="device-screen">
+                                            <iframe src="style.html" title="Beauty & Style Template" frameborder="0"></iframe>
+                                        </div>
                                     </div>
-                                    <div class="device-btns"></div>
+                                    <div class="device-home-button"></div>
                                 </div>
                             </div>
                         </div>
@@ -266,9 +287,11 @@
                             <div class="vertical-preview">
                                 <div class="device-mockup">
                                     <div class="device-frame">
-                                        <img src="img/services-preview.jpg" alt="Local Services Template Preview">
+                                        <div class="device-screen">
+                                            <iframe src="services.html" title="Local Services Template" frameborder="0"></iframe>
+                                        </div>
                                     </div>
-                                    <div class="device-btns"></div>
+                                    <div class="device-home-button"></div>
                                 </div>
                             </div>
                         </div>
@@ -293,9 +316,11 @@
                             <div class="vertical-preview">
                                 <div class="device-mockup">
                                     <div class="device-frame">
-                                        <img src="img/learn-preview.jpg" alt="Education Template Preview">
+                                        <div class="device-screen">
+                                            <iframe src="learn.html" title="Education Template" frameborder="0"></iframe>
+                                        </div>
                                     </div>
-                                    <div class="device-btns"></div>
+                                    <div class="device-home-button"></div>
                                 </div>
                             </div>
                         </div>
@@ -320,9 +345,11 @@
                             <div class="vertical-preview">
                                 <div class="device-mockup">
                                     <div class="device-frame">
-                                        <img src="img/events-preview.jpg" alt="Events Template Preview">
+                                        <div class="device-screen">
+                                            <iframe src="events.html" title="Events Template" frameborder="0"></iframe>
+                                        </div>
                                     </div>
-                                    <div class="device-btns"></div>
+                                    <div class="device-home-button"></div>
                                 </div>
                             </div>
                         </div>
@@ -358,7 +385,7 @@
                         </ul>
                     </div>
                     <div class="pricing-cta">
-                        <a href="https://buy.stripe.com/9AQ8yS64L3HGdtmbII" class="btn btn-outline btn-block">Start Today</a>
+                        <a href="https://buy.stripe.com/9AQ8yS64L3HGdtmbII" onclick="return gtag_report_conversion('https://buy.stripe.com/9AQ8yS64L3HGdtmbII');" class="btn btn-outline btn-block">Start Today</a>
                     </div>
                 </div>
                 <div class="pricing-card highlight">
@@ -383,7 +410,7 @@
                         </ul>
                     </div>
                     <div class="pricing-cta">
-                        <a href="https://buy.stripe.com/cN28yS2Szfqo9d6aEF" class="btn btn-primary btn-block">Choose Business</a>
+                        <a href="https://buy.stripe.com/cN28yS2Szfqo9d6aEF" onclick="return gtag_report_conversion('https://buy.stripe.com/cN28yS2Szfqo9d6aEF');" class="btn btn-primary btn-block">Choose Business</a>
                     </div>
                 </div>
                 <div class="pricing-card">
@@ -408,7 +435,7 @@
                         </ul>
                     </div>
                     <div class="pricing-cta">
-                        <a href="https://buy.stripe.com/9AQ02m9gX3HGcpi4gi" class="btn btn-outline btn-block">Choose Premium</a>
+                        <a href="https://buy.stripe.com/9AQ02m9gX3HGcpi4gi" onclick="return gtag_report_conversion('https://buy.stripe.com/9AQ02m9gX3HGcpi4gi');" class="btn btn-outline btn-block">Choose Premium</a>
                     </div>
                 </div>
             </div>
@@ -612,6 +639,7 @@
     </footer>
 
     <script src="js/main.js"></script>
+    <script src="js/validate-mockups.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Existing code...

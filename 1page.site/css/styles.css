@@ -1622,4 +1622,214 @@ footer {
         max-width: 300px;
         margin: 10px auto;
     }
+}
+
+/* ===== DEVICE MOCKUPS ===== */
+/* Desktop Mockup */
+.desktop-mockup {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.desktop-mockup:hover {
+    transform: scale(1.03) translateY(-10px);
+}
+
+.desktop-frame {
+    background-color: #1e1e1e;
+    border-radius: 10px 10px 0 0;
+    padding: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.desktop-screen {
+    background-color: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) inset;
+    aspect-ratio: 16/9;
+}
+
+.desktop-screen iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: none;
+    pointer-events: none;
+    transform: scale(0.95);
+    transform-origin: top left;
+}
+
+.desktop-screen:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(120deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%);
+    pointer-events: none;
+    z-index: 10;
+}
+
+.desktop-stand {
+    background-color: #1e1e1e;
+    height: 40px;
+    width: 120px;
+    margin: 0 auto;
+    border-radius: 0 0 10px 10px;
+    position: relative;
+}
+
+.desktop-stand:after {
+    content: '';
+    position: absolute;
+    width: 180px;
+    height: 10px;
+    background-color: #1e1e1e;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 0 0 50% 50%;
+}
+
+/* Mobile Mockup */
+.device-mockup {
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.device-mockup:hover {
+    transform: scale(1.05) translateY(-10px);
+}
+
+.device-frame {
+    background-color: #1e1e1e;
+    border-radius: 30px;
+    padding: 10px;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.device-screen {
+    background-color: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1) inset;
+    aspect-ratio: 9/16;
+}
+
+.device-screen iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: none;
+    pointer-events: none;
+    transform: scale(0.95);
+    transform-origin: top left;
+}
+
+.device-screen:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(120deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%);
+    pointer-events: none;
+    z-index: 10;
+}
+
+.device-home-button {
+    width: 40px;
+    height: 5px;
+    border-radius: 3px;
+    background-color: #333;
+    margin: 15px auto 5px;
+    position: relative;
+}
+
+/* Iframe loaders and fallbacks */
+.iframe-loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    transition: opacity 0.3s ease;
+}
+
+.iframe-loader p {
+    margin-top: 15px;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(67, 97, 238, 0.3);
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.iframe-fallback {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    color: white;
+}
+
+.iframe-fallback h3 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.iframe-fallback p {
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+
+.fallback-btn {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.fallback-btn:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
 } 
