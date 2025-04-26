@@ -54,12 +54,17 @@
             transform: translateY(-2px);
         }
         
-        /* Add missing styles */
+        /* Updated header styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 0;
+            padding: 15px 0;
         }
         
         .logo h1 {
@@ -74,6 +79,29 @@
         .logo p {
             margin: 0;
             font-size: 0.9rem;
+            color: #777;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            color: var(--dark-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary-color);
         }
         
         .contact-info {
@@ -88,9 +116,39 @@
             gap: 8px;
         }
         
+        .phone i {
+            color: var(--primary-color);
+        }
+        
+        .phone a {
+            color: var(--dark-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
         .cta-button.small {
             padding: 8px 16px;
             font-size: 0.9rem;
+            margin-top: 0;
+        }
+        
+        /* Updated button styles */
+        .btn-category {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 30px; /* Rounded like other templates */
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: none;
+            font-weight: 600;
+        }
+        
+        .btn-category:hover {
+            background-color: #5a52e0;
+            transform: translateY(-2px);
         }
         
         .section-heading {
@@ -177,22 +235,6 @@
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 600;
-        }
-        
-        .btn-category {
-            display: inline-block;
-            padding: 8px 16px;
-            background-color: var(--primary-color);
-            color: white;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-category:hover {
-            background-color: #5a52e0;
-            transform: translateY(-2px);
         }
         
         .featured-courses-section {
@@ -563,6 +605,14 @@
                     <h1>Skill<span>Academy</span></h1>
                     <p>Learn. Grow. Succeed.</p>
                 </div>
+                <nav>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#categories">Courses</a></li>
+                        <li><a href="#instructors">Instructors</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
                 <div class="contact-info">
                     <div class="phone">
                         <i class="fas fa-phone-alt"></i>

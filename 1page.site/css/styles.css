@@ -1903,11 +1903,39 @@ footer {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    z-index: 1; /* Ensure proper stacking */
 }
 
 .mockup-slide.active {
     opacity: 1;
     visibility: visible;
+    z-index: 2; /* Show active slide above others */
+}
+
+/* Mobile specific fixes */
+@media (max-width: 768px) {
+    .device-carousel {
+        height: 500px; /* Slightly shorter on mobile */
+    }
+    
+    .mockup-slide {
+        position: absolute;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateX(100%); /* Start offscreen */
+        transition: transform 0.5s ease, opacity 0.3s ease, visibility 0.3s ease;
+    }
+    
+    .mockup-slide.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0); /* Slide into view */
+    }
+    
+    /* Ensure stacking works correctly */
+    .mockup-slide:not(.active) {
+        pointer-events: none;
+    }
 }
 
 .mockup-label {

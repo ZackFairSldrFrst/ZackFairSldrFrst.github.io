@@ -54,6 +54,84 @@
             transform: translateY(-2px);
         }
         
+        /* Add header styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo h1 {
+            font-size: 2rem;
+            margin: 0;
+        }
+        
+        .logo span {
+            color: var(--primary-color);
+        }
+        
+        .logo p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #777;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            color: var(--dark-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+        
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .phone {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .phone i {
+            color: var(--primary-color);
+        }
+        
+        .phone a {
+            color: var(--dark-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .cta-button.small {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            margin-top: 0;
+        }
+        
         .services-section {
             padding: 80px 0;
         }
@@ -156,14 +234,16 @@
             color: white;
             border: none;
             padding: 8px 16px;
-            border-radius: 20px;
+            border-radius: 30px;
             font-size: 0.85rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
         }
         
         .quote-btn:hover {
             background-color: #E67E22;
+            transform: translateY(-2px);
         }
         
         .team-section {
@@ -417,6 +497,19 @@
                     <h1>Pro<span>Fix</span></h1>
                     <p>Professional Home Services</p>
                 </div>
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#team">Our Team</a></li>
+                        <li><a href="#testimonials">Reviews</a></li>
+                    </ul>
+                    <button class="hamburger" aria-label="Toggle menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </nav>
                 <div class="contact-info">
                     <div class="phone">
                         <i class="fas fa-phone-alt"></i>
@@ -790,5 +883,6 @@
     </footer>
 
     <script src="js/script.js"></script>
+    <script src="js/services-template.js"></script>
 </body>
 </html> 

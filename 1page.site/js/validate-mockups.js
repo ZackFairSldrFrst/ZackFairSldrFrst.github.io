@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
             loader.innerHTML = '<div class="spinner"></div><p>Loading preview...</p>';
             parent.appendChild(loader);
             
-            // Set desktop viewport for food.html in desktop mockup
+            // Force desktop view with appropriate scaling
             if (iframe.getAttribute('src') === 'food.html' && parent.classList.contains('desktop-screen')) {
                 // Force desktop view with appropriate scaling
                 iframe.style.width = '100%';  
@@ -114,6 +114,88 @@ document.addEventListener('DOMContentLoaded', () => {
         return colors[Math.floor(Math.random() * colors.length)];
     }
     
+    // Enhance carousel functionality for mobile
+    const setupMockupCarousel = () => {
+        const carousel = document.querySelector('.hero-mockup-carousel');
+        if (!carousel) return;
+        
+        const slides = carousel.querySelectorAll('.mockup-slide');
+        const dots = carousel.querySelectorAll('.dot');
+        const prevBtn = carousel.querySelector('.carousel-prev');
+        const nextBtn = carousel.querySelector('.carousel-next');
+        
+        let currentSlide = 0;
+        
+        // Function to show a specific slide
+        function showSlide(n) {
+            // Handle index bounds
+            if (n >= slides.length) currentSlide = 0;
+            else if (n < 0) currentSlide = slides.length - 1;
+            else currentSlide = n;
+            
+            // Hide all slides
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+                // Ensure mobile display is correct
+                slide.style.opacity = '0';
+                slide.style.visibility = 'hidden';
+                if (window.innerWidth <= 768) {
+                    slide.style.transform = 'translateX(100%)';
+                }
+            });
+            
+            // Remove active class from all dots
+            dots.forEach(dot => {
+                dot.classList.remove('active');
+            });
+            
+            // Show the active slide
+            const activeSlide = slides[currentSlide];
+            activeSlide.classList.add('active');
+            activeSlide.style.opacity = '1';
+            activeSlide.style.visibility = 'visible';
+            if (window.innerWidth <= 768) {
+                activeSlide.style.transform = 'translateX(0)';
+            }
+            
+            // Update the active dot
+            dots[currentSlide].classList.add('active');
+        }
+        
+        // Initialize carousel
+        showSlide(0);
+        
+        // Event handlers for controls
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                showSlide(currentSlide - 1);
+            });
+        }
+        
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                showSlide(currentSlide + 1);
+            });
+        }
+        
+        // Click handler for dots
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                showSlide(index);
+            });
+        });
+        
+        // Auto-rotate slides
+        setInterval(() => {
+            showSlide(currentSlide + 1);
+        }, 5000);
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            showSlide(currentSlide);
+        });
+    };
+    
     // Add interaction effects to mockups
     const setupMockupInteraction = () => {
         // Desktop mockup interaction
@@ -157,6 +239,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize iframe handling
     handleIframes();
+    
+    // Set up mockup carousel
+    setupMockupCarousel();
     
     // Set up mockup interactions after a short delay to ensure DOM is ready
     setTimeout(setupMockupInteraction, 1000);
