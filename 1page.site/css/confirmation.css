@@ -69,9 +69,19 @@
     align-items: flex-start;
 }
 
-.checkbox-item input {
+.checkbox-item input[type="checkbox"] {
     margin-right: 10px;
-    margin-top: 5px;
+    margin-top: 4px;
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary-color);
+}
+
+.checkbox-item label {
+    font-size: 14px;
+    line-height: 1.5;
+    font-weight: normal;
+    cursor: pointer;
 }
 
 .reminder-box {
@@ -113,6 +123,18 @@
     margin-top: 30px;
 }
 
+.success-message h3 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.success-message h3 i {
+    margin-right: 10px;
+}
+
 .input-group {
     position: relative;
 }
@@ -137,8 +159,11 @@
     display: block;
     margin-bottom: 8px;
     font-weight: 500;
+    color: var(--dark-color);
+    font-family: 'Poppins', sans-serif;
 }
 
+/* Unified input styling */
 .form-group input,
 .form-group select,
 .form-group textarea {
@@ -147,7 +172,10 @@
     border: 1px solid var(--light-gray);
     border-radius: var(--border-radius);
     font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: var(--dark-color);
     transition: border-color 0.3s ease;
+    background-color: #fff;
 }
 
 .form-group input:focus,
@@ -155,17 +183,59 @@
 .form-group textarea:focus {
     border-color: var(--primary-color);
     outline: none;
+    box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.1);
 }
 
 .form-group.checkbox {
     display: flex;
     align-items: flex-start;
+    margin-bottom: 30px;
 }
 
-.form-group.checkbox input {
-    width: auto;
+.form-group.checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
     margin-right: 10px;
-    margin-top: 5px;
+    margin-top: 2px;
+    accent-color: var(--primary-color);
+}
+
+.form-group.checkbox label {
+    font-weight: normal;
+    margin-bottom: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    cursor: pointer;
+}
+
+/* Button specific styling override */
+button.btn-primary {
+    font-family: 'Poppins', sans-serif;
+    padding: 14px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+button.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+}
+
+button.btn-primary:disabled {
+    background-color: var(--light-gray);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Placeholder styling */
+::placeholder {
+    color: #adb5bd;
+    opacity: 1;
 }
 
 /* Animation for fade-in effect */
