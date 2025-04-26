@@ -1,6 +1,6 @@
-// Mockup validation
+// Mockup validation and interaction
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Validating mockups...');
+    console.log('Initializing device mockups...');
 
     // Handle iframe loading and fallbacks
     const handleIframes = () => {
@@ -76,6 +76,50 @@ document.addEventListener('DOMContentLoaded', () => {
         return colors[Math.floor(Math.random() * colors.length)];
     }
     
+    // Add interaction effects to mockups
+    const setupMockupInteraction = () => {
+        // Desktop mockup interaction
+        const desktopMockups = document.querySelectorAll('.desktop-mockup');
+        desktopMockups.forEach(mockup => {
+            const screen = mockup.querySelector('.desktop-screen');
+            const overlay = screen.querySelector('.overlay');
+            const iframe = screen.querySelector('iframe');
+            
+            if (screen && overlay && iframe) {
+                // Toggle overlay on hover for more natural interaction
+                screen.addEventListener('mouseenter', () => {
+                    overlay.style.pointerEvents = 'none'; // Allow clicking through
+                });
+                
+                screen.addEventListener('mouseleave', () => {
+                    overlay.style.pointerEvents = 'none'; // Keep interaction available
+                });
+            }
+        });
+        
+        // Mobile mockup interaction
+        const mobileMockups = document.querySelectorAll('.device-mockup');
+        mobileMockups.forEach(mockup => {
+            const screen = mockup.querySelector('.device-screen');
+            const overlay = screen.querySelector('.overlay');
+            const iframe = screen.querySelector('iframe');
+            
+            if (screen && overlay && iframe) {
+                // Toggle overlay on hover for more natural interaction
+                screen.addEventListener('mouseenter', () => {
+                    overlay.style.pointerEvents = 'none'; // Allow clicking through
+                });
+                
+                screen.addEventListener('mouseleave', () => {
+                    overlay.style.pointerEvents = 'none'; // Keep interaction available
+                });
+            }
+        });
+    };
+    
     // Initialize iframe handling
     handleIframes();
+    
+    // Set up mockup interactions after a short delay to ensure DOM is ready
+    setTimeout(setupMockupInteraction, 1000);
 }); 

@@ -1632,6 +1632,7 @@ footer {
     margin: 0 auto;
     position: relative;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 10;
 }
 
 .desktop-mockup:hover {
@@ -1660,21 +1661,52 @@ footer {
     width: 100%;
     height: 100%;
     border: none;
-    pointer-events: none;
-    transform: scale(0.95);
+    pointer-events: auto;
+    transform: scale(1);
     transform-origin: top left;
 }
 
-.desktop-screen:after {
+.desktop-screen .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 2;
+    pointer-events: none;
+    transition: background-color 0.3s ease;
+}
+
+.desktop-screen:before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
-    background: linear-gradient(120deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%);
+    height: 20px;
+    background-color: #f0f0f0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    display: flex;
+    align-items: center;
+    z-index: 3;
+}
+
+.desktop-screen:after {
+    content: '';
+    position: absolute;
+    top: 7px;
+    left: 10px;
+    width: 42px;
+    height: 6px;
+    z-index: 4;
+    border-radius: 3px;
+    background: linear-gradient(to right, 
+        #ff5f57 0%, #ff5f57 30%, 
+        #ffbd2e 30%, #ffbd2e 60%, 
+        #28ca41 60%, #28ca41 100%);
     pointer-events: none;
-    z-index: 10;
 }
 
 .desktop-stand {
@@ -1705,6 +1737,7 @@ footer {
     margin: 0 auto;
     position: relative;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 10;
 }
 
 .device-mockup:hover {
@@ -1733,21 +1766,47 @@ footer {
     width: 100%;
     height: 100%;
     border: none;
-    pointer-events: none;
-    transform: scale(0.95);
+    pointer-events: auto;
+    transform: scale(1);
     transform-origin: top left;
 }
 
-.device-screen:after {
+.device-screen .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 2;
+    pointer-events: none;
+    transition: background-color 0.3s ease;
+}
+
+.device-screen:before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
-    background: linear-gradient(120deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%);
-    pointer-events: none;
-    z-index: 10;
+    height: 24px;
+    background-color: #000;
+    z-index: 3;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.device-screen:after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background-color: #333;
+    border-radius: 2px;
+    z-index: 4;
 }
 
 .device-home-button {
