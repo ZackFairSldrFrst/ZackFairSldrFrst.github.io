@@ -486,6 +486,40 @@
             text-align: center;
             font-size: 0.9rem;
         }
+        
+        .powered-by {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            text-align: center;
+            z-index: 1000;
+        }
+        
+        .powered-by p {
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
+        
+        .powered-by .cta-button {
+            display: block;
+            margin: 10px 0;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .powered-by .cta-button:hover {
+            background-color: #2980B9;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -878,9 +912,15 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>© 2023 ProFix Home Services. All Rights Reserved. License #ABC12345.</p>
+            <p>© 2025 ProFix Home Services. All Rights Reserved. License #ABC12345.</p>
         </div>
     </footer>
+
+    <div class="powered-by">
+        <p>This is a demo template.</p>
+        <a href="index.html#pricing" class="cta-button">Get Started with 1page.site</a>
+        <p>Create your own site in just 48 hours!</p>
+    </div>
 
     <script src="js/script.js"></script>
     <script src="js/services-template.js"></script>

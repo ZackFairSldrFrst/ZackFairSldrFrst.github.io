@@ -295,6 +295,40 @@
                 grid-template-columns: 1fr;
             }
         }
+        
+        .powered-by {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            text-align: center;
+            z-index: 1000;
+        }
+        
+        .powered-by p {
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
+        
+        .powered-by .cta-button {
+            display: block;
+            margin: 10px 0;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .powered-by .cta-button:hover {
+            background-color: #e05a2a;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -495,7 +529,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2023 Taco Bros. All rights reserved.</p>
+                <p>&copy; 2025 Taco Bros. All rights reserved.</p>
                 <div class="social-links">
                     <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
                     <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
@@ -506,7 +540,9 @@
     </footer>
 
     <div class="powered-by">
-        <a href="index.html">Powered by 1page.site</a>
+        <p>This is a demo template.</p>
+        <a href="index.html#pricing" class="cta-button">Get Started with 1page.site</a>
+        <p>Create your own site in just 48 hours!</p>
     </div>
 
     <script src="js/main.js"></script>
