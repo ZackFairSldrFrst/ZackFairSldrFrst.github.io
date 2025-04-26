@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1page.site — Complete Your Website Setup</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/confirmation.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>1page<span class="accent">.site</span></h1>
+                <p class="tagline">Instant web presence for local businesses</p>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#features">Features</a></li>
+                    <li><a href="index.html#pricing">Pricing</a></li>
+                </ul>
+                <button class="hamburger" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <section id="confirmation" class="fade-in-section">
+        <div class="container">
+            <div class="confirmation-header">
+                <h1>Thank You for Your Order!</h1>
+                <p>We're excited to build your website. Please fill out the form below to provide all the information we need to create your perfect web presence. Your website will be ready within 48 hours of submitting your requirements.</p>
+            </div>
+            
+            <div class="form-container">
+                <form id="businessInfoForm">
+                    <div class="form-section">
+                        <h2>Business Information</h2>
+                        <p>Tell us about your business so we can create a website that represents you perfectly.</p>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="businessName">Business Name*</label>
+                                <input type="text" id="businessName" name="businessName" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="industry">Industry/Business Type*</label>
+                                <select id="industry" name="industry" required>
+                                    <option value="" disabled selected>Select your industry</option>
+                                    <option value="Restaurant">Restaurant</option>
+                                    <option value="Café">Café</option>
+                                    <option value="Food Truck">Food Truck</option>
+                                    <option value="Bakery">Bakery</option>
+                                    <option value="Salon/Barber">Salon/Barber</option>
+                                    <option value="Spa/Beauty">Spa/Beauty</option>
+                                    <option value="Fitness/Gym">Fitness/Gym</option>
+                                    <option value="Retail Store">Retail Store</option>
+                                    <option value="Home Service">Home Service</option>
+                                    <option value="Consulting">Consulting</option>
+                                    <option value="Education/Coaching">Education/Coaching</option>
+                                    <option value="Event Service">Event Service</option>
+                                    <option value="Photography">Photography</option>
+                                    <option value="Medical/Healthcare">Medical/Healthcare</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group form-full">
+                                <label for="businessDescription">Business Description*</label>
+                                <textarea id="businessDescription" name="businessDescription" rows="4" placeholder="Describe what your business does, your value proposition, and what makes you unique..." required></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phone">Phone Number*</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email Address*</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            
+                            <div class="form-group form-full">
+                                <label for="address">Business Address</label>
+                                <input type="text" id="address" name="address" placeholder="Street Address">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" name="city">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="state">State/Province</label>
+                                <input type="text" id="state" name="state">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="zipcode">ZIP/Postal Code</label>
+                                <input type="text" id="zipcode" name="zipcode">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="country">Country</label>
+                                <input type="text" id="country" name="country">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h2>Website Preferences</h2>
+                        <p>Help us understand your vision for your website.</p>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="websiteName">Preferred Website Name/URL*</label>
+                                <div class="input-group">
+                                    <span class="input-prefix">1page.site/</span>
+                                    <input type="text" id="websiteName" name="websiteName" class="input-with-prefix" placeholder="your-business" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="customDomain">Custom Domain (if any)</label>
+                                <input type="text" id="customDomain" name="customDomain" placeholder="yourbusiness.com">
+                            </div>
+                            
+                            <div class="form-group form-full">
+                                <label>Color Preferences (Select up to 3)</label>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="colorBlue" name="colorBlue" value="Blue">
+                                        <label for="colorBlue">Blue</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="colorGreen" name="colorGreen" value="Green">
+                                        <label for="colorGreen">Green</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="colorRed" name="colorRed" value="Red">
+                                        <label for="colorRed">Red</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="colorOrange" name="colorOrange" value="Orange">
+                                        <label for="colorOrange">Orange</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="colorPurple" name="colorPurple" value="Purple">
+                                        <label for="colorPurple">Purple</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="colorPink" name="colorPink" value="Pink">
+                                        <label for="colorPink">Pink</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="colorBlack" name="colorBlack" value="Black/Gray">
+                                        <label for="colorBlack">Black/Gray</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="colorWhite" name="colorWhite" value="White/Neutral">
+                                        <label for="colorWhite">White/Neutral</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group form-full">
+                                <label for="websiteGoals">Website Goals*</label>
+                                <textarea id="websiteGoals" name="websiteGoals" rows="3" placeholder="What do you want your website to accomplish? (e.g., generate leads, display your menu, showcase your work)" required></textarea>
+                            </div>
+                            
+                            <div class="form-group form-full">
+                                <label>Additional Features You Need</label>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="featureBooking" name="featureBooking" value="Online Booking">
+                                        <label for="featureBooking">Online Booking</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="featureMenu" name="featureMenu" value="Menu Display">
+                                        <label for="featureMenu">Menu Display</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="featureGallery" name="featureGallery" value="Photo Gallery">
+                                        <label for="featureGallery">Photo Gallery</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="featureMap" name="featureMap" value="Location Map">
+                                        <label for="featureMap">Location Map</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="featureTestimonials" name="featureTestimonials" value="Customer Testimonials">
+                                        <label for="featureTestimonials">Customer Testimonials</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="featureContact" name="featureContact" value="Contact Form">
+                                        <label for="featureContact">Contact Form</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="featureSocial" name="featureSocial" value="Social Media Links">
+                                        <label for="featureSocial">Social Media Links</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="featureHours" name="featureHours" value="Business Hours">
+                                        <label for="featureHours">Business Hours</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h2>Required Assets</h2>
+                        <p>Please prepare these files to attach to your email when you submit this form.</p>
+                        
+                        <div class="reminder-box">
+                            <h3><i class="fas fa-exclamation-circle"></i> Important Reminder About Attachments</h3>
+                            <p>After completing this form, you'll be able to send an email with all your information. <strong>Please remember to attach the following files to your email:</strong></p>
+                            <ul>
+                                <li><strong>Logo</strong> - Ideally a PNG or SVG file with transparent background (required)</li>
+                                <li><strong>Photos</strong> - High-quality images of your business, products, or team (up to 10)</li>
+                                <li><strong>Menu/Services Document</strong> - PDF of your menu, price list, or services (if applicable)</li>
+                                <li><strong>Additional Files</strong> - Brand guidelines or any other relevant materials</li>
+                            </ul>
+                            <p>If your files are too large for email, please upload them to a service like Google Drive or Dropbox and include the share link in your email.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h2>Social Media & External Links</h2>
+                        <p>Provide links to your social media accounts and any other important online presence.</p>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="facebook">Facebook URL</label>
+                                <input type="url" id="facebook" name="facebook" placeholder="https://facebook.com/yourbusiness">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="instagram">Instagram URL</label>
+                                <input type="url" id="instagram" name="instagram" placeholder="https://instagram.com/yourbusiness">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="twitter">Twitter URL</label>
+                                <input type="url" id="twitter" name="twitter" placeholder="https://twitter.com/yourbusiness">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="linkedin">LinkedIn URL</label>
+                                <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/company/yourbusiness">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="yelp">Yelp URL</label>
+                                <input type="url" id="yelp" name="yelp" placeholder="https://yelp.com/biz/yourbusiness">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="googleBusiness">Google Business URL</label>
+                                <input type="url" id="googleBusiness" name="googleBusiness" placeholder="https://business.google.com/...">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="otherLink1">Other Important Link</label>
+                                <input type="url" id="otherLink1" name="otherLink1" placeholder="https://...">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="otherLink2">Other Important Link</label>
+                                <input type="url" id="otherLink2" name="otherLink2" placeholder="https://...">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h2>Additional Information</h2>
+                        <p>Anything else we should know about your business or website needs?</p>
+                        
+                        <div class="form-group">
+                            <label for="additionalInfo">Additional Information or Special Requests</label>
+                            <textarea id="additionalInfo" name="additionalInfo" rows="4" placeholder="Tell us anything else that would help us build your perfect website..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">I understand that 1page.site will use the information provided here to create my website and I agree to the <a href="#" class="link">Terms of Service</a>.</label>
+                    </div>
+                    
+                    <button type="submit" id="submitButton" class="btn btn-primary btn-block">Prepare Email With My Information</button>
+                    
+                    <div class="success-message" id="successMessage">
+                        <h3><i class="fas fa-check-circle"></i> Information Prepared!</h3>
+                        <p>Your email client should be opening with all your information pre-filled. Please remember to attach your logo and any other relevant files before sending the email.</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-logo">
+                    <h2>1page<span class="accent">.site</span></h2>
+                    <p>Instant web presence for local businesses</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h3>Company</h3>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Service</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 1page.site. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add fade-in effect to sections
+            const sections = document.querySelectorAll('.fade-in-section');
+            
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+            
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Limit color checkbox selections to 3
+            const colorCheckboxes = document.querySelectorAll('input[type="checkbox"][id^="color"]');
+            colorCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const checked = document.querySelectorAll('input[type="checkbox"][id^="color"]:checked');
+                    if (checked.length > 3) {
+                        this.checked = false;
+                        alert('Please select up to 3 colors only.');
+                    }
+                });
+            });
+            
+            // Form submission - prepare email
+            const form = document.getElementById('businessInfoForm');
+            const successMessage = document.getElementById('successMessage');
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validate form
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+                
+                // Collect form data
+                const formData = new FormData(form);
+                let emailBody = '';
+                
+                // Business Information
+                emailBody += "BUSINESS INFORMATION:\n";
+                emailBody += "Business Name: " + formData.get('businessName') + "\n";
+                emailBody += "Industry: " + formData.get('industry') + "\n";
+                emailBody += "Business Description: " + formData.get('businessDescription') + "\n";
+                emailBody += "Phone: " + formData.get('phone') + "\n";
+                emailBody += "Email: " + formData.get('email') + "\n";
+                
+                // Address
+                let address = formData.get('address') || '';
+                const city = formData.get('city') || '';
+                const state = formData.get('state') || '';
+                const zipcode = formData.get('zipcode') || '';
+                const country = formData.get('country') || '';
+                
+                if (address || city || state || zipcode || country) {
+                    const addressParts = [address, city, state, zipcode, country].filter(Boolean);
+                    emailBody += "Address: " + addressParts.join(', ') + "\n";
+                }
+                
+                emailBody += "\nWEBSITE PREFERENCES:\n";
+                emailBody += "Preferred URL: 1page.site/" + formData.get('websiteName') + "\n";
+                
+                if (formData.get('customDomain')) {
+                    emailBody += "Custom Domain: " + formData.get('customDomain') + "\n";
+                }
+                
+                // Color preferences
+                const selectedColors = [];
+                colorCheckboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        selectedColors.push(checkbox.value);
+                    }
+                });
+                
+                if (selectedColors.length > 0) {
+                    emailBody += "Color Preferences: " + selectedColors.join(', ') + "\n";
+                }
+                
+                emailBody += "Website Goals: " + formData.get('websiteGoals') + "\n";
+                
+                // Features
+                const featureCheckboxes = document.querySelectorAll('input[type="checkbox"][id^="feature"]');
+                const selectedFeatures = [];
+                featureCheckboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        selectedFeatures.push(checkbox.value);
+                    }
+                });
+                
+                if (selectedFeatures.length > 0) {
+                    emailBody += "Requested Features: " + selectedFeatures.join(', ') + "\n";
+                }
+                
+                // Social Media
+                emailBody += "\nSOCIAL MEDIA & EXTERNAL LINKS:\n";
+                if (formData.get('facebook')) emailBody += "Facebook: " + formData.get('facebook') + "\n";
+                if (formData.get('instagram')) emailBody += "Instagram: " + formData.get('instagram') + "\n";
+                if (formData.get('twitter')) emailBody += "Twitter: " + formData.get('twitter') + "\n";
+                if (formData.get('linkedin')) emailBody += "LinkedIn: " + formData.get('linkedin') + "\n";
+                if (formData.get('yelp')) emailBody += "Yelp: " + formData.get('yelp') + "\n";
+                if (formData.get('googleBusiness')) emailBody += "Google Business: " + formData.get('googleBusiness') + "\n";
+                if (formData.get('otherLink1')) emailBody += "Other Link 1: " + formData.get('otherLink1') + "\n";
+                if (formData.get('otherLink2')) emailBody += "Other Link 2: " + formData.get('otherLink2') + "\n";
+                
+                // Additional Information
+                if (formData.get('additionalInfo')) {
+                    emailBody += "\nADDITIONAL INFORMATION:\n";
+                    emailBody += formData.get('additionalInfo') + "\n";
+                }
+                
+                // Reminder about attachments
+                emailBody += "\n---------------------------------------------\n";
+                emailBody += "IMPORTANT: Please remember to attach the following files to this email:\n";
+                emailBody += "1. Your business logo (required)\n";
+                emailBody += "2. Photos of your business\n";
+                emailBody += "3. Menu/services document (if applicable)\n";
+                emailBody += "4. Any other relevant files\n\n";
+                emailBody += "If files are too large to email, please upload them to a service like Google Drive or Dropbox and include the share links in this email.\n";
+                emailBody += "---------------------------------------------\n";
+                
+                // Create mailto link
+                const subject = "Website Information for " + formData.get('businessName');
+                const mailtoLink = "mailto:zackfairsldrfrst@gmail.com"
+                                 + "?subject=" + encodeURIComponent(subject)
+                                 + "&body=" + encodeURIComponent(emailBody);
+                
+                // Open email client
+                const submitButton = document.getElementById('submitButton');
+                submitButton.disabled = true;
+                submitButton.textContent = 'Opening Email Client...';
+                
+                // Small delay to show status
+                setTimeout(() => {
+                    window.location.href = mailtoLink;
+                    successMessage.style.display = 'block';
+                    successMessage.scrollIntoView({ behavior: 'smooth' });
+                    
+                    // Re-enable button after a delay
+                    setTimeout(() => {
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Prepare Email With My Information';
+                    }, 3000);
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html> 
