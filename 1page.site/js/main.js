@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initCarousel();
     initFormSubmission();
     initSmoothScroll();
+    initHeroMockupCarousel();
 });
 
 // Mobile Navigation
@@ -318,4 +319,64 @@ function initSmoothScroll() {
             }
         });
     });
+}
+
+function initHeroMockupCarousel() {
+    const slides = document.querySelectorAll('.hero-mockup-carousel .mockup-slide');
+    const dots = document.querySelectorAll('.hero-mockup-carousel .dot');
+    const prevBtn = document.querySelector('.hero-mockup-carousel .carousel-prev');
+    const nextBtn = document.querySelector('.hero-mockup-carousel .carousel-next');
+    
+    if (!slides.length) return; // Exit if no carousel exists
+    
+    let currentSlide = 0;
+    
+    function showSlide(n) {
+        // Handle index bounds
+        if (n >= slides.length) currentSlide = 0;
+        else if (n < 0) currentSlide = slides.length - 1;
+        else currentSlide = n;
+        
+        // Hide all slides
+        slides.forEach(slide => {
+            slide.classList.remove('active');
+        });
+        
+        // Remove active class from all dots
+        dots.forEach(dot => {
+            dot.classList.remove('active');
+        });
+        
+        // Show the selected slide and activate the corresponding dot
+        slides[currentSlide].classList.add('active');
+        dots[currentSlide].classList.add('active');
+    }
+    
+    // Initialize the carousel
+    showSlide(currentSlide);
+    
+    // Event listeners for controls
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            showSlide(currentSlide - 1);
+        });
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            showSlide(currentSlide + 1);
+        });
+    }
+    
+    // Click on dots to navigate to specific slides
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            showSlide(index);
+        });
+    });
+    
+    // Auto-rotate slides every 5 seconds
+    setInterval(() => {
+        showSlide(currentSlide + 1);
+    }, 5000);
 } 

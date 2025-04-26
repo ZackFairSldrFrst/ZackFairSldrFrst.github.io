@@ -14,6 +14,44 @@ document.addEventListener('DOMContentLoaded', () => {
             loader.innerHTML = '<div class="spinner"></div><p>Loading preview...</p>';
             parent.appendChild(loader);
             
+            // Set desktop viewport for food.html in desktop mockup
+            if (iframe.getAttribute('src') === 'food.html' && parent.classList.contains('desktop-screen')) {
+                // Force desktop view with appropriate scaling
+                iframe.style.width = '100%';  
+                iframe.style.height = '100%';
+                iframe.style.overflow = 'hidden';
+                
+                // Add load event listener to modify content scale
+                iframe.addEventListener('load', function() {
+                    try {
+                        // Try to access iframe content if same origin
+                        const iframeDoc = this.contentDocument || this.contentWindow.document;
+                        const htmlElement = iframeDoc.documentElement;
+                        
+                        // Add meta viewport tag to force desktop view
+                        const meta = iframeDoc.createElement('meta');
+                        meta.name = 'viewport';
+                        meta.content = 'width=1200, initial-scale=1';
+                        iframeDoc.head.appendChild(meta);
+                        
+                        // Set body to desktop width
+                        iframeDoc.body.style.width = '1200px';
+                        iframeDoc.body.style.margin = '0 auto';
+                        
+                        // Make iframe fully interactive
+                        this.style.pointerEvents = 'auto';
+                    } catch(e) {
+                        console.log('Cannot access iframe content: ', e);
+                    }
+                    
+                    // Make overlay transparent to allow interaction
+                    const overlay = this.parentElement.querySelector('.overlay');
+                    if (overlay) {
+                        overlay.style.pointerEvents = 'none';
+                    }
+                });
+            }
+            
             // Handle iframe load event
             iframe.addEventListener('load', function() {
                 // Remove loader when iframe is loaded

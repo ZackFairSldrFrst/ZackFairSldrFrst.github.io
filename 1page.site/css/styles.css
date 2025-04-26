@@ -1662,8 +1662,8 @@ footer {
     height: 100%;
     border: none;
     pointer-events: auto;
-    transform: scale(1);
     transform-origin: top left;
+    z-index: 3;
 }
 
 .desktop-screen .overlay {
@@ -1891,4 +1891,102 @@ footer {
 .fallback-btn:hover {
     background-color: rgba(255, 255, 255, 0.3);
     transform: translateY(-2px);
+}
+
+/* ===== HERO MOCKUP CAROUSEL ===== */
+.hero-mockup-carousel {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+    padding: 20px 0;
+    position: relative;
+}
+
+.device-carousel {
+    position: relative;
+    height: 550px;
+    overflow: hidden;
+}
+
+.mockup-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.mockup-slide.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mockup-label {
+    margin-top: 20px;
+    font-weight: 600;
+    color: var(--primary-color);
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+/* Adjust existing device mockup styles for the carousel */
+.hero-mockup-carousel .device-mockup {
+    max-width: 280px;
+    margin: 0 auto;
+    transition: transform 0.3s ease;
+}
+
+.hero-mockup-carousel .device-mockup:hover {
+    transform: translateY(-10px);
+}
+
+.hero-mockup-carousel .carousel-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.hero-mockup-carousel .carousel-prev,
+.hero-mockup-carousel .carousel-next {
+    background: transparent;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0 15px;
+    transition: var(--transition);
+}
+
+.hero-mockup-carousel .carousel-prev:hover,
+.hero-mockup-carousel .carousel-next:hover {
+    color: var(--secondary-color);
+    transform: scale(1.2);
+}
+
+.hero-mockup-carousel .carousel-dots {
+    display: flex;
+    gap: 10px;
+    margin: 0 20px;
+}
+
+.hero-mockup-carousel .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--light-gray);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.hero-mockup-carousel .dot.active {
+    background-color: var(--primary-color);
+    transform: scale(1.2);
 } 
