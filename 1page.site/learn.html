@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Academy | Education & Coaching Template</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Template-specific styles */
+        :root {
+            --primary-color: #6C63FF;
+            --accent-color: #FFA500;
+            --dark-color: #333333;
+            --light-color: #F7F7FF;
+        }
+        
+        .hero-area {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('img/education-hero.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 140px 0;
+            text-align: center;
+        }
+        
+        .cta-button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            background-color: #e69500;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Skill<span>Academy</span></h1>
+                    <p>Learn. Grow. Succeed.</p>
+                </div>
+                <div class="contact-info">
+                    <div class="phone">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>(555) 987-6543</span>
+                    </div>
+                    <a href="#contact" class="cta-button small">Book a Session</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-area">
+        <div class="container">
+            <h1>Master New Skills & Transform Your Career</h1>
+            <p class="lead">Expert-led courses and coaching for professional growth</p>
+            <button class="cta-button">Explore Courses</button>
+        </div>
+    </section>
+
+    <!-- Main Course Categories Section -->
+    <section class="categories-section">
+        <div class="container">
+            <div class="section-heading">
+                <h2>What We Offer</h2>
+                <p>Specialized courses designed to help you advance</p>
+            </div>
+            <div class="categories-grid">
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">Web Development</h3>
+                        <p class="category-description">Comprehensive courses covering HTML, CSS, JavaScript, and modern frameworks.</p>
+                        <span class="category-courses">8 Courses</span>
+                        <a href="#" class="btn-category">View Courses</a>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">Digital Marketing</h3>
+                        <p class="category-description">Learn SEO, social media marketing, PPC, and content strategy.</p>
+                        <span class="category-courses">6 Courses</span>
+                        <a href="#" class="btn-category">View Courses</a>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">Graphic Design</h3>
+                        <p class="category-description">Master design principles and tools like Photoshop, Illustrator and Figma.</p>
+                        <span class="category-courses">5 Courses</span>
+                        <a href="#" class="btn-category">View Courses</a>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">Public Speaking</h3>
+                        <p class="category-description">Build confidence and communication skills for presentations and meetings.</p>
+                        <span class="category-courses">3 Courses</span>
+                        <a href="#" class="btn-category">View Courses</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Courses Section -->
+    <section class="featured-courses-section">
+        <div class="container">
+            <div class="section-heading">
+                <h2>Our Featured Courses</h2>
+                <p>Most popular options chosen by our students</p>
+            </div>
+            <div class="courses-grid">
+                <div class="course-card">
+                    <div class="course-image" style="background-image: url('img/course1.jpg');"></div>
+                    <div class="course-content">
+                        <div class="course-category">Web Development</div>
+                        <h3 class="course-title">Full-Stack Web Development Bootcamp</h3>
+                        <div class="course-details">
+                            <div class="course-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>12 weeks</span>
+                            </div>
+                            <div class="course-detail">
+                                <i class="fas fa-user-graduate"></i>
+                                <span>320 students</span>
+                            </div>
+                            <div class="course-detail">
+                                <i class="fas fa-signal"></i>
+                                <span>All levels</span>
+                            </div>
+                        </div>
+                        <p class="course-description">Become a job-ready full-stack developer with this intensive bootcamp covering front-end, back-end, and database technologies.</p>
+                        <div class="course-footer">
+                            <div class="course-price">$1,299</div>
+                            <a href="#" class="btn-course">Enroll Now</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <div class="course-image" style="background-image: url('img/course2.jpg');"></div>
+                    <div class="course-content">
+                        <div class="course-category">Digital Marketing</div>
+                        <h3 class="course-title">Digital Marketing Mastery</h3>
+                        <div class="course-details">
+                            <div class="course-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>8 weeks</span>
+                            </div>
+                            <div class="course-detail">
+                                <i class="fas fa-user-graduate"></i>
+                                <span>450 students</span>
+                            </div>
+                            <div class="course-detail">
+                                <i class="fas fa-signal"></i>
+                                <span>Beginner to Intermediate</span>
+                            </div>
+                        </div>
+                        <p class="course-description">Comprehensive marketing course covering SEO, social media, content marketing, email campaigns, and analytics.</p>
+                        <div class="course-footer">
+                            <div class="course-price">$899</div>
+                            <a href="#" class="btn-course">Enroll Now</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <div class="course-image" style="background-image: url('img/course3.jpg');"></div>
+                    <div class="course-content">
+                        <div class="course-category">Personal Development</div>
+                        <h3 class="course-title">Leadership & Management Excellence</h3>
+                        <div class="course-details">
+                            <div class="course-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>6 weeks</span>
+                            </div>
+                            <div class="course-detail">
+                                <i class="fas fa-user-graduate"></i>
+                                <span>275 students</span>
+                            </div>
+                            <div class="course-detail">
+                                <i class="fas fa-signal"></i>
+                                <span>Intermediate to Advanced</span>
+                            </div>
+                        </div>
+                        <p class="course-description">Develop essential leadership skills, team management strategies, and organizational effectiveness techniques.</p>
+                        <div class="course-footer">
+                            <div class="course-price">$749</div>
+                            <a href="#" class="btn-course">Enroll Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="view-all-container">
+                <a href="#" class="btn-view-all">View All Courses</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Instructors Section -->
+    <section class="instructors-section">
+        <div class="container">
+            <div class="section-heading">
+                <h2>Meet Our Expert Instructors</h2>
+                <p>Learn from industry professionals with years of real-world experience</p>
+            </div>
+            <div class="instructors-grid">
+                <div class="instructor-card">
+                    <div class="instructor-photo" style="background-image: url('img/instructor1.jpg');"></div>
+                    <div class="instructor-info">
+                        <h3 class="instructor-name">Dr. Jennifer Hayes</h3>
+                        <p class="instructor-title">Web Development Lead</p>
+                        <p class="instructor-bio">Former Google developer with 15+ years experience in full-stack development and 8 years teaching experience.</p>
+                        <div class="instructor-social">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fas fa-globe"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="instructor-card">
+                    <div class="instructor-photo" style="background-image: url('img/instructor2.jpg');"></div>
+                    <div class="instructor-info">
+                        <h3 class="instructor-name">Mark Wilson</h3>
+                        <p class="instructor-title">Digital Marketing Specialist</p>
+                        <p class="instructor-bio">Former marketing director at Nike with expertise in brand development, SEO, and social media strategy.</p>
+                        <div class="instructor-social">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fas fa-globe"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="instructor-card">
+                    <div class="instructor-photo" style="background-image: url('img/instructor3.jpg');"></div>
+                    <div class="instructor-info">
+                        <h3 class="instructor-name">Sarah Johnson</h3>
+                        <p class="instructor-title">Leadership Coach</p>
+                        <p class="instructor-bio">Executive coach with experience working with Fortune 500 companies on leadership development and team building.</p>
+                        <div class="instructor-social">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fas fa-globe"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="instructor-card">
+                    <div class="instructor-photo" style="background-image: url('img/instructor4.jpg');"></div>
+                    <div class="instructor-info">
+                        <h3 class="instructor-name">David Chen</h3>
+                        <p class="instructor-title">UX/UI Design Expert</p>
+                        <p class="instructor-bio">Award-winning designer who has created interfaces for top tech companies and startups around the world.</p>
+                        <div class="instructor-social">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fas fa-globe"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>Skill<span>Academy</span></h3>
+                    <p>Learn. Grow. Succeed.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Courses</h4>
+                        <ul>
+                            <li><a href="#">Web Development</a></li>
+                            <li><a href="#">Digital Marketing</a></li>
+                            <li><a href="#">Graphic Design</a></li>
+                            <li><a href="#">Public Speaking</a></li>
+                            <li><a href="#">All Courses</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <ul>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Instructors</a></li>
+                            <li><a href="#">Testimonials</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Resources</h4>
+                        <ul>
+                            <li><a href="#">Free Tutorials</a></li>
+                            <li><a href="#">Course Catalog</a></li>
+                            <li><a href="#">Career Guidance</a></li>
+                            <li><a href="#">FAQs</a></li>
+                            <li><a href="#">Support</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact Us</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Education St, Learning City, LC 12345</p>
+                    <p><i class="fas fa-phone"></i> (555) 987-6543</p>
+                    <p><i class="fas fa-envelope"></i> info@skillacademy.com</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Skill Academy. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html> 

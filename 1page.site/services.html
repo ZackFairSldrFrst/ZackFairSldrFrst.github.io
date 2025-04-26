@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Fix | Local Services Template</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Template-specific styles */
+        :root {
+            --primary-color: #3498DB;
+            --accent-color: #F39C12;
+            --dark-color: #2C3E50;
+            --light-color: #ECF0F1;
+        }
+        
+        .hero-area {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('img/services-hero.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 140px 0;
+            text-align: center;
+        }
+        
+        .cta-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            background-color: #2980B9;
+            transform: translateY(-2px);
+        }
+        
+        .services-section {
+            padding: 80px 0;
+        }
+        
+        .section-heading {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-heading h2 {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+        
+        .section-heading h2:after {
+            content: '';
+            display: block;
+            width: 70px;
+            height: 3px;
+            background-color: var(--primary-color);
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .service-icon {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--light-color);
+            font-size: 3rem;
+            color: var(--primary-color);
+        }
+        
+        .service-content {
+            padding: 25px;
+        }
+        
+        .service-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .service-price {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .service-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .service-details {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .service-warranty {
+            display: flex;
+            align-items: center;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        .service-warranty i {
+            margin-right: 5px;
+            color: var(--accent-color);
+        }
+        
+        .quote-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quote-btn:hover {
+            background-color: #E67E22;
+        }
+        
+        .team-section {
+            background-color: var(--light-color);
+            padding: 80px 0;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .team-member {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .team-photo {
+            height: 250px;
+            background-size: cover;
+            background-position: center top;
+        }
+        
+        .team-info {
+            padding: 20px;
+        }
+        
+        .team-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+        
+        .team-title {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .team-bio {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .team-certifications {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .certification {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 20px;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        .testimonials-section {
+            padding: 80px 0;
+        }
+        
+        .testimonials-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .testimonial-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .testimonial-content {
+            position: relative;
+            font-style: italic;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-content:before, .testimonial-content:after {
+            content: '"';
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+        
+        .author-details h4 {
+            margin: 0;
+            color: var(--dark-color);
+        }
+        
+        .author-details p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #777;
+        }
+        
+        .author-rating {
+            color: var(--accent-color);
+            margin-top: 5px;
+        }
+        
+        .contact-section {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 80px 0;
+        }
+        
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+        
+        .contact-info h2 {
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .contact-info h2:after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary-color);
+            margin-top: 15px;
+        }
+        
+        .contact-details {
+            margin-bottom: 30px;
+        }
+        
+        .contact-item {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .contact-icon {
+            margin-right: 15px;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+        
+        .service-areas {
+            margin-top: 30px;
+        }
+        
+        .service-areas h3 {
+            margin-bottom: 15px;
+        }
+        
+        .areas-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .area-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .area-item i {
+            color: var(--accent-color);
+            margin-right: 5px;
+            font-size: 0.8rem;
+        }
+        
+        .contact-form-container h2 {
+            margin-bottom: 30px;
+        }
+        
+        .contact-form .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .contact-form label {
+            display: block;
+            margin-bottom: 5px;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .contact-form input,
+        .contact-form textarea,
+        .contact-form select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 5px;
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .contact-form input::placeholder,
+        .contact-form textarea::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+        
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            background-color: #2980B9;
+        }
+        
+        .footer {
+            background-color: #222;
+            color: rgba(255,255,255,0.7);
+            padding: 20px 0;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Pro<span>Fix</span></h1>
+                    <p>Professional Home Services</p>
+                </div>
+                <div class="contact-info">
+                    <div class="phone">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>(555) 123-4567</span>
+                    </div>
+                    <a href="#contact" class="cta-button small">Get a Quote</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-area">
+        <div class="container">
+            <h1>Professional Home Repair & Maintenance Services</h1>
+            <p class="lead">Licensed, insured, and trusted by thousands of homeowners</p>
+            <button class="cta-button">Schedule a Service</button>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section">
+        <div class="container">
+            <div class="section-heading">
+                <h2>Our Services</h2>
+                <p>Professional solutions for all your home repair and maintenance needs</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3 class="service-title">Electrical Services</h3>
+                        <div class="service-price">Starting at $85</div>
+                        <p class="service-description">Complete electrical services including panel upgrades, fixture installation, rewiring, and troubleshooting.</p>
+                        <div class="service-details">
+                            <div class="service-warranty">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>1-Year Warranty</span>
+                            </div>
+                            <button class="quote-btn">Get Quote</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-wrench"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3 class="service-title">Plumbing Services</h3>
+                        <div class="service-price">Starting at $95</div>
+                        <p class="service-description">Expert plumbing repairs, installations, drain cleaning, and water heater services with guaranteed satisfaction.</p>
+                        <div class="service-details">
+                            <div class="service-warranty">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>1-Year Warranty</span>
+                            </div>
+                            <button class="quote-btn">Get Quote</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-paint-roller"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3 class="service-title">Painting Services</h3>
+                        <div class="service-price">Starting at $350/room</div>
+                        <p class="service-description">Interior and exterior painting services with premium materials and professional finish for a fresh new look.</p>
+                        <div class="service-details">
+                            <div class="service-warranty">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>2-Year Warranty</span>
+                            </div>
+                            <button class="quote-btn">Get Quote</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-snowflake"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3 class="service-title">HVAC Services</h3>
+                        <div class="service-price">Starting at $125</div>
+                        <p class="service-description">Complete heating and cooling services including installations, repairs, and maintenance for all systems.</p>
+                        <div class="service-details">
+                            <div class="service-warranty">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>1-Year Warranty</span>
+                            </div>
+                            <button class="quote-btn">Get Quote</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-hammer"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3 class="service-title">Carpentry Services</h3>
+                        <div class="service-price">Starting at $75/hr</div>
+                        <p class="service-description">Expert carpentry for repairs, installations, furniture assembly, and custom woodworking projects.</p>
+                        <div class="service-details">
+                            <div class="service-warranty">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>1-Year Warranty</span>
+                            </div>
+                            <button class="quote-btn">Get Quote</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-broom"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3 class="service-title">Cleaning Services</h3>
+                        <div class="service-price">Starting at $150</div>
+                        <p class="service-description">Deep cleaning, move-in/move-out, and regular cleaning services with eco-friendly products.</p>
+                        <div class="service-details">
+                            <div class="service-warranty">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Satisfaction Guarantee</span>
+                            </div>
+                            <button class="quote-btn">Get Quote</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <div class="container">
+            <div class="section-heading">
+                <h2>Meet Our Team</h2>
+                <p>Experienced professionals dedicated to quality service</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="team-photo" style="background-image: url('img/technician1.jpg');"></div>
+                    <div class="team-info">
+                        <h3 class="team-name">Robert Johnson</h3>
+                        <p class="team-title">Master Electrician</p>
+                        <p class="team-bio">15+ years of experience in residential and commercial electrical services.</p>
+                        <div class="team-certifications">
+                            <span class="certification">Licensed</span>
+                            <span class="certification">Insured</span>
+                            <span class="certification">Master Electrician</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="team-photo" style="background-image: url('img/technician2.jpg');"></div>
+                    <div class="team-info">
+                        <h3 class="team-name">Sarah Miller</h3>
+                        <p class="team-title">Lead Plumber</p>
+                        <p class="team-bio">10 years specializing in plumbing repairs and installations.</p>
+                        <div class="team-certifications">
+                            <span class="certification">Licensed</span>
+                            <span class="certification">Insured</span>
+                            <span class="certification">Master Plumber</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="team-photo" style="background-image: url('img/technician3.jpg');"></div>
+                    <div class="team-info">
+                        <h3 class="team-name">David Wilson</h3>
+                        <p class="team-title">HVAC Specialist</p>
+                        <p class="team-bio">12 years of experience in heating and cooling systems.</p>
+                        <div class="team-certifications">
+                            <span class="certification">HVAC Certified</span>
+                            <span class="certification">EPA Certified</span>
+                            <span class="certification">Insured</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="team-photo" style="background-image: url('img/technician4.jpg');"></div>
+                    <div class="team-info">
+                        <h3 class="team-name">Michael Thompson</h3>
+                        <p class="team-title">General Contractor</p>
+                        <p class="team-bio">20+ years experience managing home improvement projects.</p>
+                        <div class="team-certifications">
+                            <span class="certification">Licensed</span>
+                            <span class="certification">Insured</span>
+                            <span class="certification">Bonded</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-heading">
+                <h2>What Our Customers Say</h2>
+                <p>Trusted by homeowners in your neighborhood</p>
+            </div>
+            <div class="testimonials-container">
+                <div class="testimonial-card">
+                    <p class="testimonial-content">ProFix responded quickly to my emergency plumbing issue and fixed it for a fair price. The technician was professional, clean, and explained everything before starting work.</p>
+                    <div class="testimonial-author">
+                        <img src="img/testimonial1.jpg" alt="Jennifer L." class="testimonial-avatar">
+                        <div class="author-details">
+                            <h4>Jennifer L.</h4>
+                            <p>Plumbing Service</p>
+                            <div class="author-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-content">I've used ProFix for electrical work, HVAC maintenance, and most recently for painting my living room. Every time they've been professional, on time, and did excellent work. Highly recommended!</p>
+                    <div class="testimonial-author">
+                        <img src="img/testimonial2.jpg" alt="Mark T." class="testimonial-avatar">
+                        <div class="author-details">
+                            <h4>Mark T.</h4>
+                            <p>Multiple Services</p>
+                            <div class="author-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-content">The team at ProFix completely renovated our bathroom and the results exceeded our expectations. They stayed on budget, finished on time, and were a pleasure to work with throughout the project.</p>
+                    <div class="testimonial-author">
+                        <img src="img/testimonial3.jpg" alt="Sandra & James K." class="testimonial-avatar">
+                        <div class="author-details">
+                            <h4>Sandra & James K.</h4>
+                            <p>Bathroom Renovation</p>
+                            <div class="author-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h2>Contact Us</h2>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <p>123 Main Street</p>
+                                <p>Anytown, CA 12345</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div>
+                                <p>(555) 123-4567</p>
+                                <p>Mon-Fri: 7am-7pm, Sat: 8am-2pm</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <p>info@profixservices.com</p>
+                                <p>quotes@profixservices.com</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-areas">
+                        <h3>Service Areas</h3>
+                        <div class="areas-grid">
+                            <div class="area-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Anytown</span>
+                            </div>
+                            <div class="area-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>West City</span>
+                            </div>
+                            <div class="area-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Northville</span>
+                            </div>
+                            <div class="area-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>East Point</span>
+                            </div>
+                            <div class="area-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>South County</span>
+                            </div>
+                            <div class="area-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Central Heights</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form-container">
+                    <h2>Request a Quote</h2>
+                    <form class="contact-form">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" placeholder="Full Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" placeholder="Your Phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="service">Service Needed</label>
+                            <select id="service" required>
+                                <option value="" disabled selected>Select a Service</option>
+                                <option value="electrical">Electrical</option>
+                                <option value="plumbing">Plumbing</option>
+                                <option value="hvac">HVAC</option>
+                                <option value="painting">Painting</option>
+                                <option value="carpentry">Carpentry</option>
+                                <option value="cleaning">Cleaning</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Project Details</label>
+                            <textarea id="message" rows="4" placeholder="Describe your project or issue"></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Get Free Quote</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2023 ProFix Home Services. All Rights Reserved. License #ABC12345.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html> 
