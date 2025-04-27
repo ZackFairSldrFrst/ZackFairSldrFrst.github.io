@@ -200,7 +200,17 @@ document.addEventListener('DOMContentLoaded', function() {
         generatorDemo.style.display = 'none';
         processingUI.style.display = 'block';
         
-        // Simulate AI processing
+        // Add AI enhancement notice to UI
+        const aiEnhancementStep = document.querySelector('.process-step:nth-child(2) h4');
+        if (aiEnhancementStep) {
+            aiEnhancementStep.textContent = 'Enhancing Content with AI';
+            const aiDesc = aiEnhancementStep.nextElementSibling;
+            if (aiDesc) {
+                aiDesc.textContent = 'Creating compelling copy and design recommendations';
+            }
+        }
+        
+        // Simulate AI processing - but with real AI enhancement
         simulateAIProcessing();
     });
     
@@ -297,65 +307,413 @@ document.addEventListener('DOMContentLoaded', function() {
         let currentStep = 0;
         const totalSteps = processSteps.length;
         
-        const interval = setInterval(() => {
-            // Update current step status
-            if (currentStep > 0) {
-                processSteps[currentStep - 1].querySelector('i').classList.remove('fa-spinner', 'fa-spin');
-                processSteps[currentStep - 1].querySelector('i').classList.add('fa-check-circle');
-            }
-            
-            // If all steps complete
-            if (currentStep >= totalSteps) {
-                clearInterval(interval);
-                
-                // Generate the final preview
-                generateFinalPreview();
-                
-                // Show final actions after 1 second
-                setTimeout(() => {
-                    processingUI.style.display = 'none';
-                    resultActions.style.display = 'block';
-                    
-                    // Setup action buttons
-                    setupActionButtons();
-                    
-                    // Scroll to results
-                    resultActions.scrollIntoView({ behavior: 'smooth' });
-                }, 1000);
-                
-                return;
-            }
-            
-            // Update next step
-            processSteps[currentStep].classList.add('active');
-            processSteps[currentStep].querySelector('i').classList.remove('fa-clock');
-            processSteps[currentStep].querySelector('i').classList.add('fa-spinner', 'fa-spin');
-            
-            // Update progress bar
-            const progressPercentage = ((currentStep + 1) / totalSteps) * 100;
-            progressBar.style.width = `${progressPercentage}%`;
-            progressText.textContent = `${Math.round(progressPercentage)}% Complete`;
-            
+        // Collect all the business data for AI enhancement
+        const formData = collectAllFormData();
+        
+        // Start the generation process
+        updateProcessingStep(currentStep, 'Analyzing business information', true);
+        
+        // First step - Analyze business information (simulated)
+        setTimeout(() => {
             currentStep++;
-        }, 2000); // Each step takes 2 seconds for demonstration
+            updateProgressBar(currentStep, totalSteps);
+            updateProcessingStep(currentStep, 'Enhancing content with AI', true);
+            
+            // Second step - Use real AI to enhance content
+            enhanceWithAI(formData, () => {
+                // Success callback after AI enhancement
+                setTimeout(() => {
+                    currentStep++;
+                    updateProgressBar(currentStep, totalSteps);
+                    updateProcessingStep(currentStep, 'Generating design & layout', true);
+                    
+                    // Third step - Generate layout (simulated)
+                    setTimeout(() => {
+                        currentStep++;
+                        updateProgressBar(currentStep, totalSteps);
+                        updateProcessingStep(currentStep, 'Finalizing website', true);
+                        
+                        // Final step - Complete the process
+                        setTimeout(() => {
+                            updateProcessingStep(currentStep, 'Website complete', false);
+                            updateProgressBar(totalSteps, totalSteps);
+                            
+                            // Generate the final preview
+                            generateFinalPreview();
+                            
+                            // Show final actions
+                            processingUI.style.display = 'none';
+                            resultActions.style.display = 'block';
+                            
+                            // Setup action buttons
+                            setupActionButtons();
+                            
+                            // Scroll to results
+                            resultActions.scrollIntoView({ behavior: 'smooth' });
+                        }, 1500);
+                    }, 2000);
+                }, 1000);
+            });
+        }, 1500);
     }
     
-    // Generate final preview with all collected data
-    function generateFinalPreview() {
-        // In a real implementation, this would call to the server
-        // to generate the final website. For demo, we'll create a more 
-        // complete preview based on the template selected
+    // Helper functions for AI processing UI
+    function updateProcessingStep(stepIndex, statusText = null, isActive = true) {
+        const processSteps = document.querySelectorAll('.process-step');
         
-        const data = JSON.parse(localStorage.getItem('generatedSiteData'));
-        const template = data.template || 'food';
+        // Update previous step to completed
+        if (stepIndex > 0) {
+            const prevStep = processSteps[stepIndex - 1];
+            prevStep.querySelector('i').classList.remove('fa-spinner', 'fa-spin');
+            prevStep.querySelector('i').classList.add('fa-check-circle');
+        }
+        
+        // Update current step
+        if (stepIndex < processSteps.length) {
+            const currentStep = processSteps[stepIndex];
+            currentStep.classList.add('active');
+            
+            // Update icon
+            const icon = currentStep.querySelector('i');
+            icon.classList.remove('fa-clock');
+            
+            if (isActive) {
+                icon.classList.add('fa-spinner', 'fa-spin');
+            } else {
+                icon.classList.add('fa-check-circle');
+            }
+            
+            // Update status text if provided
+            if (statusText && currentStep.querySelector('h4')) {
+                currentStep.querySelector('h4').textContent = statusText;
+            }
+        }
+    }
+    
+    function updateProgressBar(current, total) {
+        const progressBar = document.querySelector('.progress');
+        const progressText = document.querySelector('.progress-text');
+        
+        const progressPercentage = ((current) / total) * 100;
+        progressBar.style.width = `${progressPercentage}%`;
+        progressText.textContent = `${Math.round(progressPercentage)}% Complete`;
+    }
+    
+    // Collect all form data for AI processing
+    function collectAllFormData() {
+        // Get business name
+        const businessName = document.getElementById('business-name').value;
+        
+        // Get business category
+        const category = document.getElementById('business-category').value;
+        let businessType = "business";
+        switch (category) {
+            case 'food': businessType = 'restaurant or cafe'; break;
+            case 'style': businessType = 'beauty or style'; break;
+            case 'services': businessType = 'local service'; break;
+            case 'learn': businessType = 'education'; break;
+            case 'events': businessType = 'event planning'; break;
+        }
+        
+        // Get description
+        const description = document.getElementById('business-description').value;
+        
+        // Get contact info
+        const phone = document.getElementById('business-phone').value;
+        const email = document.getElementById('business-email').value;
+        const address = document.getElementById('business-address').value;
+        
+        // Get services/products
+        const services = document.getElementById('services-products').value;
+        const servicesList = services.split('\n').filter(item => item.trim() !== '');
+        
+        // Get color preferences
+        const useAutoColors = document.getElementById('auto-color').checked;
+        const primaryColor = document.getElementById('primary-color').value;
+        const secondaryColor = document.getElementById('secondary-color').value;
+        
+        // Get selected features
+        const selectedFeatures = [];
+        document.querySelectorAll('#step-4 .form-check input[type="checkbox"]:checked').forEach(checkbox => {
+            selectedFeatures.push(checkbox.id.replace('feature-', ''));
+        });
+        
+        // Get additional notes
+        const additionalNotes = document.getElementById('additional-notes').value;
+        
+        // Combine all data
+        return {
+            businessName: businessName,
+            businessType: businessType,
+            category: category,
+            description: description,
+            contact: {
+                phone: phone,
+                email: email,
+                address: address
+            },
+            services: servicesList,
+            colors: {
+                auto: useAutoColors,
+                primary: primaryColor,
+                secondary: secondaryColor
+            },
+            features: selectedFeatures,
+            additionalNotes: additionalNotes
+        };
+    }
+    
+    // Use AI to enhance the website content
+    function enhanceWithAI(formData, callback) {
+        // Prepare data for the API request
+        const aiRequestData = {
+            business_name: formData.businessName,
+            business_type: formData.businessType,
+            business_description: formData.description,
+            services: formData.services,
+            features: formData.features
+        };
+        
+        // Log the data being sent (for debugging)
+        console.log('Sending to AI:', aiRequestData);
+        
+        // Make the API request - use relative path for easier deployment
+        fetch('api/ai-enhance.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(aiRequestData)
+        })
+        .then(response => {
+            console.log('AI API response status:', response.status);
+            if (!response.ok) {
+                throw new Error(`API response error: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('AI enhancement successful:', data);
+            
+            // Store the AI-generated content for later use
+            localStorage.setItem('ai_enhanced_content', JSON.stringify(data));
+            
+            // Apply some of the content to the preview immediately
+            updatePreviewWithAIContent(data);
+            
+            // Continue with the process
+            if (callback) callback();
+        })
+        .catch(error => {
+            // Log the error but continue with default content
+            console.error('AI enhancement error:', error);
+            
+            // Create default content
+            const defaultContent = createDefaultContent(formData);
+            localStorage.setItem('ai_enhanced_content', JSON.stringify(defaultContent));
+            
+            // Continue with the process
+            if (callback) callback();
+        });
+    }
+    
+    // Create default content when AI fails
+    function createDefaultContent(formData) {
+        return {
+            content: {
+                headline: `Welcome to ${formData.businessName}`,
+                intro: formData.description || `We provide high-quality ${formData.businessType} services.`,
+                benefits: [
+                    {
+                        title: "Professional Service",
+                        description: "We pride ourselves on our professionalism and attention to detail."
+                    },
+                    {
+                        title: "Customer Satisfaction",
+                        description: "Your satisfaction is our top priority."
+                    },
+                    {
+                        title: "Years of Experience",
+                        description: "With our experience, you can trust us to deliver exceptional results."
+                    }
+                ]
+            },
+            design_suggestions: {
+                color_scheme: {
+                    primary: formData.colors.primary,
+                    secondary: formData.colors.secondary,
+                    accent: '#FFD700'
+                },
+                font_suggestion: 'Roboto or Open Sans',
+                image_style: 'Professional imagery that showcases your business'
+            }
+        };
+    }
+    
+    // Update the preview with AI-generated content
+    function updatePreviewWithAIContent(aiData) {
+        const previewIframe = document.getElementById('preview-iframe');
+        if (!previewIframe) return;
+        
+        // Get the iframe document
+        const iframeDoc = previewIframe.contentDocument || previewIframe.contentWindow.document;
+        if (!iframeDoc) return;
+        
+        try {
+            // Update the preview with the AI-generated content
+            const content = aiData.content;
+            
+            // Create basic preview HTML with AI content
+            iframeDoc.open();
+            iframeDoc.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        :root {
+                            --primary-color: ${aiData.design_suggestions.color_scheme.primary};
+                            --secondary-color: ${aiData.design_suggestions.color_scheme.secondary};
+                            --accent-color: ${aiData.design_suggestions.color_scheme.accent};
+                        }
+                        body { 
+                            font-family: 'Poppins', sans-serif; 
+                            margin: 0; 
+                            padding: 0;
+                            color: #333;
+                        }
+                        header {
+                            background-color: var(--primary-color);
+                            color: white;
+                            padding: 20px;
+                            text-align: center;
+                        }
+                        .hero {
+                            padding: 40px 20px;
+                            text-align: center;
+                            background-color: #f8f9fa;
+                        }
+                        .content {
+                            padding: 20px;
+                            max-width: 1200px;
+                            margin: 0 auto;
+                        }
+                        .benefits {
+                            display: flex;
+                            flex-wrap: wrap;
+                            gap: 20px;
+                            margin-top: 30px;
+                        }
+                        .benefit-card {
+                            flex: 1;
+                            min-width: 250px;
+                            padding: 20px;
+                            border-radius: 8px;
+                            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                            background-color: white;
+                        }
+                        h1 { color: white; margin: 0; }
+                        h2 { color: var(--primary-color); }
+                        .benefit-card h3 { color: var(--primary-color); }
+                    </style>
+                </head>
+                <body>
+                    <header>
+                        <h1>${content.headline || aiData.business_name}</h1>
+                    </header>
+                    <section class="hero">
+                        <p>${content.intro || "Welcome to our business"}</p>
+                    </section>
+                    <section class="content">
+                        <h2>Why Choose Us</h2>
+                        <div class="benefits">
+                            ${content.benefits ? content.benefits.map(benefit => `
+                                <div class="benefit-card">
+                                    <h3>${benefit.title}</h3>
+                                    <p>${benefit.description}</p>
+                                </div>
+                            `).join('') : '<p>Loading benefits...</p>'}
+                        </div>
+                    </section>
+                </body>
+                </html>
+            `);
+            iframeDoc.close();
+        } catch (error) {
+            console.error('Failed to update preview with AI content:', error);
+        }
+    }
+    
+    // Generate final preview with AI-enhanced content
+    function generateFinalPreview() {
+        // Get the site data
+        const siteData = JSON.parse(localStorage.getItem('generatedSiteData'));
+        if (!siteData) return;
+        
+        // Get AI enhanced content
+        const aiData = localStorage.getItem('ai_enhanced_content');
+        let enhancedContent = null;
+        
+        try {
+            if (aiData) {
+                enhancedContent = JSON.parse(aiData);
+            }
+        } catch (e) {
+            console.error('Error parsing AI data:', e);
+        }
         
         // Generate a path format URL based on business name
         const randomId = Math.random().toString(36).substring(2, 5);
-        data.domain = `1page.site/${data.businessName.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${randomId}`;
-        localStorage.setItem('generatedSiteData', JSON.stringify(data));
+        siteData.domain = `1page.site/${siteData.businessName.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${randomId}`;
         
-        // For a real implementation, we'd redirect to the template with the data
-        // or build it dynamically server-side
+        // Enhance the site data with AI content
+        if (enhancedContent) {
+            siteData.aiEnhanced = true;
+            
+            // Only override if AI content exists
+            if (enhancedContent.content) {
+                if (enhancedContent.content.headline) {
+                    siteData.headline = enhancedContent.content.headline;
+                }
+                
+                if (enhancedContent.content.intro) {
+                    siteData.enhancedDescription = enhancedContent.content.intro;
+                }
+                
+                if (enhancedContent.content.benefits) {
+                    siteData.benefits = enhancedContent.content.benefits;
+                }
+            }
+            
+            // Apply design suggestions if auto colors are enabled or not specified
+            if (enhancedContent.design_suggestions && 
+                (!siteData.colors || siteData.colors.auto)) {
+                
+                // Create colors object if it doesn't exist
+                if (!siteData.colors) {
+                    siteData.colors = {};
+                }
+                
+                // Apply color scheme
+                if (enhancedContent.design_suggestions.color_scheme) {
+                    siteData.colors.primary = enhancedContent.design_suggestions.color_scheme.primary;
+                    siteData.colors.secondary = enhancedContent.design_suggestions.color_scheme.secondary;
+                    siteData.colors.accent = enhancedContent.design_suggestions.color_scheme.accent;
+                }
+                
+                // Apply font suggestion
+                if (enhancedContent.design_suggestions.font_suggestion) {
+                    siteData.fontSuggestion = enhancedContent.design_suggestions.font_suggestion;
+                }
+                
+                // Apply image style suggestion
+                if (enhancedContent.design_suggestions.image_style) {
+                    siteData.imageStyleSuggestion = enhancedContent.design_suggestions.image_style;
+                }
+            }
+        }
+        
+        // Save the updated data
+        localStorage.setItem('generatedSiteData', JSON.stringify(siteData));
     }
     
     // Setup action buttons for the final step
@@ -466,298 +824,77 @@ document.addEventListener('DOMContentLoaded', function() {
         publishBtn.disabled = true;
         
         // Get site data
-        const data = JSON.parse(localStorage.getItem('generatedSiteData'));
+        const siteData = JSON.parse(localStorage.getItem('generatedSiteData'));
         
         // Check if using custom domain
         if (document.getElementById('custom-domain').checked) {
             const customDomain = document.getElementById('custom-domain-input').value.trim();
             if (customDomain) {
-                data.domain = customDomain;
+                siteData.customDomain = customDomain;
             }
         }
         
-        // In a real implementation with Hostinger, we would:
-        // 1. Generate the static HTML file based on the template and user data
-        // 2. Upload it to the appropriate directory on the server
-        // 3. Configure any needed DNS settings for custom domains
-        
-        // Simulate this process with AJAX call to a server endpoint
+        // Prepare data for server
         const publishData = {
-            siteData: data,
-            template: data.template || 'food',
-            publishPath: data.domain.replace('1page.site/', '')
+            site_data: siteData,
+            ai_enhanced: true,
+            template: siteData.category || 'business',
+            publish_path: siteData.domain.replace('1page.site/', '')
         };
         
-        // This would be a real AJAX call in production
-        simulateServerPublish(publishData)
-            .then(response => {
+        // Make the actual publish request to the server
+        fetch('api/publish-site.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(publishData)
+        })
+        .then(response => {
+            console.log('Publish response status:', response.status);
+            if (!response.ok) {
+                throw new Error(`Publish failed with status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                console.log('Site published successfully:', data);
+                
                 // Update site data
-                data.published = true;
-                data.publishDate = new Date().toISOString();
-                data.publishedUrl = response.url || data.domain;
-                localStorage.setItem('generatedSiteData', JSON.stringify(data));
+                siteData.published = true;
+                siteData.publishDate = new Date().toISOString();
+                siteData.publishedUrl = data.url || siteData.domain;
+                localStorage.setItem('generatedSiteData', JSON.stringify(siteData));
                 
                 // Close modal
                 closeModal();
                 
                 // Show success message
-                showPublishSuccess(data.domain);
+                showPublishSuccess(siteData.domain);
                 
                 // Update publish button
                 const mainPublishBtn = document.querySelector('.generated-website-actions .btn-primary');
                 mainPublishBtn.textContent = 'View Live Website';
-                mainPublishBtn.href = `//${data.domain}`;
+                mainPublishBtn.href = `//${siteData.domain}`;
                 
                 // Remove the click event handler
                 const newPublishBtn = mainPublishBtn.cloneNode(true);
                 mainPublishBtn.parentNode.replaceChild(newPublishBtn, mainPublishBtn);
-            })
-            .catch(error => {
+                
+            } else {
                 // Show error message
                 publishBtn.innerHTML = originalText;
                 publishBtn.disabled = false;
-                alert('Publishing failed: ' + (error.message || 'Unknown error'));
-            });
-    }
-    
-    // Simulate the server-side publishing process
-    // In a real implementation, this would be an actual AJAX call to a server endpoint
-    function simulateServerPublish(publishData) {
-        return new Promise((resolve, reject) => {
-            // Create FormData for file uploads
-            const formData = new FormData();
-            formData.append('siteData', JSON.stringify(publishData.siteData));
-            formData.append('template', publishData.template);
-            formData.append('publishPath', publishData.publishPath);
-            
-            // In production, this would be a real AJAX call to the server
-            // Example AJAX implementation:
-            /*
-            fetch('/api/publish-site', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    resolve(data);
-                } else {
-                    reject(data);
-                }
-            })
-            .catch(error => {
-                reject({ success: false, message: 'Network error' });
-            });
-            */
-            
-            // For demonstration, we'll simulate the server response
-            setTimeout(() => {
-                try {
-                    // This simulates what would happen server-side on Hostinger
-                    resolve({
-                        success: true,
-                        url: publishData.siteData.domain,
-                        message: 'Site published successfully'
-                    });
-                } catch (error) {
-                    reject({
-                        success: false,
-                        message: error.message || 'Error publishing site'
-                    });
-                }
-            }, 3000);
-        });
-    }
-    
-    // This function would generate the actual HTML content for the published site
-    // In a real implementation, this would be done server-side with proper templating
-    function generateSiteHTML(publishData) {
-        const { siteData, template } = publishData;
-        
-        // This is a simplified example - in reality, you would use a proper templating system
-        // and include all the necessary CSS and JavaScript files
-        
-        let htmlContent = `
-            <!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>${siteData.businessName}</title>
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-                <link rel="stylesheet" href="/css/styles.css">
-                <link rel="stylesheet" href="/css/${template}-template.css">
-                <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-            </head>
-            <body class="template-${template}">
-                <!-- Header Section -->
-                <header>
-                    <div class="container">
-                        <div class="logo">
-                            <h1>${siteData.businessName}</h1>
-                        </div>
-                        <nav>
-                            <ul class="nav-links">
-                                <li><a href="#about">About</a></li>
-                                <li><a href="#services">Services</a></li>
-                                <li><a href="#gallery">Gallery</a></li>
-                                <li><a href="#contact">Contact</a></li>
-                            </ul>
-                            <button class="hamburger" aria-label="Toggle menu">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </button>
-                        </nav>
-                    </div>
-                </header>
-                
-                <!-- Hero Section -->
-                <section id="hero">
-                    <div class="container">
-                        <div class="hero-content">
-                            <h2>Welcome to ${siteData.businessName}</h2>
-                            <p>${siteData.description || 'Description would appear here'}</p>
-                            <div class="cta-buttons">
-                                <a href="#contact" class="btn btn-primary">Contact Us</a>
-                                <a href="#services" class="btn btn-outline">Our Services</a>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- About Section -->
-                <section id="about">
-                    <div class="container">
-                        <h2>About Us</h2>
-                        <p>${siteData.description || 'About content would appear here'}</p>
-                    </div>
-                </section>
-                
-                <!-- Services Section -->
-                <section id="services">
-                    <div class="container">
-                        <h2>Our Services</h2>
-                        <div class="services-grid">
-                            ${generateServicesHTML(siteData)}
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Contact Section -->
-                <section id="contact">
-                    <div class="container">
-                        <h2>Contact Us</h2>
-                        <div class="contact-info">
-                            ${siteData.contact ? `
-                                <div class="contact-detail">
-                                    <i class="fas fa-phone"></i>
-                                    <p>${siteData.contact.phone || 'Phone number'}</p>
-                                </div>
-                                <div class="contact-detail">
-                                    <i class="fas fa-envelope"></i>
-                                    <p>${siteData.contact.email || 'Email address'}</p>
-                                </div>
-                                <div class="contact-detail">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <p>${siteData.contact.address || 'Address'}</p>
-                                </div>
-                                <div class="contact-detail">
-                                    <i class="fas fa-clock"></i>
-                                    <p>${siteData.contact.hours || 'Business hours'}</p>
-                                </div>
-                            ` : 'Contact information would appear here'}
-                        </div>
-                        
-                        <div class="contact-form">
-                            <form>
-                                <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input type="text" id="name" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="email" id="email" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="message">Message</label>
-                                    <textarea id="message" rows="4" required></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Send Message</button>
-                            </form>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Footer -->
-                <footer>
-                    <div class="container">
-                        <div class="footer-content">
-                            <div class="footer-logo">
-                                <h3>${siteData.businessName}</h3>
-                            </div>
-                            <div class="footer-links">
-                                <ul>
-                                    <li><a href="#about">About</a></li>
-                                    <li><a href="#services">Services</a></li>
-                                    <li><a href="#gallery">Gallery</a></li>
-                                    <li><a href="#contact">Contact</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="footer-bottom">
-                            <p>&copy; ${new Date().getFullYear()} ${siteData.businessName}. All rights reserved.</p>
-                            <p class="powered-by">Powered by <a href="https://1page.site" target="_blank">1page.site</a></p>
-                        </div>
-                    </div>
-                </footer>
-                
-                <script src="/js/main.js"></script>
-                <script src="/js/${template}-template.js"></script>
-            </body>
-            </html>
-        `;
-        
-        return htmlContent;
-    }
-    
-    // Helper function to generate HTML for services
-    function generateServicesHTML(siteData) {
-        if (!siteData.services) {
-            return '<p>Services content would appear here</p>';
-        }
-        
-        // Simple parsing of service items - assumes format like "Service Name: Description"
-        const serviceItems = siteData.services.split('\n').filter(item => item.trim() !== '');
-        
-        if (serviceItems.length === 0) {
-            return '<p>Services content would appear here</p>';
-        }
-        
-        let servicesHTML = '';
-        serviceItems.forEach((item, index) => {
-            let serviceName = `Service ${index + 1}`;
-            let serviceDesc = item;
-            
-            // Try to extract name: description format
-            const colonPos = item.indexOf(':');
-            if (colonPos > 0) {
-                serviceName = item.substring(0, colonPos).trim();
-                serviceDesc = item.substring(colonPos + 1).trim();
+                alert('Publishing failed: ' + (data.message || 'Unknown error'));
             }
-            
-            servicesHTML += `
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <h3>${serviceName}</h3>
-                    <p>${serviceDesc}</p>
-                </div>
-            `;
+        })
+        .catch(error => {
+            console.error('Publishing error:', error);
+            publishBtn.innerHTML = originalText;
+            publishBtn.disabled = false;
+            alert('Publishing failed. Please try again.');
         });
-        
-        return servicesHTML;
     }
     
     function showPublishSuccess(domain) {
@@ -876,142 +1013,6 @@ document.addEventListener('DOMContentLoaded', function() {
         picker.disabled = autoColorCheckbox.checked;
         picker.parentElement.style.opacity = autoColorCheckbox.checked ? '0.5' : '1';
     });
-
-    // This is just a demonstration of how the AI enhancement would be triggered
-    // The actual API key handling happens securely server-side
-    function enhanceWithAI(publishData) {
-        // Show AI processing UI
-        showAIProcessingUI();
-        
-        // Create data for AI enhancement request
-        const enhancementData = {
-            businessType: publishData.siteData.category,
-            businessName: publishData.siteData.businessName,
-            businessDescription: publishData.siteData.description,
-            services: publishData.siteData.services,
-            template: publishData.template
-        };
-        
-        // Make request to your secure backend API
-        // IMPORTANT: API keys are never used client-side
-        fetch('/api/ai-enhance.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(enhancementData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Update the preview with AI-enhanced content
-                updatePreviewWithEnhancedContent(data.enhancedContent);
-                showAISuccessMessage();
-            } else {
-                showAIErrorMessage(data.message);
-            }
-        })
-        .catch(error => {
-            console.error('AI enhancement error:', error);
-            showAIErrorMessage('Failed to enhance content');
-        })
-        .finally(() => {
-            hideAIProcessingUI();
-        });
-    }
-
-    // Add this to the UI enhancement section of the code where applicable
-    function updatePreviewWithEnhancedContent(enhancedContent) {
-        // Get the preview iframe
-        const previewIframe = document.getElementById('preview-iframe');
-        if (!previewIframe) return;
-        
-        // Get the iframe document
-        const iframeDoc = previewIframe.contentDocument || previewIframe.contentWindow.document;
-        
-        // Update headline
-        if (enhancedContent.content.headline) {
-            const headline = iframeDoc.querySelector('h2');
-            if (headline) headline.textContent = enhancedContent.content.headline;
-        }
-        
-        // Update subheadline
-        if (enhancedContent.content.subheadline) {
-            const subheadline = iframeDoc.querySelector('.hero-content p');
-            if (subheadline) subheadline.textContent = enhancedContent.content.subheadline;
-        }
-        
-        // Update about section
-        if (enhancedContent.content.about) {
-            const aboutSection = iframeDoc.querySelector('#about p');
-            if (aboutSection) aboutSection.textContent = enhancedContent.content.about;
-        }
-        
-        // Update services
-        if (enhancedContent.content.services && enhancedContent.content.services.length) {
-            const servicesContainer = iframeDoc.querySelector('.services-grid');
-            if (servicesContainer) {
-                servicesContainer.innerHTML = '';
-                
-                enhancedContent.content.services.forEach(service => {
-                    const serviceCard = document.createElement('div');
-                    serviceCard.className = 'service-card';
-                    serviceCard.innerHTML = `
-                        <div class="service-icon">
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <h3>${service.title}</h3>
-                        <p>${service.description}</p>
-                    `;
-                    servicesContainer.appendChild(serviceCard);
-                });
-            }
-        }
-        
-        // Update design if available
-        if (enhancedContent.design) {
-            if (enhancedContent.design.colors) {
-                // Apply color scheme
-                const root = iframeDoc.documentElement;
-                if (enhancedContent.design.colors.primary) {
-                    root.style.setProperty('--primary-color', enhancedContent.design.colors.primary);
-                }
-                if (enhancedContent.design.colors.secondary) {
-                    root.style.setProperty('--secondary-color', enhancedContent.design.colors.secondary);
-                }
-                if (enhancedContent.design.colors.accent) {
-                    root.style.setProperty('--accent-color', enhancedContent.design.colors.accent);
-                }
-            }
-        }
-    }
-
-    // Helper UI functions
-    function showAIProcessingUI() {
-        // Show AI processing indicator in the UI
-        const aiProcessingElement = document.querySelector('.ai-processing');
-        if (aiProcessingElement) {
-            aiProcessingElement.style.display = 'block';
-        }
-    }
-
-    function hideAIProcessingUI() {
-        // Hide AI processing indicator
-        const aiProcessingElement = document.querySelector('.ai-processing');
-        if (aiProcessingElement) {
-            aiProcessingElement.style.display = 'none';
-        }
-    }
-
-    function showAISuccessMessage() {
-        // Display success message for AI enhancement
-        alert('AI has enhanced your website content and design!');
-    }
-
-    function showAIErrorMessage(message) {
-        // Display error message for AI enhancement
-        alert('AI enhancement error: ' + message);
-    }
 }); 
 
 /*

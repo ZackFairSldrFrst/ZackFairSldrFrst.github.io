@@ -1,15 +1,32 @@
 <?php
+/**
+ * SECURE API KEY STORAGE
+ * 
+ * IMPORTANT: This file should:
+ * 1. Be stored outside the web root if possible
+ * 2. Have restricted file permissions (chmod 600)
+ * 3. Never be committed to version control
+ */
+
 // Prevent direct access to this file
-if (!defined('SECURE_ACCESS') && !isset($_SERVER['HTTP_X_REQUESTED_WITH']) && 
-    (!isset($_SERVER['REQUEST_URI']) || strpos($_SERVER['REQUEST_URI'], '/api/') === false)) {
+if (!defined('SECURE_ACCESS')) {
     header('HTTP/1.0 403 Forbidden');
-    exit('Direct access denied.');
+    exit('Access denied');
 }
 
-// Store API keys securely
-// In production, consider using environment variables or a proper secrets management system
-$DEEPSEEK_API_KEY = 'sk-0b80a5a0456b49ce9a3c5ad512c2d8dfZGxvYmFsdmFy'; // Replace with actual key
+// DeepSeek API key
+$DEEPSEEK_API_KEY = 'sk-c6a2dd0f53ff4b178134ec63f9eeb6b4';
 
-// Additional security in case this file is accidentally exposed
-// Set appropriate file permissions (600) on this file in production
+// Function to mask API key for logging/debugging
+function getMaskedKey($key) {
+    if (strlen($key) <= 8) return '********';
+    return substr($key, 0, 4) . '...' . substr($key, -4);
+}
+
+// Log access to this file for security monitoring
+if (function_exists('error_log')) {
+    $access_source = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'unknown';
+    $script = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : 'unknown';
+    error_log("API key file accessed by: $script from: $access_source");
+}
 ?> 
