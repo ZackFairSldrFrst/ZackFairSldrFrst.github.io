@@ -640,4 +640,48 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
     }
+    
+    // Load the domain settings panel
+    function loadDomainPanel() {
+        const panel = document.createElement('div');
+        panel.classList.add('settings-panel');
+        panel.id = 'domain-panel';
+        
+        // Demo data - in a real app this would come from the server
+        const currentUrl = '1page.site/my-business';
+        
+        panel.innerHTML = `
+            <div class="form-group">
+                <label>Your Current URL</label>
+                <div class="current-url">
+                    <span>${currentUrl}</span>
+                    <button class="btn btn-sm btn-outline copy-url">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Custom URL Path</label>
+                <div class="url-editor">
+                    <div class="url-prefix">1page.site/</div>
+                    <input type="text" placeholder="your-business-name" value="my-business">
+                </div>
+                <p class="form-hint">Choose a unique path for your single-page website</p>
+            </div>
+            
+            <div class="form-group">
+                <label>Custom Domain</label>
+                <div class="domain-status">
+                    <div class="status-badge premium">
+                        <i class="fas fa-star"></i> Premium Feature
+                    </div>
+                    <p>Connect your own domain to your single-page website.</p>
+                    <button class="btn btn-outline">Upgrade to Use Custom Domain</button>
+                </div>
+            </div>
+        `;
+        
+        return panel;
+    }
 }); 

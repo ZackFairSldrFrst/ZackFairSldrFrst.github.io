@@ -1,10 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Sample website data - in a real app, this would come from a database
+    // Note: All sites are single-page websites with different sections, not multi-page sites
     const websiteData = [
         {
             id: 1,
             name: "My Coffee Shop",
-            url: "mycoffeeshop.1page.site",
+            url: "1page.site/coffee-shop", // Using path format instead of subdomain
             status: "published",
             thumbnail: "img/sample-site1.jpg",
             visits: 1245,
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             id: 2,
             name: "Fitness Studio",
-            url: "fitnessstudio.1page.site",
+            url: "1page.site/fitness-studio", // Using path format instead of subdomain
             status: "published",
             thumbnail: "img/sample-site2.jpg",
             visits: 857,
@@ -22,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             id: 3,
             name: "Tech Blog",
-            url: "techblog.1page.site",
+            url: "1page.site/tech-blog", // Using path format instead of subdomain
             status: "draft",
             thumbnail: "img/sample-site3.jpg",
             visits: 0,

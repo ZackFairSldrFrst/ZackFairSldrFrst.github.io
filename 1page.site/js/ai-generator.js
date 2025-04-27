@@ -349,9 +349,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const data = JSON.parse(localStorage.getItem('generatedSiteData'));
         const template = data.template || 'food';
         
-        // Generate a random subdomain for the demo
-        const randomId = Math.random().toString(36).substring(2, 8);
-        data.domain = `${data.businessName.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${randomId}.1page.site`;
+        // Generate a path format URL based on business name
+        const randomId = Math.random().toString(36).substring(2, 5);
+        data.domain = `1page.site/${data.businessName.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${randomId}`;
         localStorage.setItem('generatedSiteData', JSON.stringify(data));
         
         // For a real implementation, we'd redirect to the template with the data
@@ -391,7 +391,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Show publish modal
     function showPublishModal() {
-        // Create modal if it doesn't exist
+        // Create publish modal if it doesn't exist
         if (!document.getElementById('publish-modal')) {
             const data = JSON.parse(localStorage.getItem('generatedSiteData'));
             const modal = document.createElement('div');
@@ -400,14 +400,14 @@ document.addEventListener('DOMContentLoaded', function() {
             modal.innerHTML = `
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                    <h2>Publish Your Website</h2>
+                    <h2>Publish Your Single-Page Website</h2>
                     <p>Your website is ready to go live! Choose your domain option:</p>
                     
                     <div class="domain-options">
                         <div class="domain-option">
                             <input type="radio" id="subdomain" name="domain-type" checked>
                             <label for="subdomain">
-                                <strong>Free Subdomain</strong>
+                                <strong>Default URL</strong>
                                 <div class="domain-preview">${data.domain}</div>
                                 <p>Included with your plan</p>
                             </label>
@@ -465,38 +465,299 @@ document.addEventListener('DOMContentLoaded', function() {
         publishBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publishing...';
         publishBtn.disabled = true;
         
-        // In a real implementation, this would call to the server to publish the site
-        setTimeout(() => {
-            // Update site data
-            const data = JSON.parse(localStorage.getItem('generatedSiteData'));
+        // Get site data
+        const data = JSON.parse(localStorage.getItem('generatedSiteData'));
+        
+        // Check if using custom domain
+        if (document.getElementById('custom-domain').checked) {
+            const customDomain = document.getElementById('custom-domain-input').value.trim();
+            if (customDomain) {
+                data.domain = customDomain;
+            }
+        }
+        
+        // In a real implementation with Hostinger, we would:
+        // 1. Generate the static HTML file based on the template and user data
+        // 2. Upload it to the appropriate directory on the server
+        // 3. Configure any needed DNS settings for custom domains
+        
+        // Simulate this process with AJAX call to a server endpoint
+        const publishData = {
+            siteData: data,
+            template: data.template || 'food',
+            publishPath: data.domain.replace('1page.site/', '')
+        };
+        
+        // This would be a real AJAX call in production
+        simulateServerPublish(publishData)
+            .then(response => {
+                // Update site data
+                data.published = true;
+                data.publishDate = new Date().toISOString();
+                data.publishedUrl = response.url || data.domain;
+                localStorage.setItem('generatedSiteData', JSON.stringify(data));
+                
+                // Close modal
+                closeModal();
+                
+                // Show success message
+                showPublishSuccess(data.domain);
+                
+                // Update publish button
+                const mainPublishBtn = document.querySelector('.generated-website-actions .btn-primary');
+                mainPublishBtn.textContent = 'View Live Website';
+                mainPublishBtn.href = `//${data.domain}`;
+                
+                // Remove the click event handler
+                const newPublishBtn = mainPublishBtn.cloneNode(true);
+                mainPublishBtn.parentNode.replaceChild(newPublishBtn, mainPublishBtn);
+            })
+            .catch(error => {
+                // Show error message
+                publishBtn.innerHTML = originalText;
+                publishBtn.disabled = false;
+                alert('Publishing failed: ' + (error.message || 'Unknown error'));
+            });
+    }
+    
+    // Simulate the server-side publishing process
+    // In a real implementation, this would be an actual AJAX call to a server endpoint
+    function simulateServerPublish(publishData) {
+        return new Promise((resolve, reject) => {
+            // Create FormData for file uploads
+            const formData = new FormData();
+            formData.append('siteData', JSON.stringify(publishData.siteData));
+            formData.append('template', publishData.template);
+            formData.append('publishPath', publishData.publishPath);
             
-            // Check if using custom domain
-            if (document.getElementById('custom-domain').checked) {
-                const customDomain = document.getElementById('custom-domain-input').value.trim();
-                if (customDomain) {
-                    data.domain = customDomain;
+            // In production, this would be a real AJAX call to the server
+            // Example AJAX implementation:
+            /*
+            fetch('/api/publish-site', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    resolve(data);
+                } else {
+                    reject(data);
                 }
+            })
+            .catch(error => {
+                reject({ success: false, message: 'Network error' });
+            });
+            */
+            
+            // For demonstration, we'll simulate the server response
+            setTimeout(() => {
+                try {
+                    // This simulates what would happen server-side on Hostinger
+                    resolve({
+                        success: true,
+                        url: publishData.siteData.domain,
+                        message: 'Site published successfully'
+                    });
+                } catch (error) {
+                    reject({
+                        success: false,
+                        message: error.message || 'Error publishing site'
+                    });
+                }
+            }, 3000);
+        });
+    }
+    
+    // This function would generate the actual HTML content for the published site
+    // In a real implementation, this would be done server-side with proper templating
+    function generateSiteHTML(publishData) {
+        const { siteData, template } = publishData;
+        
+        // This is a simplified example - in reality, you would use a proper templating system
+        // and include all the necessary CSS and JavaScript files
+        
+        let htmlContent = `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>${siteData.businessName}</title>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+                <link rel="stylesheet" href="/css/styles.css">
+                <link rel="stylesheet" href="/css/${template}-template.css">
+                <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+            </head>
+            <body class="template-${template}">
+                <!-- Header Section -->
+                <header>
+                    <div class="container">
+                        <div class="logo">
+                            <h1>${siteData.businessName}</h1>
+                        </div>
+                        <nav>
+                            <ul class="nav-links">
+                                <li><a href="#about">About</a></li>
+                                <li><a href="#services">Services</a></li>
+                                <li><a href="#gallery">Gallery</a></li>
+                                <li><a href="#contact">Contact</a></li>
+                            </ul>
+                            <button class="hamburger" aria-label="Toggle menu">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </button>
+                        </nav>
+                    </div>
+                </header>
+                
+                <!-- Hero Section -->
+                <section id="hero">
+                    <div class="container">
+                        <div class="hero-content">
+                            <h2>Welcome to ${siteData.businessName}</h2>
+                            <p>${siteData.description || 'Description would appear here'}</p>
+                            <div class="cta-buttons">
+                                <a href="#contact" class="btn btn-primary">Contact Us</a>
+                                <a href="#services" class="btn btn-outline">Our Services</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- About Section -->
+                <section id="about">
+                    <div class="container">
+                        <h2>About Us</h2>
+                        <p>${siteData.description || 'About content would appear here'}</p>
+                    </div>
+                </section>
+                
+                <!-- Services Section -->
+                <section id="services">
+                    <div class="container">
+                        <h2>Our Services</h2>
+                        <div class="services-grid">
+                            ${generateServicesHTML(siteData)}
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Contact Section -->
+                <section id="contact">
+                    <div class="container">
+                        <h2>Contact Us</h2>
+                        <div class="contact-info">
+                            ${siteData.contact ? `
+                                <div class="contact-detail">
+                                    <i class="fas fa-phone"></i>
+                                    <p>${siteData.contact.phone || 'Phone number'}</p>
+                                </div>
+                                <div class="contact-detail">
+                                    <i class="fas fa-envelope"></i>
+                                    <p>${siteData.contact.email || 'Email address'}</p>
+                                </div>
+                                <div class="contact-detail">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <p>${siteData.contact.address || 'Address'}</p>
+                                </div>
+                                <div class="contact-detail">
+                                    <i class="fas fa-clock"></i>
+                                    <p>${siteData.contact.hours || 'Business hours'}</p>
+                                </div>
+                            ` : 'Contact information would appear here'}
+                        </div>
+                        
+                        <div class="contact-form">
+                            <form>
+                                <div class="form-group">
+                                    <label for="name">Name</label>
+                                    <input type="text" id="name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message">Message</label>
+                                    <textarea id="message" rows="4" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Send Message</button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Footer -->
+                <footer>
+                    <div class="container">
+                        <div class="footer-content">
+                            <div class="footer-logo">
+                                <h3>${siteData.businessName}</h3>
+                            </div>
+                            <div class="footer-links">
+                                <ul>
+                                    <li><a href="#about">About</a></li>
+                                    <li><a href="#services">Services</a></li>
+                                    <li><a href="#gallery">Gallery</a></li>
+                                    <li><a href="#contact">Contact</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="footer-bottom">
+                            <p>&copy; ${new Date().getFullYear()} ${siteData.businessName}. All rights reserved.</p>
+                            <p class="powered-by">Powered by <a href="https://1page.site" target="_blank">1page.site</a></p>
+                        </div>
+                    </div>
+                </footer>
+                
+                <script src="/js/main.js"></script>
+                <script src="/js/${template}-template.js"></script>
+            </body>
+            </html>
+        `;
+        
+        return htmlContent;
+    }
+    
+    // Helper function to generate HTML for services
+    function generateServicesHTML(siteData) {
+        if (!siteData.services) {
+            return '<p>Services content would appear here</p>';
+        }
+        
+        // Simple parsing of service items - assumes format like "Service Name: Description"
+        const serviceItems = siteData.services.split('\n').filter(item => item.trim() !== '');
+        
+        if (serviceItems.length === 0) {
+            return '<p>Services content would appear here</p>';
+        }
+        
+        let servicesHTML = '';
+        serviceItems.forEach((item, index) => {
+            let serviceName = `Service ${index + 1}`;
+            let serviceDesc = item;
+            
+            // Try to extract name: description format
+            const colonPos = item.indexOf(':');
+            if (colonPos > 0) {
+                serviceName = item.substring(0, colonPos).trim();
+                serviceDesc = item.substring(colonPos + 1).trim();
             }
             
-            data.published = true;
-            data.publishDate = new Date().toISOString();
-            localStorage.setItem('generatedSiteData', JSON.stringify(data));
-            
-            // Close modal
-            closeModal();
-            
-            // Show success message
-            showPublishSuccess(data.domain);
-            
-            // Update publish button
-            const mainPublishBtn = document.querySelector('.generated-website-actions .btn-primary');
-            mainPublishBtn.textContent = 'View Live Website';
-            mainPublishBtn.href = `//${data.domain}`;
-            
-            // Remove the click event handler
-            const newPublishBtn = mainPublishBtn.cloneNode(true);
-            mainPublishBtn.parentNode.replaceChild(newPublishBtn, mainPublishBtn);
-        }, 3000);
+            servicesHTML += `
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>${serviceName}</h3>
+                    <p>${serviceDesc}</p>
+                </div>
+            `;
+        });
+        
+        return servicesHTML;
     }
     
     function showPublishSuccess(domain) {
@@ -504,7 +765,7 @@ document.addEventListener('DOMContentLoaded', function() {
         successDiv.className = 'publish-success';
         successDiv.innerHTML = `
             <div class="success-icon"><i class="fas fa-check-circle"></i></div>
-            <h3>Website Published Successfully!</h3>
+            <h3>Single-Page Website Published Successfully!</h3>
             <p>Your website is now live at <a href="//${domain}" target="_blank">${domain}</a></p>
             <button class="btn btn-outline dismiss-success">Dismiss</button>
         `;
@@ -616,3 +877,236 @@ document.addEventListener('DOMContentLoaded', function() {
         picker.parentElement.style.opacity = autoColorCheckbox.checked ? '0.5' : '1';
     });
 }); 
+
+/*
+ * HOSTINGER IMPLEMENTATION GUIDE
+ * 
+ * To implement the publishing functionality on Hostinger, follow these steps:
+ *
+ * 1. DIRECTORY STRUCTURE
+ *    /public_html/            - Main site files (index.html, etc.)
+ *    /public_html/css/        - Global CSS files
+ *    /public_html/js/         - Global JS files  
+ *    /public_html/templates/  - HTML templates for each vertical
+ *    /public_html/published/  - Contains all the published sites
+ *      /public_html/published/coffee-shop-abc/
+ *      /public_html/published/fitness-studio-xyz/
+ *      /public_html/published/etc...
+ *    /public_html/api/        - Server-side scripts (PHP)
+ *
+ * 2. HTACCESS CONFIGURATION
+ *    Create an .htaccess file in the root directory with the following content:
+ *
+ *    # Enable URL rewriting
+ *    RewriteEngine On
+ *    
+ *    # Handle path-based URLs (1page.site/site-name)
+ *    # Skip API requests and assets
+ *    RewriteCond %{REQUEST_URI} !^/(css|js|img|images|api|templates|admin)/
+ *    RewriteCond %{REQUEST_URI} !^/index.html
+ *    RewriteCond %{REQUEST_URI} !^/dashboard.html
+ *    RewriteCond %{REQUEST_URI} !^/editor.html
+ *    RewriteCond %{REQUEST_URI} !^/ai-generator.html
+ *    RewriteCond %{REQUEST_URI} !^/published/
+ *    
+ *    # Redirect all other requests to the published site directory
+ *    RewriteRule ^([a-zA-Z0-9\-]+)/?$ /published/$1/index.html [L]
+ *    RewriteRule ^([a-zA-Z0-9\-]+)/(.*)$ /published/$1/$2 [L]
+ *
+ * 3. PHP SERVER-SIDE IMPLEMENTATION
+ *    Create a file at /public_html/api/publish-site.php:
+ *
+ *    <?php
+ *    // Headers for API response
+ *    header('Content-Type: application/json');
+ *    
+ *    // Verify user is authenticated (implement your authentication logic)
+ *    session_start();
+ *    if (!isset($_SESSION['user_id'])) {
+ *        echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+ *        exit;
+ *    }
+ *    
+ *    // Get post data
+ *    $siteData = json_decode($_POST['siteData'], true);
+ *    $template = $_POST['template'];
+ *    $publishPath = $_POST['publishPath'];
+ *    
+ *    // Validate publish path (alphanumeric, dashes only)
+ *    if (!preg_match('/^[a-z0-9\-]+$/', $publishPath)) {
+ *        echo json_encode(['success' => false, 'message' => 'Invalid publish path']);
+ *        exit;
+ *    }
+ *    
+ *    try {
+ *        // Create directory if it doesn't exist
+ *        $siteDirectory = $_SERVER['DOCUMENT_ROOT'] . '/published/' . $publishPath;
+ *        if (!file_exists($siteDirectory)) {
+ *            mkdir($siteDirectory, 0755, true);
+ *        }
+ *        
+ *        // Generate HTML content using template system
+ *        $html = generateHTML($siteData, $template);
+ *        
+ *        // Write the HTML file
+ *        $indexFile = $siteDirectory . '/index.html';
+ *        file_put_contents($indexFile, $html);
+ *        
+ *        // Copy necessary template CSS and JS files
+ *        copyTemplateAssets($template, $siteDirectory);
+ *        
+ *        // Process and save uploaded images
+ *        processImages($_FILES, $siteDirectory);
+ *        
+ *        // Update database with publishing information
+ *        updateDatabase($siteData, $publishPath);
+ *        
+ *        // For custom domains: Create .htaccess redirects if needed
+ *        if (isset($siteData['customDomain']) && !empty($siteData['customDomain'])) {
+ *            createDomainRedirects($siteData['customDomain'], $publishPath);
+ *        }
+ *        
+ *        // Return success
+ *        echo json_encode([
+ *            'success' => true, 
+ *            'url' => '1page.site/' . $publishPath,
+ *            'message' => 'Site published successfully'
+ *        ]);
+ *        
+ *    } catch (Exception $e) {
+ *        // Log the error server-side
+ *        error_log('Site publishing error: ' . $e->getMessage());
+ *        
+ *        // Return error to client
+ *        echo json_encode([
+ *            'success' => false,
+ *            'message' => 'Error publishing site: ' . $e->getMessage()
+ *        ]);
+ *    }
+ *    
+ *    // Helper function to generate HTML
+ *    function generateHTML($siteData, $template) {
+ *        // Load base template
+ *        $templateFile = $_SERVER['DOCUMENT_ROOT'] . '/templates/' . $template . '.html';
+ *        $html = file_get_contents($templateFile);
+ *        
+ *        // Replace placeholders with actual data
+ *        $html = str_replace('{{BUSINESS_NAME}}', $siteData['businessName'], $html);
+ *        $html = str_replace('{{DESCRIPTION}}', $siteData['description'], $html);
+ *        // Add more replacements for each section
+ *        
+ *        return $html;
+ *    }
+ *    
+ *    // Helper function to copy template assets
+ *    function copyTemplateAssets($template, $siteDirectory) {
+ *        // Create css and js directories
+ *        $cssDir = $siteDirectory . '/css';
+ *        $jsDir = $siteDirectory . '/js';
+ *        
+ *        if (!file_exists($cssDir)) mkdir($cssDir, 0755, true);
+ *        if (!file_exists($jsDir)) mkdir($jsDir, 0755, true);
+ *        
+ *        // Copy template CSS
+ *        copy($_SERVER['DOCUMENT_ROOT'] . '/css/' . $template . '-template.css', 
+ *             $cssDir . '/' . $template . '-template.css');
+ *        
+ *        // Copy template JS
+ *        copy($_SERVER['DOCUMENT_ROOT'] . '/js/' . $template . '-template.js',
+ *             $jsDir . '/' . $template . '-template.js');
+ *        
+ *        // Copy base styles and JS
+ *        copy($_SERVER['DOCUMENT_ROOT'] . '/css/styles.css', $cssDir . '/styles.css');
+ *        copy($_SERVER['DOCUMENT_ROOT'] . '/js/main.js', $jsDir . '/main.js');
+ *    }
+ *    
+ *    // Helper function to process uploaded images
+ *    function processImages($files, $siteDirectory) {
+ *        // Create images directory
+ *        $imgDir = $siteDirectory . '/img';
+ *        if (!file_exists($imgDir)) mkdir($imgDir, 0755, true);
+ *        
+ *        // Process logo
+ *        if (isset($files['logo']) && $files['logo']['error'] === UPLOAD_ERR_OK) {
+ *            $logoPath = $imgDir . '/logo.' . pathinfo($files['logo']['name'], PATHINFO_EXTENSION);
+ *            move_uploaded_file($files['logo']['tmp_name'], $logoPath);
+ *        }
+ *        
+ *        // Process other images
+ *        if (isset($files['images'])) {
+ *            $count = count($files['images']['name']);
+ *            for ($i = 0; $i < $count; $i++) {
+ *                if ($files['images']['error'][$i] === UPLOAD_ERR_OK) {
+ *                    $imagePath = $imgDir . '/image-' . ($i+1) . '.' . 
+ *                        pathinfo($files['images']['name'][$i], PATHINFO_EXTENSION);
+ *                    move_uploaded_file($files['images']['tmp_name'][$i], $imagePath);
+ *                }
+ *            }
+ *        }
+ *    }
+ *    
+ *    // Helper function for custom domains
+ *    function createDomainRedirects($customDomain, $publishPath) {
+ *        // Add rule to the main .htaccess file
+ *        $htaccessPath = $_SERVER['DOCUMENT_ROOT'] . '/.htaccess';
+ *        $customDomainRule = "
+ *    # Custom domain for {$customDomain} -> {$publishPath}
+ *    RewriteCond %{HTTP_HOST} ^{$customDomain}$ [NC]
+ *    RewriteRule ^(.*)$ /published/{$publishPath}/$1 [L]
+ *    ";
+ *        
+ *        // Append the rule to the .htaccess file
+ *        file_put_contents($htaccessPath, $customDomainRule, FILE_APPEND);
+ *    }
+ *    ?>
+ *
+ * 4. CLIENT-SIDE INTEGRATION
+ *    Update the simulateServerPublish function in ai-generator.js to make a real AJAX call:
+ *
+ *    function publishWebsite(publishData) {
+ *        // Show publishing spinner
+ *        showPublishingSpinner();
+ *        
+ *        // Create FormData for file uploads
+ *        const formData = new FormData();
+ *        formData.append('siteData', JSON.stringify(publishData.siteData));
+ *        formData.append('template', publishData.template);
+ *        formData.append('publishPath', publishData.publishPath);
+ *        
+ *        // Add file uploads if available
+ *        if (publishData.logo) {
+ *            formData.append('logo', publishData.logo);
+ *        }
+ *        
+ *        if (publishData.images && publishData.images.length) {
+ *            for (let i = 0; i < publishData.images.length; i++) {
+ *                formData.append('images[]', publishData.images[i]);
+ *            }
+ *        }
+ *        
+ *        // Make the AJAX call to the server
+ *        fetch('/api/publish-site.php', {
+ *            method: 'POST',
+ *            body: formData
+ *        })
+ *        .then(response => response.json())
+ *        .then(data => {
+ *            if (data.success) {
+ *                // Update site data
+ *                updateSiteData(data);
+ *                // Show success message
+ *                showSuccessMessage(data.url);
+ *            } else {
+ *                // Show error message
+ *                showErrorMessage(data.message);
+ *            }
+ *        })
+ *        .catch(error => {
+ *            showErrorMessage('Network error. Please try again.');
+ *            console.error('Publishing error:', error);
+ *        })
+ *        .finally(() => {
+ *            hidePublishingSpinner();
+ *        });
+ *    }
+ */ 
