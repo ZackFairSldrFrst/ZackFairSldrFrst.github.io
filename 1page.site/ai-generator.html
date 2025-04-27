@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1page.site — AI-Powered Website Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/ai-generator.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>1page<span class="accent">.site</span></h1>
+                <p class="tagline">AI-Powered Website Generator</p>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#try-it" class="btn btn-accent">Try It Now</a></li>
+                </ul>
+                <button class="hamburger" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="fade-in-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Create Your Website With AI</h1>
+                <p class="lead">Input your business details, upload images, and our AI will generate a professional website customized for your business in minutes.</p>
+                <div class="hero-cta">
+                    <a href="#try-it" class="btn btn-primary">Start Building</a>
+                    <a href="#how-it-works" class="btn btn-outline">Learn More</a>
+                </div>
+                <p class="hero-note">No technical skills required. Ready in minutes.</p>
+            </div>
+            <div class="hero-image">
+                <div class="ai-generator-preview">
+                    <img src="img/ai-generator-preview.png" alt="AI Website Generator Preview">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="fade-in-section">
+        <div class="container">
+            <h2 class="section-title">How Our AI Website Generator Works</h2>
+            <p class="section-subtitle">From information to website in 3 simple steps</p>
+            
+            <div class="steps-container">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Input Your Business Details</h3>
+                        <p>Answer a few simple questions about your business, including name, description, services, and contact information.</p>
+                        <ul class="step-details">
+                            <li>Business name & description</li>
+                            <li>Services or products</li>
+                            <li>Contact details & location</li>
+                            <li>Business category selection</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="step-connector">
+                    <i class="fas fa-long-arrow-alt-right"></i>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Upload Assets & Select Style</h3>
+                        <p>Upload your logo, images, and any existing materials. Choose colors and style preferences.</p>
+                        <ul class="step-details">
+                            <li>Logo & brand images</li>
+                            <li>Color scheme selection</li>
+                            <li>Font & style preferences</li>
+                            <li>Product/service photos</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="step-connector">
+                    <i class="fas fa-long-arrow-alt-right"></i>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>AI Creates Your Website</h3>
+                        <p>Our AI analyzes your inputs and generates a custom website based on industry-optimized templates.</p>
+                        <ul class="step-details">
+                            <li>AI-powered content generation</li>
+                            <li>Intelligent layout optimization</li>
+                            <li>SEO-friendly structure</li>
+                            <li>Mobile-responsive design</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="fade-in-section">
+        <div class="container">
+            <h2 class="section-title">AI-Powered Features</h2>
+            <p class="section-subtitle">More than just templates - true AI customization</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3>Smart Content Generation</h3>
+                    <p>AI writes professional, SEO-optimized content based on your business details and industry.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <h3>Image Enhancement</h3>
+                    <p>Automatically enhances, crops, and optimizes your images for web performance.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3>Color Scheme Analysis</h3>
+                    <p>Extracts brand colors from your logo and creates a harmonious color scheme.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-sitemap"></i>
+                    </div>
+                    <h3>Industry-Specific Structure</h3>
+                    <p>Creates the optimal website structure based on your business type and industry best practices.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Responsive Optimization</h3>
+                    <p>Ensures perfect display on all devices with AI-driven responsive design.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>SEO Intelligence</h3>
+                    <p>Automatically implements local SEO best practices for your business category.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Try It Now Section -->
+    <section id="try-it" class="fade-in-section">
+        <div class="container">
+            <h2 class="section-title">Try Our AI Website Generator</h2>
+            <p class="section-subtitle">Experience the future of website creation now</p>
+            
+            <div class="generator-demo">
+                <div class="generator-form">
+                    <form id="ai-generator-form">
+                        <div class="form-step active" id="step-1">
+                            <h3>Step 1: Business Information</h3>
+                            <div class="form-group">
+                                <label for="business-name">Business Name</label>
+                                <input type="text" id="business-name" placeholder="e.g., Coastal Cafe" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="business-category">Business Category</label>
+                                <select id="business-category" required>
+                                    <option value="" disabled selected>Select your business type</option>
+                                    <option value="food">Restaurant/Cafe</option>
+                                    <option value="style">Beauty/Style</option>
+                                    <option value="services">Local Services</option>
+                                    <option value="learn">Education</option>
+                                    <option value="events">Events</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="business-description">Business Description</label>
+                                <textarea id="business-description" rows="4" placeholder="Describe what your business offers, your unique value, and any other important details." required></textarea>
+                            </div>
+                            <div class="form-nav">
+                                <button type="button" class="btn btn-outline next-step">Continue</button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-step" id="step-2">
+                            <h3>Step 2: Contact & Location</h3>
+                            <div class="form-group">
+                                <label for="business-phone">Phone Number</label>
+                                <input type="tel" id="business-phone" placeholder="e.g., (555) 123-4567">
+                            </div>
+                            <div class="form-group">
+                                <label for="business-email">Email Address</label>
+                                <input type="email" id="business-email" placeholder="e.g., contact@yourbusiness.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="business-address">Business Address</label>
+                                <input type="text" id="business-address" placeholder="e.g., 123 Main St, City, State, ZIP">
+                            </div>
+                            <div class="form-group">
+                                <label for="business-hours">Business Hours</label>
+                                <textarea id="business-hours" rows="3" placeholder="e.g., Mon-Fri: 9am-5pm, Sat: 10am-3pm, Sun: Closed"></textarea>
+                            </div>
+                            <div class="form-nav">
+                                <button type="button" class="btn btn-outline prev-step">Back</button>
+                                <button type="button" class="btn btn-outline next-step">Continue</button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-step" id="step-3">
+                            <h3>Step 3: Visual Assets</h3>
+                            <div class="form-group">
+                                <label for="logo-upload">Business Logo</label>
+                                <div class="file-upload">
+                                    <input type="file" id="logo-upload" accept="image/*">
+                                    <label for="logo-upload">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <span>Choose a file</span>
+                                    </label>
+                                    <div class="file-info">No file chosen</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="business-images">Business Images (max 5)</label>
+                                <div class="file-upload">
+                                    <input type="file" id="business-images" accept="image/*" multiple>
+                                    <label for="business-images">
+                                        <i class="fas fa-images"></i>
+                                        <span>Choose files</span>
+                                    </label>
+                                    <div class="file-info">No files chosen</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Color Preferences</label>
+                                <div class="color-pickers">
+                                    <div class="color-picker">
+                                        <label for="primary-color">Primary</label>
+                                        <input type="color" id="primary-color" value="#4a6cf7">
+                                    </div>
+                                    <div class="color-picker">
+                                        <label for="secondary-color">Secondary</label>
+                                        <input type="color" id="secondary-color" value="#f25f5c">
+                                    </div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="auto-color" checked>
+                                    <label for="auto-color">Let AI extract colors from logo</label>
+                                </div>
+                            </div>
+                            <div class="form-nav">
+                                <button type="button" class="btn btn-outline prev-step">Back</button>
+                                <button type="button" class="btn btn-outline next-step">Continue</button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-step" id="step-4">
+                            <h3>Step 4: Additional Information</h3>
+                            <div class="form-group">
+                                <label for="services-products">Services/Products</label>
+                                <textarea id="services-products" rows="4" placeholder="List your main services or products with brief descriptions"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="special-features">Special Features</label>
+                                <div class="checkbox-group">
+                                    <div class="form-check">
+                                        <input type="checkbox" id="feature-booking">
+                                        <label for="feature-booking">Online Booking</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" id="feature-menu">
+                                        <label for="feature-menu">Menu Display</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" id="feature-gallery">
+                                        <label for="feature-gallery">Photo Gallery</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" id="feature-testimonials">
+                                        <label for="feature-testimonials">Testimonials</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" id="feature-social">
+                                        <label for="feature-social">Social Media Links</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" id="feature-contact">
+                                        <label for="feature-contact">Contact Form</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="additional-notes">Additional Notes for AI</label>
+                                <textarea id="additional-notes" rows="3" placeholder="Any specific preferences or requirements you'd like the AI to consider"></textarea>
+                            </div>
+                            <div class="form-nav">
+                                <button type="button" class="btn btn-outline prev-step">Back</button>
+                                <button type="submit" class="btn btn-primary">Generate Website</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="generator-preview">
+                    <div class="preview-container">
+                        <div class="preview-placeholder">
+                            <i class="fas fa-desktop"></i>
+                            <p>Complete the form to see your AI-generated website preview</p>
+                        </div>
+                        <div class="preview-frame" style="display: none;">
+                            <div class="preview-header">
+                                <h4>Preview</h4>
+                                <div class="preview-controls">
+                                    <button class="preview-device-btn active" data-device="desktop">
+                                        <i class="fas fa-desktop"></i>
+                                    </button>
+                                    <button class="preview-device-btn" data-device="tablet">
+                                        <i class="fas fa-tablet-alt"></i>
+                                    </button>
+                                    <button class="preview-device-btn" data-device="mobile">
+                                        <i class="fas fa-mobile-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="preview-content">
+                                <iframe id="preview-iframe" title="Website Preview"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ai-generation-process" style="display: none;">
+                <h3>AI Processing Your Website</h3>
+                <div class="process-steps">
+                    <div class="process-step active">
+                        <div class="process-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="process-text">
+                            <h4>Analyzing Business Information</h4>
+                            <p>Processing business details and category</p>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-icon">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                        <div class="process-text">
+                            <h4>Optimizing Visual Assets</h4>
+                            <p>Enhancing images and extracting color palette</p>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="process-text">
+                            <h4>Generating Content</h4>
+                            <p>Creating SEO-optimized text and structure</p>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="process-text">
+                            <h4>Building Website</h4>
+                            <p>Assembling components and finalizing design</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 25%"></div>
+                    </div>
+                    <p class="progress-text">25% Complete</p>
+                </div>
+            </div>
+            
+            <div class="generated-website-actions" style="display: none;">
+                <h3>Your Website Is Ready!</h3>
+                <p>Preview your generated website and make any final adjustments</p>
+                <div class="action-buttons">
+                    <a href="#" class="btn btn-primary">Publish Website</a>
+                    <a href="#" class="btn btn-outline">Make Adjustments</a>
+                    <a href="#" class="btn btn-outline">Download Code</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Section -->
+    <section id="technology" class="fade-in-section">
+        <div class="container">
+            <h2 class="section-title">Our AI Technology</h2>
+            <p class="section-subtitle">Powered by advanced machine learning</p>
+            
+            <div class="tech-highlights">
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Natural Language Processing</h3>
+                    <p>Our AI understands your business description and generates relevant, engaging content that speaks to your audience.</p>
+                </div>
+                
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Computer Vision</h3>
+                    <p>Advanced image recognition optimizes your visuals, extracts brand colors, and positions elements for maximum impact.</p>
+                </div>
+                
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Industry Analysis</h3>
+                    <p>Our models analyze thousands of successful websites in your industry to implement proven conversion strategies.</p>
+                </div>
+            </div>
+            
+            <div class="tech-diagram">
+                <img src="img/ai-diagram.png" alt="AI Website Generator Technology Diagram">
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="fade-in-section">
+        <div class="container">
+            <h2 class="section-title">Simple Pricing</h2>
+            <p class="section-subtitle">Get started for free, upgrade when you're ready</p>
+            
+            <div class="pricing-table">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Free Trial</h3>
+                        <div class="price">
+                            <span class="price-amount">$0</span>
+                        </div>
+                        <p class="price-subtitle">Try before you buy</p>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li>AI website generation</li>
+                            <li>Basic templates only</li>
+                            <li>1page.site subdomain</li>
+                            <li>Preview only (no publish)</li>
+                            <li>Limited AI content writing</li>
+                            <li>Community support</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-cta">
+                        <a href="#try-it" class="btn btn-outline btn-block">Start Free</a>
+                    </div>
+                </div>
+                
+                <div class="pricing-card highlight">
+                    <div class="pricing-badge">Most Popular</div>
+                    <div class="pricing-header">
+                        <h3>Creator</h3>
+                        <div class="price">
+                            <span class="price-amount">$79</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="price-subtitle">Perfect for most businesses</p>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li>Everything in Free, plus:</li>
+                            <li>Publish your website</li>
+                            <li>Custom domain option</li>
+                            <li>All industry templates</li>
+                            <li>Full AI content writing</li>
+                            <li>Priority support</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-cta">
+                        <a href="#try-it" class="btn btn-primary btn-block">Choose Creator</a>
+                    </div>
+                </div>
+                
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Business</h3>
+                        <div class="price">
+                            <span class="price-amount">$129</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="price-subtitle">Advanced features</p>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li>Everything in Creator, plus:</li>
+                            <li>Advanced integrations</li>
+                            <li>E-commerce capabilities</li>
+                            <li>Advanced SEO tools</li>
+                            <li>Unlimited revisions</li>
+                            <li>Dedicated support</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-cta">
+                        <a href="#try-it" class="btn btn-outline btn-block">Choose Business</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-logo">
+                    <h2>1page<span class="accent">.site</span></h2>
+                    <p>AI-Powered Website Generator</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h3>Platform</h3>
+                        <ul>
+                            <li><a href="#how-it-works">How It Works</a></li>
+                            <li><a href="#features">Features</a></li>
+                            <li><a href="#pricing">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Resources</h3>
+                        <ul>
+                            <li><a href="#">Help Center</a></li>
+                            <li><a href="#">Documentation</a></li>
+                            <li><a href="#">API</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Company</h3>
+                        <ul>
+                            <li><a href="index.html">Main Site</a></li>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Service</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 1page.site. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/ai-generator.js"></script>
+</body>
+</html> 
