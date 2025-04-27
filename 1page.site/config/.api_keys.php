@@ -15,7 +15,7 @@ if (!defined('SECURE_ACCESS')) {
 }
 
 // DeepSeek API key
-$DEEPSEEK_API_KEY = 'sk-c6a2dd0f53ff4b178134ec63f9eeb6b4';
+$DEEPSEEK_API_KEY = '';
 
 // Function to mask API key for logging/debugging
 function getMaskedKey($key) {
