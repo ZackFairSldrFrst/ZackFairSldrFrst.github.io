@@ -876,6 +876,142 @@ document.addEventListener('DOMContentLoaded', function() {
         picker.disabled = autoColorCheckbox.checked;
         picker.parentElement.style.opacity = autoColorCheckbox.checked ? '0.5' : '1';
     });
+
+    // This is just a demonstration of how the AI enhancement would be triggered
+    // The actual API key handling happens securely server-side
+    function enhanceWithAI(publishData) {
+        // Show AI processing UI
+        showAIProcessingUI();
+        
+        // Create data for AI enhancement request
+        const enhancementData = {
+            businessType: publishData.siteData.category,
+            businessName: publishData.siteData.businessName,
+            businessDescription: publishData.siteData.description,
+            services: publishData.siteData.services,
+            template: publishData.template
+        };
+        
+        // Make request to your secure backend API
+        // IMPORTANT: API keys are never used client-side
+        fetch('/api/ai-enhance.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(enhancementData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update the preview with AI-enhanced content
+                updatePreviewWithEnhancedContent(data.enhancedContent);
+                showAISuccessMessage();
+            } else {
+                showAIErrorMessage(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('AI enhancement error:', error);
+            showAIErrorMessage('Failed to enhance content');
+        })
+        .finally(() => {
+            hideAIProcessingUI();
+        });
+    }
+
+    // Add this to the UI enhancement section of the code where applicable
+    function updatePreviewWithEnhancedContent(enhancedContent) {
+        // Get the preview iframe
+        const previewIframe = document.getElementById('preview-iframe');
+        if (!previewIframe) return;
+        
+        // Get the iframe document
+        const iframeDoc = previewIframe.contentDocument || previewIframe.contentWindow.document;
+        
+        // Update headline
+        if (enhancedContent.content.headline) {
+            const headline = iframeDoc.querySelector('h2');
+            if (headline) headline.textContent = enhancedContent.content.headline;
+        }
+        
+        // Update subheadline
+        if (enhancedContent.content.subheadline) {
+            const subheadline = iframeDoc.querySelector('.hero-content p');
+            if (subheadline) subheadline.textContent = enhancedContent.content.subheadline;
+        }
+        
+        // Update about section
+        if (enhancedContent.content.about) {
+            const aboutSection = iframeDoc.querySelector('#about p');
+            if (aboutSection) aboutSection.textContent = enhancedContent.content.about;
+        }
+        
+        // Update services
+        if (enhancedContent.content.services && enhancedContent.content.services.length) {
+            const servicesContainer = iframeDoc.querySelector('.services-grid');
+            if (servicesContainer) {
+                servicesContainer.innerHTML = '';
+                
+                enhancedContent.content.services.forEach(service => {
+                    const serviceCard = document.createElement('div');
+                    serviceCard.className = 'service-card';
+                    serviceCard.innerHTML = `
+                        <div class="service-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3>${service.title}</h3>
+                        <p>${service.description}</p>
+                    `;
+                    servicesContainer.appendChild(serviceCard);
+                });
+            }
+        }
+        
+        // Update design if available
+        if (enhancedContent.design) {
+            if (enhancedContent.design.colors) {
+                // Apply color scheme
+                const root = iframeDoc.documentElement;
+                if (enhancedContent.design.colors.primary) {
+                    root.style.setProperty('--primary-color', enhancedContent.design.colors.primary);
+                }
+                if (enhancedContent.design.colors.secondary) {
+                    root.style.setProperty('--secondary-color', enhancedContent.design.colors.secondary);
+                }
+                if (enhancedContent.design.colors.accent) {
+                    root.style.setProperty('--accent-color', enhancedContent.design.colors.accent);
+                }
+            }
+        }
+    }
+
+    // Helper UI functions
+    function showAIProcessingUI() {
+        // Show AI processing indicator in the UI
+        const aiProcessingElement = document.querySelector('.ai-processing');
+        if (aiProcessingElement) {
+            aiProcessingElement.style.display = 'block';
+        }
+    }
+
+    function hideAIProcessingUI() {
+        // Hide AI processing indicator
+        const aiProcessingElement = document.querySelector('.ai-processing');
+        if (aiProcessingElement) {
+            aiProcessingElement.style.display = 'none';
+        }
+    }
+
+    function showAISuccessMessage() {
+        // Display success message for AI enhancement
+        alert('AI has enhanced your website content and design!');
+    }
+
+    function showAIErrorMessage(message) {
+        // Display error message for AI enhancement
+        alert('AI enhancement error: ' + message);
+    }
 }); 
 
 /*
