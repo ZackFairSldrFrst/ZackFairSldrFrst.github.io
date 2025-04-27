@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Editor - 1page.site</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/editor.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="editor-header">
+        <div class="container">
+            <div class="logo">
+                <h1>1page<span class="accent">.site</span></h1>
+                <p class="tagline">Website Editor</p>
+            </div>
+            <div class="editor-controls">
+                <button id="save-changes" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+                <button id="preview-site" class="btn btn-outline">
+                    <i class="fas fa-eye"></i> Preview
+                </button>
+                <button id="publish-site" class="btn btn-accent">
+                    <i class="fas fa-globe"></i> Publish
+                </button>
+                <a href="ai-generator.html" class="btn btn-link">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Editor Layout -->
+    <div class="editor-layout">
+        <!-- Sidebar -->
+        <div class="editor-sidebar">
+            <div class="sidebar-header">
+                <h3>Page Sections</h3>
+                <button id="add-section" class="btn-icon">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+            
+            <div class="sections-list">
+                <div class="section-item active" data-section="header">
+                    <i class="fas fa-heading"></i>
+                    <span>Header</span>
+                </div>
+                <div class="section-item" data-section="hero">
+                    <i class="fas fa-image"></i>
+                    <span>Hero Section</span>
+                </div>
+                <div class="section-item" data-section="about">
+                    <i class="fas fa-info-circle"></i>
+                    <span>About</span>
+                </div>
+                <div class="section-item" data-section="services">
+                    <i class="fas fa-concierge-bell"></i>
+                    <span>Services</span>
+                </div>
+                <div class="section-item" data-section="gallery">
+                    <i class="fas fa-images"></i>
+                    <span>Gallery</span>
+                </div>
+                <div class="section-item" data-section="testimonials">
+                    <i class="fas fa-quote-right"></i>
+                    <span>Testimonials</span>
+                </div>
+                <div class="section-item" data-section="contact">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contact</span>
+                </div>
+                <div class="section-item" data-section="footer">
+                    <i class="fas fa-shoe-prints"></i>
+                    <span>Footer</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-header">
+                <h3>Site Settings</h3>
+            </div>
+            
+            <div class="settings-list">
+                <div class="setting-item" data-setting="colors">
+                    <i class="fas fa-palette"></i>
+                    <span>Colors</span>
+                </div>
+                <div class="setting-item" data-setting="fonts">
+                    <i class="fas fa-font"></i>
+                    <span>Typography</span>
+                </div>
+                <div class="setting-item" data-setting="domain">
+                    <i class="fas fa-globe"></i>
+                    <span>Domain</span>
+                </div>
+                <div class="setting-item" data-setting="seo">
+                    <i class="fas fa-search"></i>
+                    <span>SEO</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Editor Area -->
+        <div class="editor-main">
+            <div class="editor-panel">
+                <div class="panel-header">
+                    <h2 id="current-section">Header</h2>
+                </div>
+                
+                <!-- Dynamic content based on selected section -->
+                <div class="panel-content">
+                    <!-- Header Section Editor - Default visible -->
+                    <div class="section-editor" id="header-editor">
+                        <div class="form-group">
+                            <label for="site-title">Site Title</label>
+                            <input type="text" id="site-title" placeholder="Your Business Name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="site-tagline">Tagline</label>
+                            <input type="text" id="site-tagline" placeholder="Brief tagline or slogan">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Logo</label>
+                            <div class="logo-editor">
+                                <div class="logo-preview">
+                                    <img id="logo-img" src="img/placeholder-logo.png" alt="Logo Preview">
+                                </div>
+                                <div class="logo-actions">
+                                    <button class="btn btn-outline btn-sm">
+                                        <i class="fas fa-upload"></i> Upload Logo
+                                    </button>
+                                    <button class="btn btn-link btn-sm">
+                                        <i class="fas fa-trash-alt"></i> Remove
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Navigation Links</label>
+                            <div class="nav-links-editor">
+                                <div class="nav-item">
+                                    <input type="text" placeholder="Link Text" value="Home">
+                                    <input type="text" placeholder="URL" value="#hero">
+                                    <button class="btn-icon remove-nav-item">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="nav-item">
+                                    <input type="text" placeholder="Link Text" value="About">
+                                    <input type="text" placeholder="URL" value="#about">
+                                    <button class="btn-icon remove-nav-item">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="nav-item">
+                                    <input type="text" placeholder="Link Text" value="Services">
+                                    <input type="text" placeholder="URL" value="#services">
+                                    <button class="btn-icon remove-nav-item">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="nav-item">
+                                    <input type="text" placeholder="Link Text" value="Contact">
+                                    <input type="text" placeholder="URL" value="#contact">
+                                    <button class="btn-icon remove-nav-item">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                
+                                <button id="add-nav-item" class="btn btn-outline btn-block btn-sm">
+                                    <i class="fas fa-plus"></i> Add Navigation Link
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Hero Section Editor - Initially hidden -->
+                    <div class="section-editor" id="hero-editor" style="display: none;">
+                        <div class="form-group">
+                            <label for="hero-heading">Heading</label>
+                            <input type="text" id="hero-heading" placeholder="Main headline">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="hero-subheading">Subheading</label>
+                            <textarea id="hero-subheading" rows="2" placeholder="Supporting text"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Background Image</label>
+                            <div class="image-editor">
+                                <div class="image-preview">
+                                    <img id="hero-bg" src="img/placeholder-hero.jpg" alt="Hero Background">
+                                </div>
+                                <div class="image-actions">
+                                    <button class="btn btn-outline btn-sm">
+                                        <i class="fas fa-upload"></i> Upload Image
+                                    </button>
+                                    <button class="btn btn-link btn-sm">
+                                        <i class="fas fa-redo"></i> Replace
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Call to Action Buttons</label>
+                            <div class="cta-buttons-editor">
+                                <div class="cta-item">
+                                    <input type="text" placeholder="Button Text" value="Get Started">
+                                    <input type="text" placeholder="URL" value="#contact">
+                                    <select>
+                                        <option value="primary">Primary</option>
+                                        <option value="secondary">Secondary</option>
+                                        <option value="outline">Outline</option>
+                                    </select>
+                                    <button class="btn-icon remove-cta-item">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="cta-item">
+                                    <input type="text" placeholder="Button Text" value="Learn More">
+                                    <input type="text" placeholder="URL" value="#about">
+                                    <select>
+                                        <option value="primary">Primary</option>
+                                        <option value="secondary">Secondary</option>
+                                        <option value="outline" selected>Outline</option>
+                                    </select>
+                                    <button class="btn-icon remove-cta-item">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                
+                                <button id="add-cta-button" class="btn btn-outline btn-block btn-sm">
+                                    <i class="fas fa-plus"></i> Add Button
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Placeholder for other section editors -->
+                    <div class="section-editor" id="other-sections" style="display: none;">
+                        <div class="placeholder-message">
+                            <i class="fas fa-tools"></i>
+                            <p>Section editor loading...</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Settings panels - Initially hidden -->
+                    <div class="settings-panel" id="colors-panel" style="display: none;">
+                        <div class="form-group">
+                            <label for="primary-color">Primary Color</label>
+                            <div class="color-control">
+                                <input type="color" id="primary-color" value="#4a6cf7">
+                                <input type="text" value="#4a6cf7">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="secondary-color">Secondary Color</label>
+                            <div class="color-control">
+                                <input type="color" id="secondary-color" value="#f25f5c">
+                                <input type="text" value="#f25f5c">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="text-color">Text Color</label>
+                            <div class="color-control">
+                                <input type="color" id="text-color" value="#333333">
+                                <input type="text" value="#333333">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="bg-color">Background Color</label>
+                            <div class="color-control">
+                                <input type="color" id="bg-color" value="#ffffff">
+                                <input type="text" value="#ffffff">
+                            </div>
+                        </div>
+                        
+                        <div class="color-presets">
+                            <h4>Presets</h4>
+                            <div class="preset-grid">
+                                <div class="color-preset" style="background: linear-gradient(to right, #4a6cf7, #f25f5c);">
+                                    <span>Default</span>
+                                </div>
+                                <div class="color-preset" style="background: linear-gradient(to right, #10b981, #3b82f6);">
+                                    <span>Nature</span>
+                                </div>
+                                <div class="color-preset" style="background: linear-gradient(to right, #f59e0b, #ef4444);">
+                                    <span>Sunset</span>
+                                </div>
+                                <div class="color-preset" style="background: linear-gradient(to right, #8b5cf6, #ec4899);">
+                                    <span>Vibrant</span>
+                                </div>
+                                <div class="color-preset" style="background: linear-gradient(to right, #374151, #6b7280);">
+                                    <span>Minimal</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Preview Area -->
+            <div class="editor-preview">
+                <div class="preview-header">
+                    <h3>Live Preview</h3>
+                    <div class="preview-controls">
+                        <button class="preview-device-btn active" data-device="desktop">
+                            <i class="fas fa-desktop"></i>
+                        </button>
+                        <button class="preview-device-btn" data-device="tablet">
+                            <i class="fas fa-tablet-alt"></i>
+                        </button>
+                        <button class="preview-device-btn" data-device="mobile">
+                            <i class="fas fa-mobile-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="preview-frame">
+                    <iframe id="preview-iframe" title="Website Preview"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Section Modal -->
+    <div id="add-section-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add New Section</h2>
+            <p>Select a section type to add to your website:</p>
+            
+            <div class="section-templates">
+                <div class="section-template">
+                    <div class="template-preview">
+                        <img src="img/section-about.jpg" alt="About Section">
+                    </div>
+                    <h4>About</h4>
+                    <button class="btn btn-sm btn-outline">Add Section</button>
+                </div>
+                
+                <div class="section-template">
+                    <div class="template-preview">
+                        <img src="img/section-services.jpg" alt="Services Section">
+                    </div>
+                    <h4>Services</h4>
+                    <button class="btn btn-sm btn-outline">Add Section</button>
+                </div>
+                
+                <div class="section-template">
+                    <div class="template-preview">
+                        <img src="img/section-gallery.jpg" alt="Gallery Section">
+                    </div>
+                    <h4>Gallery</h4>
+                    <button class="btn btn-sm btn-outline">Add Section</button>
+                </div>
+                
+                <div class="section-template">
+                    <div class="template-preview">
+                        <img src="img/section-features.jpg" alt="Features Section">
+                    </div>
+                    <h4>Features</h4>
+                    <button class="btn btn-sm btn-outline">Add Section</button>
+                </div>
+                
+                <div class="section-template">
+                    <div class="template-preview">
+                        <img src="img/section-testimonials.jpg" alt="Testimonials Section">
+                    </div>
+                    <h4>Testimonials</h4>
+                    <button class="btn btn-sm btn-outline">Add Section</button>
+                </div>
+                
+                <div class="section-template">
+                    <div class="template-preview">
+                        <img src="img/section-contact.jpg" alt="Contact Section">
+                    </div>
+                    <h4>Contact</h4>
+                    <button class="btn btn-sm btn-outline">Add Section</button>
+                </div>
+                
+                <div class="section-template">
+                    <div class="template-preview">
+                        <img src="img/section-cta.jpg" alt="Call to Action Section">
+                    </div>
+                    <h4>Call to Action</h4>
+                    <button class="btn btn-sm btn-outline">Add Section</button>
+                </div>
+                
+                <div class="section-template">
+                    <div class="template-preview">
+                        <img src="img/section-custom.jpg" alt="Custom Section">
+                    </div>
+                    <h4>Custom</h4>
+                    <button class="btn btn-sm btn-outline">Add Section</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Save Changes Modal -->
+    <div id="save-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="save-progress">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2>Changes Saved Successfully</h2>
+                <p>Your website has been updated with all your changes.</p>
+                <div class="modal-actions">
+                    <button class="btn btn-primary continue-editing">Continue Editing</button>
+                    <a href="#" class="btn btn-outline view-site">View Your Site</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/editor.js"></script>
+</body>
+</html> 

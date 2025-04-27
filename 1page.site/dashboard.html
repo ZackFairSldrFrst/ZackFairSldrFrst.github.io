@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - 1page.site</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>1page<span class="accent">.site</span></h1>
+                <p class="tagline">My Dashboard</p>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#websites">My Websites</a></li>
+                    <li><a href="#account">Account</a></li>
+                    <li><a href="ai-generator.html" class="btn btn-accent">Create New Website</a></li>
+                </ul>
+                <button class="hamburger" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Dashboard Header -->
+    <section class="dashboard-header">
+        <div class="container">
+            <div class="welcome-message">
+                <h2>Welcome, User!</h2>
+                <p>Manage your website, check analytics, and make updates.</p>
+            </div>
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>1</h3>
+                        <p>Active Websites</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>127</h3>
+                        <p>Monthly Visitors</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>14</h3>
+                        <p>Days Active</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Websites Section -->
+    <section id="websites" class="dashboard-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>My Websites</h2>
+                <a href="ai-generator.html" class="btn btn-outline">
+                    <i class="fas fa-plus"></i> Create New
+                </a>
+            </div>
+            
+            <div class="websites-grid">
+                <div class="website-card">
+                    <div class="website-preview">
+                        <img src="img/website-preview.jpg" alt="Website Preview">
+                        <div class="website-status published">
+                            <i class="fas fa-check-circle"></i> Published
+                        </div>
+                    </div>
+                    <div class="website-info">
+                        <h3 id="website-name">Your Business Name</h3>
+                        <p class="website-url" id="website-url">yourbusiness-abc123.1page.site</p>
+                        <div class="website-meta">
+                            <span><i class="fas fa-calendar-alt"></i> Created: <span id="created-date">June 15, 2025</span></span>
+                            <span><i class="fas fa-clock"></i> Last Updated: <span id="updated-date">June 18, 2025</span></span>
+                        </div>
+                    </div>
+                    <div class="website-actions">
+                        <a href="#" class="btn btn-sm btn-primary view-site">
+                            <i class="fas fa-external-link-alt"></i> View Site
+                        </a>
+                        <a href="editor.html" class="btn btn-sm btn-outline">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <button class="btn btn-sm btn-link" data-toggle="dropdown">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="#" class="dropdown-item">
+                                <i class="fas fa-chart-line"></i> Analytics
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <i class="fas fa-cog"></i> Settings
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <i class="fas fa-code"></i> Export Code
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <i class="fas fa-clone"></i> Duplicate
+                            </a>
+                            <a href="#" class="dropdown-item text-danger">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Placeholder for new websites -->
+                <div class="website-card add-new">
+                    <div class="add-website-content">
+                        <div class="add-icon">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <h3>Create a New Website</h3>
+                        <p>Use our AI-powered generator to create a beautiful website in minutes.</p>
+                        <a href="ai-generator.html" class="btn btn-primary">Get Started</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Actions Section -->
+    <section class="dashboard-section bg-light">
+        <div class="container">
+            <div class="section-header">
+                <h2>Quick Actions</h2>
+            </div>
+            
+            <div class="quick-actions-grid">
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <h3>Update Images</h3>
+                    <p>Upload new photos or replace existing ones on your website.</p>
+                    <a href="#" class="btn btn-sm btn-outline">Update Now</a>
+                </div>
+                
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3>Edit Content</h3>
+                    <p>Update your text, descriptions, and other content.</p>
+                    <a href="#" class="btn btn-sm btn-outline">Edit Content</a>
+                </div>
+                
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-share-alt"></i>
+                    </div>
+                    <h3>Social Media</h3>
+                    <p>Connect and update your social media profiles.</p>
+                    <a href="#" class="btn btn-sm btn-outline">Manage Social</a>
+                </div>
+                
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>SEO Optimization</h3>
+                    <p>Improve your search engine visibility and rankings.</p>
+                    <a href="#" class="btn btn-sm btn-outline">Optimize SEO</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Account Section -->
+    <section id="account" class="dashboard-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Account Information</h2>
+                <button class="btn btn-outline">
+                    <i class="fas fa-cog"></i> Settings
+                </button>
+            </div>
+            
+            <div class="account-details">
+                <div class="plan-info">
+                    <div class="current-plan">
+                        <h3>Your Current Plan</h3>
+                        <div class="plan-card">
+                            <div class="plan-header">
+                                <h4>Creator Plan</h4>
+                                <span class="plan-price">$79<span class="period">/month</span></span>
+                            </div>
+                            <div class="plan-features">
+                                <ul>
+                                    <li><i class="fas fa-check"></i> 1 Website</li>
+                                    <li><i class="fas fa-check"></i> Custom Domain Option</li>
+                                    <li><i class="fas fa-check"></i> Advanced AI Features</li>
+                                    <li><i class="fas fa-check"></i> Priority Support</li>
+                                </ul>
+                            </div>
+                            <div class="plan-actions">
+                                <button class="btn btn-outline btn-block">Upgrade Plan</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="billing-info">
+                        <h3>Billing Information</h3>
+                        <div class="billing-card">
+                            <div class="payment-method">
+                                <div class="card-icon">
+                                    <i class="fab fa-cc-visa"></i>
+                                </div>
+                                <div class="card-details">
+                                    <h4>Visa ending in 4242</h4>
+                                    <p>Expires 12/2026</p>
+                                </div>
+                                <button class="btn btn-sm btn-link">Edit</button>
+                            </div>
+                            
+                            <div class="billing-details">
+                                <div class="detail-row">
+                                    <span>Next billing date:</span>
+                                    <strong>July 15, 2025</strong>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Last payment:</span>
+                                    <strong>$79.00 on June 15, 2025</strong>
+                                </div>
+                            </div>
+                            
+                            <div class="billing-actions">
+                                <button class="btn btn-sm btn-outline">View Invoices</button>
+                                <button class="btn btn-sm btn-link text-danger">Cancel Subscription</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="account-profile">
+                    <h3>Profile Information</h3>
+                    <div class="profile-card">
+                        <div class="profile-header">
+                            <div class="profile-avatar">
+                                <img src="img/profile-avatar.jpg" alt="User Avatar">
+                            </div>
+                            <div class="profile-info">
+                                <h4>John Doe</h4>
+                                <p>john.doe@example.com</p>
+                                <button class="btn btn-sm btn-outline">Edit Profile</button>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-settings">
+                            <h4>Account Settings</h4>
+                            <div class="settings-list">
+                                <a href="#" class="settings-item">
+                                    <i class="fas fa-lock"></i>
+                                    <span>Password & Security</span>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                                <a href="#" class="settings-item">
+                                    <i class="fas fa-bell"></i>
+                                    <span>Notifications</span>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                                <a href="#" class="settings-item">
+                                    <i class="fas fa-user-shield"></i>
+                                    <span>Privacy Settings</span>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                                <a href="#" class="settings-item">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>Sign Out</span>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-logo">
+                    <h2>1page<span class="accent">.site</span></h2>
+                    <p>AI-Powered Website Generator</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h3>Platform</h3>
+                        <ul>
+                            <li><a href="index.html#how-it-works">How It Works</a></li>
+                            <li><a href="index.html#features">Features</a></li>
+                            <li><a href="index.html#pricing">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Resources</h3>
+                        <ul>
+                            <li><a href="#">Help Center</a></li>
+                            <li><a href="#">Documentation</a></li>
+                            <li><a href="#">API</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Company</h3>
+                        <ul>
+                            <li><a href="index.html">Main Site</a></li>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Service</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 1page.site. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html> 
