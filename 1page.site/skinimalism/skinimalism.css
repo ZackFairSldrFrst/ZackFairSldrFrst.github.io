@@ -38,14 +38,17 @@ p, li, a, button {
 .logo h1 {
     font-family: 'Playfair Display', serif;
     font-weight: 600;
+    color: white;
+    text-align: center;
 }
 
 .logo-img {
     height: 60px;
-    width: auto;
+    width: 60px;
     display: block;
     border-radius: 5px;
     margin-left: 10px;
+    object-fit: cover;
 }
 
 .btn-primary {
@@ -67,7 +70,7 @@ p, li, a, button {
 }
 
 header {
-    background-color: transparent;
+    background-color: var(--primary-color);
     position: absolute;
     width: 100%;
     top: 0;
@@ -97,10 +100,11 @@ header .container {
 }
 
 #hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
     height: 100vh;
     display: flex;
     align-items: center;
+    justify-content: center;
     text-align: center;
     color: white;
     padding-top: 60px;
@@ -108,6 +112,18 @@ header .container {
 
 #hero .container {
     max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hero-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .hero-content h1 {
@@ -115,11 +131,16 @@ header .container {
     font-weight: 600;
     margin-bottom: 20px;
     letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    color: white;
 }
 
 .hero-content p {
     font-size: 1.5rem;
     margin-bottom: 40px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    color: white;
 }
 
 .section-title {
@@ -229,6 +250,33 @@ section {
     transform: scale(1.05);
 }
 
+.gallery-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    color: white;
+    padding: 20px;
+    transition: all 0.3s ease;
+    transform: translateY(10px);
+    text-align: center;
+}
+
+.gallery-item:hover .gallery-overlay {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.gallery-overlay p {
+    margin: 0;
+    font-size: 16px;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.4;
+}
+
 .testimonials {
     background-color: var(--secondary-color);
     padding: 80px 0;
@@ -309,6 +357,10 @@ footer {
     margin-bottom: 15px;
 }
 
+.footer-logo p {
+    color: white;
+}
+
 .footer-links h3 {
     margin-bottom: 20px;
     font-size: 1.5rem;
@@ -359,14 +411,42 @@ footer {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.instagram-link {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.instagram-link a {
+    display: inline-flex;
+    align-items: center;
+    color: #333;
+    font-size: 16px;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    color: white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.instagram-link a:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.instagram-link i {
+    font-size: 20px;
+    margin-right: 8px;
+}
+
 @media (max-width: 768px) {
     header {
-        background-color: white;
+        background-color: var(--primary-color);
         position: relative;
     }
 
     .nav-links a {
-        color: var(--dark-color);
+        color: white;
     }
 
     .hamburger {
@@ -379,7 +459,7 @@ footer {
         left: -100%;
         width: 100%;
         height: calc(100vh - 70px);
-        background-color: white;
+        background-color: var(--primary-color);
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
@@ -428,6 +508,21 @@ footer {
     
     .logo-img {
         height: 50px;
+        width: 50px;
+    }
+
+    .gallery-overlay {
+        padding: 15px;
+        background-color: rgba(0, 0, 0, 0.85);
+    }
+    
+    .gallery-overlay p {
+        font-size: 14px;
+    }
+    
+    .instagram-link a {
+        font-size: 14px;
+        padding: 8px 16px;
     }
 }
 
@@ -450,5 +545,14 @@ footer {
     
     .logo-img {
         height: 40px;
+        width: 40px;
+    }
+
+    .gallery-overlay {
+        opacity: 1;
+        transform: translateY(0);
+        position: relative;
+        background-color: var(--primary-color);
+        margin-top: -5px;
     }
 } 
