@@ -145,10 +145,7 @@
             
             <label for="source">Data Source:</label>
             <select id="source" name="source">
-                <option value="yelp">Yelp</option>
                 <option value="yellowpages">YellowPages</option>
-                <option value="instagram">Instagram</option>
-                <option value="local" selected>Local (Sample Data)</option>
             </select>
             
             <label for="num_pages">Number of pages to scrape per category:</label>
@@ -233,26 +230,15 @@
                         // Add rows for each business
                         data.results.forEach(business => {
                             // Determine source badge
-                            let sourceBadge = '';
-                            let sourceText = '';
-                            
-                            if (business.source_url.includes('yellowpages')) {
-                                sourceBadge = 'badge-yellow';
-                                sourceText = 'YellowPages';
-                            } else if (business.source_url.includes('instagram')) {
-                                sourceBadge = 'badge-insta';
-                                sourceText = 'Instagram';
-                            } else if (business.source_url.includes('yelp')) {
-                                sourceBadge = 'badge-yelp';
-                                sourceText = 'Yelp';
-                            } else {
-                                sourceBadge = 'badge-local';
-                                sourceText = 'Local';
-                            }
+                            let sourceBadge = 'badge-yellow';
+                            let sourceText = 'YellowPages';
+
+                            // Create Google search URL for the business
+                            const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(business.name + ' ' + business.address)}`;
                             
                             resultsHTML += `
                                 <tr>
-                                    <td><a href="${business.source_url}" target="_blank">${business.name}</a></td>
+                                    <td><a href="${googleSearchUrl}" target="_blank">${business.name}</a></td>
                                     <td>${business.phone}</td>
                                     <td>${business.address}</td>
                                     <td>${business.email}</td>

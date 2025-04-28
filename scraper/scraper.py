@@ -191,41 +191,45 @@ class BusinessScraper:
                 print(f"Error scraping Yelp page {page}: {str(e)}")
     
     def _search_yellowpages(self, location, category, num_pages=3):
-        """Search YellowPages for businesses"""
-        for page in range(1, num_pages + 1):
-            if len(self.results) >= self.max_results:
-                break
+        """Search YellowPages for businesses in both US and Canada"""
+        # List of YellowPages domains to search
+        domains = ['yellowpages.com', 'yellowpages.ca']
+        
+        for domain in domains:
+            for page in range(1, num_pages + 1):
+                if len(self.results) >= self.max_results:
+                    break
+                    
+                # YellowPages search URL format
+                url = f"https://www.{domain}/search?search_terms={category}&geo_location_terms={location}&page={page}"
+                print(f"Scraping YellowPages {domain} page {page}: {url}")
                 
-            # YellowPages search URL format
-            url = f"https://www.yellowpages.com/search?search_terms={category}&geo_location_terms={location}&page={page}"
-            print(f"Scraping YellowPages page {page}: {url}")
-            
-            # Set a random User-Agent for each request
-            self.headers['User-Agent'] = choice(self.user_agents)
-            
-            try:
-                # Add a longer delay before request
-                delay = randint(5, 10)
-                print(f"Waiting {delay} seconds before request...")
-                time.sleep(delay)
+                # Set a random User-Agent for each request
+                self.headers['User-Agent'] = choice(self.user_agents)
                 
-                # Make the request
-                response = requests.get(
-                    url, 
-                    headers=self.headers, 
-                    proxies=self.proxies if self.use_proxy else None,
-                    timeout=30
-                )
-                
-                if response.status_code == 200:
-                    soup = BeautifulSoup(response.text, 'html.parser')
-                    self._parse_yellowpages_listings(soup)
-                    # Sleep to avoid rate limiting
-                    time.sleep(randint(5, 10))
-                else:
-                    print(f"Failed to fetch YellowPages page {page}: {response.status_code}")
-            except Exception as e:
-                print(f"Error scraping YellowPages page {page}: {str(e)}")
+                try:
+                    # Add a longer delay before request
+                    delay = randint(5, 10)
+                    print(f"Waiting {delay} seconds before request...")
+                    time.sleep(delay)
+                    
+                    # Make the request
+                    response = requests.get(
+                        url, 
+                        headers=self.headers, 
+                        proxies=self.proxies if self.use_proxy else None,
+                        timeout=30
+                    )
+                    
+                    if response.status_code == 200:
+                        soup = BeautifulSoup(response.text, 'html.parser')
+                        self._parse_yellowpages_listings(soup, domain)
+                        # Sleep to avoid rate limiting
+                        time.sleep(randint(5, 10))
+                    else:
+                        print(f"Failed to fetch YellowPages {domain} page {page}: {response.status_code}")
+                except Exception as e:
+                    print(f"Error scraping YellowPages {domain} page {page}: {str(e)}")
     
     def _search_local_businesses(self, location, category, num_pages=3):
         """
@@ -295,12 +299,12 @@ class BusinessScraper:
         except Exception as e:
             print(f"Error parsing business listings: {str(e)}")
     
-    def _parse_yellowpages_listings(self, soup):
+    def _parse_yellowpages_listings(self, soup, domain):
         """Parse business listings from YellowPages search results"""
         try:
             # YellowPages business listings
             business_listings = soup.select('.search-results .result')
-            print(f"Found {len(business_listings)} YellowPages business listings")
+            print(f"Found {len(business_listings)} YellowPages business listings in {domain}")
             
             for listing in business_listings:
                 if len(self.results) >= self.max_results:
@@ -336,7 +340,7 @@ class BusinessScraper:
                             'address': address,
                             'email': "N/A",  # YellowPages doesn't typically list emails
                             'categories': categories,
-                            'source_url': "yellowpages.com"
+                            'source_url': f"{domain}"
                         }
                         
                         self.results.append(business_data)
