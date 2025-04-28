@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Business Contact Scraper</title>
+    <title>Business Search Tool</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -39,30 +39,26 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            margin-right: 10px;
         }
         button:hover {
             background-color: #45a049;
         }
-        #results {
+        .search-links {
             margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
+        }
+        .search-link {
+            display: inline-block;
+            margin-right: 15px;
+            margin-bottom: 10px;
+            padding: 8px 15px;
+            background-color: #f5f5f5;
             border-radius: 4px;
-            display: none;
+            text-decoration: none;
+            color: #333;
         }
-        .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border-left-color: #09f;
-            animation: spin 1s linear infinite;
-            display: none;
-            margin: 20px auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .search-link:hover {
+            background-color: #e0e0e0;
         }
         .note {
             background-color: #fff8e1;
@@ -70,66 +66,22 @@
             border-left: 4px solid #ffc107;
             margin-bottom: 15px;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .api-key-section {
             margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-        .results-container {
-            max-height: 500px;
-            overflow-y: auto;
-            margin-top: 20px;
-        }
-        .badge {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            color: white;
-            margin-right: 5px;
-        }
-        .badge-yellow {
-            background-color: #FFC107;
-        }
-        .badge-insta {
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-        }
-        .badge-yelp {
-            background-color: #D32323;
-        }
-        .badge-local {
-            background-color: #4CAF50;
-        }
-        .summary {
-            margin: 15px 0;
-            padding: 10px;
-            background-color: #e8f5e9;
+            padding: 15px;
+            background-color: #f8f9fa;
             border-radius: 4px;
         }
     </style>
 </head>
 <body>
-    <h1>Business Contact Scraper</h1>
+    <h1>Business Search Tool</h1>
     
     <div class="container">
-        <h2>Find Businesses Without Websites</h2>
+        <h2>Search Businesses</h2>
         
         <div class="note">
-            <p><strong>Note:</strong> This is a static version of the application that generates sample data for demonstration purposes.</p>
+            <p><strong>Note:</strong> This tool provides direct links to search results on various platforms. For more advanced features, consider using their official APIs.</p>
         </div>
         
         <form id="businessForm">
@@ -139,146 +91,65 @@
             <label for="categories">Business Categories:</label>
             <textarea id="categories" name="categories" placeholder="Enter categories separated by commas (e.g., restaurants, plumbers, electricians)" required></textarea>
             
-            <label for="source">Data Source:</label>
-            <select id="source" name="source">
-                <option value="local" selected>Local (Sample Data)</option>
-            </select>
-            
-            <label for="num_pages">Number of pages to scrape per category:</label>
-            <input type="number" id="num_pages" name="num_pages" min="1" max="10" value="2">
-            
-            <button type="submit">Search Businesses</button>
+            <button type="submit">Generate Search Links</button>
         </form>
         
-        <div id="spinner" class="spinner"></div>
-        <div id="results"></div>
+        <div id="searchResults" class="search-links"></div>
+    </div>
+
+    <div class="container">
+        <h2>API Integration (Optional)</h2>
+        <div class="api-key-section">
+            <p>For more advanced features, you can use the official APIs:</p>
+            <ul>
+                <li><a href="https://www.yelp.com/developers" target="_blank">Yelp Fusion API</a></li>
+                <li><a href="https://developers.google.com/maps/documentation/places/web-service" target="_blank">Google Places API</a></li>
+                <li><a href="https://developers.facebook.com/docs/instagram-api" target="_blank">Instagram Graph API</a></li>
+            </ul>
+        </div>
     </div>
 
     <script>
-        // Sample business data generator
-        function generateSampleBusinesses(location, categories, count) {
-            const businesses = [];
-            const businessTypes = categories.split(',').map(cat => cat.trim());
-            
-            for (let i = 0; i < count; i++) {
-                const businessType = businessTypes[Math.floor(Math.random() * businessTypes.length)];
-                const business = {
-                    name: `${businessType} Business ${i + 1}`,
-                    phone: `(${Math.floor(Math.random() * 900) + 100}) ${Math.floor(Math.random() * 900) + 100}-${Math.floor(Math.random() * 9000) + 1000}`,
-                    address: `${Math.floor(Math.random() * 9999) + 1} ${location} St, ${location}`,
-                    email: `contact@${businessType.toLowerCase().replace(/\s+/g, '')}${i + 1}.com`,
-                    categories: businessType,
-                    source_url: '#',
-                    source: 'local'
-                };
-                businesses.push(business);
-            }
-            
-            return businesses;
-        }
-
         document.getElementById('businessForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const location = document.getElementById('location').value;
-            const categories = document.getElementById('categories').value;
-            const numPages = document.getElementById('num_pages').value;
+            const location = encodeURIComponent(document.getElementById('location').value);
+            const categories = document.getElementById('categories').value.split(',').map(cat => cat.trim());
             
-            const results = document.getElementById('results');
-            const spinner = document.getElementById('spinner');
+            const searchResults = document.getElementById('searchResults');
+            searchResults.innerHTML = '';
             
-            results.style.display = 'none';
-            spinner.style.display = 'block';
-            
-            // Simulate API delay
-            setTimeout(() => {
-                const sampleBusinesses = generateSampleBusinesses(location, categories, numPages * 5);
+            categories.forEach(category => {
+                const encodedCategory = encodeURIComponent(category);
                 
-                spinner.style.display = 'none';
-                results.style.display = 'block';
+                // Yelp search link
+                const yelpLink = document.createElement('a');
+                yelpLink.href = `https://www.yelp.com/search?find_desc=${encodedCategory}&find_loc=${location}`;
+                yelpLink.className = 'search-link';
+                yelpLink.textContent = `Search ${category} on Yelp`;
+                yelpLink.target = '_blank';
+                searchResults.appendChild(yelpLink);
                 
-                // Create results summary
-                let resultsHTML = `
-                    <div class="summary">
-                        <h3>Results Summary</h3>
-                        <p>Found ${sampleBusinesses.length} businesses without websites!</p>
-                        <button onclick="downloadCSV()">Download Results (CSV)</button>
-                    </div>
-                `;
+                // Google Maps search link
+                const googleLink = document.createElement('a');
+                googleLink.href = `https://www.google.com/maps/search/${encodedCategory}+in+${location}`;
+                googleLink.className = 'search-link';
+                googleLink.textContent = `Search ${category} on Google Maps`;
+                googleLink.target = '_blank';
+                searchResults.appendChild(googleLink);
                 
-                // Create results table
-                if (sampleBusinesses.length > 0) {
-                    resultsHTML += `
-                        <div class="results-container">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Business Name</th>
-                                        <th>Phone</th>
-                                        <th>Address</th>
-                                        <th>Email</th>
-                                        <th>Categories</th>
-                                        <th>Source</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                    `;
-                    
-                    // Add rows for each business
-                    sampleBusinesses.forEach(business => {
-                        resultsHTML += `
-                            <tr>
-                                <td>${business.name}</td>
-                                <td>${business.phone}</td>
-                                <td>${business.address}</td>
-                                <td>${business.email}</td>
-                                <td>${business.categories}</td>
-                                <td><span class="badge badge-local">Local</span></td>
-                            </tr>
-                        `;
-                    });
-                    
-                    resultsHTML += `
-                                </tbody>
-                            </table>
-                        </div>
-                    `;
-                }
+                // Instagram hashtag search link
+                const instagramLink = document.createElement('a');
+                instagramLink.href = `https://www.instagram.com/explore/tags/${encodedCategory}/`;
+                instagramLink.className = 'search-link';
+                instagramLink.textContent = `Search #${category} on Instagram`;
+                instagramLink.target = '_blank';
+                searchResults.appendChild(instagramLink);
                 
-                results.innerHTML = resultsHTML;
-                window.currentResults = sampleBusinesses; // Store results for CSV download
-            }, 1000);
+                // Add line break between categories
+                searchResults.appendChild(document.createElement('br'));
+            });
         });
-
-        function downloadCSV() {
-            if (!window.currentResults || window.currentResults.length === 0) {
-                alert('No results to download');
-                return;
-            }
-
-            const headers = ['Name', 'Phone', 'Address', 'Email', 'Categories', 'Source'];
-            const csvContent = [
-                headers.join(','),
-                ...window.currentResults.map(business => [
-                    `"${business.name}"`,
-                    `"${business.phone}"`,
-                    `"${business.address}"`,
-                    `"${business.email}"`,
-                    `"${business.categories}"`,
-                    `"${business.source}"`
-                ].join(','))
-            ].join('\n');
-
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            link.setAttribute('href', url);
-            link.setAttribute('download', 'businesses_without_websites.csv');
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
     </script>
 </body>
 </html> 

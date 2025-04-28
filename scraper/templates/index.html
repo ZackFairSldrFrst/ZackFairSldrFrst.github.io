@@ -133,7 +133,7 @@
         <h2>Find Businesses Without Websites</h2>
         
         <div class="note">
-            <p><strong>Note:</strong> Due to anti-scraping protections on many business directories, we've added a "local" mode that generates sample data for testing. For real data collection, please be mindful of website terms of service.</p>
+            <p><strong>Note:</strong> This tool searches for businesses across multiple platforms. Results may vary based on availability and platform restrictions.</p>
         </div>
         
         <form id="businessForm">
@@ -145,10 +145,10 @@
             
             <label for="source">Data Source:</label>
             <select id="source" name="source">
-                <option value="local" selected>Local (Sample Data)</option>
+                <option value="yelp">Yelp</option>
                 <option value="yellowpages">YellowPages</option>
                 <option value="instagram">Instagram</option>
-                <option value="yelp">Yelp (Often Blocked)</option>
+                <option value="local" selected>Local (Sample Data)</option>
             </select>
             
             <label for="num_pages">Number of pages to scrape per category:</label>
@@ -207,7 +207,7 @@
                     let resultsHTML = `
                         <div class="summary">
                             <h3>Results Summary</h3>
-                            <p>Found ${data.businesses_found} businesses without websites!</p>
+                            <p>Found ${data.businesses_found} businesses!</p>
                             <p><a href="/download_results" target="_blank">Download Results (CSV)</a></p>
                         </div>
                     `;
@@ -250,13 +250,9 @@
                                 sourceText = 'Local';
                             }
                             
-                            // Format Instagram handle if available
-                            let instagramInfo = business.instagram ? 
-                                `<br><span class="instagram-handle">${business.instagram}</span>` : '';
-                            
                             resultsHTML += `
                                 <tr>
-                                    <td>${business.name}${instagramInfo}</td>
+                                    <td><a href="${business.source_url}" target="_blank">${business.name}</a></td>
                                     <td>${business.phone}</td>
                                     <td>${business.address}</td>
                                     <td>${business.email}</td>
