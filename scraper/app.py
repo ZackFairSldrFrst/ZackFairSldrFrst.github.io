@@ -85,4 +85,7 @@ def download_results():
         return "No results file found. Run a search first.", 404
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8080)
+    # Get port from environment variable or default to 8080
+    port = int(os.environ.get('PORT', 8080))
+    # Bind to 0.0.0.0 to make accessible outside of localhost
+    app.run(host='0.0.0.0', debug=False, port=port)

@@ -19,7 +19,7 @@ A web application that finds businesses without websites and collects their cont
 pip install -r requirements.txt
 ```
 
-## Usage
+## Local Usage
 
 1. Start the Flask application:
 
@@ -39,6 +39,15 @@ python app.py
 5. Click "Search Businesses" to start the scraping process
 
 6. Once complete, download the CSV results
+
+## Web Deployment
+
+This application is ready to deploy to various web hosting platforms. See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions on deploying to:
+
+- Render (recommended for beginners)
+- Heroku
+- PythonAnywhere
+- AWS
 
 ## Important Notes
 
