@@ -1,0 +1,23 @@
+# Enable URL rewriting
+RewriteEngine On
+
+# Set the base for rewrites
+RewriteBase /
+
+# Remove .html extension
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.*)$ $1.html [L]
+
+# Handle direct .html requests - redirect to non-.html version
+RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
+RewriteRule ^ /%1 [NC,L,R=301]
+
+# Prevent directory listings
+Options -Indexes
+
+# Set default document
+DirectoryIndex index.html
+
+# Handle errors
+ErrorDocument 404 /index.html 

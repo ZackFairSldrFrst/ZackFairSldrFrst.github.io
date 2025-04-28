@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Contact Scraper</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #results {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: none;
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #09f;
+            animation: spin 1s linear infinite;
+            display: none;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .note {
+            background-color: #fff8e1;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin-bottom: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .results-container {
+            max-height: 500px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            color: white;
+            margin-right: 5px;
+        }
+        .badge-yellow {
+            background-color: #FFC107;
+        }
+        .badge-insta {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+        .badge-yelp {
+            background-color: #D32323;
+        }
+        .badge-local {
+            background-color: #4CAF50;
+        }
+        .summary {
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #e8f5e9;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Business Contact Scraper</h1>
+    
+    <div class="container">
+        <h2>Find Businesses Without Websites</h2>
+        
+        <div class="note">
+            <p><strong>Note:</strong> This is a static version of the application that generates sample data for demonstration purposes.</p>
+        </div>
+        
+        <form id="businessForm">
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" placeholder="e.g., San Francisco, CA" required>
+            
+            <label for="categories">Business Categories:</label>
+            <textarea id="categories" name="categories" placeholder="Enter categories separated by commas (e.g., restaurants, plumbers, electricians)" required></textarea>
+            
+            <label for="source">Data Source:</label>
+            <select id="source" name="source">
+                <option value="local" selected>Local (Sample Data)</option>
+            </select>
+            
+            <label for="num_pages">Number of pages to scrape per category:</label>
+            <input type="number" id="num_pages" name="num_pages" min="1" max="10" value="2">
+            
+            <button type="submit">Search Businesses</button>
+        </form>
+        
+        <div id="spinner" class="spinner"></div>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        // Sample business data generator
+        function generateSampleBusinesses(location, categories, count) {
+            const businesses = [];
+            const businessTypes = categories.split(',').map(cat => cat.trim());
+            
+            for (let i = 0; i < count; i++) {
+                const businessType = businessTypes[Math.floor(Math.random() * businessTypes.length)];
+                const business = {
+                    name: `${businessType} Business ${i + 1}`,
+                    phone: `(${Math.floor(Math.random() * 900) + 100}) ${Math.floor(Math.random() * 900) + 100}-${Math.floor(Math.random() * 9000) + 1000}`,
+                    address: `${Math.floor(Math.random() * 9999) + 1} ${location} St, ${location}`,
+                    email: `contact@${businessType.toLowerCase().replace(/\s+/g, '')}${i + 1}.com`,
+                    categories: businessType,
+                    source_url: '#',
+                    source: 'local'
+                };
+                businesses.push(business);
+            }
+            
+            return businesses;
+        }
+
+        document.getElementById('businessForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const location = document.getElementById('location').value;
+            const categories = document.getElementById('categories').value;
+            const numPages = document.getElementById('num_pages').value;
+            
+            const results = document.getElementById('results');
+            const spinner = document.getElementById('spinner');
+            
+            results.style.display = 'none';
+            spinner.style.display = 'block';
+            
+            // Simulate API delay
+            setTimeout(() => {
+                const sampleBusinesses = generateSampleBusinesses(location, categories, numPages * 5);
+                
+                spinner.style.display = 'none';
+                results.style.display = 'block';
+                
+                // Create results summary
+                let resultsHTML = `
+                    <div class="summary">
+                        <h3>Results Summary</h3>
+                        <p>Found ${sampleBusinesses.length} businesses without websites!</p>
+                        <button onclick="downloadCSV()">Download Results (CSV)</button>
+                    </div>
+                `;
+                
+                // Create results table
+                if (sampleBusinesses.length > 0) {
+                    resultsHTML += `
+                        <div class="results-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Business Name</th>
+                                        <th>Phone</th>
+                                        <th>Address</th>
+                                        <th>Email</th>
+                                        <th>Categories</th>
+                                        <th>Source</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    `;
+                    
+                    // Add rows for each business
+                    sampleBusinesses.forEach(business => {
+                        resultsHTML += `
+                            <tr>
+                                <td>${business.name}</td>
+                                <td>${business.phone}</td>
+                                <td>${business.address}</td>
+                                <td>${business.email}</td>
+                                <td>${business.categories}</td>
+                                <td><span class="badge badge-local">Local</span></td>
+                            </tr>
+                        `;
+                    });
+                    
+                    resultsHTML += `
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                }
+                
+                results.innerHTML = resultsHTML;
+                window.currentResults = sampleBusinesses; // Store results for CSV download
+            }, 1000);
+        });
+
+        function downloadCSV() {
+            if (!window.currentResults || window.currentResults.length === 0) {
+                alert('No results to download');
+                return;
+            }
+
+            const headers = ['Name', 'Phone', 'Address', 'Email', 'Categories', 'Source'];
+            const csvContent = [
+                headers.join(','),
+                ...window.currentResults.map(business => [
+                    `"${business.name}"`,
+                    `"${business.phone}"`,
+                    `"${business.address}"`,
+                    `"${business.email}"`,
+                    `"${business.categories}"`,
+                    `"${business.source}"`
+                ].join(','))
+            ].join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'businesses_without_websites.csv');
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html> 
