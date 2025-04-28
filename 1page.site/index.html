@@ -28,6 +28,72 @@
             border-radius: 4px;
             margin-left: 5px;
             display: inline-block;
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+        
+        /* Fix for mockup displays */
+        .device-mockup {
+            position: relative;
+            background-color: #1e1e1e;
+            border-radius: 36px;
+            padding: 10px;
+            box-shadow: 0 22px 35px -16px rgba(0, 0, 0, 0.2);
+            max-width: 270px;
+            margin: 0 auto;
+        }
+        
+        .device-frame {
+            position: relative;
+            background: #111;
+            border-radius: 36px;
+            box-shadow: 0 0 0 2px #1e1e1e;
+            height: 500px;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .device-screen {
+            position: relative;
+            background-color: #fff;
+            border-radius: 30px;
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+        }
+        
+        .device-screen iframe {
+            border: none;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            transform: scale(1);
+            transform-origin: 0 0;
+        }
+        
+        .device-home-button {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+        
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: 2;
+            pointer-events: none; /* Make sure it doesn't block interactions */
         }
     </style>
 </head>
@@ -44,7 +110,7 @@
                     <li><a href="#features">Features</a></li>
                     <li><a href="#verticals">Verticals</a></li>
                     <li><a href="#pricing">Pricing</a></li>
-                    <li><a href="#pricing" class="btn btn-accent">Get Your Page</a></li>
+                    <li><a href="#pricing" class="btn btn-accent">Launch Your Page</a></li>
                 </ul>
                 <button class="hamburger" aria-label="Toggle menu">
                     <span></span>
@@ -59,10 +125,10 @@
     <section id="hero" class="fade-in-section">
         <div class="container">
             <div class="hero-content">
-                <h1>The Only Web Presence Your Local Business Needs</h1>
+                <h1>Professional Website Built For You, Starting at Just $49/mo</h1>
                 <p class="lead">Beautiful, instant websites on your own domain that actually drive customers. No tech skills needed.</p>
                 <div class="hero-cta">
-                    <a href="#pricing" class="btn btn-primary">Hire Us To Build Your Page</a>
+                    <a href="#pricing" class="btn btn-primary">Launch Your Page</a>
                     <a href="#verticals" class="btn btn-outline">See Examples</a>
                 </div>
                 <p class="hero-note">Ready in 48 hours. Cancel anytime.</p>
@@ -71,7 +137,7 @@
                 <div class="device-mockup">
                     <div class="device-frame">
                         <div class="device-screen">
-                            <iframe src="food.html" title="Food & Beverage Template" frameborder="0" scrolling="yes"></iframe>
+                            <iframe src="food.html" title="Food & Beverage Template" frameborder="0" scrolling="yes" sandbox="allow-same-origin allow-scripts"></iframe>
                             <div class="overlay"></div>
                         </div>
                     </div>
@@ -199,7 +265,7 @@
                 <div class="highlight-content">
                     <h3>No Technical Skills Required</h3>
                     <p>Unlike Wix, Squarespace, or WordPress, there's nothing for you to build or maintain. We handle everything for a simple monthly fee. Focus on your business, not your website.</p>
-                    <a href="#pricing" class="btn btn-primary">Let Us Build Your Page</a>
+                    <a href="#pricing" class="btn btn-primary">Launch Your Page</a>
                 </div>
             </div>
         </div>
@@ -233,14 +299,14 @@
                                 <p>Perfect for restaurants, cafes, food trucks, bakeries, and other food businesses.</p>
                                 <div class="vertical-cta">
                                     <a href="food.html" class="btn btn-secondary">View Example</a>
-                                    <a href="#pricing" class="btn btn-primary">Hire Us Now</a>
+                                    <a href="#pricing" class="btn btn-primary">Launch Now</a>
                                 </div>
                             </div>
                             <div class="vertical-preview">
                                 <div class="device-mockup">
                                     <div class="device-frame">
                                         <div class="device-screen">
-                                            <iframe src="food.html" title="Food & Beverage Template" frameborder="0" scrolling="yes"></iframe>
+                                            <iframe src="food.html" title="Food & Beverage Template" frameborder="0" scrolling="yes" sandbox="allow-same-origin allow-scripts"></iframe>
                                             <div class="overlay"></div>
                                         </div>
                                     </div>
@@ -263,14 +329,14 @@
                                 <p>Designed for salons, barber shops, spas, nail studios, and beauty professionals.</p>
                                 <div class="vertical-cta">
                                     <a href="style.html" class="btn btn-secondary">View Example</a>
-                                    <a href="#pricing" class="btn btn-primary">Hire Us Now</a>
+                                    <a href="#pricing" class="btn btn-primary">Launch Now</a>
                                 </div>
                             </div>
                             <div class="vertical-preview">
                                 <div class="device-mockup">
                                     <div class="device-frame">
                                         <div class="device-screen">
-                                            <iframe src="style.html" title="Beauty & Style Template" frameborder="0" scrolling="yes"></iframe>
+                                            <iframe src="style.html" title="Beauty & Style Template" frameborder="0" scrolling="yes" sandbox="allow-same-origin allow-scripts"></iframe>
                                             <div class="overlay"></div>
                                         </div>
                                     </div>
@@ -293,14 +359,14 @@
                                 <p>Created for contractors, plumbers, electricians, cleaners, and home service professionals.</p>
                                 <div class="vertical-cta">
                                     <a href="services.html" class="btn btn-secondary">View Example</a>
-                                    <a href="#pricing" class="btn btn-primary">Hire Us Now</a>
+                                    <a href="#pricing" class="btn btn-primary">Launch Now</a>
                                 </div>
                             </div>
                             <div class="vertical-preview">
                                 <div class="device-mockup">
                                     <div class="device-frame">
                                         <div class="device-screen">
-                                            <iframe src="services.html" title="Local Services Template" frameborder="0" scrolling="yes"></iframe>
+                                            <iframe src="services.html" title="Local Services Template" frameborder="0" scrolling="yes" sandbox="allow-same-origin allow-scripts"></iframe>
                                             <div class="overlay"></div>
                                         </div>
                                     </div>
@@ -323,14 +389,14 @@
                                 <p>Ideal for tutors, coaches, trainers, schools, and educational services.</p>
                                 <div class="vertical-cta">
                                     <a href="learn.html" class="btn btn-secondary">View Example</a>
-                                    <a href="#pricing" class="btn btn-primary">Hire Us Now</a>
+                                    <a href="#pricing" class="btn btn-primary">Launch Now</a>
                                 </div>
                             </div>
                             <div class="vertical-preview">
                                 <div class="device-mockup">
                                     <div class="device-frame">
                                         <div class="device-screen">
-                                            <iframe src="learn.html" title="Education Template" frameborder="0" scrolling="yes"></iframe>
+                                            <iframe src="learn.html" title="Education Template" frameborder="0" scrolling="yes" sandbox="allow-same-origin allow-scripts"></iframe>
                                             <div class="overlay"></div>
                                         </div>
                                     </div>
@@ -353,14 +419,14 @@
                                 <p>Built for event planners, wedding coordinators, venues, and entertainment providers.</p>
                                 <div class="vertical-cta">
                                     <a href="events.html" class="btn btn-secondary">View Example</a>
-                                    <a href="#pricing" class="btn btn-primary">Hire Us Now</a>
+                                    <a href="#pricing" class="btn btn-primary">Launch Now</a>
                                 </div>
                             </div>
                             <div class="vertical-preview">
                                 <div class="device-mockup">
                                     <div class="device-frame">
                                         <div class="device-screen">
-                                            <iframe src="events.html" title="Events Template" frameborder="0" scrolling="yes"></iframe>
+                                            <iframe src="events.html" title="Events Template" frameborder="0" scrolling="yes" sandbox="allow-same-origin allow-scripts"></iframe>
                                             <div class="overlay"></div>
                                         </div>
                                     </div>
@@ -400,7 +466,7 @@
                         </ul>
                     </div>
                     <div class="pricing-cta">
-                        <a href="https://buy.stripe.com/9AQ8yS64L3HGdtmbII" onclick="return gtag_report_conversion('https://buy.stripe.com/9AQ8yS64L3HGdtmbII');" class="btn btn-outline btn-block">Hire Us Today</a>
+                        <a href="https://buy.stripe.com/9AQ8yS64L3HGdtmbII" onclick="return gtag_report_conversion('https://buy.stripe.com/9AQ8yS64L3HGdtmbII');" class="btn btn-outline btn-block">Launch Today</a>
                     </div>
                 </div>
                 <div class="pricing-card highlight">
@@ -424,7 +490,7 @@
                         </ul>
                     </div>
                     <div class="pricing-cta">
-                        <a href="https://buy.stripe.com/cN28yS2Szfqo9d6aEF" onclick="return gtag_report_conversion('https://buy.stripe.com/cN28yS2Szfqo9d6aEF');" class="btn btn-primary btn-block">Hire Us For Business</a>
+                        <a href="https://buy.stripe.com/cN28yS2Szfqo9d6aEF" onclick="return gtag_report_conversion('https://buy.stripe.com/cN28yS2Szfqo9d6aEF');" class="btn btn-primary btn-block">Launch Business</a>
                     </div>
                 </div>
                 <div class="pricing-card">
@@ -447,7 +513,7 @@
                         </ul>
                     </div>
                     <div class="pricing-cta">
-                        <a href="https://buy.stripe.com/9AQ02m9gX3HGcpi4gi" onclick="return gtag_report_conversion('https://buy.stripe.com/9AQ02m9gX3HGcpi4gi');" class="btn btn-outline btn-block">Hire Us For Premium</a>
+                        <a href="https://buy.stripe.com/9AQ02m9gX3HGcpi4gi" onclick="return gtag_report_conversion('https://buy.stripe.com/9AQ02m9gX3HGcpi4gi');" class="btn btn-outline btn-block">Launch Premium</a>
                     </div>
                 </div>
             </div>
@@ -584,7 +650,7 @@
             </div>
             
             <div class="value-props-cta">
-                <a href="#pricing" class="btn btn-primary">Hire Us Today</a>
+                <a href="#pricing" class="btn btn-primary">Launch Today</a>
                 <a href="#verticals" class="btn btn-outline">See Industry Solutions</a>
             </div>
         </div>
@@ -654,6 +720,25 @@
     <script src="js/validate-mockups.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Fix for device mockups
+            const iframes = document.querySelectorAll('.device-screen iframe');
+            iframes.forEach(iframe => {
+                iframe.onload = function() {
+                    // Remove pointer-events from overlay to allow interaction with iframe
+                    const overlay = this.parentElement.querySelector('.overlay');
+                    if (overlay) {
+                        overlay.style.pointerEvents = 'none';
+                    }
+                    
+                    console.log('Iframe loaded: ' + this.getAttribute('src'));
+                };
+                
+                // If already loaded, trigger onload manually
+                if (iframe.contentDocument && iframe.contentDocument.readyState === 'complete') {
+                    iframe.onload();
+                }
+            });
+            
             // Testimonials carousel functionality
             const slides = document.querySelectorAll('.testimonial-slide');
             const dots = document.querySelectorAll('.carousel-dots .dot');
