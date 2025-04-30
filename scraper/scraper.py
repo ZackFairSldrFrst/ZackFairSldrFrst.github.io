@@ -318,33 +318,44 @@ class BusinessScraper:
                     
                     business_name = name_elem.text.strip()
                     
-                    # Check if the business has a website
-                    website_link = listing.select_one('a.track-visit-website')
-                    has_website = website_link is not None
+                    # Get website if available
+                    website = "N/A"
+                    website_elem = listing.select_one('a.track-visit-website')
+                    if website_elem:
+                        website = website_elem.get('href', 'N/A')
                     
-                    if not has_website:
-                        # Get business details directly from the listing
-                        phone_elem = listing.select_one('.phones.phone.primary')
-                        address_elem = listing.select_one('.street-address')
-                        
-                        phone = phone_elem.text.strip() if phone_elem else "N/A"
-                        address = address_elem.text.strip() if address_elem else "N/A"
-                        
-                        # Get categories
-                        categories_elem = listing.select('.categories a')
-                        categories = ", ".join([cat.text.strip() for cat in categories_elem]) if categories_elem else "N/A"
-                        
-                        business_data = {
-                            'name': business_name,
-                            'phone': phone,
-                            'address': address,
-                            'email': "N/A",  # YellowPages doesn't typically list emails
-                            'categories': categories,
-                            'source_url': f"{domain}"
-                        }
-                        
-                        self.results.append(business_data)
-                        print(f"Added YellowPages business without website: {business_name}")
+                    # Get phone number
+                    phone = "N/A"
+                    phone_elem = listing.select_one('.phones.phone.primary')
+                    if phone_elem:
+                        phone = phone_elem.text.strip()
+                    
+                    # Get address
+                    address = "N/A"
+                    address_elem = listing.select_one('.street-address')
+                    if address_elem:
+                        address = address_elem.text.strip()
+                    
+                    # Get categories
+                    categories_elem = listing.select('.categories a')
+                    categories = ", ".join([cat.text.strip() for cat in categories_elem]) if categories_elem else "N/A"
+                    
+                    # Create Google search URL
+                    google_search = f"https://www.google.com/search?q={encodeURIComponent(business_name + ' ' + address)}"
+                    
+                    business_data = {
+                        'name': business_name,
+                        'phone': phone,
+                        'address': address,
+                        'email': "N/A",  # YellowPages doesn't typically list emails
+                        'categories': categories,
+                        'website': website,
+                        'source_url': f"{domain}",
+                        'google_search': google_search
+                    }
+                    
+                    self.results.append(business_data)
+                    print(f"Added YellowPages business: {business_name}")
                 except Exception as e:
                     print(f"Error parsing YellowPages listing: {str(e)}")
         except Exception as e:
@@ -493,7 +504,7 @@ class BusinessScraper:
             return
         
         with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
-            fieldnames = ['name', 'phone', 'address', 'email', 'categories', 'source_url', 'instagram'] if 'instagram' in self.results[0] else ['name', 'phone', 'address', 'email', 'categories', 'source_url']
+            fieldnames = ['name', 'phone', 'address', 'email', 'categories', 'website', 'source_url', 'google_search']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             
             writer.writeheader()
