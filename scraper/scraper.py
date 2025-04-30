@@ -6,6 +6,7 @@ import time
 from random import randint, choice
 import os
 import json
+from urllib.parse import quote
 
 class BusinessScraper:
     def __init__(self, use_proxy=False):
@@ -318,40 +319,57 @@ class BusinessScraper:
                     
                     business_name = name_elem.text.strip()
                     
-                    # Get website if available
-                    website = "N/A"
-                    website_elem = listing.select_one('a.track-visit-website')
-                    if website_elem:
-                        website = website_elem.get('href', 'N/A')
+                    # Get business website if available
+                    website_link = listing.select_one('a.track-visit-website')
+                    website = website_link.get('href') if website_link else "N/A"
                     
-                    # Get phone number
-                    phone = "N/A"
+                    # Get business details
                     phone_elem = listing.select_one('.phones.phone.primary')
-                    if phone_elem:
-                        phone = phone_elem.text.strip()
-                    
-                    # Get address
-                    address = "N/A"
                     address_elem = listing.select_one('.street-address')
-                    if address_elem:
-                        address = address_elem.text.strip()
+                    city_elem = listing.select_one('.locality')
+                    state_elem = listing.select_one('.region')
+                    postal_elem = listing.select_one('.postal-code')
+                    
+                    phone = phone_elem.text.strip() if phone_elem else "N/A"
+                    address = address_elem.text.strip() if address_elem else "N/A"
+                    city = city_elem.text.strip() if city_elem else "N/A"
+                    state = state_elem.text.strip() if state_elem else "N/A"
+                    postal = postal_elem.text.strip() if postal_elem else "N/A"
                     
                     # Get categories
                     categories_elem = listing.select('.categories a')
                     categories = ", ".join([cat.text.strip() for cat in categories_elem]) if categories_elem else "N/A"
                     
-                    # Create Google search URL
-                    google_search = f"https://www.google.com/search?q={encodeURIComponent(business_name + ' ' + address)}"
+                    # Get business description if available
+                    description_elem = listing.select_one('.snippet')
+                    description = description_elem.text.strip() if description_elem else "N/A"
+                    
+                    # Get business rating if available
+                    rating_elem = listing.select_one('.result-rating')
+                    rating = rating_elem.text.strip() if rating_elem else "N/A"
+                    
+                    # Get number of reviews if available
+                    reviews_elem = listing.select_one('.count')
+                    reviews = reviews_elem.text.strip() if reviews_elem else "N/A"
+                    
+                    # Create Google search query
+                    google_search_query = f"{business_name} {address} {city} {state} {postal}"
                     
                     business_data = {
                         'name': business_name,
                         'phone': phone,
                         'address': address,
+                        'city': city,
+                        'state': state,
+                        'postal_code': postal,
+                        'website': website,
                         'email': "N/A",  # YellowPages doesn't typically list emails
                         'categories': categories,
-                        'website': website,
-                        'source_url': f"{domain}",
-                        'google_search': google_search
+                        'description': description,
+                        'rating': rating,
+                        'reviews': reviews,
+                        'source_url': f"https://www.{domain}",
+                        'google_search_query': f"https://www.google.com/search?q={quote(google_search_query)}"
                     }
                     
                     self.results.append(business_data)
@@ -502,16 +520,24 @@ class BusinessScraper:
         if not self.results:
             print("No results to save")
             return
-        
-        with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
-            fieldnames = ['name', 'phone', 'address', 'email', 'categories', 'website', 'source_url', 'google_search']
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             
-            writer.writeheader()
-            for business in self.results:
-                writer.writerow(business)
-        
-        print(f"Saved {len(self.results)} businesses to {filename}")
+        try:
+            with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
+                fieldnames = [
+                    'name', 'phone', 'address', 'city', 'state', 'postal_code',
+                    'website', 'email', 'categories', 'description', 'rating',
+                    'reviews', 'source_url', 'google_search_query'
+                ]
+                
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                
+                for business in self.results:
+                    writer.writerow(business)
+                    
+            print(f"Saved {len(self.results)} businesses to {filename}")
+        except Exception as e:
+            print(f"Error saving results to CSV: {str(e)}")
 
 def main():
     scraper = BusinessScraper()

@@ -220,10 +220,8 @@
                                             <th>Phone</th>
                                             <th>Address</th>
                                             <th>Email</th>
-                                            <th>Website</th>
                                             <th>Categories</th>
                                             <th>Source</th>
-                                            <th>Google Search</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -244,10 +242,8 @@
                                     <td>${business.phone}</td>
                                     <td>${business.address}</td>
                                     <td>${business.email}</td>
-                                    <td>${business.website !== 'N/A' ? `<a href="${business.website}" target="_blank">Visit Website</a>` : 'N/A'}</td>
                                     <td>${business.categories}</td>
                                     <td><span class="badge ${sourceBadge}">${sourceText}</span></td>
-                                    <td><a href="${business.google_search}" target="_blank">Search</a></td>
                                 </tr>
                             `;
                         });
