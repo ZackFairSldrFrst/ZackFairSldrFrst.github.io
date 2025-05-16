@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoGuesser Clone</title>
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQYqmhf1pdg0biatDII8yzGCRpbFGf04w&libraries=places,streetview"></script>
+    <!-- React and ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .game-container {
+            height: calc(100vh - 64px);
+        }
+        .street-view {
+            height: 100%;
+            width: 100%;
+        }
+        .guess-map {
+            height: 300px;
+            width: 100%;
+        }
+        .score-popup {
+            animation: slideIn 0.5s ease-out;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div id="root"></div>
+    <script type="text/babel">
+        // Game Modes
+        const GAME_MODES = {
+            CLASSIC: 'classic',
+            TIME_ATTACK: 'time_attack',
+            COUNTRY_STREAK: 'country_streak'
+        };
+
+        // Game Component
+        function Game() {
+            const [gameMode, setGameMode] = React.useState(GAME_MODES.CLASSIC);
+            const [score, setScore] = React.useState(0);
+            const [round, setRound] = React.useState(1);
+            const [maxRounds] = React.useState(5);
+            const [timeLeft, setTimeLeft] = React.useState(120);
+            const [isPlaying, setIsPlaying] = React.useState(false);
+            const [currentLocation, setCurrentLocation] = React.useState(null);
+            const [guessLocation, setGuessLocation] = React.useState(null);
+            const [showResults, setShowResults] = React.useState(false);
+            const [distance, setDistance] = React.useState(0);
+            const [roundScore, setRoundScore] = React.useState(0);
+            const [streak, setStreak] = React.useState(0);
+            const [map, setMap] = React.useState(null);
+            const [streetView, setStreetView] = React.useState(null);
+            const mapRef = React.useRef(null);
+            const streetViewRef = React.useRef(null);
+
+            // Initialize maps
+            React.useEffect(() => {
+                if (mapRef.current && !map) {
+                    const newMap = new google.maps.Map(mapRef.current, {
+                        zoom: 2,
+                        center: { lat: 0, lng: 0 },
+                        mapTypeId: 'roadmap',
+                        streetViewControl: false,
+                        fullscreenControl: false
+                    });
+                    setMap(newMap);
+                }
+            }, [mapRef.current]);
+
+            React.useEffect(() => {
+                if (streetViewRef.current && !streetView) {
+                    const newStreetView = new google.maps.StreetViewPanorama(streetViewRef.current, {
+                        enableCloseButton: false,
+                        addressControl: false,
+                        showRoadLabels: false,
+                        zoomControl: false
+                    });
+                    setStreetView(newStreetView);
+                }
+            }, [streetViewRef.current]);
+
+            // Timer effect
+            React.useEffect(() => {
+                let timer;
+                if (isPlaying && timeLeft > 0 && gameMode === GAME_MODES.TIME_ATTACK) {
+                    timer = setInterval(() => {
+                        setTimeLeft(prev => prev - 1);
+                    }, 1000);
+                }
+                return () => clearInterval(timer);
+            }, [isPlaying, timeLeft, gameMode]);
+
+            // Generate random location
+            const generateRandomLocation = () => {
+                // This would normally use a database of valid Street View locations
+                // For demo, we'll use some predefined locations
+                const locations = [
+                    { lat: 40.7128, lng: -74.0060 }, // New York
+                    { lat: 51.5074, lng: -0.1278 }, // London
+                    { lat: 35.6762, lng: 139.6503 }, // Tokyo
+                    { lat: 48.8566, lng: 2.3522 }, // Paris
+                    { lat: -33.8688, lng: 151.2093 } // Sydney
+                ];
+                return locations[Math.floor(Math.random() * locations.length)];
+            };
+
+            // Start new round
+            const startNewRound = () => {
+                const location = generateRandomLocation();
+                setCurrentLocation(location);
+                setGuessLocation(null);
+                setShowResults(false);
+                setRoundScore(0);
+                
+                if (streetView) {
+                    streetView.setPosition(location);
+                }
+            };
+
+            // Start game
+            const startGame = () => {
+                setIsPlaying(true);
+                setScore(0);
+                setRound(1);
+                setTimeLeft(120);
+                setStreak(0);
+                startNewRound();
+            };
+
+            // Make guess
+            const makeGuess = (lat, lng) => {
+                if (!isPlaying) return;
+                
+                const guess = { lat, lng };
+                setGuessLocation(guess);
+                
+                // Calculate distance and score
+                const distance = google.maps.geometry.spherical.computeDistanceBetween(
+                    new google.maps.LatLng(currentLocation.lat, currentLocation.lng),
+                    new google.maps.LatLng(guess.lat, guess.lng)
+                );
+                
+                setDistance(distance);
+                
+                // Calculate score (max 5000 points)
+                const maxDistance = 20000000; // 20,000 km
+                const points = Math.max(0, Math.round(5000 * (1 - distance / maxDistance)));
+                setRoundScore(points);
+                
+                // Update streak for country streak mode
+                if (gameMode === GAME_MODES.COUNTRY_STREAK) {
+                    const currentCountry = getCountryFromLocation(currentLocation);
+                    const guessCountry = getCountryFromLocation(guess);
+                    if (currentCountry === guessCountry) {
+                        setStreak(prev => prev + 1);
+                    } else {
+                        setStreak(0);
+                    }
+                }
+                
+                setShowResults(true);
+                setScore(prev => prev + points);
+            };
+
+            // Get country from location (simplified)
+            const getCountryFromLocation = (location) => {
+                // This would normally use a geocoding service
+                // For demo, we'll return a mock country
+                return "Unknown";
+            };
+
+            // Handle map click
+            const handleMapClick = (e) => {
+                if (!isPlaying || showResults) return;
+                makeGuess(e.latLng.lat(), e.latLng.lng());
+            };
+
+            // Next round
+            const nextRound = () => {
+                if (round < maxRounds) {
+                    setRound(prev => prev + 1);
+                    startNewRound();
+                } else {
+                    endGame();
+                }
+            };
+
+            // End game
+            const endGame = () => {
+                setIsPlaying(false);
+                setShowResults(true);
+            };
+
+            return (
+                <div className="min-h-screen">
+                    {/* Header */}
+                    <header className="bg-white shadow-sm">
+                        <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+                            <div className="flex justify-between items-center">
+                                <h1 className="text-2xl font-bold text-gray-900">GeoGuesser</h1>
+                                {isPlaying && (
+                                    <div className="flex items-center space-x-4">
+                                        <span className="text-gray-600">Score: {score}</span>
+                                        <span className="text-gray-600">Round: {round}/{maxRounds}</span>
+                                        {gameMode === GAME_MODES.TIME_ATTACK && (
+                                            <span className="text-gray-600">Time: {timeLeft}s</span>
+                                        )}
+                                        {gameMode === GAME_MODES.COUNTRY_STREAK && (
+                                            <span className="text-gray-600">Streak: {streak}</span>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </header>
+
+                    {/* Game Container */}
+                    <div className="game-container">
+                        {!isPlaying ? (
+                            // Game Mode Selection
+                            <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <button
+                                        onClick={() => {
+                                            setGameMode(GAME_MODES.CLASSIC);
+                                            startGame();
+                                        }}
+                                        className="p-6 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
+                                    >
+                                        <h2 className="text-xl font-bold mb-2">Classic Mode</h2>
+                                        <p className="text-gray-600">5 rounds, no time limit</p>
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            setGameMode(GAME_MODES.TIME_ATTACK);
+                                            startGame();
+                                        }}
+                                        className="p-6 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
+                                    >
+                                        <h2 className="text-xl font-bold mb-2">Time Attack</h2>
+                                        <p className="text-gray-600">2 minutes to guess as many locations as possible</p>
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            setGameMode(GAME_MODES.COUNTRY_STREAK);
+                                            startGame();
+                                        }}
+                                        className="p-6 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
+                                    >
+                                        <h2 className="text-xl font-bold mb-2">Country Streak</h2>
+                                        <p className="text-gray-600">Guess the correct country to build your streak</p>
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            // Game Interface
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4">
+                                {/* Street View */}
+                                <div className="street-view" ref={streetViewRef}></div>
+
+                                {/* Guess Map */}
+                                <div className="space-y-4">
+                                    <div className="guess-map" ref={mapRef}></div>
+                                    {showResults && (
+                                        <div className="score-popup bg-white p-4 rounded-lg shadow">
+                                            <h3 className="text-lg font-bold mb-2">Round Results</h3>
+                                            <p>Distance: {Math.round(distance / 1000)} km</p>
+                                            <p>Score: {roundScore} points</p>
+                                            <button
+                                                onClick={nextRound}
+                                                className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
+                                            >
+                                                {round < maxRounds ? 'Next Round' : 'End Game'}
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        // Render the app
+        ReactDOM.createRoot(document.getElementById('root')).render(<Game />);
+    </script>
+</body>
+</html> 
