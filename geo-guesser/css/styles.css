@@ -1,0 +1,45 @@
+.game-container {
+    height: calc(100vh - 64px);
+}
+
+.street-view {
+    height: 100%;
+    width: 100%;
+}
+
+.guess-map {
+    height: 300px;
+    width: 100%;
+}
+
+.score-popup {
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(0); }
+}
+
+.marker {
+    width: 20px;
+    height: 20px;
+    background-color: #ef4444;
+    border: 2px solid white;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.marker::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid #ef4444;
+} 
