@@ -4,91 +4,222 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Projects</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #f0f4f8, #c1c8e4);
-            color: #333;
-            text-align: center;
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #64748b;
+            --background: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+        }
+
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
-        h1 {
-            font-size: 3em;
-            margin: 20px 0;
-            color: #2c3e50;
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
         }
-        p {
-            font-size: 1.2em;
-            color: #34495e;
-            margin-bottom: 40px;
-        }
-        .container {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            padding: 20px;
-        }
-        .card {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 250px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 4rem 2rem;
             text-align: center;
+            margin-bottom: 3rem;
         }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
         .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
-        .card a {
-            display: block;
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .card-description {
+            color: var(--text-light);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-link {
+            display: inline-block;
+            color: var(--primary);
             text-decoration: none;
-            color: #3498db;
-            font-size: 1.2em;
-            margin: 10px 0;
+            font-weight: 500;
+            font-size: 0.875rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            background: rgba(37, 99, 235, 0.1);
+            transition: all 0.2s ease;
         }
-        .card a:hover {
-            color: #2980b9;
+
+        .card-link:hover {
+            background: rgba(37, 99, 235, 0.2);
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 3rem 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
-    <!-- Link to Google Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VDZNRELZ6H"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-VDZNRELZ6H');
-</script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VDZNRELZ6H"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-VDZNRELZ6H');
+    </script>
 </head>
 <body>
-    <h1>Welcome to My Projects</h1>
-    <p>Click on a project to view it:</p>
-    <div class="container">
-        <div class="card">
-            <a href="dnd-roller/index.html">DND Roller</a>
-        </div>
-        <div class="card">
-            <a href="hinted/index.html">Hinted</a>
-        </div>
-        <div class="card">
-            <a href="where-to-eat/index.html">Where to Eat</a>
-        </div>
-        <div class="card">
-            <a href="word-warriors/index.html">Word Warriors</a>
-        </div>
-        <div class="card">
-            <a href="contact-me/index.html">Contact Me</a>
-        </div>
-        <div class="card">
-            <a href="trip-planner/index.html">Trip Planner</a>
-        </div>
-    </div>
+    <header class="header">
+        <h1>My Projects</h1>
+        <p class="subtitle">A collection of web applications and tools I've built</p>
+    </header>
+
+    <main class="container">
+        <section>
+            <h2 class="category-title">Games & Entertainment</h2>
+            <div class="projects-grid">
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="card-title">GeoGuesser</h3>
+                        <p class="card-description">Test your geography knowledge by guessing locations around the world</p>
+                        <a href="geo-guesser/index.html" class="card-link">Play Now</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="card-title">Word Warriors</h3>
+                        <p class="card-description">Challenge your vocabulary in this word-based battle game</p>
+                        <a href="word-warriors/index.html" class="card-link">Play Now</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="card-title">DND Roller</h3>
+                        <p class="card-description">Digital dice roller for Dungeons & Dragons and other tabletop games</p>
+                        <a href="dnd-roller/index.html" class="card-link">Try It</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="category-title">Tools & Utilities</h2>
+            <div class="projects-grid">
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="card-title">Trip Planner</h3>
+                        <p class="card-description">Plan your next adventure with this interactive trip planning tool</p>
+                        <a href="trip-planner/index.html" class="card-link">Start Planning</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="card-title">Where to Eat</h3>
+                        <p class="card-description">Can't decide where to eat? Let this tool help you choose</p>
+                        <a href="where-to-eat/index.html" class="card-link">Find Food</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="card-title">Hinted</h3>
+                        <p class="card-description">Get hints and tips for your favorite games and puzzles</p>
+                        <a href="hinted/index.html" class="card-link">Get Hints</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="category-title">Contact</h2>
+            <div class="projects-grid">
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="card-title">Contact Me</h3>
+                        <p class="card-description">Get in touch with me for collaborations or questions</p>
+                        <a href="contact-me/index.html" class="card-link">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 </body>
 </html>
