@@ -8,6 +8,11 @@
     --shadow-color: rgba(0, 0, 0, 0.1);
     --success-color: #2ecc71;
     --border-radius: 12px;
+    --dots-color: #e74c3c;
+    --bamboo-color: #27ae60;
+    --characters-color: #2c3e50;
+    --wind-color: #8e44ad;
+    --dragon-color: #c0392b;
 }
 
 * {
@@ -50,6 +55,7 @@ body {
     border-radius: var(--border-radius);
     box-shadow: 0 4px 15px var(--shadow-color);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
 }
 
 .player-area:hover {
@@ -160,6 +166,61 @@ body {
     box-shadow: 0 2px 8px var(--shadow-color);
 }
 
+.tile-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 0.2rem;
+}
+
+.tile-number {
+    font-size: 1.4rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.tile-suit {
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+.tile-symbol {
+    font-size: 1.6rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+/* Tile type specific styles */
+.number-tile[data-suit="筒"] {
+    color: var(--dots-color);
+    border-color: var(--dots-color);
+}
+
+.number-tile[data-suit="索"] {
+    color: var(--bamboo-color);
+    border-color: var(--bamboo-color);
+}
+
+.number-tile[data-suit="萬"] {
+    color: var(--characters-color);
+    border-color: var(--characters-color);
+}
+
+.wind-tile {
+    color: var(--wind-color);
+    border-color: var(--wind-color);
+    background: linear-gradient(135deg, #fff, #f8f9fa);
+}
+
+.dragon-tile {
+    color: var(--dragon-color);
+    border-color: var(--dragon-color);
+    background: linear-gradient(135deg, #fff, #f8f9fa);
+}
+
 .tile:hover {
     transform: translateY(-5px) rotate(2deg);
     box-shadow: 0 5px 15px var(--shadow-color);
@@ -235,6 +296,18 @@ body {
         font-size: 1rem;
     }
 
+    .tile-number {
+        font-size: 1.2rem;
+    }
+
+    .tile-suit {
+        font-size: 1rem;
+    }
+
+    .tile-symbol {
+        font-size: 1.4rem;
+    }
+
     .hand, .discarded {
         min-height: 60px;
     }
@@ -254,6 +327,18 @@ body {
         width: 35px;
         height: 49px;
         font-size: 0.9rem;
+    }
+
+    .tile-number {
+        font-size: 1.1rem;
+    }
+
+    .tile-suit {
+        font-size: 0.9rem;
+    }
+
+    .tile-symbol {
+        font-size: 1.2rem;
     }
 
     .hand, .discarded {
@@ -321,4 +406,64 @@ body {
     100% {
         transform: scale(1);
     }
+}
+
+.pass-device-btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 1.1rem;
+    background: linear-gradient(135deg, var(--accent-color), #c0392b);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 300px;
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+    margin-top: 1rem;
+}
+
+.pass-device-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+}
+
+.pass-device-btn:active {
+    transform: translateY(1px);
+}
+
+/* Hidden player area styles */
+.player-area.hidden {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.player-area.hidden .hand {
+    filter: blur(8px);
+}
+
+.player-area.hidden .tile {
+    background: #ddd;
+    color: transparent;
+    border-color: #999;
+}
+
+.player-area.hidden .tile-content {
+    visibility: hidden;
+}
+
+/* Add a message for hidden player */
+.player-area.hidden::before {
+    content: 'Pass the device to see your tiles';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    z-index: 10;
+    white-space: nowrap;
 } 

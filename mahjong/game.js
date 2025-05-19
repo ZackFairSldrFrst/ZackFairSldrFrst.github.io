@@ -4,22 +4,58 @@ class MahjongGame {
         this.player1Hand = [];
         this.player2Hand = [];
         this.currentPlayer = 1;
+        this.activeView = 1; // Track which player's view is currently active
         this.initializeTiles();
         this.setupEventListeners();
         this.updateUI();
+        this.updateView();
     }
 
     initializeTiles() {
-        // Create a standard set of mahjong tiles (simplified version)
-        const suits = ['萬', '筒', '索'];
-        const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        // Create all traditional mahjong tiles
+        const suits = {
+            dots: '筒',    // Circles/Dots
+            bamboo: '索',  // Bamboo
+            characters: '萬', // Characters
+            winds: ['東', '南', '西', '北'], // East, South, West, North
+            dragons: ['中', '發', '白'] // Red Dragon, Green Dragon, White Dragon
+        };
         
-        // Create 4 copies of each tile
-        for (let suit of suits) {
-            for (let number of numbers) {
+        // Create number tiles (1-9) for dots, bamboo, and characters
+        for (let suit of [suits.dots, suits.bamboo, suits.characters]) {
+            for (let number = 1; number <= 9; number++) {
                 for (let i = 0; i < 4; i++) {
-                    this.tiles.push({ suit, number });
+                    this.tiles.push({ 
+                        type: 'number',
+                        suit, 
+                        number,
+                        display: `${number}${suit}`
+                    });
                 }
+            }
+        }
+
+        // Create wind tiles
+        for (let wind of suits.winds) {
+            for (let i = 0; i < 4; i++) {
+                this.tiles.push({
+                    type: 'wind',
+                    suit: '風',
+                    value: wind,
+                    display: wind
+                });
+            }
+        }
+
+        // Create dragon tiles
+        for (let dragon of suits.dragons) {
+            for (let i = 0; i < 4; i++) {
+                this.tiles.push({
+                    type: 'dragon',
+                    suit: '龍',
+                    value: dragon,
+                    display: dragon
+                });
             }
         }
 
@@ -42,6 +78,7 @@ class MahjongGame {
 
     setupEventListeners() {
         document.getElementById('draw-tile').addEventListener('click', () => this.drawTile());
+        document.getElementById('pass-device').addEventListener('click', () => this.passDevice());
         
         // Add click handlers for player hands
         document.querySelector('.player1 .hand').addEventListener('click', (e) => {
@@ -57,9 +94,40 @@ class MahjongGame {
         });
     }
 
+    passDevice() {
+        this.activeView = this.activeView === 1 ? 2 : 1;
+        this.updateView();
+        this.showNotification(`Device passed to Player ${this.activeView}`);
+    }
+
+    updateView() {
+        const player1Area = document.querySelector('.player1');
+        const player2Area = document.querySelector('.player2');
+        const drawButton = document.getElementById('draw-tile');
+        const passButton = document.getElementById('pass-device');
+
+        // Update visibility of player areas
+        if (this.activeView === 1) {
+            player1Area.classList.remove('hidden');
+            player2Area.classList.add('hidden');
+        } else {
+            player1Area.classList.add('hidden');
+            player2Area.classList.remove('hidden');
+        }
+
+        // Update button states
+        drawButton.disabled = this.currentPlayer !== this.activeView;
+        passButton.textContent = `Pass Device to Player ${this.activeView === 1 ? '2' : '1'}`;
+    }
+
     drawTile() {
         if (this.tiles.length === 0) {
             this.showNotification('No more tiles!');
+            return;
+        }
+
+        if (this.currentPlayer !== this.activeView) {
+            this.showNotification('Not your turn!');
             return;
         }
 
@@ -75,6 +143,11 @@ class MahjongGame {
     }
 
     discardTile(index, player) {
+        if (player !== this.activeView) {
+            this.showNotification('Not your turn!');
+            return;
+        }
+
         const hand = player === 1 ? this.player1Hand : this.player2Hand;
         const discardedTile = hand.splice(index, 1)[0];
         
@@ -92,12 +165,39 @@ class MahjongGame {
         // Switch turns
         this.currentPlayer = this.currentPlayer === 1 ? 2 : 1;
         this.updateUI();
+        this.showNotification(`Turn passed to Player ${this.currentPlayer}`);
     }
 
     createTileElement(tile) {
         const tileElement = document.createElement('div');
         tileElement.className = 'tile';
-        tileElement.textContent = `${tile.number}${tile.suit}`;
+        
+        // Add specific class based on tile type
+        if (tile.type === 'wind') {
+            tileElement.classList.add('wind-tile');
+        } else if (tile.type === 'dragon') {
+            tileElement.classList.add('dragon-tile');
+        } else {
+            tileElement.classList.add('number-tile');
+        }
+
+        // Create the tile content
+        const tileContent = document.createElement('div');
+        tileContent.className = 'tile-content';
+        
+        if (tile.type === 'number') {
+            tileContent.innerHTML = `
+                <div class="tile-number">${tile.number}</div>
+                <div class="tile-suit">${tile.suit}</div>
+            `;
+            tileElement.dataset.suit = tile.suit;
+        } else {
+            tileContent.innerHTML = `
+                <div class="tile-symbol">${tile.display}</div>
+            `;
+        }
+        
+        tileElement.appendChild(tileContent);
         return tileElement;
     }
 
