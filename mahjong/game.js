@@ -8,6 +8,7 @@ class MahjongGame {
         this.lastDiscardedTile = null; // Track the last discarded tile
         this.lastDiscardedBy = null; // Track who discarded the last tile
         this.sortMode = 'none'; // none, number, suit, type
+        this.currentSortMode = 'none'; // Track current sort mode
         this.draggedTile = null;
         this.dragStartIndex = null;
         
@@ -16,7 +17,8 @@ class MahjongGame {
             this.players.push({
                 hand: [],
                 discarded: [],
-                melds: [] // Track completed melds
+                melds: [], // Track completed melds
+                sortMode: 'none' // Track sort mode per player
             });
         }
 
@@ -95,6 +97,14 @@ class MahjongGame {
     setupEventListeners() {
         document.getElementById('draw-tile').addEventListener('click', () => this.drawTile());
         document.getElementById('pass-device').addEventListener('click', () => this.passDevice());
+        
+        // Add done button
+        const doneButton = document.createElement('button');
+        doneButton.id = 'done-button';
+        doneButton.className = 'control-button';
+        doneButton.textContent = 'Done';
+        doneButton.addEventListener('click', () => this.playerDone());
+        document.querySelector('.game-controls').appendChild(doneButton);
         
         // Add click handlers for player hands
         for (let i = 0; i < this.numPlayers; i++) {
@@ -206,6 +216,11 @@ class MahjongGame {
 
         const drawnTile = this.tiles.pop();
         this.players[this.currentPlayer].hand.push(drawnTile);
+        
+        // Apply current sort mode to the hand
+        if (this.players[this.currentPlayer].sortMode !== 'none') {
+            this.sortHand(this.players[this.currentPlayer].sortMode);
+        }
         
         this.updateUI();
         this.animateDrawTile();
@@ -328,13 +343,44 @@ class MahjongGame {
         tileContent.className = 'tile-content';
         
         if (tile.type === 'number') {
+            // For number tiles, show the actual symbols
+            let symbols = '';
+            if (tile.suit === '筒') {
+                // Create circles based on the number
+                symbols = '●'.repeat(tile.number);
+            } else if (tile.suit === '索') {
+                // Create bamboo symbols based on the number
+                symbols = '🎋'.repeat(tile.number);
+            } else if (tile.suit === '萬') {
+                // For characters, show the number in Chinese
+                const chineseNumbers = ['一', '二', '三', '四', '五', '六', '七', '八', '九'];
+                symbols = chineseNumbers[tile.number - 1];
+            }
+            
             tileContent.innerHTML = `
-                <div class="tile-number">${tile.number}</div>
+                <div class="tile-symbols">${symbols}</div>
                 <div class="tile-suit">${tile.suit}</div>
             `;
-        } else {
+        } else if (tile.type === 'wind') {
+            // For wind tiles, show the wind symbol
+            const windSymbols = {
+                '東': '東',
+                '南': '南',
+                '西': '西',
+                '北': '北'
+            };
             tileContent.innerHTML = `
-                <div class="tile-symbol">${tile.display}</div>
+                <div class="tile-symbol">${windSymbols[tile.value]}</div>
+            `;
+        } else if (tile.type === 'dragon') {
+            // For dragon tiles, show the dragon symbol
+            const dragonSymbols = {
+                '中': '中',
+                '發': '發',
+                '白': '白'
+            };
+            tileContent.innerHTML = `
+                <div class="tile-symbol">${dragonSymbols[tile.value]}</div>
             `;
         }
         
@@ -443,8 +489,26 @@ class MahjongGame {
                 break;
         }
 
+        // Store the sort mode for this player
+        this.players[this.currentPlayer].sortMode = sortType;
         this.updateUI();
         this.showNotification(`Hand sorted by ${sortType}`);
+    }
+
+    playerDone() {
+        if (this.currentPlayer !== this.activeView) {
+            this.showNotification('Not your turn!');
+            return;
+        }
+
+        // Check if the player has a valid hand (you can add more specific winning conditions here)
+        const hand = this.players[this.currentPlayer].hand;
+        if (hand.length === 14) { // Basic check for complete hand
+            this.showNotification('Player ' + (this.currentPlayer + 1) + ' has completed their hand!');
+            // You can add more winning logic here
+        } else {
+            this.showNotification('Your hand is not complete yet!');
+        }
     }
 }
 

@@ -93,6 +93,22 @@ body {
     transition: all 0.3s ease;
 }
 
+#done-button {
+    background: var(--success-color);
+    font-weight: bold;
+}
+
+#done-button:hover {
+    background: #27ae60;
+    transform: translateY(-2px);
+}
+
+#done-button:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+    transform: none;
+}
+
 .control-button:hover {
     background: #2980b9;
     transform: translateY(-2px);
@@ -235,12 +251,13 @@ body {
     }
 }
 
+/* Tile Base Styles */
 .tile {
     width: 60px;
     height: 80px;
-    background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
-    border: 2px solid var(--primary-color);
-    border-radius: 8px;
+    background: #fff;
+    border: 2px solid #2c3e50;
+    border-radius: 4px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -250,6 +267,9 @@ body {
     position: relative;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif;
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .tile::before {
@@ -259,7 +279,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+    background: linear-gradient(45deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
     pointer-events: none;
 }
 
@@ -267,187 +287,276 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
+    justify-content: center;
     width: 100%;
     height: 100%;
     padding: 5px;
     position: relative;
-}
-
-.tile-number {
-    font-size: 1.8rem;
-    font-weight: bold;
-}
-
-.tile-suit {
-    font-size: 1.2rem;
-}
-
-.tile-symbol {
-    font-size: 2rem;
-    font-weight: bold;
+    background: #fff;
 }
 
 /* Number Tiles (Dots) */
 .number-tile[data-suit="筒"] {
-    background: linear-gradient(135deg, #fff 0%, #ffe8e8 100%);
-    border-color: var(--dots-color);
+    background: #fff;
+    border-color: #e74c3c;
 }
 
-.number-tile[data-suit="筒"] .tile-number {
-    color: var(--dots-color);
-    font-size: 1.8rem;
+.number-tile[data-suit="筒"] .tile-symbols {
+    color: #e74c3c;
+    font-size: 1.2rem;
     font-weight: bold;
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
     gap: 2px;
+    min-height: 40px;
 }
 
-.number-tile[data-suit="筒"] .tile-number::before {
-    content: '●';
-    font-size: 0.8em;
-    color: var(--dots-color);
+.number-tile[data-suit="筒"] .tile-suit {
+    color: #e74c3c;
+    font-size: 1.2rem;
+    margin-top: 2px;
 }
 
 /* Number Tiles (Bamboo) */
 .number-tile[data-suit="索"] {
-    background: linear-gradient(135deg, #fff 0%, #e8f8e8 100%);
-    border-color: var(--bamboo-color);
+    background: #fff;
+    border-color: #27ae60;
 }
 
-.number-tile[data-suit="索"] .tile-number {
-    color: var(--bamboo-color);
-    font-size: 1.8rem;
+.number-tile[data-suit="索"] .tile-symbols {
+    color: #27ae60;
+    font-size: 1.2rem;
     font-weight: bold;
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
     gap: 2px;
+    min-height: 40px;
 }
 
-.number-tile[data-suit="索"] .tile-number::before {
-    content: '🎋';
-    font-size: 0.8em;
-    color: var(--bamboo-color);
+.number-tile[data-suit="索"] .tile-suit {
+    color: #27ae60;
+    font-size: 1.2rem;
+    margin-top: 2px;
 }
 
 /* Number Tiles (Characters) */
 .number-tile[data-suit="萬"] {
-    background: linear-gradient(135deg, #fff 0%, #e8e8f8 100%);
-    border-color: var(--characters-color);
+    background: #fff;
+    border-color: #2c3e50;
 }
 
-.number-tile[data-suit="萬"] .tile-number {
-    color: var(--characters-color);
+.number-tile[data-suit="萬"] .tile-symbols {
+    color: #2c3e50;
     font-size: 1.8rem;
     font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 40px;
+}
+
+.number-tile[data-suit="萬"] .tile-suit {
+    color: #2c3e50;
+    font-size: 1.2rem;
+    margin-top: 2px;
 }
 
 /* Wind Tiles */
 .wind-tile {
-    background: linear-gradient(135deg, #fff 0%, #f8e8f8 100%);
-    border-color: var(--wind-color);
+    background: #fff;
+    border-color: #8e44ad;
 }
 
 .wind-tile .tile-symbol {
-    color: var(--wind-color);
-    font-size: 2rem;
+    color: #8e44ad;
+    font-size: 1.8rem;
     font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
 }
-
-.wind-tile[data-value="東"] .tile-symbol::before { content: '🌅'; }
-.wind-tile[data-value="南"] .tile-symbol::before { content: '⬇️'; }
-.wind-tile[data-value="西"] .tile-symbol::before { content: '🌅'; }
-.wind-tile[data-value="北"] .tile-symbol::before { content: '⬆️'; }
 
 /* Dragon Tiles */
 .dragon-tile {
-    background: linear-gradient(135deg, #fff 0%, #f8f8e8 100%);
-    border-color: var(--dragon-color);
+    background: #fff;
+    border-color: #c0392b;
 }
 
 .dragon-tile .tile-symbol {
-    color: var(--dragon-color);
-    font-size: 2rem;
+    color: #c0392b;
+    font-size: 1.8rem;
     font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
 }
 
-.dragon-tile[data-value="中"] .tile-symbol::before { content: '🀄'; }
-.dragon-tile[data-value="發"] .tile-symbol::before { content: '💰'; }
-.dragon-tile[data-value="白"] .tile-symbol::before { content: '⚪'; }
-
-/* Tile Back Design */
-.tile-back {
-    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-    border: 2px solid #2c3e50;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+/* Tile Patterns */
+.number-tile[data-suit="筒"] .tile-number::before {
+    content: '●';
+    font-size: 0.9em;
+    margin-right: 2px;
 }
 
-.tile-back::after {
-    content: '🀄';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 2rem;
-    color: rgba(255, 255, 255, 0.2);
+.number-tile[data-suit="索"] .tile-number::before {
+    content: '🎋';
+    font-size: 0.9em;
+    margin-right: 2px;
 }
 
 /* Hover and Active States */
 .tile:hover {
-    transform: translateY(-5px) rotate(2deg);
+    transform: translateY(-5px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .tile:active {
-    transform: translateY(-2px) rotate(1deg);
+    transform: translateY(-2px);
+}
+
+/* Dragging State */
+.tile.dragging {
+    opacity: 0.8;
+    transform: scale(1.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+/* Discarded Tiles */
+.discarded .tile {
+    opacity: 0.7;
+}
+
+.discarded .tile:last-child {
+    opacity: 1;
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(231, 76, 60, 0.3);
 }
 
 /* Mobile Optimizations */
 @media (max-width: 768px) {
+    .game-container {
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .game-header {
+        padding: 10px;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .game-info {
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .game-controls {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .control-button {
+        width: 100%;
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+
     .tile {
-        width: 50px;
-        height: 70px;
+        width: 45px;
+        height: 60px;
+    }
+
+    .number-tile[data-suit="筒"] .tile-symbols,
+    .number-tile[data-suit="索"] .tile-symbols {
+        font-size: 0.9rem;
+        min-height: 25px;
+        gap: 1px;
+    }
+
+    .number-tile[data-suit="萬"] .tile-symbols {
+        font-size: 1.2rem;
+        min-height: 25px;
+    }
+
+    .tile-suit {
+        font-size: 0.8rem;
+        margin-top: 1px;
+    }
+
+    .player-area {
+        padding: 10px;
+    }
+
+    .hand, .discarded {
+        min-height: 70px;
+        gap: 5px;
+        padding: 5px;
+    }
+
+    .player-info h2 {
         font-size: 1.2rem;
     }
 
-    .tile-number,
-    .tile-symbol {
-        font-size: 1.5rem;
-    }
-
-    .tile-number::before,
-    .tile-symbol::before {
-        font-size: 0.7em;
+    .player-hand h3,
+    .player-discarded h3 {
+        font-size: 1rem;
     }
 }
 
 @media (max-width: 480px) {
+    .game-container {
+        padding: 5px;
+    }
+
     .tile {
-        width: 40px;
-        height: 56px;
+        width: 35px;
+        height: 47px;
+    }
+
+    .number-tile[data-suit="筒"] .tile-symbols,
+    .number-tile[data-suit="索"] .tile-symbols {
+        font-size: 0.7rem;
+        min-height: 20px;
+        gap: 0.5px;
+    }
+
+    .number-tile[data-suit="萬"] .tile-symbols {
+        font-size: 1rem;
+        min-height: 20px;
+    }
+
+    .tile-suit {
+        font-size: 0.7rem;
+        margin-top: 0;
+    }
+
+    .hand, .discarded {
+        min-height: 50px;
+        gap: 3px;
+        padding: 3px;
+    }
+
+    .player-area {
+        padding: 5px;
+    }
+
+    .player-info h2 {
         font-size: 1rem;
     }
 
-    .tile-number,
-    .tile-symbol {
-        font-size: 1.2rem;
+    .player-hand h3,
+    .player-discarded h3 {
+        font-size: 0.9rem;
     }
 
-    .tile-number::before,
-    .tile-symbol::before {
-        font-size: 0.6em;
+    .control-button {
+        padding: 6px 12px;
+        font-size: 0.8rem;
     }
 }
+
+/* Add Google Font for better Chinese character rendering */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap');
 
 .tile-draw {
     animation: drawTile 0.5s ease;
@@ -777,14 +886,6 @@ body {
     touch-action: none;
 }
 
-.tile.dragging {
-    opacity: 0.5;
-    cursor: grabbing;
-    transform: scale(1.1);
-    z-index: 1000;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
 .hand {
     position: relative;
     min-height: 100px;
@@ -865,4 +966,33 @@ body {
 
 .tile.sorting {
     animation: sortAnimation 0.3s ease;
+}
+
+/* Improve touch feedback */
+.tile::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.1);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.tile:active::after {
+    opacity: 1;
+}
+
+/* Ensure proper spacing between tiles in discarded area */
+.discarded {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 5px;
+    min-height: 80px;
+    background: rgba(231, 76, 60, 0.1);
+    border-radius: var(--border-radius);
+    position: relative;
 } 
