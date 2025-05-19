@@ -426,34 +426,8 @@
             <button id="draw-tile" class="control-button">Draw Tile</button>
         </div>
 
-        <!-- Player Areas -->
-        <div class="player-area player1">
-            <h3>Player 1 (East)</h3>
-            <div class="hand"></div>
-            <div class="melds"></div>
-            <div class="discarded"></div>
-        </div>
-
-        <div class="player-area player2">
-            <h3>Player 2 (South)</h3>
-            <div class="hand"></div>
-            <div class="melds"></div>
-            <div class="discarded"></div>
-        </div>
-
-        <div class="player-area player3">
-            <h3>Player 3 (West)</h3>
-            <div class="hand"></div>
-            <div class="melds"></div>
-            <div class="discarded"></div>
-        </div>
-
-        <div class="player-area player4">
-            <h3>Player 4 (North)</h3>
-            <div class="hand"></div>
-            <div class="melds"></div>
-            <div class="discarded"></div>
-        </div>
+        <!-- Player Areas will be dynamically generated -->
+        <div id="player-areas"></div>
 
         <!-- Tutorial Elements -->
         <div class="meld-examples">
@@ -502,6 +476,39 @@
             </ul>
         </div>
     </div>
+
+    <script>
+        // Generate player areas based on number of players
+        document.addEventListener('DOMContentLoaded', () => {
+            const numPlayers = parseInt(localStorage.getItem('mahjongPlayers')) || 4;
+            const playerAreas = document.getElementById('player-areas');
+            const directions = ['East', 'South', 'West', 'North'];
+            
+            // Clear existing player areas
+            playerAreas.innerHTML = '';
+            
+            // Create player areas
+            for (let i = 0; i < numPlayers; i++) {
+                const playerArea = document.createElement('div');
+                playerArea.className = `player-area player${i + 1}`;
+                playerArea.innerHTML = `
+                    <h3>Player ${i + 1} (${directions[i]})</h3>
+                    <div class="hand"></div>
+                    <div class="melds"></div>
+                    <div class="discarded"></div>
+                `;
+                playerAreas.appendChild(playerArea);
+            }
+
+            // Hide unused player areas
+            for (let i = numPlayers; i < 4; i++) {
+                const playerArea = document.querySelector(`.player${i + 1}`);
+                if (playerArea) {
+                    playerArea.style.display = 'none';
+                }
+            }
+        });
+    </script>
 
     <script src="game.js"></script>
     <script src="tutorial.js"></script>

@@ -100,7 +100,9 @@
         <div class="player-count">
             <label for="player-count">Number of Players:</label>
             <select id="player-count">
-                <option value="4">4 Players</option>
+                <option value="2">2 Players</option>
+                <option value="3">3 Players</option>
+                <option value="4" selected>4 Players</option>
             </select>
         </div>
         <button class="start-button" id="start-game">Start Game</button>
@@ -110,7 +112,8 @@
     <script src="tutorial.js"></script>
     <script>
         document.getElementById('start-game').addEventListener('click', () => {
-            localStorage.setItem('mahjongPlayers', '4');
+            const numPlayers = document.getElementById('player-count').value;
+            localStorage.setItem('mahjongPlayers', numPlayers);
             window.location.href = 'game.html';
         });
     </script>
