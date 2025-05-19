@@ -18,7 +18,8 @@ class MahjongGame {
                 hand: [],
                 discarded: [],
                 melds: [], // Track completed melds
-                sortMode: 'none' // Track sort mode per player
+                sortMode: 'none', // Track sort mode per player
+                hasDrawn: false // Track if player has drawn this turn
             });
         }
 
@@ -214,12 +215,32 @@ class MahjongGame {
             return;
         }
 
+        const currentPlayer = this.players[this.currentPlayer];
+        if (currentPlayer.hasDrawn) {
+            this.showNotification('You have already drawn a tile this turn!');
+            return;
+        }
+
         const drawnTile = this.tiles.pop();
-        this.players[this.currentPlayer].hand.push(drawnTile);
+        currentPlayer.hand.push(drawnTile);
+        currentPlayer.hasDrawn = true;
         
         // Apply current sort mode to the hand
-        if (this.players[this.currentPlayer].sortMode !== 'none') {
-            this.sortHand(this.players[this.currentPlayer].sortMode);
+        if (currentPlayer.sortMode !== 'none') {
+            // Store the current hand order
+            const currentOrder = currentPlayer.hand.map((tile, index) => ({ tile, index }));
+            
+            // Sort the hand
+            this.sortHand(currentPlayer.sortMode);
+            
+            // If the hand was manually arranged (drag and drop), restore the order
+            if (currentPlayer.sortMode === 'manual') {
+                currentPlayer.hand.sort((a, b) => {
+                    const aOrder = currentOrder.find(item => item.tile === a)?.index ?? 0;
+                    const bOrder = currentOrder.find(item => item.tile === b)?.index ?? 0;
+                    return aOrder - bOrder;
+                });
+            }
         }
         
         this.updateUI();
@@ -297,7 +318,13 @@ class MahjongGame {
             return;
         }
 
-        const hand = this.players[player].hand;
+        const currentPlayer = this.players[player];
+        if (!currentPlayer.hasDrawn) {
+            this.showNotification('You must draw a tile before discarding!');
+            return;
+        }
+
+        const hand = currentPlayer.hand;
         const discardedTile = hand.splice(index, 1)[0];
         
         // Add to discarded area with animation
@@ -315,7 +342,8 @@ class MahjongGame {
             tileElement.classList.remove('tile-discard');
         }, 500);
 
-        // Switch turns
+        // Reset hasDrawn flag and switch turns
+        currentPlayer.hasDrawn = false;
         this.currentPlayer = (this.currentPlayer + 1) % this.numPlayers;
         this.updateUI();
         this.showNotification(`Turn passed to Player ${this.currentPlayer + 1}`);
@@ -401,6 +429,11 @@ class MahjongGame {
         const currentPlayerElement = document.getElementById('current-player');
         currentPlayerElement.textContent = `Player ${this.currentPlayer + 1}`;
         
+        // Update draw button state
+        const drawButton = document.getElementById('draw-tile');
+        const currentPlayer = this.players[this.currentPlayer];
+        drawButton.disabled = this.currentPlayer !== this.activeView || currentPlayer.hasDrawn;
+        
         // Update all player hands
         for (let i = 0; i < this.numPlayers; i++) {
             const playerHand = document.querySelector(`.player${i + 1} .hand`);
@@ -453,6 +486,14 @@ class MahjongGame {
 
         const hand = this.players[this.currentPlayer].hand;
         
+        // Store the current sort mode
+        this.players[this.currentPlayer].sortMode = sortType;
+        
+        if (sortType === 'manual') {
+            // Don't sort if manual arrangement is selected
+            return;
+        }
+        
         switch (sortType) {
             case 'number':
                 hand.sort((a, b) => {
@@ -489,8 +530,6 @@ class MahjongGame {
                 break;
         }
 
-        // Store the sort mode for this player
-        this.players[this.currentPlayer].sortMode = sortType;
         this.updateUI();
         this.showNotification(`Hand sorted by ${sortType}`);
     }

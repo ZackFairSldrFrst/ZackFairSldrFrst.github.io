@@ -257,7 +257,7 @@ body {
     height: 80px;
     background: #fff;
     border: 2px solid #2c3e50;
-    border-radius: 4px;
+    border-radius: 6px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -290,7 +290,7 @@ body {
     justify-content: center;
     width: 100%;
     height: 100%;
-    padding: 5px;
+    padding: 8px;
     position: relative;
     background: #fff;
 }
@@ -303,20 +303,22 @@ body {
 
 .number-tile[data-suit="筒"] .tile-symbols {
     color: #e74c3c;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     font-weight: bold;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    padding: 4px;
+    min-height: 45px;
     align-items: center;
-    gap: 2px;
-    min-height: 40px;
+    justify-items: center;
 }
 
 .number-tile[data-suit="筒"] .tile-suit {
     color: #e74c3c;
     font-size: 1.2rem;
-    margin-top: 2px;
+    margin-top: 4px;
+    font-weight: bold;
 }
 
 /* Number Tiles (Bamboo) */
@@ -327,20 +329,22 @@ body {
 
 .number-tile[data-suit="索"] .tile-symbols {
     color: #27ae60;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     font-weight: bold;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    padding: 4px;
+    min-height: 45px;
     align-items: center;
-    gap: 2px;
-    min-height: 40px;
+    justify-items: center;
 }
 
 .number-tile[data-suit="索"] .tile-suit {
     color: #27ae60;
     font-size: 1.2rem;
-    margin-top: 2px;
+    margin-top: 4px;
+    font-weight: bold;
 }
 
 /* Number Tiles (Characters) */
@@ -351,18 +355,20 @@ body {
 
 .number-tile[data-suit="萬"] .tile-symbols {
     color: #2c3e50;
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: bold;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 40px;
+    min-height: 45px;
+    padding: 4px;
 }
 
 .number-tile[data-suit="萬"] .tile-suit {
     color: #2c3e50;
     font-size: 1.2rem;
-    margin-top: 2px;
+    margin-top: 4px;
+    font-weight: bold;
 }
 
 /* Wind Tiles */
@@ -373,8 +379,12 @@ body {
 
 .wind-tile .tile-symbol {
     color: #8e44ad;
-    font-size: 1.8rem;
+    font-size: 2.2rem;
     font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 45px;
 }
 
 /* Dragon Tiles */
@@ -385,8 +395,12 @@ body {
 
 .dragon-tile .tile-symbol {
     color: #c0392b;
-    font-size: 1.8rem;
+    font-size: 2.2rem;
     font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 45px;
 }
 
 /* Tile Patterns */
@@ -468,19 +482,26 @@ body {
 
     .number-tile[data-suit="筒"] .tile-symbols,
     .number-tile[data-suit="索"] .tile-symbols {
-        font-size: 0.9rem;
-        min-height: 25px;
-        gap: 1px;
+        font-size: 1.1rem;
+        min-height: 35px;
+        gap: 2px;
+        padding: 2px;
     }
 
     .number-tile[data-suit="萬"] .tile-symbols {
-        font-size: 1.2rem;
-        min-height: 25px;
+        font-size: 1.6rem;
+        min-height: 35px;
+    }
+
+    .wind-tile .tile-symbol,
+    .dragon-tile .tile-symbol {
+        font-size: 1.8rem;
+        min-height: 35px;
     }
 
     .tile-suit {
-        font-size: 0.8rem;
-        margin-top: 1px;
+        font-size: 0.9rem;
+        margin-top: 2px;
     }
 
     .player-area {
@@ -515,19 +536,26 @@ body {
 
     .number-tile[data-suit="筒"] .tile-symbols,
     .number-tile[data-suit="索"] .tile-symbols {
-        font-size: 0.7rem;
-        min-height: 20px;
-        gap: 0.5px;
+        font-size: 0.9rem;
+        min-height: 25px;
+        gap: 1px;
+        padding: 1px;
     }
 
     .number-tile[data-suit="萬"] .tile-symbols {
-        font-size: 1rem;
-        min-height: 20px;
+        font-size: 1.3rem;
+        min-height: 25px;
+    }
+
+    .wind-tile .tile-symbol,
+    .dragon-tile .tile-symbol {
+        font-size: 1.4rem;
+        min-height: 25px;
     }
 
     .tile-suit {
-        font-size: 0.7rem;
-        margin-top: 0;
+        font-size: 0.8rem;
+        margin-top: 1px;
     }
 
     .hand, .discarded {
