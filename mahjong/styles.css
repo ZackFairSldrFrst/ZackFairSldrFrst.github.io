@@ -1,0 +1,198 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 1200px;
+}
+
+.player-area {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+}
+
+.hand {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    min-height: 80px;
+    padding: 0.5rem;
+    background-color: #f8f8f8;
+    border-radius: 4px;
+    justify-content: center;
+}
+
+.discarded {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    min-height: 60px;
+    padding: 0.5rem;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    justify-content: center;
+}
+
+.game-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+}
+
+.tile-bag {
+    text-align: center;
+    width: 100%;
+}
+
+#draw-tile {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    max-width: 200px;
+}
+
+#draw-tile:hover {
+    background-color: #45a049;
+}
+
+.tile {
+    width: 50px;
+    height: 70px;
+    background-color: white;
+    border: 2px solid #333;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.tile:hover {
+    transform: translateY(-5px);
+}
+
+.tile.selected {
+    border-color: #4CAF50;
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+}
+
+.current-player {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+/* Media Queries for different screen sizes */
+@media (max-width: 768px) {
+    body {
+        padding: 0.5rem;
+    }
+
+    .game-container {
+        gap: 0.5rem;
+        padding: 0.5rem;
+    }
+
+    .tile {
+        width: 40px;
+        height: 56px;
+        font-size: 1rem;
+    }
+
+    .hand, .discarded {
+        min-height: 60px;
+    }
+
+    #draw-tile {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    .current-player {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .tile {
+        width: 35px;
+        height: 49px;
+        font-size: 0.9rem;
+    }
+
+    .hand, .discarded {
+        min-height: 50px;
+        gap: 0.2rem;
+    }
+
+    .player-area {
+        padding: 0.3rem;
+    }
+
+    h2 {
+        font-size: 1.1rem;
+    }
+
+    h3 {
+        font-size: 0.9rem;
+    }
+}
+
+/* Prevent text selection and ensure smooth touch interactions */
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}
+
+/* Add touch feedback for mobile devices */
+@media (hover: none) {
+    .tile:active {
+        transform: translateY(-2px);
+        background-color: #f0f0f0;
+    }
+
+    #draw-tile:active {
+        background-color: #45a049;
+        transform: scale(0.98);
+    }
+} 
