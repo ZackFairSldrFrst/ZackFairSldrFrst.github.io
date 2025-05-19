@@ -80,6 +80,7 @@ body {
 .game-controls {
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .control-button {
@@ -104,6 +105,22 @@ body {
 }
 
 #done-button:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+#end-turn {
+    background: var(--primary-color);
+    font-weight: bold;
+}
+
+#end-turn:hover {
+    background: #34495e;
+    transform: translateY(-2px);
+}
+
+#end-turn:disabled {
     background: #95a5a6;
     cursor: not-allowed;
     transform: none;
@@ -272,17 +289,6 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 
-.tile::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
-    pointer-events: none;
-}
-
 .tile-content {
     display: flex;
     flex-direction: column;
@@ -301,17 +307,10 @@ body {
     border-color: #e74c3c;
 }
 
-.number-tile[data-suit="筒"] .tile-symbols {
+.number-tile[data-suit="筒"] .tile-number {
     color: #e74c3c;
-    font-size: 1.4rem;
+    font-size: 2rem;
     font-weight: bold;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 4px;
-    padding: 4px;
-    min-height: 45px;
-    align-items: center;
-    justify-items: center;
 }
 
 .number-tile[data-suit="筒"] .tile-suit {
@@ -327,17 +326,10 @@ body {
     border-color: #27ae60;
 }
 
-.number-tile[data-suit="索"] .tile-symbols {
+.number-tile[data-suit="索"] .tile-number {
     color: #27ae60;
-    font-size: 1.4rem;
+    font-size: 2rem;
     font-weight: bold;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 4px;
-    padding: 4px;
-    min-height: 45px;
-    align-items: center;
-    justify-items: center;
 }
 
 .number-tile[data-suit="索"] .tile-suit {
@@ -353,15 +345,10 @@ body {
     border-color: #2c3e50;
 }
 
-.number-tile[data-suit="萬"] .tile-symbols {
+.number-tile[data-suit="萬"] .tile-number {
     color: #2c3e50;
     font-size: 2rem;
     font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 45px;
-    padding: 4px;
 }
 
 .number-tile[data-suit="萬"] .tile-suit {
@@ -381,10 +368,6 @@ body {
     color: #8e44ad;
     font-size: 2.2rem;
     font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 45px;
 }
 
 /* Dragon Tiles */
@@ -397,23 +380,53 @@ body {
     color: #c0392b;
     font-size: 2.2rem;
     font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 45px;
 }
 
-/* Tile Patterns */
-.number-tile[data-suit="筒"] .tile-number::before {
-    content: '●';
-    font-size: 0.9em;
-    margin-right: 2px;
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+    .tile {
+        width: 45px;
+        height: 60px;
+    }
+
+    .number-tile[data-suit="筒"] .tile-number,
+    .number-tile[data-suit="索"] .tile-number,
+    .number-tile[data-suit="萬"] .tile-number {
+        font-size: 1.6rem;
+    }
+
+    .wind-tile .tile-symbol,
+    .dragon-tile .tile-symbol {
+        font-size: 1.8rem;
+    }
+
+    .tile-suit {
+        font-size: 0.9rem;
+        margin-top: 2px;
+    }
 }
 
-.number-tile[data-suit="索"] .tile-number::before {
-    content: '🎋';
-    font-size: 0.9em;
-    margin-right: 2px;
+@media (max-width: 480px) {
+    .tile {
+        width: 35px;
+        height: 47px;
+    }
+
+    .number-tile[data-suit="筒"] .tile-number,
+    .number-tile[data-suit="索"] .tile-number,
+    .number-tile[data-suit="萬"] .tile-number {
+        font-size: 1.3rem;
+    }
+
+    .wind-tile .tile-symbol,
+    .dragon-tile .tile-symbol {
+        font-size: 1.4rem;
+    }
+
+    .tile-suit {
+        font-size: 0.8rem;
+        margin-top: 1px;
+    }
 }
 
 /* Hover and Active States */
@@ -445,7 +458,7 @@ body {
     box-shadow: 0 0 15px rgba(231, 76, 60, 0.3);
 }
 
-/* Mobile Optimizations */
+/* Mobile Responsiveness */
 @media (max-width: 768px) {
     .game-container {
         padding: 10px;
@@ -466,7 +479,6 @@ body {
 
     .game-controls {
         flex-direction: column;
-        gap: 5px;
     }
 
     .control-button {
@@ -531,7 +543,7 @@ body {
 
     .tile {
         width: 35px;
-        height: 47px;
+        height: 49px;
     }
 
     .number-tile[data-suit="筒"] .tile-symbols,
