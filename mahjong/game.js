@@ -309,15 +309,18 @@ class MahjongGame {
     createTileElement(tile) {
         const tileElement = document.createElement('div');
         tileElement.className = 'tile';
-        tileElement.draggable = true; // Make tiles draggable
+        tileElement.draggable = true;
         
         // Add specific class based on tile type
         if (tile.type === 'wind') {
             tileElement.classList.add('wind-tile');
+            tileElement.dataset.value = tile.value;
         } else if (tile.type === 'dragon') {
             tileElement.classList.add('dragon-tile');
+            tileElement.dataset.value = tile.value;
         } else {
             tileElement.classList.add('number-tile');
+            tileElement.dataset.suit = tile.suit;
         }
 
         // Create the tile content
@@ -329,7 +332,6 @@ class MahjongGame {
                 <div class="tile-number">${tile.number}</div>
                 <div class="tile-suit">${tile.suit}</div>
             `;
-            tileElement.dataset.suit = tile.suit;
         } else {
             tileContent.innerHTML = `
                 <div class="tile-symbol">${tile.display}</div>
