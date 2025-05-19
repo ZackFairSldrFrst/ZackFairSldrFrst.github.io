@@ -2,71 +2,27 @@ class MahjongGame {
     constructor() {
         this.tiles = [];
         this.players = [];
-        this.currentPlayer = 0;
+        this.currentPlayer = 0; // East starts
         this.activeView = 0;
-        this.numPlayers = parseInt(localStorage.getItem('mahjongPlayers')) || 2;
-        this.lastDiscardedTile = null; // Track the last discarded tile
-        this.lastDiscardedBy = null; // Track who discarded the last tile
-        this.sortMode = 'none'; // none, number, suit, type
-        this.currentSortMode = 'none'; // Track current sort mode
-        this.draggedTile = null;
-        this.dragStartIndex = null;
+        this.numPlayers = 4; // Fixed at 4 players for Hong Kong Mahjong
+        this.lastDiscardedTile = null;
+        this.lastDiscardedBy = null;
+        this.claimingPlayers = []; // Track players claiming the last discarded tile
+        this.deadWall = []; // Tiles for Kong replacements
         this.gameState = 'playing'; // playing, ended
-        this.winningPatterns = {
-            // Basic patterns
-            PUNG: 'pung', // Three of a kind
-            KONG: 'kong', // Four of a kind
-            CHOW: 'chow', // Three consecutive numbers in the same suit
-            PAIR: 'pair', // Two of a kind
-            // Special hands
-            PURE_HAND: 'pure_hand', // All tiles from the same suit
-            MIXED_TRIPLE_CHOW: 'mixed_triple_chow', // Three identical chows in different suits
-            MIXED_SHIFTED_PUNGS: 'mixed_shifted_pungs', // Three pungs with numbers shifted by 1
-            ALL_PUNGS: 'all_pungs', // All sets are pungs
-            HALF_FLUSH: 'half_flush', // Hand with tiles from only two suits
-            MIXED_SHIFTED_CHOWS: 'mixed_shifted_chows', // Three chows with numbers shifted by 1
-            ALL_CHOWS: 'all_chows', // All sets are chows
-            DRAGON_PUNG: 'dragon_pung', // A pung of dragons
-            OUTSIDE_HAND: 'outside_hand', // Hand with only 1s and 9s
-            CONCEALED_HAND: 'concealed_hand', // All sets are concealed
-            ALL_GREEN: 'all_green', // All tiles are green (bamboo 2,3,4,6,8 and green dragon)
-            NINE_GATES: 'nine_gates', // 1112345678999 in one suit
-            FOUR_KONGS: 'four_kongs', // Four kongs
-            QUAD_PUNGS: 'quad_pungs', // Four pungs
-            PURE_STRAIGHT: 'pure_straight', // 123456789 in one suit
-            PURE_SHIFTED_PUNGS: 'pure_shifted_pungs', // Three pungs with numbers shifted by 1 in the same suit
-            UPPER_TILES: 'upper_tiles', // All tiles are 7,8,9
-            MIDDLE_TILES: 'middle_tiles', // All tiles are 4,5,6
-            LOWER_TILES: 'lower_tiles', // All tiles are 1,2,3
-            PURE_TRIPLE_CHOW: 'pure_triple_chow', // Three identical chows in the same suit
-            PURE_SHIFTED_CHOWS: 'pure_shifted_chows', // Three chows with numbers shifted by 1 in the same suit
-            ALL_TERMINALS: 'all_terminals', // All tiles are terminals (1,9) or honors
-            QUAD_CHOWS: 'quad_chows', // Four chows
-            FOUR_PURE_SHIFTED_PUNGS: 'four_pure_shifted_pungs', // Four pungs with numbers shifted by 1 in the same suit
-            FOUR_PURE_DOUBLE_CHOWS: 'four_pure_double_chows', // Two pairs of identical chows in the same suit
-            LITTLE_FOUR_WINDS: 'little_four_winds', // Three pungs of winds and a pair of the fourth wind
-            LITTLE_THREE_DRAGONS: 'little_three_dragons', // Two pungs of dragons and a pair of the third dragon
-            ALL_HONORS: 'all_honors', // All tiles are honors (winds and dragons)
-            ALL_TERMINALS: 'all_terminals', // All tiles are terminals (1,9) or honors
-            BIG_FOUR_WINDS: 'big_four_winds', // Four pungs of winds
-            BIG_THREE_DRAGONS: 'big_three_dragons', // Three pungs of dragons
-            NINE_GATES: 'nine_gates', // 1112345678999 in one suit
-            FOUR_KONGS: 'four_kongs', // Four kongs
-            SEVEN_PAIRS: 'seven_pairs', // Seven pairs
-            THIRTEEN_ORPHANS: 'thirteen_orphans' // One of each terminal and honor, plus one extra
-        };
+        this.roundWind = '東'; // Current round wind (East)
+        this.playerWinds = ['東', '南', '西', '北']; // Player winds
         
-        // Initialize players with manual order tracking
+        // Initialize players
         for (let i = 0; i < this.numPlayers; i++) {
             this.players.push({
                 hand: [],
-                manualOrder: [], // Track manual order of tiles
                 discarded: [],
-                melds: [],
-                sortMode: 'none',
+                melds: [], // Track exposed melds
+                concealedKongs: [], // Track concealed kongs
+                wind: this.playerWinds[i],
                 hasDrawn: false,
                 hasDiscarded: false,
-                concealed: true,
                 score: 0
             });
         }
@@ -74,8 +30,6 @@ class MahjongGame {
         this.initializeTiles();
         this.setupEventListeners();
         this.updateUI();
-        this.updateView();
-        this.addMeldStyles();
     }
 
     initializeTiles() {
@@ -129,11 +83,19 @@ class MahjongGame {
         // Shuffle the tiles
         this.shuffleTiles();
         
+        // Set up dead wall (last 14 tiles)
+        this.deadWall = this.tiles.splice(-14);
+        
         // Deal initial hands (13 tiles each)
         for (let i = 0; i < 13; i++) {
             for (let player of this.players) {
                 player.hand.push(this.tiles.pop());
             }
+        }
+
+        // Sort initial hands
+        for (let player of this.players) {
+            this.sortHand(player.hand);
         }
     }
 
@@ -147,7 +109,7 @@ class MahjongGame {
     setupEventListeners() {
         document.getElementById('draw-tile').addEventListener('click', () => this.drawTile());
         
-        // Add next turn button (combines end turn and pass device)
+        // Add next turn button
         const nextTurnButton = document.createElement('button');
         nextTurnButton.id = 'next-turn';
         nextTurnButton.className = 'control-button';
@@ -170,7 +132,6 @@ class MahjongGame {
                 const tile = e.target.closest('.tile');
                 if (tile && this.currentPlayer === i && this.activeView === i) {
                     const index = Array.from(hand.children).indexOf(tile);
-                    console.log('Discarding tile at index:', index);
                     this.discardTile(index, i);
                 }
             });
@@ -187,93 +148,282 @@ class MahjongGame {
                 if (this.lastDiscardedTile && this.lastDiscardedBy === i && this.currentPlayer === i) {
                     this.undoDiscard(i);
                 } else if (this.lastDiscardedTile) {
-                    this.tryPickupDiscardedTile(i);
-                }
-            });
-        }
-
-        // Add sort buttons
-        const sortControls = document.createElement('div');
-        sortControls.className = 'sort-controls';
-        sortControls.innerHTML = `
-            <button class="control-button sort-button" data-sort="number">Sort by Number</button>
-            <button class="control-button sort-button" data-sort="suit">Sort by Suit</button>
-            <button class="control-button sort-button" data-sort="type">Sort by Type</button>
-        `;
-        document.querySelector('.game-controls').appendChild(sortControls);
-
-        // Add sort button event listeners
-        document.querySelectorAll('.sort-button').forEach(button => {
-            button.addEventListener('click', () => {
-                const sortType = button.dataset.sort;
-                this.sortHand(sortType);
-            });
-        });
-
-        // Setup drag and drop for tiles
-        for (let i = 0; i < this.numPlayers; i++) {
-            const hand = document.querySelector(`.player${i + 1} .hand`);
-            
-            hand.addEventListener('dragstart', (e) => {
-                if (e.target.classList.contains('tile')) {
-                    this.draggedTile = e.target;
-                    this.dragStartIndex = Array.from(hand.children).indexOf(e.target);
-                    e.target.classList.add('dragging');
-                    
-                    // Set sort mode to manual when dragging
-                    this.players[i].sortMode = 'manual';
-                }
-            });
-
-            hand.addEventListener('dragend', (e) => {
-                if (e.target.classList.contains('tile')) {
-                    e.target.classList.remove('dragging');
-                    
-                    // Update manual order after drag
-                    const player = this.players[i];
-                    player.manualOrder = Array.from(hand.children).map(child => {
-                        const index = parseInt(child.dataset.index);
-                        return player.hand[index];
-                    });
-                    
-                    this.draggedTile = null;
-                    this.dragStartIndex = null;
-                }
-            });
-
-            hand.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                const tile = e.target.closest('.tile');
-                if (tile && tile !== this.draggedTile) {
-                    const rect = tile.getBoundingClientRect();
-                    const midPoint = rect.left + rect.width / 2;
-                    if (e.clientX < midPoint) {
-                        tile.parentNode.insertBefore(this.draggedTile, tile);
-                    } else {
-                        tile.parentNode.insertBefore(this.draggedTile, tile.nextSibling);
-                    }
+                    this.tryClaimDiscardedTile(i);
                 }
             });
         }
     }
 
-    updateView() {
-        const drawButton = document.getElementById('draw-tile');
-        const nextTurnButton = document.getElementById('next-turn');
+    drawTile() {
+        if (this.tiles.length === 0) {
+            this.showNotification('No more tiles!');
+            return;
+        }
 
-        // Update visibility of player areas
+        if (this.currentPlayer !== this.activeView) {
+            this.showNotification('Not your turn!');
+            return;
+        }
+
+        const currentPlayer = this.players[this.currentPlayer];
+        if (currentPlayer.hasDrawn) {
+            this.showNotification('You have already drawn a tile this turn!');
+            return;
+        }
+
+        const drawnTile = this.tiles.pop();
+        currentPlayer.hand.push(drawnTile);
+        currentPlayer.hasDrawn = true;
+        
+        this.sortHand(currentPlayer.hand);
+        this.updateUI();
+        this.animateDrawTile();
+    }
+
+    discardTile(index, player) {
+        if (player !== this.activeView) {
+            this.showNotification('Not your turn!');
+            return;
+        }
+
+        const currentPlayer = this.players[player];
+        if (!currentPlayer.hasDrawn) {
+            this.showNotification('You must draw a tile before discarding!');
+            return;
+        }
+
+        if (currentPlayer.hasDiscarded) {
+            this.showNotification('You have already discarded a tile this turn!');
+            return;
+        }
+
+        const tileToDiscard = currentPlayer.hand[index];
+        if (!tileToDiscard) {
+            console.error('No tile found at index:', index);
+            return;
+        }
+
+        // Remove from hand
+        currentPlayer.hand.splice(index, 1);
+        
+        // Add to discarded area with animation
+        const discardedArea = document.querySelector(`.player${player + 1} .discarded`);
+        const tileElement = this.createTileElement(tileToDiscard);
+        tileElement.classList.add('tile-discard');
+        discardedArea.appendChild(tileElement);
+
+        // Store the last discarded tile information
+        this.lastDiscardedTile = tileToDiscard;
+        this.lastDiscardedBy = player;
+        currentPlayer.hasDiscarded = true;
+
+        // Check for possible claims from other players
+        this.checkForClaims();
+
+        // Remove animation class after animation completes
+        setTimeout(() => {
+            tileElement.classList.remove('tile-discard');
+        }, 500);
+
+        this.updateUI();
+        this.showNotification('Tile discarded! Click the discarded tile to undo.');
+    }
+
+    checkForClaims() {
+        this.claimingPlayers = [];
+        
+        // Check each player (except the one who discarded) for possible claims
         for (let i = 0; i < this.numPlayers; i++) {
-            const playerArea = document.querySelector(`.player${i + 1}`);
-            if (i === this.activeView) {
-                playerArea.classList.remove('hidden');
-            } else {
-                playerArea.classList.add('hidden');
+            if (i === this.lastDiscardedBy) continue;
+            
+            const player = this.players[i];
+            const possibleClaims = this.findPossibleClaims(player.hand, this.lastDiscardedTile, i);
+            
+            if (possibleClaims.length > 0) {
+                this.claimingPlayers.push({
+                    playerIndex: i,
+                    claims: possibleClaims
+                });
             }
         }
 
-        // Update button states
-        drawButton.disabled = this.currentPlayer !== this.activeView;
-        nextTurnButton.textContent = 'Next Turn';
+        // If there are claims, show the claim options
+        if (this.claimingPlayers.length > 0) {
+            this.showClaimOptions();
+        }
+    }
+
+    findPossibleClaims(hand, tile, playerIndex) {
+        const claims = [];
+        const allTiles = [...hand, tile];
+
+        // Check for win (highest priority)
+        if (this.checkWinningHand(allTiles)) {
+            claims.push({ type: 'win', tiles: [tile] });
+        }
+
+        // Check for pung/kong
+        const sameTiles = allTiles.filter(t => this.isSameTile(t, tile));
+        if (sameTiles.length >= 3) {
+            claims.push({ type: 'pung', tiles: sameTiles.slice(0, 3) });
+        }
+        if (sameTiles.length >= 4) {
+            claims.push({ type: 'kong', tiles: sameTiles.slice(0, 4) });
+        }
+
+        // Check for chow (only if tile was discarded by player to the left)
+        if (tile.type === 'number') {
+            const leftPlayerIndex = (this.lastDiscardedBy + 1) % this.numPlayers;
+            if (playerIndex === leftPlayerIndex) {
+                const sameSuitTiles = allTiles.filter(t => 
+                    t.type === 'number' && t.suit === tile.suit
+                );
+                
+                // Find consecutive numbers
+                for (let i = 1; i <= 7; i++) {
+                    const numbers = [i, i + 1, i + 2];
+                    const hasConsecutive = numbers.every(n => 
+                        sameSuitTiles.some(t => t.number === n)
+                    );
+                    
+                    if (hasConsecutive) {
+                        const chowTiles = numbers.map(n => 
+                            sameSuitTiles.find(t => t.number === n)
+                        );
+                        claims.push({ type: 'chow', tiles: chowTiles });
+                    }
+                }
+            }
+        }
+
+        return claims;
+    }
+
+    showClaimOptions() {
+        const claimOptions = document.createElement('div');
+        claimOptions.className = 'claim-options';
+        claimOptions.innerHTML = `
+            <h3>Possible Claims</h3>
+            <div class="claim-list">
+                ${this.claimingPlayers.map((player, playerIndex) => `
+                    <div class="player-claims">
+                        <h4>Player ${player.playerIndex + 1}</h4>
+                        ${player.claims.map((claim, claimIndex) => `
+                            <button class="claim-option" data-player="${player.playerIndex}" data-claim="${claimIndex}">
+                                ${this.formatClaimDisplay(claim)}
+                            </button>
+                        `).join('')}
+                    </div>
+                `).join('')}
+            </div>
+        `;
+
+        document.body.appendChild(claimOptions);
+
+        // Add click handlers for claim options
+        claimOptions.querySelectorAll('.claim-option').forEach(button => {
+            button.addEventListener('click', () => {
+                const playerIndex = parseInt(button.dataset.player);
+                const claimIndex = parseInt(button.dataset.claim);
+                const claim = this.claimingPlayers[playerIndex].claims[claimIndex];
+                this.processClaim(playerIndex, claim);
+                claimOptions.remove();
+            });
+        });
+    }
+
+    formatClaimDisplay(claim) {
+        switch (claim.type) {
+            case 'win':
+                return 'Win!';
+            case 'pung':
+                return `Pung: ${this.tileToString(claim.tiles[0])} × 3`;
+            case 'kong':
+                return `Kong: ${this.tileToString(claim.tiles[0])} × 4`;
+            case 'chow':
+                return `Chow: ${claim.tiles.map(t => this.tileToString(t)).join(' ')}`;
+            default:
+                return 'Unknown Claim';
+        }
+    }
+
+    processClaim(playerIndex, claim) {
+        const player = this.players[playerIndex];
+        
+        // Remove tiles from hand
+        claim.tiles.forEach(tile => {
+            const index = player.hand.findIndex(t => this.isSameTile(t, tile));
+            if (index !== -1) {
+                player.hand.splice(index, 1);
+            }
+        });
+
+        // Handle different claim types
+        switch (claim.type) {
+            case 'win':
+                this.handleWin(playerIndex);
+                break;
+            case 'pung':
+            case 'kong':
+                player.melds.push({
+                    type: claim.type,
+                    tiles: claim.tiles,
+                    concealed: false
+                });
+                if (claim.type === 'kong') {
+                    this.handleKong(playerIndex);
+                }
+                break;
+            case 'chow':
+                player.melds.push({
+                    type: 'chow',
+                    tiles: claim.tiles,
+                    concealed: false
+                });
+                break;
+        }
+
+        // Update game state
+        this.currentPlayer = playerIndex;
+        this.activeView = playerIndex;
+        this.lastDiscardedTile = null;
+        this.lastDiscardedBy = null;
+        this.claimingPlayers = [];
+
+        this.updateUI();
+        this.showNotification(`Player ${playerIndex + 1} claimed ${claim.type}!`);
+    }
+
+    handleKong(playerIndex) {
+        const player = this.players[playerIndex];
+        
+        // Draw replacement tile from dead wall
+        if (this.deadWall.length > 0) {
+            const replacementTile = this.deadWall.pop();
+            player.hand.push(replacementTile);
+            this.sortHand(player.hand);
+        }
+    }
+
+    handleWin(playerIndex) {
+        this.gameState = 'ended';
+        const player = this.players[playerIndex];
+        const score = this.calculateScore(player.hand);
+        player.score += score;
+        
+        this.showNotification(`Player ${playerIndex + 1} has won! Score: ${score}`);
+        
+        // Handle East wind special case
+        if (playerIndex === 0) { // East player
+            // East stays as East
+            this.roundWind = '東';
+        } else {
+            // Rotate winds counterclockwise
+            this.playerWinds = [...this.playerWinds.slice(1), this.playerWinds[0]];
+            for (let i = 0; i < this.numPlayers; i++) {
+                this.players[i].wind = this.playerWinds[i];
+            }
+        }
     }
 
     nextTurn() {
@@ -300,253 +450,23 @@ class MahjongGame {
         this.showNotification(`Turn passed to Player ${this.currentPlayer + 1}`);
     }
 
-    drawTile() {
-        if (this.tiles.length === 0) {
-            this.showNotification('No more tiles!');
-            return;
-        }
+    updateView() {
+        const drawButton = document.getElementById('draw-tile');
+        const nextTurnButton = document.getElementById('next-turn');
 
-        if (this.currentPlayer !== this.activeView) {
-            this.showNotification('Not your turn!');
-            return;
-        }
-
-        const currentPlayer = this.players[this.currentPlayer];
-        if (currentPlayer.hasDrawn) {
-            this.showNotification('You have already drawn a tile this turn!');
-            return;
-        }
-
-        const drawnTile = this.tiles.pop();
-        currentPlayer.hand.push(drawnTile);
-        
-        // Add to manual order if in manual mode
-        if (currentPlayer.sortMode === 'manual') {
-            currentPlayer.manualOrder.push(drawnTile);
-        }
-        
-        currentPlayer.hasDrawn = true;
-        
-        // Only sort if not in manual mode
-        if (currentPlayer.sortMode !== 'manual') {
-            this.sortHand(currentPlayer.sortMode);
-        }
-        
-        this.updateUI();
-        this.animateDrawTile();
-    }
-
-    tryPickupDiscardedTile(playerIndex) {
-        if (!this.lastDiscardedTile) {
-            this.showNotification('No tile to pick up!');
-            return;
-        }
-
-        if (playerIndex === this.lastDiscardedBy) {
-            this.showNotification('You cannot pick up your own discarded tile!');
-            return;
-        }
-
-        if (playerIndex !== this.currentPlayer) {
-            this.showNotification('Not your turn!');
-            return;
-        }
-
-        const hand = this.players[playerIndex].hand;
-        const tile = this.lastDiscardedTile;
-
-        // Check for potential melds
-        const possibleMelds = this.findPossibleMelds(hand, tile);
-        
-        if (possibleMelds.length > 0) {
-            // Show meld options to player
-            this.showMeldOptions(possibleMelds, playerIndex);
-        } else {
-            this.showNotification('Cannot form a valid meld with this tile!');
-        }
-    }
-
-    findPossibleMelds(hand, tile) {
-        const melds = [];
-        const allTiles = [...hand, tile];
-
-        // Check for pungs (three of a kind)
-        const sameTiles = allTiles.filter(t => this.isSameTile(t, tile));
-        if (sameTiles.length >= 3) {
-            melds.push({
-                type: 'pung',
-                tiles: sameTiles.slice(0, 3)
-            });
-        }
-
-        // Check for kongs (four of a kind)
-        if (sameTiles.length >= 4) {
-            melds.push({
-                type: 'kong',
-                tiles: sameTiles.slice(0, 4)
-            });
-        }
-
-        // Check for chows (three consecutive numbers in the same suit)
-        if (tile.type === 'number') {
-            const sameSuitTiles = allTiles.filter(t => 
-                t.type === 'number' && t.suit === tile.suit
-            );
-            
-            // Find consecutive numbers
-            for (let i = 1; i <= 7; i++) {
-                const numbers = [i, i + 1, i + 2];
-                const hasConsecutive = numbers.every(n => 
-                    sameSuitTiles.some(t => t.number === n)
-                );
-                
-                if (hasConsecutive) {
-                    const chowTiles = numbers.map(n => 
-                        sameSuitTiles.find(t => t.number === n)
-                    );
-                    melds.push({
-                        type: 'chow',
-                        tiles: chowTiles
-                    });
-                }
+        // Update visibility of player areas
+        for (let i = 0; i < this.numPlayers; i++) {
+            const playerArea = document.querySelector(`.player${i + 1}`);
+            if (i === this.activeView) {
+                playerArea.classList.remove('hidden');
+            } else {
+                playerArea.classList.add('hidden');
             }
         }
 
-        return melds;
-    }
-
-    showMeldOptions(melds, playerIndex) {
-        const meldOptions = document.createElement('div');
-        meldOptions.className = 'meld-options';
-        meldOptions.innerHTML = `
-            <h3>Possible Melds</h3>
-            <div class="meld-list">
-                ${melds.map((meld, index) => `
-                    <button class="meld-option" data-index="${index}">
-                        ${this.formatMeldDisplay(meld)}
-                    </button>
-                `).join('')}
-            </div>
-        `;
-
-        document.body.appendChild(meldOptions);
-
-        // Add click handlers for meld options
-        meldOptions.querySelectorAll('.meld-option').forEach(button => {
-            button.addEventListener('click', () => {
-                const meldIndex = parseInt(button.dataset.index);
-                this.formMeld(melds[meldIndex], playerIndex);
-                meldOptions.remove();
-            });
-        });
-    }
-
-    formatMeldDisplay(meld) {
-        switch (meld.type) {
-            case 'pung':
-                return `Pung: ${this.tileToString(meld.tiles[0])} × 3`;
-            case 'kong':
-                return `Kong: ${this.tileToString(meld.tiles[0])} × 4`;
-            case 'chow':
-                return `Chow: ${meld.tiles.map(t => this.tileToString(t)).join(' ')}`;
-            default:
-                return 'Unknown Meld';
-        }
-    }
-
-    formMeld(meld, playerIndex) {
-        const player = this.players[playerIndex];
-        
-        // Remove tiles from hand
-        meld.tiles.forEach(tile => {
-            const index = player.hand.findIndex(t => this.isSameTile(t, tile));
-            if (index !== -1) {
-                player.hand.splice(index, 1);
-            }
-        });
-
-        // Add meld to player's melds
-        player.melds.push({
-            type: meld.type,
-            tiles: meld.tiles,
-            concealed: false
-        });
-
-        // If it's a kong, draw a replacement tile
-        if (meld.type === 'kong') {
-            if (this.tiles.length > 0) {
-                player.hand.push(this.tiles.pop());
-            }
-        }
-
-        // Update UI
-        this.updateUI();
-        this.showNotification(`Formed ${meld.type} meld!`);
-    }
-
-    discardTile(index, player) {
-        console.log('Attempting to discard tile:', { index, player, currentPlayer: this.currentPlayer, activeView: this.activeView });
-        
-        if (player !== this.activeView) {
-            this.showNotification('Not your turn!');
-            return;
-        }
-
-        const currentPlayer = this.players[player];
-        if (!currentPlayer.hasDrawn) {
-            this.showNotification('You must draw a tile before discarding!');
-            return;
-        }
-
-        if (currentPlayer.hasDiscarded) {
-            this.showNotification('You have already discarded a tile this turn!');
-            return;
-        }
-
-        // Get the actual tile to discard based on sort mode
-        const tileToDiscard = currentPlayer.sortMode === 'manual' 
-            ? currentPlayer.manualOrder[index]
-            : currentPlayer.hand[index];
-
-        if (!tileToDiscard) {
-            console.error('No tile found at index:', index);
-            return;
-        }
-
-        console.log('Discarding tile:', tileToDiscard);
-
-        // Remove from hand array
-        const handIndex = currentPlayer.hand.indexOf(tileToDiscard);
-        if (handIndex !== -1) {
-            currentPlayer.hand.splice(handIndex, 1);
-        }
-        
-        // Remove from manual order if in manual mode
-        if (currentPlayer.sortMode === 'manual') {
-            currentPlayer.manualOrder.splice(index, 1);
-        } else {
-            // If not in manual mode, update manual order to match hand
-            currentPlayer.manualOrder = [...currentPlayer.hand];
-        }
-        
-        // Add to discarded area with animation
-        const discardedArea = document.querySelector(`.player${player + 1} .discarded`);
-        const tileElement = this.createTileElement(tileToDiscard);
-        tileElement.classList.add('tile-discard');
-        discardedArea.appendChild(tileElement);
-
-        // Store the last discarded tile information
-        this.lastDiscardedTile = tileToDiscard;
-        this.lastDiscardedBy = player;
-        currentPlayer.hasDiscarded = true;
-
-        // Remove animation class after animation completes
-        setTimeout(() => {
-            tileElement.classList.remove('tile-discard');
-        }, 500);
-
-        this.updateUI();
-        this.showNotification('Tile discarded! Click the discarded tile to undo.');
+        // Update button states
+        drawButton.disabled = this.currentPlayer !== this.activeView;
+        nextTurnButton.textContent = 'Next Turn';
     }
 
     createTileElement(tile) {
@@ -630,7 +550,7 @@ class MahjongGame {
             playerHand.innerHTML = '';
             
             const player = this.players[i];
-            const tilesToDisplay = player.sortMode === 'manual' ? player.manualOrder : player.hand;
+            const tilesToDisplay = player.hand;
             
             tilesToDisplay.forEach((tile, index) => {
                 const tileElement = this.createTileElement(tile);
@@ -694,67 +614,15 @@ class MahjongGame {
         }, 2000);
     }
 
-    sortHand(sortType) {
-        if (this.currentPlayer !== this.activeView) {
-            this.showNotification('Not your turn!');
-            return;
-        }
-
-        const currentPlayer = this.players[this.currentPlayer];
-        const hand = currentPlayer.hand;
-        
-        // Store the current sort mode
-        currentPlayer.sortMode = sortType;
-        
-        if (sortType === 'manual') {
-            // If switching to manual mode, initialize manual order if empty
-            if (currentPlayer.manualOrder.length === 0) {
-                currentPlayer.manualOrder = [...hand];
+    sortHand(hand) {
+        hand.sort((a, b) => {
+            if (a.type === 'number' && b.type === 'number') {
+                return a.number - b.number;
             }
-            return;
-        }
-        
-        // Clear manual order when switching to other sort modes
-        currentPlayer.manualOrder = [];
-        
-        switch (sortType) {
-            case 'number':
-                hand.sort((a, b) => {
-                    if (a.type === 'number' && b.type === 'number') {
-                        return a.number - b.number;
-                    }
-                    return 0;
-                });
-                break;
-            
-            case 'suit':
-                hand.sort((a, b) => {
-                    if (a.suit === b.suit) {
-                        if (a.type === 'number' && b.type === 'number') {
-                            return a.number - b.number;
-                        }
-                        return 0;
-                    }
-                    return a.suit.localeCompare(b.suit);
-                });
-                break;
-            
-            case 'type':
-                hand.sort((a, b) => {
-                    if (a.type === b.type) {
-                        if (a.type === 'number') {
-                            return a.number - b.number;
-                        }
-                        return a.value.localeCompare(b.value);
-                    }
-                    const typeOrder = { 'number': 0, 'wind': 1, 'dragon': 2 };
-                    return typeOrder[a.type] - typeOrder[b.type];
-                });
-                break;
-        }
-
+            return 0;
+        });
         this.updateUI();
-        this.showNotification(`Hand sorted by ${sortType}`);
+        this.showNotification('Hand sorted');
     }
 
     playerDone() {
@@ -1420,11 +1288,6 @@ class MahjongGame {
         // Add the tile back to hand
         currentPlayer.hand.push(this.lastDiscardedTile);
         
-        // Add back to manual order if in manual mode
-        if (currentPlayer.sortMode === 'manual') {
-            currentPlayer.manualOrder.push(this.lastDiscardedTile);
-        }
-
         // Reset discard flags
         currentPlayer.hasDiscarded = false;
         this.lastDiscardedTile = null;
