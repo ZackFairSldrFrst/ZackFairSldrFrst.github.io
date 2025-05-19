@@ -59,7 +59,7 @@ class MahjongGame {
 
     drawTile() {
         if (this.tiles.length === 0) {
-            alert('No more tiles!');
+            this.showNotification('No more tiles!');
             return;
         }
 
@@ -71,16 +71,23 @@ class MahjongGame {
         }
         
         this.updateUI();
+        this.animateDrawTile();
     }
 
     discardTile(index, player) {
         const hand = player === 1 ? this.player1Hand : this.player2Hand;
         const discardedTile = hand.splice(index, 1)[0];
         
-        // Add to discarded area
+        // Add to discarded area with animation
         const discardedArea = document.querySelector(`.player${player} .discarded`);
         const tileElement = this.createTileElement(discardedTile);
+        tileElement.classList.add('tile-discard');
         discardedArea.appendChild(tileElement);
+
+        // Remove animation class after animation completes
+        setTimeout(() => {
+            tileElement.classList.remove('tile-discard');
+        }, 500);
 
         // Switch turns
         this.currentPlayer = this.currentPlayer === 1 ? 2 : 1;
@@ -95,11 +102,17 @@ class MahjongGame {
     }
 
     updateUI() {
-        // Update remaining tiles count
-        document.getElementById('remaining-tiles').textContent = this.tiles.length;
+        // Update remaining tiles count with animation
+        const remainingTilesElement = document.getElementById('remaining-tiles');
+        remainingTilesElement.style.transform = 'scale(1.2)';
+        remainingTilesElement.textContent = this.tiles.length;
+        setTimeout(() => {
+            remainingTilesElement.style.transform = 'scale(1)';
+        }, 200);
         
         // Update current player display
-        document.getElementById('current-player').textContent = `Player ${this.currentPlayer}`;
+        const currentPlayerElement = document.getElementById('current-player');
+        currentPlayerElement.textContent = `Player ${this.currentPlayer}`;
         
         // Update player hands
         const player1Hand = document.querySelector('.player1 .hand');
@@ -120,7 +133,66 @@ class MahjongGame {
             player2Hand.appendChild(tileElement);
         });
     }
+
+    animateDrawTile() {
+        const hand = this.currentPlayer === 1 ? 
+            document.querySelector('.player1 .hand') : 
+            document.querySelector('.player2 .hand');
+        
+        const lastTile = hand.lastElementChild;
+        if (lastTile) {
+            lastTile.classList.add('tile-draw');
+            setTimeout(() => {
+                lastTile.classList.remove('tile-draw');
+            }, 500);
+        }
+    }
+
+    showNotification(message) {
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        // Trigger animation
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 10);
+
+        // Remove notification after animation
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }, 2000);
+    }
 }
+
+// Add notification styles
+const style = document.createElement('style');
+style.textContent = `
+    .notification {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-100%);
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        z-index: 1000;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .notification.show {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+`;
+document.head.appendChild(style);
 
 // Start the game when the page loads
 window.addEventListener('load', () => {
