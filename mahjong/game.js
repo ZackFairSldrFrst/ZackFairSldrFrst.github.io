@@ -56,16 +56,17 @@ class MahjongGame {
             THIRTEEN_ORPHANS: 'thirteen_orphans' // One of each terminal and honor, plus one extra
         };
         
-        // Initialize players
+        // Initialize players with manual order tracking
         for (let i = 0; i < this.numPlayers; i++) {
             this.players.push({
                 hand: [],
+                manualOrder: [], // Track manual order of tiles
                 discarded: [],
-                melds: [], // Track completed melds
-                sortMode: 'none', // Track sort mode per player
-                hasDrawn: false, // Track if player has drawn this turn
-                hasDiscarded: false, // Track if player has discarded this turn
-                concealed: true, // Track if hand is concealed
+                melds: [],
+                sortMode: 'none',
+                hasDrawn: false,
+                hasDiscarded: false,
+                concealed: true,
                 score: 0
             });
         }
@@ -145,15 +146,14 @@ class MahjongGame {
 
     setupEventListeners() {
         document.getElementById('draw-tile').addEventListener('click', () => this.drawTile());
-        document.getElementById('pass-device').addEventListener('click', () => this.passDevice());
         
-        // Add end turn button
-        const endTurnButton = document.createElement('button');
-        endTurnButton.id = 'end-turn';
-        endTurnButton.className = 'control-button';
-        endTurnButton.textContent = 'End Turn';
-        endTurnButton.addEventListener('click', () => this.endTurn());
-        document.querySelector('.game-controls').appendChild(endTurnButton);
+        // Add next turn button (combines end turn and pass device)
+        const nextTurnButton = document.createElement('button');
+        nextTurnButton.id = 'next-turn';
+        nextTurnButton.className = 'control-button';
+        nextTurnButton.textContent = 'Next Turn';
+        nextTurnButton.addEventListener('click', () => this.nextTurn());
+        document.querySelector('.game-controls').appendChild(nextTurnButton);
         
         // Add done button
         const doneButton = document.createElement('button');
@@ -165,9 +165,13 @@ class MahjongGame {
         
         // Add click handlers for player hands
         for (let i = 0; i < this.numPlayers; i++) {
-            document.querySelector(`.player${i + 1} .hand`).addEventListener('click', (e) => {
-                if (this.currentPlayer === i && e.target.classList.contains('tile')) {
-                    this.discardTile(e.target.dataset.index, i);
+            const hand = document.querySelector(`.player${i + 1} .hand`);
+            hand.addEventListener('click', (e) => {
+                const tile = e.target.closest('.tile');
+                if (tile && this.currentPlayer === i && this.activeView === i) {
+                    const index = Array.from(hand.children).indexOf(tile);
+                    console.log('Discarding tile at index:', index);
+                    this.discardTile(index, i);
                 }
             });
         }
@@ -208,12 +212,23 @@ class MahjongGame {
                     this.draggedTile = e.target;
                     this.dragStartIndex = Array.from(hand.children).indexOf(e.target);
                     e.target.classList.add('dragging');
+                    
+                    // Set sort mode to manual when dragging
+                    this.players[i].sortMode = 'manual';
                 }
             });
 
             hand.addEventListener('dragend', (e) => {
                 if (e.target.classList.contains('tile')) {
                     e.target.classList.remove('dragging');
+                    
+                    // Update manual order after drag
+                    const player = this.players[i];
+                    player.manualOrder = Array.from(hand.children).map(child => {
+                        const index = parseInt(child.dataset.index);
+                        return player.hand[index];
+                    });
+                    
                     this.draggedTile = null;
                     this.dragStartIndex = null;
                 }
@@ -235,15 +250,33 @@ class MahjongGame {
         }
     }
 
-    passDevice() {
+    nextTurn() {
+        const currentPlayer = this.players[this.currentPlayer];
+        
+        // If it's the current player's turn and they haven't completed their turn
+        if (this.currentPlayer === this.activeView) {
+            if (!currentPlayer.hasDrawn || !currentPlayer.hasDiscarded) {
+                this.showNotification('You must draw and discard a tile before ending your turn!');
+                return;
+            }
+            
+            // Reset flags and switch turns
+            currentPlayer.hasDrawn = false;
+            currentPlayer.hasDiscarded = false;
+            this.currentPlayer = (this.currentPlayer + 1) % this.numPlayers;
+        }
+        
+        // Always update the active view
         this.activeView = (this.activeView + 1) % this.numPlayers;
+        
+        this.updateUI();
         this.updateView();
-        this.showNotification(`Device passed to Player ${this.activeView + 1}`);
+        this.showNotification(`Turn passed to Player ${this.currentPlayer + 1}`);
     }
 
     updateView() {
         const drawButton = document.getElementById('draw-tile');
-        const passButton = document.getElementById('pass-device');
+        const nextTurnButton = document.getElementById('next-turn');
 
         // Update visibility of player areas
         for (let i = 0; i < this.numPlayers; i++) {
@@ -257,7 +290,7 @@ class MahjongGame {
 
         // Update button states
         drawButton.disabled = this.currentPlayer !== this.activeView;
-        passButton.textContent = `Pass Device to Player ${((this.activeView + 1) % this.numPlayers) + 1}`;
+        nextTurnButton.textContent = this.currentPlayer === this.activeView ? 'End Turn' : 'Pass Device';
     }
 
     drawTile() {
@@ -279,24 +312,17 @@ class MahjongGame {
 
         const drawnTile = this.tiles.pop();
         currentPlayer.hand.push(drawnTile);
+        
+        // Add to manual order if in manual mode
+        if (currentPlayer.sortMode === 'manual') {
+            currentPlayer.manualOrder.push(drawnTile);
+        }
+        
         currentPlayer.hasDrawn = true;
         
-        // Apply current sort mode to the hand
-        if (currentPlayer.sortMode !== 'none') {
-            // Store the current hand order
-            const currentOrder = currentPlayer.hand.map((tile, index) => ({ tile, index }));
-            
-            // Sort the hand
+        // Only sort if not in manual mode
+        if (currentPlayer.sortMode !== 'manual') {
             this.sortHand(currentPlayer.sortMode);
-            
-            // If the hand was manually arranged (drag and drop), restore the order
-            if (currentPlayer.sortMode === 'manual') {
-                currentPlayer.hand.sort((a, b) => {
-                    const aOrder = currentOrder.find(item => item.tile === a)?.index ?? 0;
-                    const bOrder = currentOrder.find(item => item.tile === b)?.index ?? 0;
-                    return aOrder - bOrder;
-                });
-            }
         }
         
         this.updateUI();
@@ -452,6 +478,8 @@ class MahjongGame {
     }
 
     discardTile(index, player) {
+        console.log('Attempting to discard tile:', { index, player, currentPlayer: this.currentPlayer, activeView: this.activeView });
+        
         if (player !== this.activeView) {
             this.showNotification('Not your turn!');
             return;
@@ -468,17 +496,36 @@ class MahjongGame {
             return;
         }
 
-        const hand = currentPlayer.hand;
-        const discardedTile = hand.splice(index, 1)[0];
+        // Get the actual tile to discard based on sort mode
+        const tileToDiscard = currentPlayer.sortMode === 'manual' 
+            ? currentPlayer.manualOrder[index]
+            : currentPlayer.hand[index];
+
+        if (!tileToDiscard) {
+            console.error('No tile found at index:', index);
+            return;
+        }
+
+        console.log('Discarding tile:', tileToDiscard);
+
+        // Remove from both hand and manual order
+        const handIndex = currentPlayer.hand.indexOf(tileToDiscard);
+        if (handIndex !== -1) {
+            currentPlayer.hand.splice(handIndex, 1);
+        }
+        
+        if (currentPlayer.sortMode === 'manual') {
+            currentPlayer.manualOrder.splice(index, 1);
+        }
         
         // Add to discarded area with animation
         const discardedArea = document.querySelector(`.player${player + 1} .discarded`);
-        const tileElement = this.createTileElement(discardedTile);
+        const tileElement = this.createTileElement(tileToDiscard);
         tileElement.classList.add('tile-discard');
         discardedArea.appendChild(tileElement);
 
         // Store the last discarded tile information
-        this.lastDiscardedTile = discardedTile;
+        this.lastDiscardedTile = tileToDiscard;
         this.lastDiscardedBy = player;
         currentPlayer.hasDiscarded = true;
 
@@ -488,6 +535,7 @@ class MahjongGame {
         }, 500);
 
         this.updateUI();
+        this.showNotification('Tile discarded!');
     }
 
     createTileElement(tile) {
@@ -559,18 +607,21 @@ class MahjongGame {
         
         // Update button states
         const drawButton = document.getElementById('draw-tile');
-        const endTurnButton = document.getElementById('end-turn');
+        const nextTurnButton = document.getElementById('next-turn');
         const currentPlayer = this.players[this.currentPlayer];
         
         drawButton.disabled = this.currentPlayer !== this.activeView || currentPlayer.hasDrawn;
-        endTurnButton.disabled = this.currentPlayer !== this.activeView || !currentPlayer.hasDrawn || !currentPlayer.hasDiscarded;
+        nextTurnButton.disabled = this.currentPlayer === this.activeView && (!currentPlayer.hasDrawn || !currentPlayer.hasDiscarded);
         
         // Update all player hands
         for (let i = 0; i < this.numPlayers; i++) {
             const playerHand = document.querySelector(`.player${i + 1} .hand`);
             playerHand.innerHTML = '';
             
-            this.players[i].hand.forEach((tile, index) => {
+            const player = this.players[i];
+            const tilesToDisplay = player.sortMode === 'manual' ? player.manualOrder : player.hand;
+            
+            tilesToDisplay.forEach((tile, index) => {
                 const tileElement = this.createTileElement(tile);
                 tileElement.dataset.index = index;
                 playerHand.appendChild(tileElement);
@@ -638,15 +689,22 @@ class MahjongGame {
             return;
         }
 
-        const hand = this.players[this.currentPlayer].hand;
+        const currentPlayer = this.players[this.currentPlayer];
+        const hand = currentPlayer.hand;
         
         // Store the current sort mode
-        this.players[this.currentPlayer].sortMode = sortType;
+        currentPlayer.sortMode = sortType;
         
         if (sortType === 'manual') {
-            // Don't sort if manual arrangement is selected
+            // If switching to manual mode, initialize manual order if empty
+            if (currentPlayer.manualOrder.length === 0) {
+                currentPlayer.manualOrder = [...hand];
+            }
             return;
         }
+        
+        // Clear manual order when switching to other sort modes
+        currentPlayer.manualOrder = [];
         
         switch (sortType) {
             case 'number':
@@ -709,21 +767,6 @@ class MahjongGame {
         } else {
             this.showNotification('This is not a winning hand!');
         }
-    }
-
-    endTurn() {
-        const currentPlayer = this.players[this.currentPlayer];
-        if (!currentPlayer.hasDrawn || !currentPlayer.hasDiscarded) {
-            this.showNotification('You must draw and discard a tile before ending your turn!');
-            return;
-        }
-
-        // Reset flags and switch turns
-        currentPlayer.hasDrawn = false;
-        currentPlayer.hasDiscarded = false;
-        this.currentPlayer = (this.currentPlayer + 1) % this.numPlayers;
-        this.updateUI();
-        this.showNotification(`Turn passed to Player ${this.currentPlayer + 1}`);
     }
 
     // Check if a hand is valid (has a winning pattern)
