@@ -178,8 +178,15 @@ class MahjongGame {
 
         // Add click handlers for discarded tiles
         for (let i = 0; i < this.numPlayers; i++) {
-            document.querySelector(`.player${i + 1} .discarded`).addEventListener('click', (e) => {
-                if (e.target.classList.contains('tile') && this.lastDiscardedTile) {
+            const discardedArea = document.querySelector(`.player${i + 1} .discarded`);
+            discardedArea.addEventListener('click', (e) => {
+                const tile = e.target.closest('.tile');
+                if (!tile) return;
+
+                // If it's the last discarded tile and it's still your turn
+                if (this.lastDiscardedTile && this.lastDiscardedBy === i && this.currentPlayer === i) {
+                    this.undoDiscard(i);
+                } else if (this.lastDiscardedTile) {
                     this.tryPickupDiscardedTile(i);
                 }
             });
@@ -250,6 +257,25 @@ class MahjongGame {
         }
     }
 
+    updateView() {
+        const drawButton = document.getElementById('draw-tile');
+        const nextTurnButton = document.getElementById('next-turn');
+
+        // Update visibility of player areas
+        for (let i = 0; i < this.numPlayers; i++) {
+            const playerArea = document.querySelector(`.player${i + 1}`);
+            if (i === this.activeView) {
+                playerArea.classList.remove('hidden');
+            } else {
+                playerArea.classList.add('hidden');
+            }
+        }
+
+        // Update button states
+        drawButton.disabled = this.currentPlayer !== this.activeView;
+        nextTurnButton.textContent = 'Next Turn';
+    }
+
     nextTurn() {
         const currentPlayer = this.players[this.currentPlayer];
         
@@ -272,25 +298,6 @@ class MahjongGame {
         this.updateUI();
         this.updateView();
         this.showNotification(`Turn passed to Player ${this.currentPlayer + 1}`);
-    }
-
-    updateView() {
-        const drawButton = document.getElementById('draw-tile');
-        const nextTurnButton = document.getElementById('next-turn');
-
-        // Update visibility of player areas
-        for (let i = 0; i < this.numPlayers; i++) {
-            const playerArea = document.querySelector(`.player${i + 1}`);
-            if (i === this.activeView) {
-                playerArea.classList.remove('hidden');
-            } else {
-                playerArea.classList.add('hidden');
-            }
-        }
-
-        // Update button states
-        drawButton.disabled = this.currentPlayer !== this.activeView;
-        nextTurnButton.textContent = this.currentPlayer === this.activeView ? 'End Turn' : 'Pass Device';
     }
 
     drawTile() {
@@ -508,14 +515,18 @@ class MahjongGame {
 
         console.log('Discarding tile:', tileToDiscard);
 
-        // Remove from both hand and manual order
+        // Remove from hand array
         const handIndex = currentPlayer.hand.indexOf(tileToDiscard);
         if (handIndex !== -1) {
             currentPlayer.hand.splice(handIndex, 1);
         }
         
+        // Remove from manual order if in manual mode
         if (currentPlayer.sortMode === 'manual') {
             currentPlayer.manualOrder.splice(index, 1);
+        } else {
+            // If not in manual mode, update manual order to match hand
+            currentPlayer.manualOrder = [...currentPlayer.hand];
         }
         
         // Add to discarded area with animation
@@ -535,7 +546,7 @@ class MahjongGame {
         }, 500);
 
         this.updateUI();
-        this.showNotification('Tile discarded!');
+        this.showNotification('Tile discarded! Click the discarded tile to undo.');
     }
 
     createTileElement(tile) {
@@ -1383,6 +1394,44 @@ class MahjongGame {
             }
         `;
         document.head.appendChild(style);
+    }
+
+    undoDiscard(player) {
+        const currentPlayer = this.players[player];
+        
+        // Can only undo if it's still your turn and you haven't ended it
+        if (this.currentPlayer !== player || this.activeView !== player) {
+            this.showNotification('You can only undo your last discard during your turn!');
+            return;
+        }
+
+        if (!this.lastDiscardedTile || this.lastDiscardedBy !== player) {
+            this.showNotification('No tile to undo!');
+            return;
+        }
+
+        // Remove the tile from discarded area
+        const discardedArea = document.querySelector(`.player${player + 1} .discarded`);
+        const lastTile = discardedArea.lastElementChild;
+        if (lastTile) {
+            lastTile.remove();
+        }
+
+        // Add the tile back to hand
+        currentPlayer.hand.push(this.lastDiscardedTile);
+        
+        // Add back to manual order if in manual mode
+        if (currentPlayer.sortMode === 'manual') {
+            currentPlayer.manualOrder.push(this.lastDiscardedTile);
+        }
+
+        // Reset discard flags
+        currentPlayer.hasDiscarded = false;
+        this.lastDiscardedTile = null;
+        this.lastDiscardedBy = null;
+
+        this.updateUI();
+        this.showNotification('Discard undone!');
     }
 }
 
