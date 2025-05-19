@@ -161,6 +161,78 @@ body {
     padding: 10px;
     background: rgba(231, 76, 60, 0.1);
     border-radius: var(--border-radius);
+    position: relative;
+}
+
+.discarded .tile {
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.discarded .tile:last-child {
+    opacity: 1;
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(231, 76, 60, 0.3);
+    cursor: pointer;
+    animation: pulse-discarded 2s infinite;
+}
+
+.discarded .tile:last-child:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 20px rgba(231, 76, 60, 0.4);
+}
+
+@keyframes pulse-discarded {
+    0% {
+        box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(231, 76, 60, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
+    }
+}
+
+/* Add a visual indicator for the last discarded tile */
+.discarded .tile:last-child::after {
+    content: 'Last Discarded';
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(231, 76, 60, 0.9);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.discarded .tile:last-child:hover::after {
+    opacity: 1;
+}
+
+/* Mobile optimizations for discarded tiles */
+@media (max-width: 768px) {
+    .discarded .tile:last-child::after {
+        font-size: 0.7rem;
+        bottom: -20px;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+    .discarded .tile:last-child:active {
+        transform: scale(1.05);
+    }
+    
+    .discarded .tile:last-child::after {
+        opacity: 1;
+        bottom: -20px;
+    }
 }
 
 .tile {
@@ -534,4 +606,123 @@ body {
         padding: 0.8rem 1.5rem;
         font-size: 1.1rem;
     }
+}
+
+.sort-controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.sort-button {
+    background: var(--primary-color);
+    font-size: 0.9rem;
+    padding: 8px 15px;
+}
+
+.sort-button:hover {
+    background: #34495e;
+}
+
+.sort-button.active {
+    background: var(--accent-color);
+}
+
+/* Drag and Drop Styles */
+.tile {
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+}
+
+.tile.dragging {
+    opacity: 0.5;
+    cursor: grabbing;
+    transform: scale(1.1);
+    z-index: 1000;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.hand {
+    position: relative;
+    min-height: 100px;
+    padding: 10px;
+    background: rgba(52, 152, 219, 0.1);
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s ease;
+}
+
+.hand.drag-over {
+    background: rgba(52, 152, 219, 0.2);
+}
+
+/* Drop zone indicators */
+.tile::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--secondary-color);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.tile.drag-over-left::before {
+    opacity: 1;
+}
+
+.tile::after {
+    content: '';
+    position: absolute;
+    right: -5px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--secondary-color);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.tile.drag-over-right::after {
+    opacity: 1;
+}
+
+/* Mobile optimizations for drag and drop */
+@media (hover: none) {
+    .tile {
+        cursor: pointer;
+    }
+
+    .tile:active {
+        transform: scale(1.05);
+    }
+
+    .sort-controls {
+        flex-direction: column;
+    }
+
+    .sort-button {
+        width: 100%;
+    }
+}
+
+/* Animation for sorting */
+@keyframes sortAnimation {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.tile.sorting {
+    animation: sortAnimation 0.3s ease;
 } 

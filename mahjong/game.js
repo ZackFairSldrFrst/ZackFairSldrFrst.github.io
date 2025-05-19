@@ -5,12 +5,18 @@ class MahjongGame {
         this.currentPlayer = 0;
         this.activeView = 0;
         this.numPlayers = parseInt(localStorage.getItem('mahjongPlayers')) || 2;
+        this.lastDiscardedTile = null; // Track the last discarded tile
+        this.lastDiscardedBy = null; // Track who discarded the last tile
+        this.sortMode = 'none'; // none, number, suit, type
+        this.draggedTile = null;
+        this.dragStartIndex = null;
         
         // Initialize players
         for (let i = 0; i < this.numPlayers; i++) {
             this.players.push({
                 hand: [],
-                discarded: []
+                discarded: [],
+                melds: [] // Track completed melds
             });
         }
 
@@ -98,6 +104,68 @@ class MahjongGame {
                 }
             });
         }
+
+        // Add click handlers for discarded tiles
+        for (let i = 0; i < this.numPlayers; i++) {
+            document.querySelector(`.player${i + 1} .discarded`).addEventListener('click', (e) => {
+                if (e.target.classList.contains('tile') && this.lastDiscardedTile) {
+                    this.tryPickupDiscardedTile(i);
+                }
+            });
+        }
+
+        // Add sort buttons
+        const sortControls = document.createElement('div');
+        sortControls.className = 'sort-controls';
+        sortControls.innerHTML = `
+            <button class="control-button sort-button" data-sort="number">Sort by Number</button>
+            <button class="control-button sort-button" data-sort="suit">Sort by Suit</button>
+            <button class="control-button sort-button" data-sort="type">Sort by Type</button>
+        `;
+        document.querySelector('.game-controls').appendChild(sortControls);
+
+        // Add sort button event listeners
+        document.querySelectorAll('.sort-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const sortType = button.dataset.sort;
+                this.sortHand(sortType);
+            });
+        });
+
+        // Setup drag and drop for tiles
+        for (let i = 0; i < this.numPlayers; i++) {
+            const hand = document.querySelector(`.player${i + 1} .hand`);
+            
+            hand.addEventListener('dragstart', (e) => {
+                if (e.target.classList.contains('tile')) {
+                    this.draggedTile = e.target;
+                    this.dragStartIndex = Array.from(hand.children).indexOf(e.target);
+                    e.target.classList.add('dragging');
+                }
+            });
+
+            hand.addEventListener('dragend', (e) => {
+                if (e.target.classList.contains('tile')) {
+                    e.target.classList.remove('dragging');
+                    this.draggedTile = null;
+                    this.dragStartIndex = null;
+                }
+            });
+
+            hand.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                const tile = e.target.closest('.tile');
+                if (tile && tile !== this.draggedTile) {
+                    const rect = tile.getBoundingClientRect();
+                    const midPoint = rect.left + rect.width / 2;
+                    if (e.clientX < midPoint) {
+                        tile.parentNode.insertBefore(this.draggedTile, tile);
+                    } else {
+                        tile.parentNode.insertBefore(this.draggedTile, tile.nextSibling);
+                    }
+                }
+            });
+        }
     }
 
     passDevice() {
@@ -143,6 +211,71 @@ class MahjongGame {
         this.animateDrawTile();
     }
 
+    tryPickupDiscardedTile(playerIndex) {
+        if (!this.lastDiscardedTile) {
+            this.showNotification('No tile to pick up!');
+            return;
+        }
+
+        if (playerIndex === this.lastDiscardedBy) {
+            this.showNotification('You cannot pick up your own discarded tile!');
+            return;
+        }
+
+        if (playerIndex !== this.currentPlayer) {
+            this.showNotification('Not your turn!');
+            return;
+        }
+
+        // Check if the tile can form a valid meld or sequence
+        const hand = this.players[playerIndex].hand;
+        const tile = this.lastDiscardedTile;
+
+        // Check for potential melds (3 or 4 of a kind)
+        const sameTiles = hand.filter(t => 
+            t.type === tile.type && 
+            t.suit === tile.suit && 
+            (t.type === 'number' ? t.number === tile.number : t.value === tile.value)
+        );
+
+        // Check for potential sequences (only for number tiles)
+        let canFormSequence = false;
+        if (tile.type === 'number') {
+            const sameSuitTiles = hand.filter(t => t.type === 'number' && t.suit === tile.suit);
+            const numbers = sameSuitTiles.map(t => t.number);
+            numbers.push(tile.number);
+            
+            // Check for consecutive numbers
+            for (let i = 1; i <= 7; i++) {
+                if (numbers.includes(i) && numbers.includes(i + 1) && numbers.includes(i + 2)) {
+                    canFormSequence = true;
+                    break;
+                }
+            }
+        }
+
+        if (sameTiles.length >= 2 || canFormSequence) {
+            // Add the tile to player's hand
+            hand.push(tile);
+            
+            // Remove the tile from the discarded area
+            const discardedArea = document.querySelector(`.player${this.lastDiscardedBy + 1} .discarded`);
+            const lastDiscardedElement = discardedArea.lastElementChild;
+            if (lastDiscardedElement) {
+                lastDiscardedElement.remove();
+            }
+
+            // Clear the last discarded tile
+            this.lastDiscardedTile = null;
+            this.lastDiscardedBy = null;
+
+            this.updateUI();
+            this.showNotification('Tile picked up successfully!');
+        } else {
+            this.showNotification('Cannot form a valid meld or sequence with this tile!');
+        }
+    }
+
     discardTile(index, player) {
         if (player !== this.activeView) {
             this.showNotification('Not your turn!');
@@ -158,6 +291,10 @@ class MahjongGame {
         tileElement.classList.add('tile-discard');
         discardedArea.appendChild(tileElement);
 
+        // Store the last discarded tile information
+        this.lastDiscardedTile = discardedTile;
+        this.lastDiscardedBy = player;
+
         // Remove animation class after animation completes
         setTimeout(() => {
             tileElement.classList.remove('tile-discard');
@@ -172,6 +309,7 @@ class MahjongGame {
     createTileElement(tile) {
         const tileElement = document.createElement('div');
         tileElement.className = 'tile';
+        tileElement.draggable = true; // Make tiles draggable
         
         // Add specific class based on tile type
         if (tile.type === 'wind') {
@@ -257,6 +395,54 @@ class MahjongGame {
                 notification.remove();
             }, 300);
         }, 2000);
+    }
+
+    sortHand(sortType) {
+        if (this.currentPlayer !== this.activeView) {
+            this.showNotification('Not your turn!');
+            return;
+        }
+
+        const hand = this.players[this.currentPlayer].hand;
+        
+        switch (sortType) {
+            case 'number':
+                hand.sort((a, b) => {
+                    if (a.type === 'number' && b.type === 'number') {
+                        return a.number - b.number;
+                    }
+                    return 0;
+                });
+                break;
+            
+            case 'suit':
+                hand.sort((a, b) => {
+                    if (a.suit === b.suit) {
+                        if (a.type === 'number' && b.type === 'number') {
+                            return a.number - b.number;
+                        }
+                        return 0;
+                    }
+                    return a.suit.localeCompare(b.suit);
+                });
+                break;
+            
+            case 'type':
+                hand.sort((a, b) => {
+                    if (a.type === b.type) {
+                        if (a.type === 'number') {
+                            return a.number - b.number;
+                        }
+                        return a.value.localeCompare(b.value);
+                    }
+                    const typeOrder = { 'number': 0, 'wind': 1, 'dragon': 2 };
+                    return typeOrder[a.type] - typeOrder[b.type];
+                });
+                break;
+        }
+
+        this.updateUI();
+        this.showNotification(`Hand sorted by ${sortType}`);
     }
 }
 
