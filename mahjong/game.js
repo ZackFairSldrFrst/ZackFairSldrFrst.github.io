@@ -1,10 +1,19 @@
 class MahjongGame {
     constructor() {
         this.tiles = [];
-        this.player1Hand = [];
-        this.player2Hand = [];
-        this.currentPlayer = 1;
-        this.activeView = 1; // Track which player's view is currently active
+        this.players = [];
+        this.currentPlayer = 0;
+        this.activeView = 0;
+        this.numPlayers = parseInt(localStorage.getItem('mahjongPlayers')) || 2;
+        
+        // Initialize players
+        for (let i = 0; i < this.numPlayers; i++) {
+            this.players.push({
+                hand: [],
+                discarded: []
+            });
+        }
+
         this.initializeTiles();
         this.setupEventListeners();
         this.updateUI();
@@ -64,8 +73,9 @@ class MahjongGame {
         
         // Deal initial hands (13 tiles each)
         for (let i = 0; i < 13; i++) {
-            this.player1Hand.push(this.tiles.pop());
-            this.player2Hand.push(this.tiles.pop());
+            for (let player of this.players) {
+                player.hand.push(this.tiles.pop());
+            }
         }
     }
 
@@ -81,43 +91,38 @@ class MahjongGame {
         document.getElementById('pass-device').addEventListener('click', () => this.passDevice());
         
         // Add click handlers for player hands
-        document.querySelector('.player1 .hand').addEventListener('click', (e) => {
-            if (this.currentPlayer === 1 && e.target.classList.contains('tile')) {
-                this.discardTile(e.target.dataset.index, 1);
-            }
-        });
-
-        document.querySelector('.player2 .hand').addEventListener('click', (e) => {
-            if (this.currentPlayer === 2 && e.target.classList.contains('tile')) {
-                this.discardTile(e.target.dataset.index, 2);
-            }
-        });
+        for (let i = 0; i < this.numPlayers; i++) {
+            document.querySelector(`.player${i + 1} .hand`).addEventListener('click', (e) => {
+                if (this.currentPlayer === i && e.target.classList.contains('tile')) {
+                    this.discardTile(e.target.dataset.index, i);
+                }
+            });
+        }
     }
 
     passDevice() {
-        this.activeView = this.activeView === 1 ? 2 : 1;
+        this.activeView = (this.activeView + 1) % this.numPlayers;
         this.updateView();
-        this.showNotification(`Device passed to Player ${this.activeView}`);
+        this.showNotification(`Device passed to Player ${this.activeView + 1}`);
     }
 
     updateView() {
-        const player1Area = document.querySelector('.player1');
-        const player2Area = document.querySelector('.player2');
         const drawButton = document.getElementById('draw-tile');
         const passButton = document.getElementById('pass-device');
 
         // Update visibility of player areas
-        if (this.activeView === 1) {
-            player1Area.classList.remove('hidden');
-            player2Area.classList.add('hidden');
-        } else {
-            player1Area.classList.add('hidden');
-            player2Area.classList.remove('hidden');
+        for (let i = 0; i < this.numPlayers; i++) {
+            const playerArea = document.querySelector(`.player${i + 1}`);
+            if (i === this.activeView) {
+                playerArea.classList.remove('hidden');
+            } else {
+                playerArea.classList.add('hidden');
+            }
         }
 
         // Update button states
         drawButton.disabled = this.currentPlayer !== this.activeView;
-        passButton.textContent = `Pass Device to Player ${this.activeView === 1 ? '2' : '1'}`;
+        passButton.textContent = `Pass Device to Player ${((this.activeView + 1) % this.numPlayers) + 1}`;
     }
 
     drawTile() {
@@ -132,11 +137,7 @@ class MahjongGame {
         }
 
         const drawnTile = this.tiles.pop();
-        if (this.currentPlayer === 1) {
-            this.player1Hand.push(drawnTile);
-        } else {
-            this.player2Hand.push(drawnTile);
-        }
+        this.players[this.currentPlayer].hand.push(drawnTile);
         
         this.updateUI();
         this.animateDrawTile();
@@ -148,11 +149,11 @@ class MahjongGame {
             return;
         }
 
-        const hand = player === 1 ? this.player1Hand : this.player2Hand;
+        const hand = this.players[player].hand;
         const discardedTile = hand.splice(index, 1)[0];
         
         // Add to discarded area with animation
-        const discardedArea = document.querySelector(`.player${player} .discarded`);
+        const discardedArea = document.querySelector(`.player${player + 1} .discarded`);
         const tileElement = this.createTileElement(discardedTile);
         tileElement.classList.add('tile-discard');
         discardedArea.appendChild(tileElement);
@@ -163,9 +164,9 @@ class MahjongGame {
         }, 500);
 
         // Switch turns
-        this.currentPlayer = this.currentPlayer === 1 ? 2 : 1;
+        this.currentPlayer = (this.currentPlayer + 1) % this.numPlayers;
         this.updateUI();
-        this.showNotification(`Turn passed to Player ${this.currentPlayer}`);
+        this.showNotification(`Turn passed to Player ${this.currentPlayer + 1}`);
     }
 
     createTileElement(tile) {
@@ -212,33 +213,23 @@ class MahjongGame {
         
         // Update current player display
         const currentPlayerElement = document.getElementById('current-player');
-        currentPlayerElement.textContent = `Player ${this.currentPlayer}`;
+        currentPlayerElement.textContent = `Player ${this.currentPlayer + 1}`;
         
-        // Update player hands
-        const player1Hand = document.querySelector('.player1 .hand');
-        const player2Hand = document.querySelector('.player2 .hand');
-        
-        player1Hand.innerHTML = '';
-        player2Hand.innerHTML = '';
-        
-        this.player1Hand.forEach((tile, index) => {
-            const tileElement = this.createTileElement(tile);
-            tileElement.dataset.index = index;
-            player1Hand.appendChild(tileElement);
-        });
-        
-        this.player2Hand.forEach((tile, index) => {
-            const tileElement = this.createTileElement(tile);
-            tileElement.dataset.index = index;
-            player2Hand.appendChild(tileElement);
-        });
+        // Update all player hands
+        for (let i = 0; i < this.numPlayers; i++) {
+            const playerHand = document.querySelector(`.player${i + 1} .hand`);
+            playerHand.innerHTML = '';
+            
+            this.players[i].hand.forEach((tile, index) => {
+                const tileElement = this.createTileElement(tile);
+                tileElement.dataset.index = index;
+                playerHand.appendChild(tileElement);
+            });
+        }
     }
 
     animateDrawTile() {
-        const hand = this.currentPlayer === 1 ? 
-            document.querySelector('.player1 .hand') : 
-            document.querySelector('.player2 .hand');
-        
+        const hand = document.querySelector(`.player${this.currentPlayer + 1} .hand`);
         const lastTile = hand.lastElementChild;
         if (lastTile) {
             lastTile.classList.add('tile-draw');
@@ -296,5 +287,10 @@ document.head.appendChild(style);
 
 // Start the game when the page loads
 window.addEventListener('load', () => {
-    new MahjongGame();
+    // Check if we're coming from the start screen
+    if (!localStorage.getItem('mahjongPlayers')) {
+        window.location.href = 'start.html';
+    } else {
+        new MahjongGame();
+    }
 }); 
