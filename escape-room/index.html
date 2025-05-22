@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape Room Challenge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'escape-primary': '#1a1a2e',
+                        'escape-secondary': '#16213e',
+                        'escape-accent': '#0f3460',
+                        'escape-highlight': '#e94560',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(to bottom, #1a1a2e, #0f3460);
+            min-height: 100vh;
+            color: white;
+        }
+        .escape-button {
+            padding: 0.75rem 1.5rem;
+            background-color: #e94560;
+            color: white;
+            border-radius: 0.5rem;
+            transition: all 0.3s;
+        }
+        .escape-button:hover {
+            opacity: 0.9;
+        }
+        .escape-input {
+            padding: 0.5rem 1rem;
+            background-color: #16213e;
+            border: 1px solid #0f3460;
+            border-radius: 0.5rem;
+            color: white;
+            width: 100%;
+        }
+        .escape-input:focus {
+            outline: none;
+            border-color: #e94560;
+        }
+        .escape-card {
+            background-color: #16213e;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            border: 1px solid #0f3460;
+            transition: all 0.3s;
+        }
+        .escape-card:hover {
+            border-color: #e94560;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-8 fade-in">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">Escape Room Challenge</h1>
+            <div class="flex items-center justify-center gap-4 text-xl">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span id="timer">15:00</span>
+            </div>
+        </div>
+
+        <div id="game-container" class="escape-card fade-in">
+            <div class="mb-6">
+                <h2 class="text-2xl font-semibold mb-4">Puzzle <span id="puzzle-number">1</span></h2>
+                <p id="puzzle-question" class="text-lg mb-4"></p>
+                <p id="puzzle-hint" class="text-sm text-gray-400"></p>
+            </div>
+
+            <form id="answer-form" class="space-y-4">
+                <input
+                    type="text"
+                    id="answer-input"
+                    class="escape-input"
+                    placeholder="Enter your answer..."
+                >
+                <button type="submit" class="escape-button w-full">
+                    Submit Answer
+                </button>
+            </form>
+
+            <p id="message" class="mt-4 text-center text-escape-highlight hidden"></p>
+        </div>
+    </div>
+
+    <script>
+        const puzzles = [
+            {
+                id: 1,
+                question: "I am taken from a mine and shut up in a wooden case, from which I am never released, and yet I am used by everyone. What am I?",
+                answer: "pencil lead",
+                hint: "Think about what's inside a pencil"
+            },
+            {
+                id: 2,
+                question: "What has keys, but no locks; space, but no room; and you can enter, but not go in?",
+                answer: "keyboard",
+                hint: "You use it to type"
+            },
+            {
+                id: 3,
+                question: "What gets wetter and wetter the more it dries?",
+                answer: "towel",
+                hint: "You use it after a shower"
+            }
+        ];
+
+        let timeLeft = 15 * 60; // 15 minutes in seconds
+        let currentPuzzle = 1;
+        let timerInterval;
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function updateTimer() {
+            document.getElementById('timer').textContent = formatTime(timeLeft);
+            if (timeLeft > 0) {
+                timeLeft--;
+            } else {
+                clearInterval(timerInterval);
+                gameOver('Time\'s up! Game Over.');
+            }
+        }
+
+        function updatePuzzle() {
+            const puzzle = puzzles.find(p => p.id === currentPuzzle);
+            if (puzzle) {
+                document.getElementById('puzzle-number').textContent = puzzle.id;
+                document.getElementById('puzzle-question').textContent = puzzle.question;
+                document.getElementById('puzzle-hint').textContent = `Hint: ${puzzle.hint}`;
+            }
+        }
+
+        function showMessage(text) {
+            const messageEl = document.getElementById('message');
+            messageEl.textContent = text;
+            messageEl.classList.remove('hidden');
+        }
+
+        function gameOver(message) {
+            clearInterval(timerInterval);
+            const container = document.getElementById('game-container');
+            container.innerHTML = `
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold mb-4">${message}</h2>
+                    <button onclick="location.reload()" class="escape-button">
+                        Play Again
+                    </button>
+                </div>
+            `;
+        }
+
+        document.getElementById('answer-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const userInput = document.getElementById('answer-input').value.toLowerCase().trim();
+            const currentPuzzleData = puzzles.find(p => p.id === currentPuzzle);
+
+            if (currentPuzzleData && userInput === currentPuzzleData.answer.toLowerCase()) {
+                if (currentPuzzle === puzzles.length) {
+                    gameOver('Congratulations! You\'ve escaped!');
+                } else {
+                    currentPuzzle++;
+                    document.getElementById('answer-input').value = '';
+                    showMessage('Correct! Moving to the next puzzle...');
+                    updatePuzzle();
+                }
+            } else {
+                showMessage('Try again!');
+            }
+        });
+
+        // Start the game
+        timerInterval = setInterval(updateTimer, 1000);
+        updatePuzzle();
+    </script>
+</body>
+</html> 

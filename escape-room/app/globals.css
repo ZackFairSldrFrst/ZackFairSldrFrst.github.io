@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 26, 26, 46;
+  --background-end-rgb: 15, 52, 96;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+    to bottom,
+    rgb(var(--background-start-rgb)),
+    rgb(var(--background-end-rgb))
+  );
+  min-height: 100vh;
+}
+
+@layer components {
+  .escape-button {
+    @apply px-6 py-3 bg-escape-highlight text-white rounded-lg 
+           hover:bg-opacity-90 transition-all duration-300 
+           focus:outline-none focus:ring-2 focus:ring-escape-highlight focus:ring-opacity-50;
+  }
+  
+  .escape-input {
+    @apply px-4 py-2 bg-escape-secondary border border-escape-accent 
+           rounded-lg focus:outline-none focus:ring-2 focus:ring-escape-highlight 
+           focus:border-transparent;
+  }
+  
+  .escape-card {
+    @apply bg-escape-secondary p-6 rounded-xl shadow-lg 
+           border border-escape-accent hover:border-escape-highlight 
+           transition-all duration-300;
+  }
+} 
