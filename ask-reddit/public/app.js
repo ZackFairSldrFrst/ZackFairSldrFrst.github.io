@@ -6,56 +6,63 @@ document.addEventListener('DOMContentLoaded', () => {
     const summary = document.getElementById('summary');
     const summaryContent = document.getElementById('summaryContent');
 
-    async function searchRedditPosts(query) {
-        // Use Google Search to find Reddit posts
-        const searchUrl = `https://www.google.com/search?q=site:reddit.com ${encodeURIComponent(query)}`;
-        
-        try {
-            const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(searchUrl)}`);
-            const data = await response.json();
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(data.contents, 'text/html');
-            
-            // Extract Reddit links from Google search results
-            const redditLinks = Array.from(doc.querySelectorAll('a'))
-                .filter(link => link.href.includes('reddit.com/r/'))
-                .map(link => link.href)
-                .slice(0, 5); // Get top 5 results
+    // Google Custom Search API configuration
+    const GOOGLE_API_KEY = 'AIzaSyAbnJzgFVebnW76raC83XkjiqlDk75sR2k';
+    const SEARCH_ENGINE_ID = '017576662512468239146:omuauf_lfve'; // You'll need to create a Custom Search Engine and get this ID
 
-            return redditLinks;
+    async function searchRedditPosts(query) {
+        try {
+            const response = await fetch(
+                `https://www.googleapis.com/customsearch/v1?key=${GOOGLE_API_KEY}&cx=${SEARCH_ENGINE_ID}&q=site:reddit.com ${encodeURIComponent(query)}`
+            );
+            const data = await response.json();
+            
+            if (data.items) {
+                return data.items
+                    .filter(item => item.link.includes('reddit.com/r/'))
+                    .map(item => ({
+                        title: item.title,
+                        url: item.link,
+                        snippet: item.snippet
+                    }))
+                    .slice(0, 5); // Get top 5 results
+            }
+            return [];
         } catch (error) {
             console.error('Error searching Reddit posts:', error);
             return [];
         }
     }
 
-    async function scrapeRedditPost(url) {
+    async function fetchRedditContent(url) {
         try {
-            const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
+            // Convert Reddit URL to JSON format
+            const jsonUrl = url.replace(/\/$/, '') + '.json';
+            const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(jsonUrl)}`);
             const data = await response.json();
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(data.contents, 'text/html');
+            const redditData = JSON.parse(data.contents);
 
-            // Extract post title
-            const title = doc.querySelector('h1')?.textContent || '';
+            if (redditData && redditData[0] && redditData[0].data && redditData[0].data.children[0]) {
+                const post = redditData[0].data.children[0].data;
+                const comments = redditData[1].data.children
+                    .filter(comment => comment.kind === 't1')
+                    .map(comment => ({
+                        text: comment.data.body,
+                        score: comment.data.score,
+                        author: comment.data.author
+                    }))
+                    .slice(0, 10); // Get top 10 comments
 
-            // Extract comments
-            const comments = Array.from(doc.querySelectorAll('[data-testid="comment"]'))
-                .slice(0, 10) // Get top 10 comments
-                .map(comment => {
-                    const text = comment.querySelector('[data-testid="comment-text"]')?.textContent || '';
-                    const score = comment.querySelector('[data-testid="vote-score"]')?.textContent || '0';
-                    return { text, score: parseInt(score) || 0 };
-                })
-                .filter(comment => comment.text.length > 0);
-
-            return {
-                title,
-                url,
-                comments
-            };
+                return {
+                    title: post.title,
+                    url: url,
+                    score: post.score,
+                    comments: comments
+                };
+            }
+            return null;
         } catch (error) {
-            console.error('Error scraping Reddit post:', error);
+            console.error('Error fetching Reddit content:', error);
             return null;
         }
     }
@@ -72,24 +79,24 @@ document.addEventListener('DOMContentLoaded', () => {
         summary.classList.add('hidden');
 
         try {
-            // Search for Reddit posts
-            const redditLinks = await searchRedditPosts(query);
+            // Search for Reddit posts using Google Custom Search
+            const searchResults = await searchRedditPosts(query);
             
-            // Scrape each post
+            // Fetch content for each post
             const posts = await Promise.all(
-                redditLinks.map(url => scrapeRedditPost(url))
+                searchResults.map(result => fetchRedditContent(result.url))
             );
 
-            // Filter out failed scrapes
+            // Filter out failed fetches
             const validPosts = posts.filter(post => post !== null);
 
             // Prepare text for AI summarization
             const textToSummarize = validPosts
                 .map(post => {
                     const commentsText = post.comments
-                        .map(comment => `Comment (Score: ${comment.score}): ${comment.text}`)
+                        .map(comment => `Comment by ${comment.author} (Score: ${comment.score}): ${comment.text}`)
                         .join('\n');
-                    return `Post: ${post.title}\n${commentsText}\n`;
+                    return `Post: ${post.title} (Score: ${post.score})\n${commentsText}\n`;
                 })
                 .join('\n');
 
@@ -140,11 +147,14 @@ document.addEventListener('DOMContentLoaded', () => {
                                 ${post.title}
                             </a>
                         </h3>
+                        <div class="text-sm text-gray-500 mb-4">
+                            Post Score: ${post.score}
+                        </div>
                         <div class="space-y-4">
                             ${post.comments.map(comment => `
                                 <div class="border-l-4 border-gray-200 pl-4">
                                     <div class="comment-score mb-2">
-                                        Score: ${comment.score}
+                                        By ${comment.author} • Score: ${comment.score}
                                     </div>
                                     <p class="text-gray-700">${comment.text}</p>
                                 </div>
