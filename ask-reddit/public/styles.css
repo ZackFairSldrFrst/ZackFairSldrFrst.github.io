@@ -1,0 +1,42 @@
+.prose {
+    max-width: 65ch;
+    color: #374151;
+    line-height: 1.75;
+}
+
+.prose p {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+}
+
+.prose strong {
+    color: #1a202c;
+    font-weight: 600;
+}
+
+.post-card {
+    transition: transform 0.2s ease-in-out;
+}
+
+.post-card:hover {
+    transform: translateY(-2px);
+}
+
+.comment-score {
+    font-size: 0.875rem;
+    color: #6B7280;
+}
+
+.loading-spinner {
+    border: 3px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 3px solid #3498db;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+} 
