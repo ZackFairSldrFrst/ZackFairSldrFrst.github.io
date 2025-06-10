@@ -39,8 +39,8 @@
     </div>
 
     <script>
-        // Set the target date (July 2, 2024, 11:45 AM PT)
-        const targetDate = new Date('2024-07-02T11:45:00-07:00');
+        // Set the target date (July 2, 2025, 11:45 AM PT)
+        const targetDate = new Date('2025-07-02T11:45:00-07:00');
 
         const sweetMessages = {
             0: "Today's the day! I can't wait to see you! 💖",
@@ -80,6 +80,16 @@
         function updateCountdown() {
             const now = new Date();
             const difference = targetDate - now;
+
+            // If the target date has passed, show zeros
+            if (difference < 0) {
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                document.getElementById('sweet-message').textContent = "I'm here! Let's make the most of our time together! 💖";
+                return;
+            }
 
             const days = Math.floor(difference / (1000 * 60 * 60 * 24));
             const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
