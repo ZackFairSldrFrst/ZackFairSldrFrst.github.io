@@ -108,45 +108,34 @@ function updateTimer() {
 
 function displayQuestion() {
     const question = questions[currentQuestion];
-    const questionContent = document.querySelector('.question-content');
+    const questionContainer = document.getElementById('questionContainer');
     
-    // Update diagram
-    const diagramContainer = questionContent.querySelector('.diagram-container');
-    diagramContainer.innerHTML = question.diagram;
+    questionContainer.innerHTML = `
+        <div class="question-content">
+            <div class="question-text">${question.question}</div>
+            <div class="diagram-container">
+                ${question.diagram}
+            </div>
+            <div class="options">
+                ${question.options.map((option, index) => `
+                    <div class="option" onclick="selectAnswer(${index})">
+                        ${option}
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
     
-    // Update question text
-    const questionText = questionContent.querySelector('.question-text');
-    questionText.textContent = question.question;
-    
-    // Update options
-    const optionsContainer = questionContent.querySelector('.options');
-    optionsContainer.innerHTML = '';
-    question.options.forEach((option, index) => {
-        const optionElement = document.createElement('div');
-        optionElement.className = 'option';
-        if (answers[currentQuestion] === index) {
-            optionElement.classList.add('selected');
-        }
-        optionElement.textContent = option;
-        optionElement.onclick = () => selectAnswer(index);
-        optionsContainer.appendChild(optionElement);
-    });
-    
-    // Update progress
-    const progress = (currentQuestion / questions.length) * 100;
-    document.querySelector('.progress').style.width = `${progress}%`;
-    
-    // Update navigation buttons
-    document.querySelector('.back-button').disabled = currentQuestion === 0;
-    document.querySelector('.next-button').textContent = currentQuestion === questions.length - 1 ? 'Finish' : 'Next';
+    updateProgress();
 }
 
 function selectAnswer(index) {
-    answers[currentQuestion] = index;
     const options = document.querySelectorAll('.option');
-    options.forEach((option, i) => {
-        option.classList.toggle('selected', i === index);
-    });
+    options.forEach(option => option.classList.remove('selected'));
+    options[index].classList.add('selected');
+    
+    answers[currentQuestion] = index;
+    document.getElementById('nextButton').disabled = false;
 }
 
 function nextQuestion() {

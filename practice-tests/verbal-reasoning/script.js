@@ -57,39 +57,40 @@ function updateTimer() {
     }
 }
 
-function displayQuestion(index) {
-    const question = questions[index];
-    const container = document.getElementById('test-container');
+function displayQuestion() {
+    const question = questions[currentQuestion];
+    const questionContainer = document.getElementById('questionContainer');
     
-    container.innerHTML = `
-        <div class="question-container">
-            <div class="passage">${question.passage}</div>
-            <div class="question">
-                <h3>Question ${index + 1} of ${questions.length}</h3>
-                <p>${question.question}</p>
-            </div>
+    questionContainer.innerHTML = `
+        <div class="question-content">
+            ${question.passage ? `<div class="passage">${question.passage}</div>` : ''}
+            <div class="question-text">${question.question}</div>
             <div class="options">
-                ${question.options.map((option, i) => `
-                    <div class="option ${answers[index] === i ? 'selected' : ''}" 
-                         onclick="selectAnswer(${i})">
+                ${question.options.map((option, index) => `
+                    <div class="option" onclick="selectAnswer(${index})">
                         ${option}
                     </div>
                 `).join('')}
             </div>
         </div>
     `;
+    
+    updateProgress();
 }
 
 function selectAnswer(index) {
+    const options = document.querySelectorAll('.option');
+    options.forEach(option => option.classList.remove('selected'));
+    options[index].classList.add('selected');
+    
     answers[currentQuestion] = index;
-    displayQuestion(currentQuestion);
+    document.getElementById('nextButton').disabled = false;
 }
 
 function nextQuestion() {
     if (currentQuestion < questions.length - 1) {
         currentQuestion++;
-        displayQuestion(currentQuestion);
-        updateProgress();
+        displayQuestion();
         document.getElementById('prev-btn').disabled = false;
         if (currentQuestion === questions.length - 1) {
             document.getElementById('next-btn').textContent = 'Finish';
@@ -102,8 +103,7 @@ function nextQuestion() {
 function prevQuestion() {
     if (currentQuestion > 0) {
         currentQuestion--;
-        displayQuestion(currentQuestion);
-        updateProgress();
+        displayQuestion();
         document.getElementById('next-btn').textContent = 'Next';
         if (currentQuestion === 0) {
             document.getElementById('prev-btn').disabled = true;
@@ -119,113 +119,89 @@ function updateProgress() {
 function endTest() {
     clearInterval(timerInterval);
     document.getElementById('timer').style.display = 'none';
-    document.getElementById('test-container').style.display = 'none';
-    document.querySelector('.navigation').style.display = 'none';
-    
+    const questionContainer = document.getElementById('questionContainer');
+    const navigation = document.querySelector('.navigation');
     const results = document.getElementById('results');
+    
+    questionContainer.style.display = 'none';
+    navigation.style.display = 'none';
     results.style.display = 'block';
     
-    const score = answers.reduce((acc, answer, index) => {
-        return acc + (answer === questions[index].correct ? 1 : 0);
-    }, 0);
+    let score = 0;
+    let explanations = [];
     
-    // Calculate statistics
-    const totalQuestions = questions.length;
-    const correctAnswers = score;
-    const incorrectAnswers = totalQuestions - correctAnswers;
-    const percentage = Math.round((correctAnswers / totalQuestions) * 100);
+    questions.forEach((question, index) => {
+        if (answers[index] === question.correct) {
+            score++;
+        }
+        explanations.push({
+            question: question.question,
+            userAnswer: question.options[answers[index]],
+            correctAnswer: question.options[question.correct],
+            explanation: question.explanation,
+            isCorrect: answers[index] === question.correct
+        });
+    });
     
-    // Add Chart.js
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
-    script.onload = () => {
-        // Create chart container
-        const chartContainer = document.createElement('div');
-        chartContainer.className = 'results-chart';
-        chartContainer.innerHTML = '<canvas id="resultsChart"></canvas>';
-        results.insertBefore(chartContainer, document.getElementById('score'));
-        
-        // Create summary statistics
-        const summaryContainer = document.createElement('div');
-        summaryContainer.className = 'results-summary';
-        summaryContainer.innerHTML = `
-            <div class="summary-item">
-                <h3>Total Questions</h3>
-                <p>${totalQuestions}</p>
-            </div>
+    const percentage = (score / questions.length) * 100;
+    
+    results.innerHTML = `
+        <h2>Test Results</h2>
+        <div id="score">Your Score: ${score}/${questions.length} (${percentage.toFixed(1)}%)</div>
+        <div class="results-chart">
+            <canvas id="resultsChart"></canvas>
+        </div>
+        <div class="results-summary">
             <div class="summary-item">
                 <h3>Correct Answers</h3>
-                <p>${correctAnswers}</p>
+                <p>${score}</p>
             </div>
             <div class="summary-item">
                 <h3>Incorrect Answers</h3>
-                <p>${incorrectAnswers}</p>
+                <p>${questions.length - score}</p>
             </div>
             <div class="summary-item">
-                <h3>Success Rate</h3>
-                <p>${percentage}%</p>
+                <h3>Accuracy</h3>
+                <p>${percentage.toFixed(1)}%</p>
             </div>
-        `;
-        results.insertBefore(summaryContainer, document.getElementById('score'));
-        
-        // Create pie chart
-        const ctx = document.getElementById('resultsChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['Correct', 'Incorrect'],
-                datasets: [{
-                    data: [correctAnswers, incorrectAnswers],
-                    backgroundColor: [
-                        'rgba(76, 175, 80, 0.8)',
-                        'rgba(244, 67, 54, 0.8)'
-                    ],
-                    borderColor: [
-                        'rgba(76, 175, 80, 1)',
-                        'rgba(244, 67, 54, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            color: '#ffffff',
-                            font: {
-                                family: 'Inter',
-                                size: 14
-                            }
-                        }
-                    }
+        </div>
+        <div class="explanations">
+            ${explanations.map((exp, index) => `
+                <div class="explanation">
+                    <h4>Question ${index + 1}</h4>
+                    <p><strong>Your answer:</strong> ${exp.userAnswer}</p>
+                    <p><strong>Correct answer:</strong> ${exp.correctAnswer}</p>
+                    <p>${exp.explanation}</p>
+                </div>
+            `).join('')}
+        </div>
+        <button class="restart-button" onclick="restartTest()">Restart Test</button>
+    `;
+    
+    // Create pie chart
+    const ctx = document.getElementById('resultsChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Correct', 'Incorrect'],
+            datasets: [{
+                data: [score, questions.length - score],
+                backgroundColor: ['#40c057', '#fa5252']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
                 }
             }
-        });
-    };
-    document.head.appendChild(script);
-    
-    document.getElementById('score').textContent = `Score: ${score}/${questions.length}`;
-    
-    const explanationContainer = document.getElementById('explanation-container');
-    questions.forEach((q, index) => {
-        const answerText = answers[index] !== null ? q.options[answers[index]] : 'Not answered';
-        explanationContainer.innerHTML += `
-            <div class="explanation">
-                <h4>Question ${index + 1}</h4>
-                <p>${q.passage}</p>
-                <p><strong>Question:</strong> ${q.question}</p>
-                <p><strong>Your answer:</strong> ${answerText}</p>
-                <p><strong>Correct answer:</strong> ${q.options[q.correct]}</p>
-                <p><strong>Explanation:</strong> ${q.explanation}</p>
-            </div>
-        `;
+        }
     });
 }
 
 // Initialize the test
-displayQuestion(0);
+displayQuestion();
 updateProgress();
 
 // Set up event listeners
