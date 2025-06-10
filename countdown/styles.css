@@ -73,7 +73,7 @@ h1 {
 .countdown-container {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 15px;
     margin-bottom: 40px;
     flex-wrap: wrap;
 }
@@ -82,11 +82,15 @@ h1 {
     background: rgba(255, 255, 255, 0.15);
     padding: 20px;
     border-radius: 15px;
-    min-width: 120px;
+    min-width: 110px;
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     transition: transform 0.3s ease;
+}
+
+.countdown-item.milliseconds {
+    min-width: 130px;
 }
 
 .countdown-item:hover {
@@ -102,6 +106,11 @@ h1 {
     font-size: 2.5rem;
     font-weight: 700;
     margin-bottom: 5px;
+}
+
+.countdown-item.milliseconds span:first-child {
+    font-size: 2rem;
+    font-family: monospace;
 }
 
 .countdown-item .label {
@@ -142,11 +151,19 @@ h1 {
     }
 
     .countdown-item {
-        min-width: 100px;
+        min-width: 90px;
         padding: 15px;
     }
 
+    .countdown-item.milliseconds {
+        min-width: 110px;
+    }
+
     .countdown-item span:first-child {
-        font-size: 2rem;
+        font-size: 1.8rem;
+    }
+
+    .countdown-item.milliseconds span:first-child {
+        font-size: 1.5rem;
     }
 } 
