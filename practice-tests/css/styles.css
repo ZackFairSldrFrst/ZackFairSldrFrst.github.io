@@ -3,7 +3,7 @@
     --glass-bg: rgba(255, 255, 255, 0.1);
     --glass-border: rgba(255, 255, 255, 0.2);
     --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    --primary-color: #2196F3;
+    --primary-color: #ffffff;
     --primary-light: #e3f2fd;
     --text-primary: #ffffff;
     --text-secondary: rgba(255, 255, 255, 0.9);
@@ -12,6 +12,8 @@
     --warning-color: #ff9800;
     --danger-color: #f44336;
     --card-bg: rgba(0, 0, 0, 0.2);
+    --border-radius: 12px;
+    --transition: all 0.3s ease;
 }
 
 /* Base Styles */
@@ -23,10 +25,10 @@
 }
 
 body {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
     color: var(--text-primary);
     line-height: 1.6;
-    min-height: 100vh;
 }
 
 /* Layout */
@@ -546,18 +548,36 @@ body {
     height: 60px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 8px;
-    font-size: 24px;
+    font-size: 40px;
     color: var(--text-primary);
+    transition: all 0.3s ease;
+    line-height: 1;
+    font-family: "Arial Unicode MS", "Segoe UI Symbol", sans-serif;
+}
+
+.box:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
 }
 
 .transformation .box {
     width: auto;
-    padding: 0 1rem;
+    padding: 0 1.5rem;
+    font-size: 36px;
 }
 
 .pattern .box {
     width: auto;
     padding: 0 2rem;
+    font-size: 36px;
+}
+
+.sequence .box, .matrix .box {
+    font-size: 44px;
+}
+
+.analogy .box {
+    font-size: 48px;
 }
 
 /* Results Page Styles */

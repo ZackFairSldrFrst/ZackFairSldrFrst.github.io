@@ -3,88 +3,89 @@ const questions = [
         type: 'sequence',
         diagram: `
             <div class="sequence">
-                <div class="box">▲</div>
-                <div class="box">■</div>
-                <div class="box">●</div>
+                <div class="box">□</div>
+                <div class="box">◇</div>
+                <div class="box">□</div>
+                <div class="box">◇</div>
                 <div class="box">?</div>
             </div>
         `,
-        question: "What comes next in this sequence?",
-        options: ["▲", "■", "●", "◆"],
+        question: "What shape comes next in this sequence?",
+        options: ["□", "◇", "△", "○"],
         correct: 0,
-        explanation: "The sequence follows a pattern of rotating shapes: triangle (▲), square (■), circle (●), and then back to triangle (▲)."
+        explanation: "The sequence alternates between a square (□) and a diamond (◇). The next shape should be a square (□)."
     },
     {
         type: 'transformation',
         diagram: `
             <div class="transformation">
-                <div class="box">□ → ○</div>
+                <div class="box">□ → ◇</div>
+                <div class="box">◇ → △</div>
                 <div class="box">△ → □</div>
-                <div class="box">○ → △</div>
-                <div class="box">□ → ?</div>
+                <div class="box">◇ → ?</div>
             </div>
         `,
-        question: "What is the result of transforming the square (□)?",
-        options: ["○", "△", "□", "◇"],
+        question: "What is the result of transforming the diamond (◇)?",
+        options: ["△", "□", "◇", "○"],
         correct: 0,
-        explanation: "The transformation follows a cycle: square (□) becomes circle (○), triangle (△) becomes square (□), and circle (○) becomes triangle (△)."
+        explanation: "The transformation follows a cycle: square (□) becomes diamond (◇), diamond (◇) becomes triangle (△), and triangle (△) becomes square (□)."
     },
     {
         type: 'matrix',
         diagram: `
             <div class="matrix">
                 <div class="row">
-                    <div class="box">1</div>
-                    <div class="box">2</div>
-                    <div class="box">3</div>
+                    <div class="box">□</div>
+                    <div class="box">◇</div>
+                    <div class="box">□</div>
                 </div>
                 <div class="row">
-                    <div class="box">4</div>
-                    <div class="box">5</div>
-                    <div class="box">6</div>
+                    <div class="box">◇</div>
+                    <div class="box">□</div>
+                    <div class="box">◇</div>
                 </div>
                 <div class="row">
-                    <div class="box">7</div>
-                    <div class="box">8</div>
+                    <div class="box">□</div>
+                    <div class="box">◇</div>
                     <div class="box">?</div>
                 </div>
             </div>
         `,
-        question: "What number should replace the question mark?",
-        options: ["7", "8", "9", "10"],
-        correct: 2,
-        explanation: "The numbers increase by 1 in each row, and each column follows a pattern of +3. The last number should be 9."
+        question: "What shape should replace the question mark?",
+        options: ["□", "◇", "△", "○"],
+        correct: 0,
+        explanation: "The pattern alternates between square (□) and diamond (◇) in both rows and columns. The missing shape should be a square (□)."
     },
     {
         type: 'analogy',
         diagram: `
             <div class="analogy">
                 <div class="pair">
-                    <div class="box">▲</div>
-                    <div class="box">▼</div>
+                    <div class="box">□</div>
+                    <div class="box">◇</div>
                 </div>
                 <div class="pair">
-                    <div class="box">►</div>
+                    <div class="box">△</div>
                     <div class="box">?</div>
                 </div>
             </div>
         `,
         question: "What shape completes the analogy?",
-        options: ["◄", "►", "▲", "▼"],
+        options: ["□", "◇", "△", "○"],
         correct: 0,
-        explanation: "The shapes are being flipped vertically. Triangle pointing up (▲) becomes triangle pointing down (▼), so triangle pointing right (►) should become triangle pointing left (◄)."
+        explanation: "The shapes are being rotated 45 degrees clockwise. Square (□) becomes diamond (◇), so triangle (△) should become square (□)."
     },
     {
         type: 'pattern',
         diagram: `
             <div class="pattern">
-                <div class="box">1, 2, 4, 8, ?</div>
+                <div class="box">□ → ◇ → △ → □ → ?</div>
             </div>
         `,
-        question: "What number comes next in this sequence?",
-        options: ["12", "16", "14", "10"],
-        correct: 1,
-        explanation: "The sequence follows a pattern of multiplying each number by 2: 1×2=2, 2×2=4, 4×2=8, 8×2=16."
+        question: "What shape comes next in this sequence?",
+        options: ["◇", "△", "□", "○"],
+        correct: 0,
+        explanation: "The sequence follows a pattern of rotating shapes 45 degrees clockwise: square (□) → diamond (◇) → triangle (△) → square (□) → diamond (◇)."
     }
 ];
 
