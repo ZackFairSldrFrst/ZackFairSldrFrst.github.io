@@ -311,6 +311,83 @@ function endTest() {
         }
     }, 0);
     
+    // Calculate statistics
+    const totalQuestions = questions.length;
+    const correctAnswers = score;
+    const incorrectAnswers = totalQuestions - correctAnswers;
+    const percentage = Math.round((correctAnswers / totalQuestions) * 100);
+    
+    // Add Chart.js
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+    script.onload = () => {
+        // Create chart container
+        const chartContainer = document.createElement('div');
+        chartContainer.className = 'results-chart';
+        chartContainer.innerHTML = '<canvas id="resultsChart"></canvas>';
+        results.insertBefore(chartContainer, document.getElementById('score'));
+        
+        // Create summary statistics
+        const summaryContainer = document.createElement('div');
+        summaryContainer.className = 'results-summary';
+        summaryContainer.innerHTML = `
+            <div class="summary-item">
+                <h3>Total Questions</h3>
+                <p>${totalQuestions}</p>
+            </div>
+            <div class="summary-item">
+                <h3>Correct Answers</h3>
+                <p>${correctAnswers}</p>
+            </div>
+            <div class="summary-item">
+                <h3>Incorrect Answers</h3>
+                <p>${incorrectAnswers}</p>
+            </div>
+            <div class="summary-item">
+                <h3>Success Rate</h3>
+                <p>${percentage}%</p>
+            </div>
+        `;
+        results.insertBefore(summaryContainer, document.getElementById('score'));
+        
+        // Create pie chart
+        const ctx = document.getElementById('resultsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Correct', 'Incorrect'],
+                datasets: [{
+                    data: [correctAnswers, incorrectAnswers],
+                    backgroundColor: [
+                        'rgba(76, 175, 80, 0.8)',
+                        'rgba(244, 67, 54, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(76, 175, 80, 1)',
+                        'rgba(244, 67, 54, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#ffffff',
+                            font: {
+                                family: 'Inter',
+                                size: 14
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    };
+    document.head.appendChild(script);
+    
     document.getElementById('score').textContent = `Score: ${score}/${questions.length}`;
     
     const explanationContainer = document.getElementById('explanation-container');

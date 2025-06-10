@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagrammatic Reasoning Test</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Diagrammatic Reasoning Test</h1>
+            <p>Test your ability to understand and analyze visual patterns and relationships.</p>
+        </div>
+        
+        <div id="timer">Time Remaining: 30:00</div>
+        
+        <div id="test-container">
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question-content">
+                    <div class="diagram-container"></div>
+                    <div class="question-text"></div>
+                    <div class="options"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <button class="nav-button back-button" onclick="previousQuestion()">Previous</button>
+            <button class="nav-button next-button" onclick="nextQuestion()">Next</button>
+        </div>
+        
+        <div id="results" style="display: none;">
+            <h2>Test Results</h2>
+            <div id="score"></div>
+            <div id="explanation-container"></div>
+            <button class="restart-button" onclick="restartTest()">Restart Test</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
