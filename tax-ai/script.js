@@ -4,7 +4,6 @@ const API_URL = 'https://api.deepseek.com/v1/chat/completions';
 const searchInput = document.getElementById('searchInput');
 const searchButton = document.getElementById('searchButton');
 const searchResults = document.getElementById('searchResults');
-const loadingSpinner = document.getElementById('loadingSpinner');
 const resultContent = document.querySelector('.result-content');
 
 // Debug logging function
@@ -12,55 +11,73 @@ function debugLog(message, data = null) {
     console.log(`[Tax AI Debug] ${message}`, data || '');
 }
 
-// Function to show loading state
-function showLoading() {
-    loadingSpinner.classList.remove('hidden');
-    searchResults.classList.add('hidden');
+// Function to show status message
+function showStatus(message) {
+    resultContent.innerHTML = `<div class="status-message">${message}</div>`;
+    searchResults.classList.remove('hidden');
 }
 
-// Function to hide loading state
-function hideLoading() {
-    loadingSpinner.classList.add('hidden');
+// Function to show results
+function showResults() {
     searchResults.classList.remove('hidden');
+}
+
+// Function to hide results
+function hideResults() {
+    searchResults.classList.add('hidden');
+    resultContent.innerHTML = ''; // Clear previous results
 }
 
 // Function to format the response
 function formatResponse(text) {
-    // Split the text into paragraphs
-    const paragraphs = text.split('\n\n');
-    
-    // Create HTML for each paragraph
-    return paragraphs.map(paragraph => {
-        // Handle headers
-        if (paragraph.startsWith('#')) {
-            const level = paragraph.match(/^#+/)[0].length;
-            const content = paragraph.replace(/^#+\s*/, '');
-            return `<h${level}>${content}</h${level}>`;
-        }
-        // Handle bullet points
-        else if (paragraph.startsWith('- ')) {
-            const items = paragraph.split('\n').filter(item => item.trim().startsWith('- '));
-            if (items.length > 0) {
-                return `<ul>${items.map(item => `<li>${item.replace(/^- /, '')}</li>`).join('')}</ul>`;
-            }
-        }
-        // Handle numbered lists
-        else if (/^\d+\.\s/.test(paragraph)) {
-            const items = paragraph.split('\n').filter(item => /^\d+\.\s/.test(item));
-            if (items.length > 0) {
-                return `<ol>${items.map(item => `<li>${item.replace(/^\d+\.\s/, '')}</li>`).join('')}</ol>`;
-            }
-        }
-        // Handle code blocks
-        else if (paragraph.startsWith('```')) {
-            const code = paragraph.replace(/```\w*\n/, '').replace(/```$/, '');
-            return `<pre><code>${code}</code></pre>`;
-        }
-        // Regular paragraph
-        else {
-            return `<p>${paragraph}</p>`;
-        }
-    }).join('');
+    // Convert markdown headers to HTML
+    text = text.replace(/^###### (.*)$/gm, '<h6>$1</h6>')
+               .replace(/^##### (.*)$/gm, '<h5>$1</h5>')
+               .replace(/^#### (.*)$/gm, '<h4>$1</h4>')
+               .replace(/^### (.*)$/gm, '<h3>$1</h3>')
+               .replace(/^## (.*)$/gm, '<h2>$1</h2>')
+               .replace(/^# (.*)$/gm, '<h1>$1</h1>');
+
+    // Convert bold and italic
+    text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+               .replace(/__([^_]+)__/g, '<strong>$1</strong>')
+               .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+               .replace(/_([^_]+)_/g, '<em>$1</em>');
+
+    // Convert unordered lists (including nested)
+    text = text.replace(/^(\s*)[-*] (.*)$/gm, function(match, spaces, item) {
+        const indent = spaces.length / 2;
+        return `${'  '.repeat(indent)}<li>${item}</li>`;
+    });
+    // Wrap list items in <ul>
+    text = text.replace(/((?:<li>.*<\/li>\s*)+)/g, function(match) {
+        return `<ul>${match}</ul>`;
+    });
+
+    // Convert ordered lists
+    text = text.replace(/^(\s*)\d+\. (.*)$/gm, function(match, spaces, item) {
+        const indent = spaces.length / 2;
+        return `${'  '.repeat(indent)}<li>${item}</li>`;
+    });
+    // Wrap ordered list items in <ol>
+    text = text.replace(/((?:<li>.*<\/li>\s*)+)/g, function(match) {
+        // If already wrapped in <ul>, skip
+        if (match.startsWith('<ul>')) return match;
+        return `<ol>${match}</ol>`;
+    });
+
+    // Convert code blocks
+    text = text.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+    // Convert inline code
+    text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+    // Convert paragraphs (lines not already in a block element)
+    text = text.replace(/^(?!<h\d>|<ul>|<ol>|<li>|<pre>|<\/ul>|<\/ol>|<\/li>|<\/pre>|<blockquote>|<\/blockquote>)([^\n]+)\n/gm, '<p>$1</p>\n');
+
+    // Remove extra newlines
+    text = text.replace(/\n{2,}/g, '\n');
+
+    return text;
 }
 
 // Function to handle the search
@@ -72,10 +89,15 @@ async function handleSearch() {
         return;
     }
 
-    showLoading();
+    hideResults();
+    showStatus('Searching tax database...');
     debugLog('Starting search with query:', query);
 
     try {
+        // Simulate database search delay
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        showStatus('Gathering relevant tax information...');
+        
         debugLog('Making API request to:', API_URL);
         
         const requestBody = {
@@ -114,6 +136,9 @@ async function handleSearch() {
             throw new Error(`API request failed with status ${response.status}: ${errorText}`);
         }
 
+        showStatus('Analyzing tax regulations and preparing response...');
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
         const data = await response.json();
         debugLog('Response data:', data);
 
@@ -126,7 +151,7 @@ async function handleSearch() {
         
         // Format and display the response
         resultContent.innerHTML = formatResponse(answer);
-        hideLoading();
+        showResults();
     } catch (error) {
         console.error('Error:', error);
         debugLog('Error details:', error);
@@ -143,7 +168,7 @@ async function handleSearch() {
         }
         
         resultContent.innerHTML = `<p class="error">${errorMessage}</p>`;
-        hideLoading();
+        showResults();
     }
 }
 
@@ -166,36 +191,4 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             });
         }
     });
-});
-
-// Test API connection on page load
-window.addEventListener('load', async () => {
-    debugLog('Testing API connection...');
-    try {
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${API_KEY}`
-            },
-            body: JSON.stringify({
-                model: 'deepseek-chat',
-                messages: [
-                    {
-                        role: 'user',
-                        content: 'Test connection'
-                    }
-                ],
-                max_tokens: 10
-            })
-        });
-        
-        if (response.ok) {
-            debugLog('API connection test successful');
-        } else {
-            debugLog('API connection test failed:', await response.text());
-        }
-    } catch (error) {
-        debugLog('API connection test error:', error);
-    }
 }); 

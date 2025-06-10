@@ -69,16 +69,18 @@ nav a:hover {
 }
 
 .hero h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
     color: var(--text-color);
+    line-height: 1.2;
 }
 
 .hero p {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     color: #64748b;
-    max-width: 600px;
-    margin: 0 auto 2rem;
+    max-width: 700px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.6;
 }
 
 /* Search Box */
@@ -96,29 +98,37 @@ nav a:hover {
     border-radius: 50px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin-bottom: 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 #searchInput {
     flex: 1;
-    padding: 1rem 1.5rem;
+    padding: 1.2rem 1.5rem;
     border: none;
     border-radius: 25px;
-    font-size: 1rem;
+    font-size: 1.1rem;
     outline: none;
+    color: var(--text-color);
+}
+
+#searchInput::placeholder {
+    color: #94a3b8;
 }
 
 #searchButton {
     background: var(--primary-color);
     color: white;
     border: none;
-    padding: 1rem 2rem;
+    padding: 1.2rem 2.5rem;
     border-radius: 25px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    font-weight: 500;
 }
 
 #searchButton:hover {
     background: var(--secondary-color);
+    transform: translateY(-1px);
 }
 
 /* Search Results */
@@ -178,27 +188,6 @@ nav a:hover {
     font-weight: 500;
 }
 
-/* Loading Spinner */
-#loadingSpinner {
-    text-align: center;
-    margin: 1rem 0;
-}
-
-.spinner {
-    width: 40px;
-    height: 40px;
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid var(--primary-color);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 0 auto;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
 /* Features Section */
 .features {
     padding: 4rem 1rem;
@@ -220,25 +209,64 @@ nav a:hover {
 
 .feature-card {
     background: var(--card-background);
-    padding: 2rem;
-    border-radius: 10px;
+    padding: 2.5rem 2rem;
+    border-radius: 15px;
     text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .feature-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
 .feature-card i {
     font-size: 2.5rem;
     color: var(--primary-color);
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    background: rgba(37, 99, 235, 0.1);
+    padding: 1rem;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .feature-card h3 {
     margin-bottom: 1rem;
+    color: var(--text-color);
+    font-size: 1.3rem;
+}
+
+.feature-card p {
+    color: var(--text-color);
+    opacity: 0.8;
+    line-height: 1.6;
+}
+
+/* About Section */
+.about {
+    max-width: 800px;
+    margin: 4rem auto;
+    padding: 0 1rem;
+    text-align: center;
+}
+
+.about h2 {
+    color: var(--primary-color);
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.about p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: var(--text-color);
+    opacity: 0.9;
 }
 
 /* Footer */
@@ -271,11 +299,11 @@ footer {
 /* Responsive Design */
 @media (max-width: 768px) {
     .hero h1 {
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
     
     .hero p {
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
     
     nav ul {
@@ -285,4 +313,46 @@ footer {
     .feature-grid {
         grid-template-columns: 1fr;
     }
+    
+    .feature-card {
+        padding: 2rem 1.5rem;
+    }
+    
+    .about p {
+        font-size: 1.1rem;
+    }
+}
+
+/* Remove spinner styles */
+.hidden {
+    display: none;
+}
+
+/* Status Message */
+.status-message {
+    text-align: center;
+    padding: 2rem;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    font-weight: 500;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Error Message */
+.error {
+    color: #dc2626;
+    font-weight: 500;
+    text-align: center;
+    padding: 2rem;
 } 
