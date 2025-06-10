@@ -7,6 +7,11 @@ const searchResults = document.getElementById('searchResults');
 const loadingSpinner = document.getElementById('loadingSpinner');
 const resultContent = document.querySelector('.result-content');
 
+// Debug logging function
+function debugLog(message, data = null) {
+    console.log(`[Tax AI Debug] ${message}`, data || '');
+}
+
 // Function to show loading state
 function showLoading() {
     loadingSpinner.classList.remove('hidden');
@@ -26,16 +31,33 @@ function formatResponse(text) {
     
     // Create HTML for each paragraph
     return paragraphs.map(paragraph => {
+        // Handle headers
         if (paragraph.startsWith('#')) {
-            // Handle headers
             const level = paragraph.match(/^#+/)[0].length;
             const content = paragraph.replace(/^#+\s*/, '');
             return `<h${level}>${content}</h${level}>`;
-        } else if (paragraph.startsWith('- ')) {
-            // Handle bullet points
-            return `<ul><li>${paragraph.replace(/^- /, '')}</li></ul>`;
-        } else {
-            // Regular paragraph
+        }
+        // Handle bullet points
+        else if (paragraph.startsWith('- ')) {
+            const items = paragraph.split('\n').filter(item => item.trim().startsWith('- '));
+            if (items.length > 0) {
+                return `<ul>${items.map(item => `<li>${item.replace(/^- /, '')}</li>`).join('')}</ul>`;
+            }
+        }
+        // Handle numbered lists
+        else if (/^\d+\.\s/.test(paragraph)) {
+            const items = paragraph.split('\n').filter(item => /^\d+\.\s/.test(item));
+            if (items.length > 0) {
+                return `<ol>${items.map(item => `<li>${item.replace(/^\d+\.\s/, '')}</li>`).join('')}</ol>`;
+            }
+        }
+        // Handle code blocks
+        else if (paragraph.startsWith('```')) {
+            const code = paragraph.replace(/```\w*\n/, '').replace(/```$/, '');
+            return `<pre><code>${code}</code></pre>`;
+        }
+        // Regular paragraph
+        else {
             return `<p>${paragraph}</p>`;
         }
     }).join('');
@@ -51,44 +73,76 @@ async function handleSearch() {
     }
 
     showLoading();
+    debugLog('Starting search with query:', query);
 
     try {
+        debugLog('Making API request to:', API_URL);
+        
+        const requestBody = {
+            model: 'deepseek-chat',
+            messages: [
+                {
+                    role: 'system',
+                    content: 'You are a senior tax accountant with over 20 years of experience in public accounting. You specialize in providing detailed, technical tax advice and guidance. Your responses should include specific tax code references, relevant regulations, and practical examples. Focus on accuracy and compliance with current tax laws. When discussing tax strategies, always mention potential risks and compliance requirements. Include relevant IRS publications, tax code sections, and regulatory guidance in your responses. Your goal is to provide comprehensive, technically accurate tax information that helps accountants make informed decisions.'
+                },
+                {
+                    role: 'user',
+                    content: query
+                }
+            ],
+            temperature: 0.7,
+            max_tokens: 1000
+        };
+
+        debugLog('Request body:', requestBody);
+
         const response = await fetch(API_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${API_KEY}`
             },
-            body: JSON.stringify({
-                model: 'deepseek-chat',
-                messages: [
-                    {
-                        role: 'system',
-                        content: 'You are a helpful AI assistant specializing in accounting, entrepreneurship, and AI technology. Provide detailed, professional responses that help accountants understand how to leverage AI and grow their business.'
-                    },
-                    {
-                        role: 'user',
-                        content: query
-                    }
-                ],
-                temperature: 0.7,
-                max_tokens: 1000
-            })
+            body: JSON.stringify(requestBody)
         });
 
+        debugLog('Response status:', response.status);
+        debugLog('Response headers:', Object.fromEntries(response.headers.entries()));
+
         if (!response.ok) {
-            throw new Error('API request failed');
+            const errorText = await response.text();
+            debugLog('Error response:', errorText);
+            throw new Error(`API request failed with status ${response.status}: ${errorText}`);
         }
 
         const data = await response.json();
+        debugLog('Response data:', data);
+
+        if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+            throw new Error('Invalid response format from API');
+        }
+
         const answer = data.choices[0].message.content;
+        debugLog('Extracted answer:', answer);
         
         // Format and display the response
         resultContent.innerHTML = formatResponse(answer);
         hideLoading();
     } catch (error) {
         console.error('Error:', error);
-        resultContent.innerHTML = '<p class="error">Sorry, there was an error processing your request. Please try again.</p>';
+        debugLog('Error details:', error);
+        
+        let errorMessage = 'Sorry, there was an error processing your request. ';
+        if (error.message.includes('Failed to fetch')) {
+            errorMessage += 'Please check your internet connection and try again.';
+        } else if (error.message.includes('401')) {
+            errorMessage += 'API authentication failed. Please check the API key.';
+        } else if (error.message.includes('404')) {
+            errorMessage += 'API endpoint not found. Please check the API URL.';
+        } else {
+            errorMessage += 'Please try again later.';
+        }
+        
+        resultContent.innerHTML = `<p class="error">${errorMessage}</p>`;
         hideLoading();
     }
 }
@@ -112,4 +166,36 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             });
         }
     });
+});
+
+// Test API connection on page load
+window.addEventListener('load', async () => {
+    debugLog('Testing API connection...');
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${API_KEY}`
+            },
+            body: JSON.stringify({
+                model: 'deepseek-chat',
+                messages: [
+                    {
+                        role: 'user',
+                        content: 'Test connection'
+                    }
+                ],
+                max_tokens: 10
+            })
+        });
+        
+        if (response.ok) {
+            debugLog('API connection test successful');
+        } else {
+            debugLog('API connection test failed:', await response.text());
+        }
+    } catch (error) {
+        debugLog('API connection test error:', error);
+    }
 }); 
