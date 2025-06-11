@@ -511,4 +511,62 @@ footer {
     #followUpButton {
         padding: 0.7rem 1rem;
     }
+}
+
+/* Tax Reference Styles */
+.tax-reference {
+    color: #2c5282;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 2px 4px;
+    border-radius: 4px;
+    background-color: #ebf8ff;
+    border: 1px solid #bee3f8;
+    transition: all 0.2s ease;
+}
+
+.tax-reference:hover {
+    background-color: #bee3f8;
+    text-decoration: underline;
+}
+
+.tax-reference:active {
+    background-color: #90cdf4;
+}
+
+/* Compliance Warning Styles */
+.compliance-warning {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #fff5f5;
+    border-left: 4px solid #f56565;
+    border-radius: 4px;
+}
+
+.compliance-warning h4 {
+    color: #c53030;
+    margin: 0 0 0.5rem 0;
+}
+
+.compliance-warning p {
+    color: #742a2a;
+    margin: 0;
+}
+
+/* Source Citation Styles */
+.source-citation {
+    font-size: 0.875rem;
+    color: #718096;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+.source-citation a {
+    color: #4a5568;
+    text-decoration: none;
+}
+
+.source-citation a:hover {
+    text-decoration: underline;
 } 

@@ -62,6 +62,12 @@ function formatResponse(text) {
                .replace(/\*([^*]+)\*/g, '<em>$1</em>')
                .replace(/_([^_]+)_/g, '<em>$1</em>');
 
+    // Format tax code references
+    text = text.replace(/\[IRC §(\d+[A-Za-z]?)\]/g, '<a href="https://www.law.cornell.edu/uscode/text/26/$1" target="_blank" class="tax-reference">IRC §$1</a>')
+               .replace(/\[Treas\. Reg\. §(\d+\.\d+-\d+)\]/g, '<a href="https://www.ecfr.gov/current/title-26/chapter-I/part-$1" target="_blank" class="tax-reference">Treas. Reg. §$1</a>')
+               .replace(/\[Rev\. Rul\. (\d+-\d+)\]/g, '<a href="https://www.irs.gov/pub/irs-irbs/irb$1.pdf" target="_blank" class="tax-reference">Rev. Rul. $1</a>')
+               .replace(/\[Pub\. (\d+[A-Za-z]?)\]/g, '<a href="https://www.irs.gov/pub/irs-pdf/p$1.pdf" target="_blank" class="tax-reference">Pub. $1</a>');
+
     // Convert unordered lists (including nested)
     text = text.replace(/^(\s*)[-*] (.*)$/gm, function(match, spaces, item) {
         const indent = spaces.length / 2;
@@ -133,7 +139,38 @@ async function handleSearch(query, isFollowUp = false) {
             messages: [
                 {
                     role: 'system',
-                    content: 'You are a senior tax accountant with over 20 years of experience in public accounting. You specialize in providing detailed, technical tax advice and guidance. Your responses should include specific tax code references, relevant regulations, and practical examples. Focus on accuracy and compliance with current tax laws. When discussing tax strategies, always mention potential risks and compliance requirements. Include relevant IRS publications, tax code sections, and regulatory guidance in your responses. Your goal is to provide comprehensive, technically accurate tax information that helps accountants make informed decisions.'
+                    content: `You are a senior tax accountant with over 20 years of experience in public accounting. Your responses MUST include:
+
+1. Specific Tax Code References:
+   - Internal Revenue Code (IRC) sections
+   - Treasury Regulations (Treas. Reg.)
+   - Revenue Rulings (Rev. Rul.)
+   - Revenue Procedures (Rev. Proc.)
+   - Private Letter Rulings (PLR) when relevant
+
+2. Official Government Sources:
+   - IRS Publications (Pub.)
+   - IRS Forms and Instructions
+   - IRS Tax Topics
+   - IRS.gov web pages
+   - Treasury Department guidance
+
+3. Format Requirements:
+   - Start with a clear, direct answer
+   - Follow with specific code references in brackets [IRC §1234]
+   - Include relevant IRS Publication numbers [Pub. 334]
+   - Cite official IRS web pages [www.irs.gov/...]
+   - Add practical examples with specific numbers
+   - End with compliance warnings and filing requirements
+
+4. Compliance Focus:
+   - Always mention filing deadlines
+   - Include required forms and documentation
+   - Note potential penalties for non-compliance
+   - Reference recent tax law changes
+   - Highlight state-specific considerations
+
+Your goal is to provide technically accurate, source-verified tax information that helps accountants make informed decisions while maintaining strict compliance with current tax laws.`
                 },
                 ...conversationMessages
             ],
