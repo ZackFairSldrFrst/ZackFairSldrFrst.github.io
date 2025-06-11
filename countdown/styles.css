@@ -7,7 +7,7 @@
 
 body {
     min-height: 100vh;
-    background: linear-gradient(45deg, #ff69b4, #ff1493);
+    background: #f5f5f5;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,154 +16,127 @@ body {
 
 .container {
     width: 100%;
-    max-width: 800px;
-}
-
-.glass-card {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 40px;
-    text-align: center;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    max-width: 600px;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-    color: white;
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-    font-weight: 700;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.daily-note {
-    color: white;
-    font-size: 1rem;
+    color: #333;
+    font-size: 2rem;
     margin-bottom: 20px;
-    opacity: 0.9;
-    font-style: italic;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
-.message-container {
-    margin-bottom: 30px;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 15px;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: transform 0.3s ease;
-}
-
-.message-container:hover {
-    transform: translateY(-5px);
-}
-
-.sweet-message {
-    color: white;
-    font-size: 1.2rem;
-    line-height: 1.6;
-    font-weight: 500;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+h2 {
+    color: #333;
+    font-size: 1.5rem;
+    margin: 30px 0 15px;
+    text-align: center;
 }
 
 .countdown-container {
     display: flex;
     justify-content: center;
     gap: 15px;
-    margin-bottom: 40px;
-    flex-wrap: wrap;
+    margin-bottom: 30px;
 }
 
 .countdown-item {
-    background: rgba(255, 255, 255, 0.15);
-    padding: 20px;
-    border-radius: 15px;
-    min-width: 110px;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: transform 0.3s ease;
-}
-
-.countdown-item.milliseconds {
-    min-width: 130px;
-}
-
-.countdown-item:hover {
-    transform: translateY(-5px);
+    background: #f8f8f8;
+    padding: 15px;
+    border-radius: 8px;
+    min-width: 80px;
+    text-align: center;
 }
 
 .countdown-item span {
     display: block;
-    color: white;
 }
 
 .countdown-item span:first-child {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 700;
+    color: #333;
     margin-bottom: 5px;
 }
 
-.countdown-item.milliseconds span:first-child {
-    font-size: 2rem;
-    font-family: monospace;
+.countdown-item .label {
+    font-size: 0.8rem;
+    color: #666;
+    text-transform: uppercase;
 }
 
-.countdown-item .label {
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    opacity: 0.8;
+.quests-container {
+    margin-top: 30px;
+}
+
+.quest-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background: #f8f8f8;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.quest-item:hover {
+    background: #f0f0f0;
+}
+
+.quest-item input[type="checkbox"] {
+    margin-right: 12px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.quest-item label {
+    color: #333;
+    font-size: 1rem;
+    cursor: pointer;
+    flex: 1;
+}
+
+.quest-item input[type="checkbox"]:checked + label {
+    text-decoration: line-through;
+    color: #888;
 }
 
 .back-button {
     display: inline-block;
-    padding: 12px 24px;
-    background: rgba(255, 255, 255, 0.2);
+    padding: 10px 20px;
+    background: #333;
     color: white;
     text-decoration: none;
-    border-radius: 30px;
+    border-radius: 5px;
     font-weight: 500;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    margin-top: 20px;
+    transition: background-color 0.2s;
 }
 
 .back-button:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-2px);
+    background: #444;
 }
 
 @media (max-width: 600px) {
-    .glass-card {
+    .container {
         padding: 20px;
     }
 
     h1 {
-        font-size: 2rem;
-    }
-
-    .sweet-message {
-        font-size: 1.1rem;
-    }
-
-    .countdown-item {
-        min-width: 90px;
-        padding: 15px;
-    }
-
-    .countdown-item.milliseconds {
-        min-width: 110px;
-    }
-
-    .countdown-item span:first-child {
         font-size: 1.8rem;
     }
 
-    .countdown-item.milliseconds span:first-child {
+    .countdown-item {
+        min-width: 70px;
+        padding: 10px;
+    }
+
+    .countdown-item span:first-child {
         font-size: 1.5rem;
     }
 } 
