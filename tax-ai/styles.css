@@ -184,12 +184,12 @@ nav a:hover {
 
 /* Search Results */
 #searchResults {
-    background: var(--card-background);
+    margin-top: 2rem;
     padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-top: 1rem;
-    transition: all 0.3s ease;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: left;
 }
 
 #searchResults.hidden {
@@ -197,41 +197,38 @@ nav a:hover {
 }
 
 .result-content {
-    color: var(--text-color);
-    line-height: 1.8;
+    line-height: 1.6;
+    color: #2d3748;
+    text-align: left;
 }
 
-.result-content h1 {
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
-    color: var(--primary-color);
-}
-
-.result-content h2 {
-    font-size: 1.5rem;
-    margin: 1.5rem 0 1rem;
-    color: var(--text-color);
-}
-
-.result-content h3 {
-    font-size: 1.3rem;
-    margin: 1.3rem 0 0.8rem;
-    color: var(--text-color);
+.result-content h1,
+.result-content h2,
+.result-content h3,
+.result-content h4,
+.result-content h5,
+.result-content h6 {
+    text-align: left;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    color: #1a365d;
 }
 
 .result-content p {
+    text-align: left;
     margin-bottom: 1rem;
-    font-size: 1.1rem;
 }
 
-.result-content ul {
-    margin: 1rem 0;
-    padding-left: 2rem;
+.result-content ul,
+.result-content ol {
+    text-align: left;
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .result-content li {
+    text-align: left;
     margin-bottom: 0.5rem;
-    font-size: 1.1rem;
 }
 
 .result-content .error {
@@ -381,10 +378,10 @@ footer {
 
 /* Status Message */
 .status-message {
-    text-align: center;
-    padding: 2rem;
-    color: var(--primary-color);
-    font-size: 1.2rem;
+    text-align: left;
+    padding: 1rem;
+    color: #2b6cb0;
+    font-size: 1.1rem;
     font-weight: 500;
     animation: fadeIn 0.3s ease-in-out;
 }
