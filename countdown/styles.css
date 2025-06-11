@@ -30,6 +30,20 @@ h1 {
     text-align: center;
 }
 
+.message-container {
+    background: #f8f8f8;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.sweet-message {
+    color: #333;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
 h2 {
     color: #333;
     font-size: 1.5rem;
