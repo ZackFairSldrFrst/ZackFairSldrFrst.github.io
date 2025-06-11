@@ -5,10 +5,26 @@ const searchInput = document.getElementById('searchInput');
 const searchButton = document.getElementById('searchButton');
 const searchResults = document.getElementById('searchResults');
 const resultContent = document.querySelector('.result-content');
+const conversationHistory = document.querySelector('.conversation-history');
+const followUpContainer = document.querySelector('.follow-up-container');
+const followUpInput = document.getElementById('followUpInput');
+const followUpButton = document.getElementById('followUpButton');
+
+// Store conversation messages
+let conversationMessages = [];
 
 // Debug logging function
 function debugLog(message, data = null) {
     console.log(`[Tax AI Debug] ${message}`, data || '');
+}
+
+// Function to add message to conversation
+function addMessageToConversation(message, isUser = false) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
+    messageDiv.textContent = message;
+    conversationHistory.appendChild(messageDiv);
+    messageDiv.scrollIntoView({ behavior: 'smooth' });
 }
 
 // Function to show status message
@@ -20,12 +36,14 @@ function showStatus(message) {
 // Function to show results
 function showResults() {
     searchResults.classList.remove('hidden');
+    followUpContainer.classList.remove('hidden');
 }
 
 // Function to hide results
 function hideResults() {
     searchResults.classList.add('hidden');
-    resultContent.innerHTML = ''; // Clear previous results
+    followUpContainer.classList.add('hidden');
+    resultContent.innerHTML = '';
 }
 
 // Function to format the response
@@ -81,15 +99,19 @@ function formatResponse(text) {
 }
 
 // Function to handle the search
-async function handleSearch() {
-    const query = searchInput.value.trim();
-    
+async function handleSearch(query, isFollowUp = false) {
     if (!query) {
         alert('Please enter a question');
         return;
     }
 
-    hideResults();
+    if (!isFollowUp) {
+        hideResults();
+        conversationHistory.innerHTML = ''; // Clear conversation history
+        conversationMessages = []; // Reset conversation messages
+    }
+
+    addMessageToConversation(query, true);
     showStatus('Searching tax database...');
     debugLog('Starting search with query:', query);
 
@@ -100,6 +122,12 @@ async function handleSearch() {
         
         debugLog('Making API request to:', API_URL);
         
+        // Add the new message to the conversation
+        conversationMessages.push({
+            role: 'user',
+            content: query
+        });
+
         const requestBody = {
             model: 'deepseek-chat',
             messages: [
@@ -107,10 +135,7 @@ async function handleSearch() {
                     role: 'system',
                     content: 'You are a senior tax accountant with over 20 years of experience in public accounting. You specialize in providing detailed, technical tax advice and guidance. Your responses should include specific tax code references, relevant regulations, and practical examples. Focus on accuracy and compliance with current tax laws. When discussing tax strategies, always mention potential risks and compliance requirements. Include relevant IRS publications, tax code sections, and regulatory guidance in your responses. Your goal is to provide comprehensive, technically accurate tax information that helps accountants make informed decisions.'
                 },
-                {
-                    role: 'user',
-                    content: query
-                }
+                ...conversationMessages
             ],
             temperature: 0.7,
             max_tokens: 1000
@@ -149,9 +174,22 @@ async function handleSearch() {
         const answer = data.choices[0].message.content;
         debugLog('Extracted answer:', answer);
         
+        // Add AI response to conversation history
+        conversationMessages.push({
+            role: 'assistant',
+            content: answer
+        });
+
         // Format and display the response
         resultContent.innerHTML = formatResponse(answer);
         showResults();
+
+        // Clear the input field
+        if (isFollowUp) {
+            followUpInput.value = '';
+        } else {
+            searchInput.value = '';
+        }
     } catch (error) {
         console.error('Error:', error);
         debugLog('Error details:', error);
@@ -173,10 +211,17 @@ async function handleSearch() {
 }
 
 // Event listeners
-searchButton.addEventListener('click', handleSearch);
+searchButton.addEventListener('click', () => handleSearch(searchInput.value));
 searchInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
-        handleSearch();
+        handleSearch(searchInput.value);
+    }
+});
+
+followUpButton.addEventListener('click', () => handleSearch(followUpInput.value, true));
+followUpInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        handleSearch(followUpInput.value, true);
     }
 });
 
