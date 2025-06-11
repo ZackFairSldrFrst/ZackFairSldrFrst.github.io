@@ -72,6 +72,24 @@ function updateCountdown() {
     document.getElementById('sweet-message').textContent = message;
 }
 
+function updateProgress(completedQuests) {
+    const totalQuests = dailyQuests.length;
+    const completedCount = Object.values(completedQuests).filter(Boolean).length;
+    const progress = (completedCount / totalQuests) * 100;
+    
+    document.querySelector('.progress-fill').style.width = `${progress}%`;
+    document.querySelector('.progress-text').textContent = 
+        `Complete your daily quests to reveal today's message! (${completedCount}/${totalQuests})`;
+
+    // Show message when all quests are completed
+    const messageContainer = document.querySelector('.message-container');
+    if (completedCount === totalQuests) {
+        messageContainer.classList.add('show');
+    } else {
+        messageContainer.classList.remove('show');
+    }
+}
+
 function loadQuests() {
     const questsList = document.getElementById('quests-list');
     const today = new Date().toDateString();
@@ -100,6 +118,7 @@ function loadQuests() {
         checkbox.addEventListener('change', function() {
             completedQuests[index] = this.checked;
             localStorage.setItem('completedQuests', JSON.stringify(completedQuests));
+            updateProgress(completedQuests);
         });
 
         const label = document.createElement('label');
@@ -110,6 +129,9 @@ function loadQuests() {
         questElement.appendChild(label);
         questsList.appendChild(questElement);
     });
+
+    // Initialize progress
+    updateProgress(completedQuests);
 }
 
 // Initialize the page
