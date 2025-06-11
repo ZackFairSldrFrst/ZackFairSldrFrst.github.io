@@ -214,6 +214,70 @@ input[type="datetime-local"]:focus {
     color: var(--text-color);
 }
 
+/* Success Message */
+.success-message {
+    background: var(--card-background);
+    padding: 3rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.success-message h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.success-message p {
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+}
+
+.share-link {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.share-link input {
+    flex: 1;
+    padding: 0.8rem;
+    border: 2px solid #e0e0e0;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    background: #f5f5f5;
+}
+
+.share-link button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: 500;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.share-link button:hover {
+    background: #ff5252;
+    transform: translateY(-2px);
+}
+
+.success-message .primary-button {
+    display: inline-block;
+    width: auto;
+    padding: 1rem 2rem;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .container {

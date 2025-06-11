@@ -1,0 +1,12 @@
+{
+  "name": "couple-maxing",
+  "version": "1.0.0",
+  "description": "A countdown app for couples",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+} 
