@@ -72,6 +72,55 @@ function updateCountdown() {
     document.getElementById('sweet-message').textContent = message;
 }
 
+function updateStreak(completedQuests) {
+    const today = new Date().toDateString();
+    const lastCompleted = localStorage.getItem('lastCompletedDate');
+    const currentStreak = parseInt(localStorage.getItem('currentStreak')) || 0;
+    
+    // Check if all quests are completed
+    const allCompleted = Object.values(completedQuests).every(Boolean);
+    
+    if (allCompleted) {
+        // If this is the first completion today
+        if (lastCompleted !== today) {
+            // Check if this is a consecutive day
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayStr = yesterday.toDateString();
+            
+            if (lastCompleted === yesterdayStr) {
+                // Increment streak
+                const newStreak = currentStreak + 1;
+                localStorage.setItem('currentStreak', newStreak);
+                localStorage.setItem('lastCompletedDate', today);
+                document.querySelector('.streak-count').textContent = newStreak;
+                
+                // Show reward message for streaks of 7 or more days
+                const rewardMessage = document.querySelector('.reward-message');
+                if (newStreak >= 7) {
+                    rewardMessage.classList.add('show');
+                } else {
+                    rewardMessage.classList.remove('show');
+                }
+            } else if (!lastCompleted) {
+                // First time completing quests
+                localStorage.setItem('currentStreak', 1);
+                localStorage.setItem('lastCompletedDate', today);
+                document.querySelector('.streak-count').textContent = 1;
+            } else {
+                // Streak broken, reset to 1
+                localStorage.setItem('currentStreak', 1);
+                localStorage.setItem('lastCompletedDate', today);
+                document.querySelector('.streak-count').textContent = 1;
+                document.querySelector('.reward-message').classList.remove('show');
+            }
+        }
+    } else {
+        // If not all quests are completed, hide reward message
+        document.querySelector('.reward-message').classList.remove('show');
+    }
+}
+
 function updateProgress(completedQuests) {
     const totalQuests = dailyQuests.length;
     const completedCount = Object.values(completedQuests).filter(Boolean).length;
@@ -85,6 +134,7 @@ function updateProgress(completedQuests) {
     const messageContainer = document.querySelector('.message-container');
     if (completedCount === totalQuests) {
         messageContainer.classList.add('show');
+        updateStreak(completedQuests);
     } else {
         messageContainer.classList.remove('show');
     }
@@ -104,6 +154,10 @@ function loadQuests() {
         localStorage.setItem('completedQuests', JSON.stringify(completedQuests));
         localStorage.setItem('lastReset', today);
     }
+
+    // Initialize streak display
+    const currentStreak = parseInt(localStorage.getItem('currentStreak')) || 0;
+    document.querySelector('.streak-count').textContent = currentStreak;
 
     // Create quest elements
     dailyQuests.forEach((quest, index) => {

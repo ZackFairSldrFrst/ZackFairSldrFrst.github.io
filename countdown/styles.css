@@ -12,6 +12,7 @@
     --text-color: #2C3E50;
     --light-bg: #F7F9FC;
     --success-color: #6BCB77;
+    --streak-color: #FF9F1C;
 }
 
 body {
@@ -62,6 +63,63 @@ h1 {
     color: var(--text-color);
     font-size: 1.1rem;
     line-height: 1.5;
+}
+
+.streak-container {
+    background: var(--light-bg);
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    text-align: center;
+    border: 2px solid var(--streak-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.streak-icon {
+    font-size: 1.5rem;
+    color: var(--streak-color);
+}
+
+.streak-text {
+    color: var(--text-color);
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.streak-count {
+    color: var(--streak-color);
+    font-weight: 700;
+}
+
+.reward-message {
+    background: var(--light-bg);
+    padding: 15px;
+    border-radius: 12px;
+    margin-top: 20px;
+    text-align: center;
+    border: 2px solid var(--streak-color);
+    color: var(--text-color);
+    font-size: 1rem;
+    display: none;
+}
+
+.reward-message.show {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .progress-container {

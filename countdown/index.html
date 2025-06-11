@@ -8,10 +8,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
         <h1>Counting Down to See Alvin</h1>
+        <div class="streak-container">
+            <i class="fas fa-fire streak-icon"></i>
+            <div class="streak-text">Current Streak: <span class="streak-count">0</span> days</div>
+        </div>
         <div class="message-container">
             <p id="sweet-message" class="sweet-message">Every moment without you feels like an eternity...</p>
         </div>
@@ -45,6 +50,10 @@
             <div id="quests-list">
                 <!-- Quests will be populated by JavaScript -->
             </div>
+        </div>
+
+        <div class="reward-message">
+            🎉 Amazing streak! Keep it up to unlock a special discount code for The Keg! 🎉
         </div>
 
         <a href="../index.html" class="back-button">Back to Home</a>
