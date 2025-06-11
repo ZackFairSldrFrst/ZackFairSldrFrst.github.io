@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Couple Maxing - Level Up Your Relationship</title>
+    <link rel="stylesheet" href="landing.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Couple Maxing</h1>
+            <p class="tagline">Level up your relationship with daily quests and sweet countdowns</p>
+        </header>
+
+        <section class="features">
+            <div class="feature-card">
+                <i class="fas fa-tasks"></i>
+                <h3>Daily Quests</h3>
+                <p>Keep the spark alive with customizable daily activities that strengthen your bond</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-fire"></i>
+                <h3>Streak System</h3>
+                <p>Build momentum with a streak system that rewards consistent effort</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-heart"></i>
+                <h3>Sweet Messages</h3>
+                <p>Reveal personalized messages as you complete your daily quests</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-gift"></i>
+                <h3>Special Rewards</h3>
+                <p>Unlock special rewards and surprises for maintaining your streak</p>
+            </div>
+        </section>
+
+        <section class="setup">
+            <h2>Create Your Countdown</h2>
+            <form id="countdown-form">
+                <div class="form-group">
+                    <label for="target-date">When will you meet?</label>
+                    <input type="datetime-local" id="target-date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="partner-name">Partner's Name</label>
+                    <input type="text" id="partner-name" placeholder="Enter their name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Daily Quests</label>
+                    <div id="quests-container">
+                        <div class="quest-input">
+                            <input type="text" placeholder="Enter a daily quest" required>
+                            <button type="button" class="remove-quest" style="display: none;">×</button>
+                        </div>
+                    </div>
+                    <button type="button" id="add-quest" class="secondary-button">
+                        <i class="fas fa-plus"></i> Add Another Quest
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    <label>Daily Messages</label>
+                    <div id="messages-container">
+                        <div class="message-input">
+                            <input type="text" placeholder="Enter a message for a specific day (e.g., '7: Miss you!')" required>
+                            <button type="button" class="remove-message" style="display: none;">×</button>
+                        </div>
+                    </div>
+                    <button type="button" id="add-message" class="secondary-button">
+                        <i class="fas fa-plus"></i> Add Another Message
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    <label for="reward-message">Reward Message (appears after 7-day streak)</label>
+                    <input type="text" id="reward-message" placeholder="Enter your special reward message" required>
+                </div>
+
+                <button type="submit" class="primary-button">Create Countdown</button>
+            </form>
+        </section>
+
+        <section class="examples">
+            <h2>Perfect For</h2>
+            <div class="example-cards">
+                <div class="example-card">
+                    <i class="fas fa-plane"></i>
+                    <h3>Long Distance Couples</h3>
+                    <p>Count down to your next visit while staying connected daily</p>
+                </div>
+                <div class="example-card">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>Busy Partners</h3>
+                    <p>Keep the romance alive even with hectic schedules</p>
+                </div>
+                <div class="example-card">
+                    <i class="fas fa-ring"></i>
+                    <h3>Engaged Couples</h3>
+                    <p>Count down to your special day with meaningful daily activities</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="landing.js"></script>
+</body>
+</html> 
