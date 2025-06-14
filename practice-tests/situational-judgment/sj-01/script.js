@@ -3,341 +3,201 @@ const scenarios = [
     {
         id: 1,
         title: "Superluxe Hotels",
-        description: "You work as a Guest Services Manager at Superluxe Hotels, a chain of luxury hotels. Your role involves ensuring guest satisfaction, managing staff, and handling any issues that arise during guests' stays.",
+        description: "You are a trainee manager on a two year programme working for Superluxe Hotels, a national chain of 4 and 5 star hotels. The programme ensures that trainees gain experience in all areas of hotel and hospitality management through a rotational scheme of 4 month placements. You are currently undertaking your 'Guest Services' placement and you are based at the Alpston Grand, a five-star property and one of Superluxe's flagship hotels. You are working as second-in-command in the Grand Hotel Guest Services team; you report directly to the Guest Relations Manager. The primary job of the Guest Services team is to ensure that customers of the hotel receive an efficient and friendly welcome and departure, while ensuring the reception and front of house departments operate in an organised manner. The team must ensure a professional, friendly and courteous service is provided to all guests and that all complaints the hotel receives are handled properly. The Guest Services staff must also implement Superluxe occupancy policy which is to try to maximise occupancy on a daily basis.",
         questions: [
             {
-                question: "A guest has just checked into their room and comes down to the reception desk looking very unhappy. They say that their room is not clean enough and they are not satisfied with the standard of housekeeping. They are quite angry and are demanding to speak to the manager.",
+                question: "It is 7.30pm. You are on duty at the concierge desk when a guest calls down to say that they have just checked in and are extremely unhappy with the cleanliness of their room. They say that the sink has hair in it, the tea cups are smeared and the curtains are dusty. The guest is only at the Grand for one night and has a business meeting in Alpston first thing in the morning.",
                 options: [
                     {
-                        text: "Apologize sincerely and offer to have the room cleaned again immediately while they wait in the hotel bar, where you'll arrange for a complimentary drink.",
-                        explanation: "The Very Effective response. You are acknowledging the guest's feelings, taking immediate action to resolve the issue, and offering a gesture of goodwill."
+                        text: "Apologise to the customer and say that you will ensure that the room is cleaned thoroughly within the next hour.",
+                        explanation: "A reasonable response as you are offering to put the problem right; however the customer may not want to wait that long for a clean room, especially as he has an early morning meeting and may wish to get some rest this evening."
                     },
                     {
-                        text: "Tell them that you are the manager and that you will personally inspect the room and ensure it is cleaned to their satisfaction.",
-                        explanation: "The Effective response. You are taking responsibility and showing that you take their complaint seriously."
+                        text: "Apologise and offer the customer a different room immediately; if necessary an upgraded room if no others are available in his original price range.",
+                        explanation: "This is the most effective response as the customer will not have to wait for the situation to be rectified and he should be immediately satisfied. Make sure that the new room has been checked by you or someone else, however, before it is assigned."
                     },
                     {
-                        text: "Explain that the housekeeping staff are very busy at the moment but you'll try to get someone to clean the room as soon as possible.",
-                        explanation: "The Ineffective response. You are making excuses and not prioritizing the guest's immediate needs."
+                        text: "Apologise and offer the customer a discount on his room rate.",
+                        explanation: "Not a particularly appropriate response although the customer may be pleased to receive a discount they will still be unhappy to be left in a dirty room."
                     },
                     {
-                        text: "Ask them to point out exactly what is not clean enough so you can inform the housekeeping staff of their specific requirements.",
-                        explanation: "The Counterproductive response. This could be seen as confrontational and might make the guest feel they need to justify their complaint."
+                        text: "Apologise and arrange a complimentary room service meal and bottle of wine to be sent to the room.",
+                        explanation: "This is the least effective response as the customer will still have a less than satisfactory room. Also, you don't really know whether the customer wants a meal and wine, he may have already eaten or may not want to drink before an important business meeting. It is unlikely to ensure his satisfaction with your hotel."
                     }
                 ],
                 competency: "Customer Service",
-                mostEffective: 0,
+                mostEffective: 1,
                 leastEffective: 3
             },
             {
-                question: "A regular business guest who stays at your hotel every month approaches you at reception. They say that they have noticed that the hotel across the road is offering rooms at a much lower rate and they are considering switching their business to them. They ask if you can match their rates.",
+                question: "It is 8pm on a Thursday evening in February. Fifty percent of the hotel's 300 rooms are currently occupied and a customer without a previous reservation has just arrived at the reception desk. The customer has enquired about the price of a standard double room. You have informed her that the room rate is £120 per night, including breakfast. The customer then asks whether you can let her have the room and breakfast for £80.",
                 options: [
                     {
-                        text: "Explain that while you cannot match their exact rates, you can offer them a special loyalty rate and additional benefits that the other hotel cannot match.",
-                        explanation: "The Very Effective response. You are acknowledging their concern while highlighting the unique value of staying at your hotel."
+                        text: "Give her information on the town's inexpensive B&B accommodation and how to find it.",
+                        explanation: "Not a particularly appropriate response as your aim to maximise room occupancy is not being pursued at all; although you are being helpful to the customer and therefore she may leave with a positive view of Superluxe Hotels."
                     },
                     {
-                        text: "Tell them that you understand their position and that you will speak to your manager about matching the rates.",
-                        explanation: "The Effective response. You are showing empathy and taking action, though it would be better to have a solution ready."
+                        text: "Say that you can offer her the room at £100 for the night and breakfast.",
+                        explanation: "The most effective response as she was unlikely to have been expecting her first price to be accepted and was probably looking for you to split the difference between your first price and hers. In this way you have increased the hotel occupancy and ensured extra income to cover the fixed running costs which would be incurred whether or not that guest ended up staying."
                     },
                     {
-                        text: "Point out that your hotel offers better quality service and facilities than the other hotel.",
-                        explanation: "The Ineffective response. You are being defensive and not addressing their specific concern about the price."
+                        text: "Say that the room rate is £120 and there are no discounts available.",
+                        explanation: "This is the least effective response as the Superluxe policy is to maximise occupancy and half of the rooms are currently empty in the hotel. It is 8pm and therefore you are unlikely to fill the remaining 150 rooms, you may as well offer the customer some kind of deal to entice her to stay. The fixed costs of running the hotel remain the same whether it is empty or full."
                     },
                     {
-                        text: "Say that you cannot change the rates as they are set by head office and there is nothing you can do.",
-                        explanation: "The Counterproductive response. You are being dismissive and not trying to find a solution to retain their business."
+                        text: "Say that if she returns at 9pm you will probably be able to give her a discount on the standard room rate then.",
+                        explanation: "A reasonable response as it allows an extra hour for any other walk-in customers to arrive, at which point you will have a clear idea of the likely final occupancy for the night and be able to bargain with her confidently. She is unlikely to be put off by having to wait if she senses that she will probably get a discount at the end of the process, although there is a small risk that you will lose her custom."
                     }
                 ],
-                competency: "Customer Service",
-                mostEffective: 0,
-                leastEffective: 3
-            },
-            {
-                question: "You are managing a hotel banquet for 150 people. The client has just called to say they need to increase the guest list to 200 people. The event is in two days' time.",
-                options: [
-                    {
-                        text: "Check with the Catering team about capacity and availability, then confirm the booking with the client if possible.",
-                        explanation: "The Very Effective response. You are ensuring all necessary checks are made before confirming the change."
-                    },
-                    {
-                        text: "Tell the client that you'll do your best to accommodate the extra guests but can't guarantee it at this late stage.",
-                        explanation: "The Effective response. You are being honest about the situation while showing willingness to help."
-                    },
-                    {
-                        text: "Agree to the increase immediately to keep the client happy.",
-                        explanation: "The Ineffective response. You are making a commitment without checking if it's possible to fulfill."
-                    },
-                    {
-                        text: "Explain that it's too late to make changes and suggest they keep the original number of guests.",
-                        explanation: "The Counterproductive response. You are being inflexible and not trying to find a solution."
-                    }
-                ],
-                competency: "Problem Solving",
-                mostEffective: 0,
-                leastEffective: 3
-            },
-            {
-                question: "A large group booking has been transferred to your hotel at the last minute. This means the housekeeping team will need to work extra hours to prepare the rooms.",
-                options: [
-                    {
-                        text: "Communicate the situation to the housekeeping team, explain the benefits of the extra work, and ensure they are properly compensated.",
-                        explanation: "The Very Effective response. You are being transparent, showing appreciation, and ensuring fair treatment."
-                    },
-                    {
-                        text: "Ask the housekeeping team to work the extra hours and promise to make it up to them later.",
-                        explanation: "The Effective response. You are acknowledging the extra effort, though the promise is vague."
-                    },
-                    {
-                        text: "Tell the housekeeping team they need to work overtime as it's part of their job.",
-                        explanation: "The Ineffective response. You are being dismissive of their concerns and not showing appreciation."
-                    },
-                    {
-                        text: "Handle the situation without informing the housekeeping team, assuming they'll deal with it when they arrive.",
-                        explanation: "The Counterproductive response. You are not communicating important information that affects their work."
-                    }
-                ],
-                competency: "Team Management",
-                mostEffective: 0,
-                leastEffective: 3
+                competency: "Analysis & Decision-Making",
+                mostEffective: 1,
+                leastEffective: 2
             }
         ]
     },
     {
         id: 2,
         title: "Handy Goods Ltd.",
-        description: "You work as a Field Sales Representative for Handy Goods Ltd., a company that supplies household goods to retail outlets. Your role involves visiting shops, taking orders, and building relationships with customers.",
+        description: "You are a Field Sales Representative for Handy Goods Ltd. Your company supplies independent corner shops and convenience stores with non-food 'home essential' products such as sewing thread, scissors, paperclips, nail clippers, bootlaces, drawing pins, liquid paper etc. Your brand prides itself on providing all the items that the stores' customers might find it handy to be able to pick up along with their milk, bread and newspapers rather than having to make a special trip to the town centre shops. You have a range of 200 products and each is priced to allow your customers to be competitive with the High Street retailers. You are able to give discounts for bulk purchases. Your sales area is Saldringham City, its suburbs and outlying villages. You have 93 shops on your patch and you are tasked with visiting each one at least once each month. You spend an average of 20 to 30 minutes in a shop when you visit your customers.",
         questions: [
             {
-                question: "It's Monday morning in May and you have five shop visits booked in Saldringham City. Your manager calls to say that Wendy, a colleague who covers the Alpston area, is sick and asks if you can cover three of her appointments today.",
+                question: "You are visiting The Pop-in Shop convenience store on Bentley Road, Saldringham this morning. You have a friendly relationship with the proprietor, Ellen Gurty. Ellen has a regular order for a large number of your stationery lines such as pens, pencils, notepads, paper, wall tack and clear tape. However Ellen is grumbling today as trade hasn't been brilliant for her of late and one of your rival suppliers, MoreThanPens Direct, has approached her with a great introductory deal on stationery. They are a specialist office goods supplier and are usually more expensive than Handy Goods, although the quality of their products is also slightly superior. The deal that MoreThanPens have offered Ellen is a bargain, and she has told you today that she has been sorely tempted. You are authorised to give a 15% one-off discount to customers who say they might switch suppliers. You aren't sure how serious Ellen is about swapping as you know she enjoys your visits and the MoreThanPens representative will not hang around for a cup of tea like you do as his patch is much larger.",
                 options: [
                     {
-                        text: "Agree to take all three appointments but explain that you'll need to reschedule some of your own visits to ensure you can give each customer proper attention.",
-                        explanation: "The Very Effective response. You are being helpful while ensuring quality of service."
+                        text: "Say to Ellen that you can understand that she is tempted by the offer from MoreThanPens and empathise with her recent poor sales. Talk to her about the likelihood that when the introductory offer runs out the prices could go higher than Handy Goods. Say you'd really like to talk to her this morning about what Handy Goods can do to keep her as a customer.",
+                        explanation: "The most effective response. You are communicating fully to Ellen how important she is as a customer and giving her the key piece of information about the prices being 'introductory' only for the rival supplier. Also, you are not giving away the 15% discount without any need but giving yourself an opportunity to use it if necessary when talking to Ellen about her relationship with Handy Goods."
                     },
                     {
-                        text: "Say that you'll try to fit in the appointments but can't guarantee you'll make it to all of them.",
-                        explanation: "The Effective response. You are willing to help but being honest about potential limitations."
+                        text: "Ignore Ellen's grumblings and have a nice cup of tea and a chat with her about her grandchildren; that always seems to cheer her up.",
+                        explanation: "The least effective response. You are ignoring the possibility that Ellen is serious about changing suppliers and you are not communicating with her about the issue to let her know that you really value her custom."
                     },
                     {
-                        text: "Refuse to take any of the appointments as you already have a full schedule.",
-                        explanation: "The Ineffective response. You are not being flexible or helpful to the team."
+                        text: "Have a chat with Ellen and ask her what her sales problems have been caused by. Say you can help her out with a 10% discount on this order if that will be helpful.",
+                        explanation: "The second most effective response. You are giving a chance for Ellen to talk and listening to her answer about recent sales may give you some useful information. However, you need to ensure that she is fully aware of the difference between Handy Goods and MoreThanPens in the long-run."
                     },
                     {
-                        text: "Agree to take all appointments without checking if it's realistic to do so.",
-                        explanation: "The Counterproductive response. You are making commitments you might not be able to keep."
+                        text: "Offer her a 15% discount on her latest order from Handy Goods. This will undercut MoreThanPens quite neatly.",
+                        explanation: "The third most effective response. You aren't giving Ellen the information that would be useful for her to make a decision about the relative expensiveness of MoreThanPens in the long-run. It may not be necessary to offer the discount at all once she has that information to consider. Also you could do more to engage in conversation with Ellen, which is clearly one of the things she values about her relationship with Handy Goods."
+                    }
+                ],
+                competency: "Effective Communication",
+                mostEffective: 0,
+                leastEffective: 1
+            },
+            {
+                question: "It is a Monday morning in May. You have five shop visits booked in today all for shops in the central area of Saldringham City. You were then planning on returning to the office for the later part of the afternoon in order to catch up on a backlog of paperwork. Your manager has just called you to say that your colleague Wendy is off sick today. Wendy had three appointments today in Alpston which is a town about 40 minutes' drive from Saldringham. Your manager is calling to ask whether you can cover any of the appointments as you are the closest sales rep to Wendy's patch.",
+                options: [
+                    {
+                        text: "Apologise to your manager and explain that you would love to help but that you have a full schedule today and therefore you are unable to do so. Your paperwork needs to take precedence here otherwise you risk falling behind.",
+                        explanation: "The least effective response. You are not considering the performance of the sales team as a whole only your own tasks and outputs. You are also ignoring the company / brand and how it will be affected by the missed visits. Perhaps you could negotiate with your manager to complete the paperwork a little late this time, given the exceptional circumstances."
+                    },
+                    {
+                        text: "Say that you are busy today but may be able to take one of the visits on Wendy's behalf, if other colleagues could cover the other two.",
+                        explanation: "The third most effective response. You are the closest sales rep and therefore it would probably be more efficient for the team as a whole if you could do all three appointments once you are in Alpston."
+                    },
+                    {
+                        text: "Agree to take all three appointments. You can attend all of your 5 visits this morning and there will still be time to drive to Alpston and visit the three customers there.",
+                        explanation: "The most effective response. You are contributing to the whole team performance, not just worrying about your own patch. You would need to check the scheduling of both your and Wendy's visits of course, in order that you could make sure that the timetable was achievable and realistic for you."
+                    },
+                    {
+                        text: "Agree to take all three appointments and call two of your customers to see if you can re-schedule their visits for tomorrow.",
+                        explanation: "The second most effective response. You are seeing the 'whole team' picture and working to maintain a good performance over both patches. However there should be a way of fitting all the appointments, yours and Wendy's, into the day without having to cancel any visits."
                     }
                 ],
                 competency: "Teamwork",
-                mostEffective: 0,
-                leastEffective: 3
-            },
-            {
-                question: "At the Monday morning team briefing, your manager says that sales of children's pocket toys and games have been slow. Each Field Sales Representative will be reviewed fortnightly on their sales, with the highest achieving representative receiving a cash bonus.",
-                options: [
-                    {
-                        text: "Focus on understanding customer needs and presenting the products well, while maintaining your usual professional approach.",
-                        explanation: "The Very Effective response. You are maintaining quality service while working to improve sales."
-                    },
-                    {
-                        text: "Badger customers to buy the products to ensure you meet your targets.",
-                        explanation: "The Ineffective response. You are being pushy and potentially damaging customer relationships."
-                    },
-                    {
-                        text: "Ensure you have good product knowledge and target the right customers for these products.",
-                        explanation: "The Effective response. You are taking a strategic approach to improve sales."
-                    },
-                    {
-                        text: "Ignore the competition and focus on your existing customers who always buy from you.",
-                        explanation: "The Counterproductive response. You are being complacent and not trying to improve performance."
-                    }
-                ],
-                competency: "Sales Performance",
-                mostEffective: 0,
-                leastEffective: 3
-            },
-            {
-                question: "You are visiting a customer, Ruth Hardlow, who runs a convenience store. She tells you that she is considering switching to a rival supplier because their products are cheaper. She also mentions that she has had several returns of Handy Goods products due to 'shoddy quality'.",
-                options: [
-                    {
-                        text: "Apologize for the quality issues, examine the returned products, and investigate the problem with your quality control team.",
-                        explanation: "The Very Effective response. You are addressing the quality concerns directly and taking action."
-                    },
-                    {
-                        text: "Offer a discount on future orders to compensate for the quality issues.",
-                        explanation: "The Effective response. You are acknowledging the problem and offering a solution."
-                    },
-                    {
-                        text: "Explain that all products go through rigorous quality control and suggest the issues might be due to mishandling.",
-                        explanation: "The Ineffective response. You are being defensive and not addressing the customer's concerns."
-                    },
-                    {
-                        text: "Tell her that quality issues are normal in the industry and she should expect some returns.",
-                        explanation: "The Counterproductive response. You are being dismissive of serious quality concerns."
-                    }
-                ],
-                competency: "Customer Service",
-                mostEffective: 0,
-                leastEffective: 3
-            },
-            {
-                question: "You are visiting a convenience store where the proprietor is considering switching suppliers due to a competitive offer from a rival company. The rival is offering a 20% discount on their first order as an introductory offer.",
-                options: [
-                    {
-                        text: "Explain that the rival's introductory offer is temporary and discuss the long-term value and reliability of your products.",
-                        explanation: "The Very Effective response. You are addressing the immediate concern while highlighting long-term benefits."
-                    },
-                    {
-                        text: "Match the rival's offer to keep the customer's business.",
-                        explanation: "The Effective response. You are being competitive, though it's better to focus on value."
-                    },
-                    {
-                        text: "Tell the customer they'll regret switching when the introductory offer ends.",
-                        explanation: "The Ineffective response. You are being negative and not focusing on your own value proposition."
-                    },
-                    {
-                        text: "Ignore the competition and focus on your existing product range.",
-                        explanation: "The Counterproductive response. You are not addressing the customer's concerns about the competitive offer."
-                    }
-                ],
-                competency: "Sales Strategy",
-                mostEffective: 0,
-                leastEffective: 3
+                mostEffective: 2,
+                leastEffective: 0
             }
         ]
     },
     {
         id: 3,
         title: "Greenwinds Energy",
-        description: "You work in the customer service department of Greenwinds Energy, a company that provides energy services to both domestic and business customers. Your role involves handling customer inquiries, resolving issues, and ensuring customer satisfaction.",
+        description: "You are a customer advisor at the UK contact centre for Greenwinds Energy. Greenwinds is a renewable-source electricity and gas supplier to European domestic and business customers. Your role is to answer inbound telephone calls and emails from customers in the UK, answering questions and queries about Greenwinds products and services and dealing with customer complaints and issues. You work in a team of 15 and you report into a Customer Service Team Leader. Greenwinds has recently introduced a 'one-rate' policy for all its energy packages. Customers will be charged the same rate per unit of electricity or gas regardless of their method of payment or when their peak usage of energy is. This has many advantages including, greater clarity of charging, no encouragement for use of electrical appliances at night, which can be unsafe, and no discrimination against people using pre-pay meters, pre pay cards or monthly cheque payment, all of whom are traditionally the less prosperous customers.",
         questions: [
             {
-                question: "A customer calls to complain about Greenwinds' billing system. They are a new user of the Greenwinds Dual Fuel product and are very angry that they were not informed that electricity rates would not be split into off-peak and peak rates.",
+                question: "A customer has come through to you with a complaint about Greenwinds billing system. He is a new customer who has used the Greenwinds Dual Fuel electricity and gas product for a month. He says that he wasn't told by the doorstep sales person when he signed up that the electricity would not be split into off-peak and peak rate units. With his previous supplier he had been used to maximising his energy use at night in order to benefit from the cheaper rate electricity. He was under the impression that he would be able to continue to do this with Greenwinds and now he is very upset as he has realised, upon receiving his first bill, that this is not the case.",
                 options: [
                     {
-                        text: "Apologize for the confusion, gather more details about the sales conversation, and assure them you'll investigate and keep them informed.",
-                        explanation: "The Very Effective response. You are acknowledging the issue, gathering information, and promising follow-up."
+                        text: "Apologise for the confusion but state that the Greenwinds charging policy is clearly written on the joining contract and on the website.",
+                        explanation: "This is the least effective response as you are doing nothing to assist the customer in any way and simply leaving him to remain angry at Greenwinds and possibly publicise his complaints another way i.e. internet or broadcast media."
                     },
                     {
-                        text: "Explain that the terms were in the contract they signed and suggest they read it more carefully next time.",
-                        explanation: "The Ineffective response. You are being defensive and not addressing their frustration."
+                        text: "Apologise for the confusion and ask the customer for more detail about the sales conversation, including the salesperson's name or description. Say that you will ask your manager to investigate the way that the contract was sold and to look at whether any miscommunication had happened on the doorstep. Say you will get back to the customer on a daily basis to keep him updated of progress.",
+                        explanation: "This is the most effective response as the customer will feel that he is being taken seriously and have a chance to calm down. You will remain in contact with him regularly and can use this opportunity to talk about Greenwinds and keep him apprised of the investigation. Finding out what happened on the doorstep can help to decide whether the salesperson did or did not mention the 'one-rate' policy. And if not, were they deliberately misleading the customer or did they make a genuine mistake in failing to mention the policy. Once this is established the salesperson can receive training or coaching to improve their performance or the company can take other measures as appropriate. Also the customer can be dealt with fairly, either by allowing him to cancel his contract or by awarding him a fair gesture of apology such as a discounted rate, etc."
                     },
                     {
-                        text: "Offer to switch them to a different tariff that includes peak and off-peak rates.",
-                        explanation: "The Effective response. You are offering a solution, though it would be better to investigate first."
+                        text: "Apologise for the confusion and offer the customer a goodwill waiver of one month's standing charge.",
+                        explanation: "A reasonable response but will not get to the heart of the allegations of poor service and poor selling made by the customer. The customer may still have negative feelings toward Greenwinds and seek to end their contract as soon as possible."
                     },
                     {
-                        text: "Tell them that all customers are on the same tariff and they should accept it.",
-                        explanation: "The Counterproductive response. You are being dismissive and not trying to help."
+                        text: "Apologise for the confusion and say that you are sorry to hear that he is feeling upset and hope that Greenwinds excellent service and eco-friendly product will make up for the initial misunderstanding in the long-run.",
+                        explanation: "Not a particularly appropriate response as, despite your empathy and kindness, there is no practical action offered to the customer and he may still feel dissatisfied upon putting the phone down."
                     }
                 ],
-                competency: "Customer Service",
-                mostEffective: 0,
-                leastEffective: 3
+                competency: "Service Ethos",
+                mostEffective: 1,
+                leastEffective: 0
             },
             {
-                question: "You notice that a team member, Sandy, has been behaving erratically recently. They seem distracted, are making more mistakes than usual, and have been taking longer breaks. You know they are having some personal issues at home.",
+                question: "You have recently noticed that your fellow team member, Sandy, is raising his voice quite frequently at the customers and has terminated a few calls early when customers have been expressing dissatisfaction in a rude or discourteous way. Another colleague told you in confidence that Sandy has got problems at home, his wife recently lost her job, they are experiencing financial strain and it is taking its toll on their relationship. Sandy is worried that his wife is depressed and he is finding it hard to concentrate on work properly. You sit next to Sandy in the contact centre and you have noticed his behaviour becoming more erratic over the last few weeks.",
                 options: [
                     {
-                        text: "Speak with Sandy privately, show concern, and offer to help or support them in any way you can.",
-                        explanation: "The Very Effective response. You are showing empathy and offering support while maintaining professionalism."
+                        text: "Do nothing. It is not your responsibility to intervene with Sandy, it is up to the Customer Service Team Leader to respond if his work is suffering. You feel that Sandy would be upset and offended if you 'poked your nose in' with his personal problems.",
+                        explanation: "Not a particularly appropriate response as you are doing nothing to address the problem. Sandy's behaviour, if left unchecked, could have a negative impact on customers and the team as a whole."
                     },
                     {
-                        text: "Report Sandy's behavior to your manager and let them handle it.",
-                        explanation: "The Effective response. You are addressing the issue, though it would be better to speak with Sandy first."
+                        text: "Speak to Sandy and say that you want him to know that you are always available for a chat if he ever needs someone to talk to. Ask him if there is anything that you can do to help and support him at work as you have noticed him dealing with customers differently recently, not in his usual friendly, calm manner.",
+                        explanation: "This is the most effective response as you are showing Sandy that you are aware that he may be feeling stressed and upset at the moment. On the other hand, you are leaving it up to him to tell you what he feels comfortable with and offering practical support as well."
                     },
                     {
-                        text: "Ignore the situation as it's not your responsibility.",
-                        explanation: "The Ineffective response. You are not showing concern for a team member who needs support."
+                        text: "Say to Sandy that you have noticed that his personal life is affecting his work and say that he had better watch out that the Team Leader doesn't give him a formal warning about the way he is dealing with customers.",
+                        explanation: "This is the least effective response as you are increasing the pressure on Sandy in a rather hostile way and you are not offering anything in the way of support or help."
                     },
                     {
-                        text: "Tell Sandy to sort out their personal issues as they're affecting their work.",
-                        explanation: "The Counterproductive response. You are being insensitive and not offering support."
+                        text: "Tell your Team Leader that you are worried about Sandy and that you know that he has some problems at home. Say to the Team Leader that you are happy to take on some of Sandy's workload whilst he is feeling stressed and under pressure.",
+                        explanation: "A reasonable response as it will ensure that Sandy's problems and behaviour are addressed. However, Sandy may feel that you have 'gone behind his back' which may upset him further. It would probably be better to approach him directly first and give him a chance to address his own problems, before talking to the Team Leader."
                     }
                 ],
-                competency: "Team Support",
-                mostEffective: 0,
-                leastEffective: 3
-            },
-            {
-                question: "In a team meeting, your Team Leader discusses the declining customer satisfaction levels. They emphasize the need for improved service quality and set new targets for the team.",
-                options: [
-                    {
-                        text: "Ask the Team Leader for specific examples of what constitutes good service quality and how you can meet these expectations.",
-                        explanation: "The Very Effective response. You are seeking clarification to ensure you understand the expectations."
-                    },
-                    {
-                        text: "Nod in agreement and promise to try harder.",
-                        explanation: "The Ineffective response. You are not seeking to understand what specific improvements are needed."
-                    },
-                    {
-                        text: "Share your ideas for improving service quality with the team.",
-                        explanation: "The Effective response. You are being proactive and contributing to the solution."
-                    },
-                    {
-                        text: "Suggest that the targets are unrealistic and need to be adjusted.",
-                        explanation: "The Counterproductive response. You are being negative without offering constructive input."
-                    }
-                ],
-                competency: "Team Communication",
-                mostEffective: 0,
-                leastEffective: 3
-            },
-            {
-                question: "The IT system has crashed, affecting customer service operations. Calls are backing up and customers are waiting longer than usual for assistance.",
-                options: [
-                    {
-                        text: "Take responsibility for follow-up calls to ensure customer queries are addressed once the system is back up.",
-                        explanation: "The Very Effective response. You are taking initiative to ensure customer needs are met despite the technical issues."
-                    },
-                    {
-                        text: "Wait for the system to come back online before taking any action.",
-                        explanation: "The Ineffective response. You are not being proactive in managing the situation."
-                    },
-                    {
-                        text: "Inform customers about the technical issues and provide an estimated wait time.",
-                        explanation: "The Effective response. You are keeping customers informed and managing expectations."
-                    },
-                    {
-                        text: "Blame the IT department for the delay and tell customers to call back later.",
-                        explanation: "The Counterproductive response. You are being unprofessional and not helping customers."
-                    }
-                ],
-                competency: "Problem Solving",
-                mostEffective: 0,
-                leastEffective: 3
-            },
-            {
-                question: "A customer is interested in changing their mobile phone tariff and handset. They want to know the best options available.",
-                options: [
-                    {
-                        text: "Email the customer the best price packages and follow up with a call to discuss any questions.",
-                        explanation: "The Very Effective response. You are providing comprehensive information and ensuring follow-up."
-                    },
-                    {
-                        text: "Tell the customer to check the website for the latest deals.",
-                        explanation: "The Ineffective response. You are not providing personalized service or assistance."
-                    },
-                    {
-                        text: "Explain the current offers over the phone and ask if they have any questions.",
-                        explanation: "The Effective response. You are providing information and checking for understanding."
-                    },
-                    {
-                        text: "Suggest they visit a store to see the handsets in person.",
-                        explanation: "The Counterproductive response. You are not providing the information they requested."
-                    }
-                ],
-                competency: "Customer Service",
-                mostEffective: 0,
-                leastEffective: 3
+                competency: "Teamwork",
+                mostEffective: 1,
+                leastEffective: 2
             }
         ]
     },
     {
         id: 4,
         title: "JoinedUp",
-        description: "You work as a Customer Advisor in the call center of JoinedUp, a telecommunications company. Your role involves handling customer inquiries, resolving issues, and ensuring customer satisfaction.",
+        description: "You are an advisor working in a customer contact centre for a large telecommunications company called JoinedUp. The company provides mobile phone services and handsets, broadband internet and landline services to domestic and business customers in the UK and Europe.",
         questions: [
+            {
+                question: "A customer has called the contact centre and is interested in changing her mobile phone tariff and handset as her annual contract is due for renewal next month. She has come through to you and has said that she is finding the information on the website very confusing and isn't sure which would be the best tariff for her and how to get the latest 'smartphone' as inexpensively as possible. She says that her phone, text and data usage is liable to stay pretty much the same in the coming year as it was in the past 12 months. She is confident in her choice of handset.",
+                options: [
+                    {
+                        text: "Tell her that you will take a detailed look at her account and then email her the details of the three best price packages for her. State that you will call her in an hour or two (or some other time convenient to her), once she has had a chance to read the email and talk her through the information and answer any questions.",
+                        explanation: "The Very Effective response. This tailors the information and reduces the amount of information that the customer has to trawl through and also gives her the chance to receive the information in two ways – orally and in a written format – and also gives her a chance to have any questions answered."
+                    },
+                    {
+                        text: "Talk through the information about all the various available tariffs with her and the related prices of the handset she wants.",
+                        explanation: "The Ineffective response. This does little to reduce the amount of information that the customer has to trawl through and only gives her the information in only one format. She has already said that she finds the website unhelpful and therefore when she gets off the phone she will not have anything in writing to which to refer."
+                    },
+                    {
+                        text: "State that the best place to find all the information is the website and that if she puts the name of the handset that she requires into the search engine then she will find some useful information.",
+                        explanation: "The Counterproductive response. She has already said that she finds the website confusing and you haven't established whether she has tried this 'search' approach already anyway."
+                    },
+                    {
+                        text: "Ask her to wait whilst you take a thorough look at her account and then talk her through the details of the two or three best price packages for her. Once you have established her preferred package through the conversation, then email her the details of this including the cost of the handset.",
+                        explanation: "The Effective response. This tailors the information and reduces the amount of information that the customer has to trawl through and it also gives her some of the information in written format; however it is less effective than the best response because she is being required to make decisions based on oral information only"
+                    },
+                    {
+                        text: "Tell her that you will take a detailed look at her account and then email her the details of the two or three best price packages for her.",
+                        explanation: "The Slightly Effective response. This tailors the information and reduces the amount of information that the customer has to trawl through, however it only allows her the information in one format. It also makes it more difficult for her to ask questions as she will have to call back and possibly talk to someone else rather than to you."
+                    }
+                ],
+                competency: "Effective Communication",
+                mostEffective: 0,
+                leastEffective: 2
+            },
             {
                 question: "You have just finished a customer call and turned to your colleague, Alexis, who looked troubled and concerned. You asked what was wrong and she said that she had just had to put a customer through to the team leader because she wasn't able to explain a new mobile phone text & data tariff which had just been released by JoinedUp today. The team leader briefed the team about the new tariff this morning and said that it was important to promote it as it had been designed to compete directly with an offer made by a competitor in TV ads last week.",
                 options: [
@@ -365,222 +225,159 @@ const scenarios = [
                 competency: "Teamwork",
                 mostEffective: 0,
                 leastEffective: 2
-            },
-            {
-                question: "Your team leader called you over this morning and said that she thought you would like to know that, in the last quarter results, you were one of the JoinedUp top 20 UK customer advisors for call quality and efficiency. This means that, compared to other customer advisors, you had managed your calls effectively in terms of customer satisfaction and that you had answered the right number of calls per hour and your calls had mostly been of the target length suggested by JoinedUp. This result suggests that in this current quarter you have a chance of achieving a longstanding personal goal and earning a substantial bonus payment into the bargain. The top 10 customer advisors each quarter receive a bonus payment worth 15% of their salary. There are 2 months of this current quarter remaining and you are keen to do your best to get into that 'top 10' list.",
-                options: [
-                    {
-                        text: "Find out from your team leader who the advisors in the Top 10 were last quarter. Email them and ask if any can spare fifteen minutes for a chat and see if you can glean any hints and tips for improving your performance even further.",
-                        explanation: "The Very Effective response. Getting advice 'from the horse's mouth', as it were, should give you a range of ideas for tweaking and improving your performance."
-                    },
-                    {
-                        text: "Tell your colleagues that you are in the Top 20 advisors and say that you will bring cakes and doughnuts in tomorrow to celebrate.",
-                        explanation: "The Ineffective response. This is a nice gesture towards your co-workers but will have no effect on your performance this quarter."
-                    },
-                    {
-                        text: "Cancel the three days annual leave that you had booked in for next week as you want to make sure you are one of the top performers.",
-                        explanation: "The Counterproductive response. The number of days you work is not one of the measures and, by cancelling a break, you are risking increasing your fatigue and stress levels which will not help your performance."
-                    },
-                    {
-                        text: "Keep working as you have been. After all 'if it ain't broke...' as the saying goes.",
-                        explanation: "The Slightly Effective response. There is some logic to this view which is that you have already made it into the Top 20 last quarter and so with a bit of luck you may achieve the Top 10 without changing your approach to work. However, the danger is that your current approach is just not enough to equal the 'best' customer advisors' performance"
-                    },
-                    {
-                        text: "Ask your team leader for feedback and advice on how to achieve Top 10 status.",
-                        explanation: "The Effective response. Your team leader should have a good idea of your current performance and may have some useful tips on how to improve even further to put you in that very top section of the list."
-                    }
-                ],
-                competency: "Achieving Results",
-                mostEffective: 0,
-                leastEffective: 2
-            },
-            {
-                question: "It is 10am on a Tuesday. JoinedUp launched the 'Yphone Xtra' mobile handset today which is the new, sought-after handset of the moment. Customers can acquire the Yphone at a very low cost when they sign up to a 12 or 24 month contract for mobile phone services with JoinedUp. There is an additional offer that the first 1000 customers who sign-up for a relevant JoinedUp mobile contract qualify for a free Yphone. The handset and the offer were made available from 9am today and since then the call centre has been experiencing a very high level of calls. Your team leader has told you that you will be required to work an extra 4 hours from 4pm until 8pm, at the end of your 8 hour shift today but you'll be able to take the time-off-in-lieu sometime next week. Everyone in the team will also have shortened lunch breaks today, again with the time being recouped next week. You haven't said anything to your team leader but you have a report to write for your BTEC in Contact Centre Leadership tonight; it is due in by midday tomorrow and you are working tomorrow morning.",
-                options: [
-                    {
-                        text: "Contact your BTEC tutor and ask for an extension on the report deadline, if at all possible, explain that you are in a uniquely demanding work situation. If the extension isn't granted see if you can reduce your shift from 12 to 10 hours by explaining your predicament to your team leader.",
-                        explanation: "The Very Effective response. You are tackling the situation from two angles and hopefully, either your tutor or your team leader will be able to 'cut you some slack' in this case."
-                    },
-                    {
-                        text: "Work very quickly through the calls that you receive in the hope that the call numbers will dwindle later and your team leader will let you go earlier.",
-                        explanation: "The Ineffective response. You are jeopardising customer service and satisfaction. Also you are very unlikely to be able to individually influence overall call handling rates."
-                    },
-                    {
-                        text: "Refuse to work the extra time tonight although you will take a shorter lunchbreak. Tell your team leader that you have a prior engagement this evening that you cannot break.",
-                        explanation: "The Counterproductive response. This is a rather 'panicky' response to the change in timetable for the day. You should consider other options, such as contacting your BTEC tutor and asking for an extension on the deadline before appearing uncooperative at work."
-                    },
-                    {
-                        text: "Call a colleague who is on leave today and see if they can cover for your extra 4 hours.",
-                        explanation: "The Slightly Effective response. You may be lucky and find someone willing to come in for you. Although you will have to square it with the team leader who may not be pleased as she would probably have to pay overtime rather than give time off in lieu as the colleague would be giving up their booked leave."
-                    },
-                    {
-                        text: "Ask your team leader if there is any lee-way in this arrangement as you have an urgent report to write tonight and it is a work-related assignment. Say that you will take a minimal break and work 10 hours without distraction.",
-                        explanation: "The Effective response. You are being co-operative and responsive to the work demands although there may be other ways you could address the situation, like asking for an extension on your work."
-                    }
-                ],
-                competency: "Coping With Challenging Situations",
-                mostEffective: 0,
-                leastEffective: 2
             }
         ]
     }
 ];
 
-// Test state
+// Initialize variables
 let currentScenarioIndex = 0;
 let currentQuestionIndex = 0;
 let userAnswers = [];
 
-// DOM Elements
-const scenarioTitle = document.getElementById('scenario-title');
-const scenarioDescription = document.getElementById('scenario-description');
-const questionText = document.getElementById('question-text');
-const optionsContainer = document.getElementById('options-container');
-const navigation = document.getElementById('navigation');
-const prevButton = document.getElementById('prev-button');
-const nextButton = document.getElementById('next-button');
-const submitButton = document.getElementById('submit-button');
-const explanation = document.getElementById('explanation');
-
 // Initialize the test
 function initTest() {
     displayCurrentScenario();
+    displayCurrentQuestion();
     updateNavigation();
 }
 
-// Display current scenario
+// Display the current scenario
 function displayCurrentScenario() {
-    const currentScenario = scenarios[currentScenarioIndex];
-    document.getElementById('scenario-title').textContent = currentScenario.title;
-    document.getElementById('scenario-description').textContent = currentScenario.description;
+    const scenario = scenarios[currentScenarioIndex];
+    document.getElementById('scenario-title').textContent = scenario.title;
+    document.getElementById('scenario-description').textContent = scenario.description;
 }
 
-// Display current question
+// Display the current question
 function displayCurrentQuestion() {
-    const currentScenario = scenarios[currentScenarioIndex];
-    const currentQuestion = currentScenario.questions[currentQuestionIndex];
+    const scenario = scenarios[currentScenarioIndex];
+    const question = scenario.questions[currentQuestionIndex];
     
-    document.getElementById('question-text').textContent = currentQuestion.question;
+    document.getElementById('question-text').textContent = question.question;
     
     const optionsContainer = document.getElementById('options-container');
     optionsContainer.innerHTML = '';
     
-    currentQuestion.options.forEach((option, index) => {
+    question.options.forEach((option, index) => {
         const optionElement = document.createElement('div');
         optionElement.className = 'option';
         optionElement.innerHTML = `
             <input type="radio" name="answer" id="option${index}" value="${index}">
             <label for="option${index}">${option.text}</label>
         `;
-        optionElement.addEventListener('click', () => selectOption(index));
+        optionElement.onclick = () => selectOption(index);
         optionsContainer.appendChild(optionElement);
     });
-    
-    document.getElementById('explanation').style.display = 'none';
-    document.getElementById('explanation').innerHTML = '';
 }
 
 // Handle option selection
-function selectOption(optionIndex) {
-    const currentScenario = scenarios[currentScenarioIndex];
-    const currentQuestion = currentScenario.questions[currentQuestionIndex];
-    const options = document.querySelectorAll('.option');
+function selectOption(index) {
+    const radio = document.getElementById(`option${index}`);
+    radio.checked = true;
     
-    options.forEach(option => option.classList.remove('selected'));
-    options[optionIndex].classList.add('selected');
+    // Remove selected class from all options
+    document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
     
-    const explanation = document.getElementById('explanation');
-    explanation.style.display = 'block';
-    explanation.innerHTML = `
-        <h4>${currentQuestion.options[optionIndex].explanation}</h4>
-    `;
-    
-    userAnswers[currentScenarioIndex][currentQuestionIndex] = optionIndex;
-    updateNavigation();
+    // Add selected class to chosen option
+    document.querySelectorAll('.option')[index].classList.add('selected');
 }
 
 // Update navigation buttons
 function updateNavigation() {
-    const scenario = scenarios[currentScenarioIndex];
-    const question = scenario.questions[currentQuestionIndex];
+    const prevButton = document.getElementById('prev-button');
+    const nextButton = document.getElementById('next-button');
+    const submitButton = document.getElementById('submit-button');
     
-    // Previous button
-    prevButton.disabled = currentScenarioIndex === 0 && currentQuestionIndex === 0;
-    
-    // Next button
-    const hasAnswered = userAnswers[currentScenarioIndex] && 
-                       userAnswers[currentScenarioIndex][currentQuestionIndex] !== undefined;
-    nextButton.disabled = !hasAnswered;
-    
-    // Submit button
-    const isLastScenario = currentScenarioIndex === scenarios.length - 1;
-    const isLastQuestion = currentQuestionIndex === scenario.questions.length - 1;
-    submitButton.style.display = isLastScenario && isLastQuestion ? 'block' : 'none';
+    prevButton.style.display = currentScenarioIndex === 0 && currentQuestionIndex === 0 ? 'none' : 'block';
+    nextButton.style.display = isLastQuestion() ? 'none' : 'block';
+    submitButton.style.display = isLastQuestion() ? 'block' : 'none';
 }
 
-// Navigation handlers
-function goToPrevious() {
-    if (currentQuestionIndex > 0) {
-        currentQuestionIndex--;
-    } else if (currentScenarioIndex > 0) {
-        currentScenarioIndex--;
-        currentQuestionIndex = scenarios[currentScenarioIndex].questions.length - 1;
+// Check if current question is the last one
+function isLastQuestion() {
+    return currentScenarioIndex === scenarios.length - 1 && 
+           currentQuestionIndex === scenarios[currentScenarioIndex].questions.length - 1;
+}
+
+// Handle navigation
+function navigate(direction) {
+    if (direction === 'prev') {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+        } else if (currentScenarioIndex > 0) {
+            currentScenarioIndex--;
+            currentQuestionIndex = scenarios[currentScenarioIndex].questions.length - 1;
+        }
+    } else if (direction === 'next') {
+        if (currentQuestionIndex < scenarios[currentScenarioIndex].questions.length - 1) {
+            currentQuestionIndex++;
+        } else if (currentScenarioIndex < scenarios.length - 1) {
+            currentScenarioIndex++;
+            currentQuestionIndex = 0;
+        }
     }
+    
     displayCurrentScenario();
+    displayCurrentQuestion();
     updateNavigation();
 }
 
-function goToNext() {
-    const scenario = scenarios[currentScenarioIndex];
-    if (currentQuestionIndex < scenario.questions.length - 1) {
-        currentQuestionIndex++;
-    } else if (currentScenarioIndex < scenarios.length - 1) {
-        currentScenarioIndex++;
-        currentQuestionIndex = 0;
-    }
-    displayCurrentScenario();
-    updateNavigation();
-}
-
-// Calculate score
+// Calculate score and show results
 function calculateScore() {
-    let totalScore = 0;
-    let maxScore = 0;
+    let score = 0;
+    let totalQuestions = 0;
     
     scenarios.forEach((scenario, scenarioIndex) => {
         scenario.questions.forEach((question, questionIndex) => {
-            const userAnswer = userAnswers[scenarioIndex]?.[questionIndex];
-            if (userAnswer !== undefined) {
-                const isMostEffective = userAnswer === question.mostEffective;
-                const isLeastEffective = userAnswer === question.leastEffective;
-                
-                if (isMostEffective) {
-                    totalScore += 2;
-                } else if (!isLeastEffective) {
-                    totalScore += 1;
+            totalQuestions++;
+            const userAnswer = document.querySelector(`input[name="answer"]:checked`);
+            if (userAnswer) {
+                const selectedIndex = parseInt(userAnswer.value);
+                if (selectedIndex === question.mostEffective) {
+                    score++;
                 }
-                maxScore += 2;
             }
         });
     });
     
-    return {
-        score: totalScore,
-        maxScore: maxScore,
-        percentage: (totalScore / maxScore) * 100
-    };
+    const percentage = (score / totalQuestions) * 100;
+    
+    // Create results page
+    const resultsContainer = document.createElement('div');
+    resultsContainer.className = 'results-container';
+    resultsContainer.innerHTML = `
+        <h2>Test Results</h2>
+        <p>Your score: ${score} out of ${totalQuestions} (${percentage.toFixed(1)}%)</p>
+        <div class="results-details"></div>
+    `;
+    
+    // Add detailed results
+    const detailsContainer = resultsContainer.querySelector('.results-details');
+    scenarios.forEach((scenario, scenarioIndex) => {
+        scenario.questions.forEach((question, questionIndex) => {
+            const userAnswer = document.querySelector(`input[name="answer"]:checked`);
+            const selectedIndex = userAnswer ? parseInt(userAnswer.value) : -1;
+            
+            const questionResult = document.createElement('div');
+            questionResult.className = 'question-result';
+            questionResult.innerHTML = `
+                <h3>${scenario.title} - Question ${questionIndex + 1}</h3>
+                <p>${question.question}</p>
+                <div class="answer-details">
+                    <p>Your answer: ${selectedIndex >= 0 ? question.options[selectedIndex].text : 'Not answered'}</p>
+                    <p>Most effective answer: ${question.options[question.mostEffective].text}</p>
+                    <p>Explanation: ${question.options[question.mostEffective].explanation}</p>
+                </div>
+            `;
+            detailsContainer.appendChild(questionResult);
+        });
+    });
+    
+    // Replace main content with results
+    document.querySelector('.question-container').innerHTML = '';
+    document.querySelector('.question-container').appendChild(resultsContainer);
 }
-
-// Submit test
-function submitTest() {
-    const result = calculateScore();
-    alert(`Test completed!\nScore: ${result.score}/${result.maxScore} (${result.percentage.toFixed(1)}%)`);
-}
-
-// Event listeners
-prevButton.addEventListener('click', goToPrevious);
-nextButton.addEventListener('click', goToNext);
-submitButton.addEventListener('click', submitTest);
 
 // Initialize the test when the page loads
-window.addEventListener('load', initTest); 
+window.onload = initTest; 
