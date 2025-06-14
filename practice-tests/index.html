@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Practice Tests - Home</title>
+    <title>Practice Tests Hub</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,30 +12,54 @@
 <body>
     <div class="container">
         <header class="header">
-            <h1>Practice Tests</h1>
-            <p>Prepare for your assessments with our comprehensive practice tests</p>
+            <h1>Practice Tests Hub</h1>
+            <p>Master your skills with our comprehensive assessment practice tests</p>
         </header>
 
         <div class="search-bar">
-            <input type="text" placeholder="Search for tests...">
+            <input type="text" placeholder="Search practice tests...">
         </div>
 
         <div class="test-categories">
+            <!-- Situational Judgment Tests -->
             <div class="category-card">
                 <div class="category-image">
                     <span>🧠</span>
                 </div>
                 <div class="category-content">
-                    <h2>Situational Judgment</h2>
-                    <p>Test your ability to handle workplace scenarios and make sound decisions.</p>
+                    <h2>Situational Judgment Tests</h2>
+                    <p>Master workplace scenarios and decision-making with realistic practice tests.</p>
                     <ul class="test-list">
                         <li class="test-item">
-                            <a href="situational-judgment/index.html" class="test-link">
-                                <h3>Basic Situational Judgment Test</h3>
-                                <p>Practice with common workplace scenarios and decision-making questions.</p>
+                            <a href="situational-judgment/sj-fundamentals.html" class="test-link">
+                                <h3>SJ-01: Workplace Fundamentals</h3>
+                                <p>Essential workplace scenarios covering communication, teamwork, and problem-solving.</p>
+                                <div class="test-meta">
+                                    <span>15 Questions</span>
+                                    <span>25 Minutes</span>
+                                    <span class="difficulty beginner">Beginner</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="test-item">
+                            <a href="situational-judgment/sj-leadership.html" class="test-link">
+                                <h3>SJ-02: Leadership Scenarios</h3>
+                                <p>Advanced leadership challenges including conflict resolution and team management.</p>
+                                <div class="test-meta">
+                                    <span>12 Questions</span>
+                                    <span>20 Minutes</span>
+                                    <span class="difficulty intermediate">Intermediate</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="test-item">
+                            <a href="situational-judgment/sj-ethics.html" class="test-link">
+                                <h3>SJ-03: Ethics & Compliance</h3>
+                                <p>Complex ethical dilemmas and compliance scenarios for senior roles.</p>
                                 <div class="test-meta">
                                     <span>10 Questions</span>
-                                    <span class="difficulty easy">Easy</span>
+                                    <span>15 Minutes</span>
+                                    <span class="difficulty advanced">Advanced</span>
                                 </div>
                             </a>
                         </li>
@@ -43,43 +67,184 @@
                 </div>
             </div>
 
-            <div class="category-card">
-                <div class="category-image">
-                    <span>📊</span>
-                </div>
-                <div class="category-content">
-                    <h2>Numerical Reasoning</h2>
-                    <p>Coming soon: Practice tests for numerical reasoning and data interpretation.</p>
-                </div>
-            </div>
-
+            <!-- Verbal Reasoning Tests -->
             <div class="category-card">
                 <div class="category-image">
                     <span>🔤</span>
                 </div>
                 <div class="category-content">
-                    <h2>Verbal Reasoning</h2>
-                    <p>Test your ability to understand and analyze written information.</p>
+                    <h2>Verbal Reasoning Tests</h2>
+                    <p>Enhance your ability to understand, analyze, and interpret written information.</p>
                     <ul class="test-list">
-                        <li>
-                            <a href="verbal-reasoning/index.html" class="test-link">
-                                <span class="test-title">Verbal Reasoning</span>
-                                <span class="test-info">5 questions • 30 minutes • Medium difficulty</span>
+                        <li class="test-item">
+                            <a href="verbal-reasoning/vr-comprehension.html" class="test-link">
+                                <h3>VR-01: Reading Comprehension</h3>
+                                <p>Practice with passages on various topics testing understanding and inference.</p>
+                                <div class="test-meta">
+                                    <span>20 Questions</span>
+                                    <span>30 Minutes</span>
+                                    <span class="difficulty beginner">Beginner</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="test-item">
+                            <a href="verbal-reasoning/vr-critical-analysis.html" class="test-link">
+                                <h3>VR-02: Critical Analysis</h3>
+                                <p>Advanced text analysis focusing on arguments, assumptions, and logical reasoning.</p>
+                                <div class="test-meta">
+                                    <span>15 Questions</span>
+                                    <span>25 Minutes</span>
+                                    <span class="difficulty intermediate">Intermediate</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="test-item">
+                            <a href="verbal-reasoning/vr-advanced-inference.html" class="test-link">
+                                <h3>VR-03: Advanced Inference</h3>
+                                <p>Complex inference questions with challenging academic and professional texts.</p>
+                                <div class="test-meta">
+                                    <span>12 Questions</span>
+                                    <span>20 Minutes</span>
+                                    <span class="difficulty advanced">Advanced</span>
+                                </div>
                             </a>
                         </li>
                     </ul>
                 </div>
             </div>
 
+            <!-- Diagrammatic Reasoning Tests -->
             <div class="category-card">
+                <div class="category-image">
+                    <span>🔶</span>
+                </div>
                 <div class="category-content">
-                    <h2>Diagrammatic Reasoning</h2>
-                    <p>Test your ability to understand and analyze visual patterns and relationships.</p>
+                    <h2>Diagrammatic Reasoning Tests</h2>
+                    <p>Master visual patterns, logical sequences, and abstract reasoning challenges.</p>
                     <ul class="test-list">
-                        <li>
-                            <a href="diagrammatic-reasoning/index.html" class="test-link">
-                                <span class="test-title">Pattern Recognition</span>
-                                <span class="test-info">5 questions • 30 minutes • Medium difficulty</span>
+                        <li class="test-item">
+                            <a href="diagrammatic-reasoning/dr-pattern-recognition.html" class="test-link">
+                                <h3>DR-01: Pattern Recognition</h3>
+                                <p>Identify visual patterns and sequences in geometric shapes and symbols.</p>
+                                <div class="test-meta">
+                                    <span>18 Questions</span>
+                                    <span>25 Minutes</span>
+                                    <span class="difficulty beginner">Beginner</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="test-item">
+                            <a href="diagrammatic-reasoning/dr-logical-sequences.html" class="test-link">
+                                <h3>DR-02: Logical Sequences</h3>
+                                <p>Complex sequential reasoning with multiple transformation rules.</p>
+                                <div class="test-meta">
+                                    <span>15 Questions</span>
+                                    <span>22 Minutes</span>
+                                    <span class="difficulty intermediate">Intermediate</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="test-item">
+                            <a href="diagrammatic-reasoning/dr-abstract-reasoning.html" class="test-link">
+                                <h3>DR-03: Abstract Reasoning</h3>
+                                <p>Advanced abstract reasoning with complex multi-layered transformations.</p>
+                                <div class="test-meta">
+                                    <span>12 Questions</span>
+                                    <span>18 Minutes</span>
+                                    <span class="difficulty advanced">Advanced</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Numerical Reasoning Tests -->
+            <div class="category-card">
+                <div class="category-image">
+                    <span>📊</span>
+                </div>
+                <div class="category-content">
+                    <h2>Numerical Reasoning Tests</h2>
+                    <p>Develop your quantitative analysis and data interpretation skills.</p>
+                    <ul class="test-list">
+                        <li class="test-item">
+                            <a href="numerical-reasoning/nr-basic-calculations.html" class="test-link">
+                                <h3>NR-01: Basic Calculations</h3>
+                                <p>Fundamental arithmetic and percentage calculations with charts and tables.</p>
+                                <div class="test-meta">
+                                    <span>20 Questions</span>
+                                    <span>30 Minutes</span>
+                                    <span class="difficulty beginner">Beginner</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="test-item">
+                            <a href="numerical-reasoning/nr-data-analysis.html" class="test-link">
+                                <h3>NR-02: Data Analysis</h3>
+                                <p>Interpret complex graphs, trends, and statistical information.</p>
+                                <div class="test-meta">
+                                    <span>15 Questions</span>
+                                    <span>25 Minutes</span>
+                                    <span class="difficulty intermediate">Intermediate</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="test-item">
+                            <a href="numerical-reasoning/nr-financial-analysis.html" class="test-link">
+                                <h3>NR-03: Financial Analysis</h3>
+                                <p>Advanced financial calculations including ratios, forecasting, and modeling.</p>
+                                <div class="test-meta">
+                                    <span>12 Questions</span>
+                                    <span>20 Minutes</span>
+                                    <span class="difficulty advanced">Advanced</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Logical Reasoning Tests -->
+            <div class="category-card">
+                <div class="category-image">
+                    <span>⚡</span>
+                </div>
+                <div class="category-content">
+                    <h2>Logical Reasoning Tests</h2>
+                    <p>Strengthen your deductive and inductive reasoning abilities.</p>
+                    <ul class="test-list">
+                        <li class="test-item">
+                            <a href="logical-reasoning/lr-deductive-reasoning.html" class="test-link">
+                                <h3>LR-01: Deductive Reasoning</h3>
+                                <p>Practice drawing logical conclusions from given premises and statements.</p>
+                                <div class="test-meta">
+                                    <span>16 Questions</span>
+                                    <span>25 Minutes</span>
+                                    <span class="difficulty beginner">Beginner</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="test-item">
+                            <a href="logical-reasoning/lr-inductive-reasoning.html" class="test-link">
+                                <h3>LR-02: Inductive Reasoning</h3>
+                                <p>Identify patterns and make generalizations from specific observations.</p>
+                                <div class="test-meta">
+                                    <span>14 Questions</span>
+                                    <span>22 Minutes</span>
+                                    <span class="difficulty intermediate">Intermediate</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="test-item">
+                            <a href="logical-reasoning/lr-conditional-reasoning.html" class="test-link">
+                                <h3>LR-03: Conditional Reasoning</h3>
+                                <p>Master complex if-then scenarios and logical rule applications.</p>
+                                <div class="test-meta">
+                                    <span>10 Questions</span>
+                                    <span>18 Minutes</span>
+                                    <span class="difficulty advanced">Advanced</span>
+                                </div>
                             </a>
                         </li>
                     </ul>
@@ -87,7 +252,9 @@
             </div>
         </div>
 
-        <a href="../index.html" class="back-button">Back to Home</a>
+        <footer class="footer">
+            <p>© 2024 Practice Tests Hub. All rights reserved.</p>
+        </footer>
     </div>
 
     <script src="script.js"></script>
