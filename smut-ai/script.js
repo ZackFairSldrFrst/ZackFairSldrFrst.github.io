@@ -344,7 +344,7 @@ Always focus on the craft of writing and storytelling. Help users create compell
                 ...conversationMessages
             ],
             temperature: 0.8,
-            max_tokens: 1000
+            max_tokens: 2000
         };
 
         debugLog('Request body:', requestBody);
