@@ -117,12 +117,15 @@ body::before {
 .chat-header h1 {
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
-    color: var(--primary-color);
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    font-weight: 700;
 }
 
 .chat-header p {
     font-size: 1.1rem;
-    color: #ccc;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* Chat Window */
@@ -207,6 +210,9 @@ body::before {
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    font-weight: 600;
 }
 
 .copy-button:hover {
@@ -243,6 +249,9 @@ body::before {
     cursor: pointer;
     border-radius: 10px;
     transition: all 0.3s ease;
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    font-weight: 600;
 }
 
 .clear-history-btn i {
@@ -255,28 +264,32 @@ body::before {
 
 .user-message {
     background: var(--user-message-color);
-    color: white;
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     align-self: flex-end;
     border-bottom-right-radius: 5px;
 }
 
 .bot-message {
     background: var(--message-background);
-    color: var(--text-color);
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     align-self: flex-start;
     border-bottom-left-radius: 5px;
-    border: 1px solid #4a4a4a;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .message-time {
     font-size: 0.8rem;
-    color: #999;
+    color: rgba(255, 255, 255, 0.7);
     margin-top: 0.5rem;
     text-align: right;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .bot-message .message-time {
     text-align: left;
+    color: rgba(255, 255, 255, 0.6);
 }
 
 /* Typing Indicator */
@@ -289,8 +302,9 @@ body::before {
     border-radius: 20px;
     border-bottom-left-radius: 5px;
     max-width: 200px;
-    color: #ccc;
-    border: 1px solid #4a4a4a;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .typing-dots {
@@ -301,9 +315,10 @@ body::before {
 .typing-dots span {
     width: 8px;
     height: 8px;
-    background: #ccc;
+    background: rgba(255, 255, 255, 0.8);
     border-radius: 50%;
     animation: typing 1.4s infinite ease-in-out;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
@@ -373,22 +388,25 @@ body::before {
     font-size: 1rem;
     outline: none;
     background: transparent;
-    color: var(--text-color);
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 #messageInput::placeholder {
-    color: #999;
+    color: rgba(255, 255, 255, 0.6);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 #sendButton {
     background: var(--primary-color);
-    color: white;
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     border: none;
     padding: 1rem 1.5rem;
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-weight: 500;
+    font-weight: 600;
     min-width: 50px;
     display: flex;
     align-items: center;
