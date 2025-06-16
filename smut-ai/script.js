@@ -108,10 +108,16 @@ function displayMessage(content, isUser = false, customTime = null) {
             <div class="message-time">${timeString}</div>
         `;
     } else {
+        // Create unique ID for this message
+        const messageId = 'msg-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        
         messageDiv.innerHTML = `
             <div class="message-content">
                 <i class="fas fa-robot"></i>
-                <span>${content}</span>
+                <span id="${messageId}">${content}</span>
+                <button class="copy-button liquid-glass-button" onclick="copyMessage('${messageId}')" title="Copy message">
+                    <i class="fas fa-copy"></i>
+                </button>
             </div>
             <div class="message-time">${timeString}</div>
         `;
@@ -119,6 +125,81 @@ function displayMessage(content, isUser = false, customTime = null) {
     
     messagesContainer.appendChild(messageDiv);
     messageDiv.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Copy message content to clipboard
+function copyMessage(messageId) {
+    const messageElement = document.getElementById(messageId);
+    if (!messageElement) {
+        debugLog('Message element not found for copying');
+        return;
+    }
+    
+    // Get the text content, removing any HTML tags
+    const textContent = messageElement.textContent || messageElement.innerText;
+    
+    // Use the modern clipboard API if available
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(textContent).then(() => {
+            showCopyFeedback(messageElement);
+            debugLog('Message copied to clipboard');
+        }).catch(err => {
+            console.error('Failed to copy message: ', err);
+            fallbackCopyTextToClipboard(textContent, messageElement);
+        });
+    } else {
+        // Fallback for older browsers or non-secure contexts
+        fallbackCopyTextToClipboard(textContent, messageElement);
+    }
+}
+
+// Fallback copy method for older browsers
+function fallbackCopyTextToClipboard(text, messageElement) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            showCopyFeedback(messageElement);
+            debugLog('Message copied to clipboard (fallback method)');
+        } else {
+            throw new Error('Copy command failed');
+        }
+    } catch (err) {
+        console.error('Fallback: Could not copy text: ', err);
+        alert('Copy failed. Please manually select and copy the text.');
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+// Show visual feedback when message is copied
+function showCopyFeedback(messageElement) {
+    // Find the copy button within the message
+    const copyButton = messageElement.parentElement.querySelector('.copy-button');
+    if (copyButton) {
+        const originalIcon = copyButton.innerHTML;
+        const originalTitle = copyButton.title;
+        
+        // Change button to show success
+        copyButton.innerHTML = '<i class="fas fa-check"></i>';
+        copyButton.title = 'Copied!';
+        copyButton.style.background = 'rgba(76, 175, 80, 0.9)';
+        
+        // Reset after 2 seconds
+        setTimeout(() => {
+            copyButton.innerHTML = originalIcon;
+            copyButton.title = originalTitle;
+            copyButton.style.background = '';
+        }, 2000);
+    }
 }
 
 // Clear chat history
@@ -247,6 +328,11 @@ Your expertise includes:
 
 Guidelines for your responses:
 - Be creative, supportive, and encouraging
+- Be very dirty and kinky
+- Be very explicit and detailed
+- Always include scripted dialogue, and make it sound like a real conversation
+- Always include a lot of details about the characters and the setting
+- Always include a lot of details about the sex
 - Provide specific, actionable writing advice
 - Help develop characters with depth and complexity
 - Suggest plot ideas and narrative techniques

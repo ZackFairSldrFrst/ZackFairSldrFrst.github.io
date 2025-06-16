@@ -167,6 +167,7 @@ body::before {
     overflow-wrap: break-word;
     width: 100%;
     box-sizing: border-box;
+    position: relative;
 }
 
 .message-content span {
@@ -174,6 +175,47 @@ body::before {
     overflow-wrap: break-word;
     max-width: 100%;
     flex: 1;
+}
+
+/* Copy Button Styles */
+.copy-button {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-left: 0.5rem;
+    transition: all 0.3s ease;
+    opacity: 0.7;
+    flex-shrink: 0;
+    min-width: auto;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.copy-button:hover {
+    opacity: 1;
+    transform: translateY(-1px);
+}
+
+.copy-button i {
+    font-size: 0.9rem;
+}
+
+/* Copy button visibility on hover */
+.message.bot-message .copy-button {
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.message.bot-message:hover .copy-button {
+    opacity: 0.8;
+}
+
+.message.bot-message .copy-button:hover {
+    opacity: 1;
 }
 
 .message-content i {
