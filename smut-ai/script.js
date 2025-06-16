@@ -94,9 +94,7 @@ function loadChatHistory() {
 // Display a message in the chat (used for both new and loaded messages)
 function displayMessage(content, isUser = false, customTime = null) {
     const messageDiv = document.createElement('div');
-    // Add liquid glass classes to messages
-    const glassClass = isUser ? 'liquid-glass-message liquid-glass-user' : 'liquid-glass-message';
-    messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'} ${glassClass}`;
+    messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
     
     const timeString = customTime || new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
     
@@ -115,7 +113,7 @@ function displayMessage(content, isUser = false, customTime = null) {
             <div class="message-content">
                 <i class="fas fa-robot"></i>
                 <span id="${messageId}">${content}</span>
-                <button class="copy-button liquid-glass-button" onclick="copyMessage('${messageId}')" title="Copy message">
+                <button class="copy-button" onclick="copyMessage('${messageId}')" title="Copy message">
                     <i class="fas fa-copy"></i>
                 </button>
             </div>
@@ -211,7 +209,7 @@ function clearChatHistory() {
         
         conversationMessages = [];
         messagesContainer.innerHTML = `
-            <div class="message bot-message liquid-glass-message">
+            <div class="message bot-message">
                 <div class="message-content">
                     <i class="fas fa-robot"></i>
                     <span>Welcome to Smut AI! I'm here to help you with creative writing, storytelling, and character development. What would you like to explore today?</span>
@@ -413,70 +411,16 @@ function initializeChat() {
     debugLog('Smut AI Chat Interface initialized');
 }
 
-// Detect Safari mobile and apply fallback styles
+// Detect Safari mobile (simplified - no longer needed for fallbacks)
 function detectSafariMobile() {
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
     
-    // Check if backdrop-filter is supported
-    const supportsBackdropFilter = CSS.supports('backdrop-filter', 'blur(1px)') || 
-                                   CSS.supports('-webkit-backdrop-filter', 'blur(1px)');
-    
-    if ((isSafari && isMobile) || isIOS || !supportsBackdropFilter) {
-        debugLog('Safari mobile or unsupported backdrop-filter detected, applying fallbacks');
-        document.body.classList.add('safari-mobile-fallback');
-        
-        // Apply additional inline styles for maximum compatibility
-        const style = document.createElement('style');
-        style.textContent = `
-            .safari-mobile-fallback .chat-header {
-                background: rgba(45, 45, 45, 0.97) !important;
-                backdrop-filter: none !important;
-                -webkit-backdrop-filter: none !important;
-            }
-            
-            .safari-mobile-fallback .chat-input-container {
-                background: rgba(45, 45, 45, 0.97) !important;
-                backdrop-filter: none !important;
-                -webkit-backdrop-filter: none !important;
-            }
-            
-            .safari-mobile-fallback .chat-input {
-                background: rgba(70, 70, 70, 0.95) !important;
-                backdrop-filter: none !important;
-                -webkit-backdrop-filter: none !important;
-            }
-            
-            .safari-mobile-fallback .liquid-glass-message {
-                background: rgba(55, 55, 55, 0.95) !important;
-                backdrop-filter: none !important;
-                -webkit-backdrop-filter: none !important;
-            }
-            
-            .safari-mobile-fallback .liquid-glass-user {
-                background: rgba(255, 107, 107, 0.98) !important;
-            }
-            
-            .safari-mobile-fallback .liquid-glass-button {
-                background: rgba(255, 107, 107, 0.98) !important;
-                backdrop-filter: none !important;
-                -webkit-backdrop-filter: none !important;
-            }
-            
-            .safari-mobile-fallback .copy-button {
-                background: rgba(80, 80, 80, 0.95) !important;
-                backdrop-filter: none !important;
-                -webkit-backdrop-filter: none !important;
-            }
-            
-            .safari-mobile-fallback .chat-window {
-                background: rgba(40, 40, 40, 0.97) !important;
-            }
-        `;
-        document.head.appendChild(style);
+    if ((isSafari && isMobile) || isIOS) {
+        debugLog('Safari mobile detected - using universal solid styling');
     } else {
-        debugLog('Modern browser detected, using liquid glass effects');
+        debugLog('Other browser detected - using universal solid styling');
     }
 }
 
@@ -486,7 +430,7 @@ function addClearHistoryButton() {
     if (chatHeader) {
         const clearButton = document.createElement('button');
         clearButton.innerHTML = '<i class="fas fa-trash-alt"></i> Clear History';
-        clearButton.className = 'clear-history-btn liquid-glass-button';
+        clearButton.className = 'clear-history-btn';
         clearButton.style.cssText = `
             position: absolute;
             top: 1rem;
