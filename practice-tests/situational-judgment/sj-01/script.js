@@ -1,308 +1,207 @@
 const testConfig = {
-    title: "SJ-01: Customer Service & Teamwork",
-    description: "Real-world scenarios from hospitality, sales, energy, and telecommunications sectors",
-    timeLimit: 30,
     questions: [
-        // Superluxe Hotels Scenario
         {
-            passage: "You are a front desk manager at Superluxe Hotels, a high-end hotel chain. A guest approaches the front desk, visibly upset, complaining about noise from a renovation project in the room next to theirs. The guest demands an immediate room change, but the hotel is fully booked due to a major conference. The renovation is necessary maintenance that cannot be postponed, and the guest paid a premium rate for their current room.",
-            question: "What is the most effective response in this situation?",
+            passage: "You are a trainee manager on a two year programme working for Superluxe Hotels, a national chain of 4 and 5 star hotels. The programme ensures that trainees gain experience in all areas of hotel and hospitality management through a rotational scheme of 4 month placements. You are currently undertaking your 'Guest Services' placement and you are based at the Alpston Grand, a five-star property and one of Superluxe's flagship hotels. You are working as second-in-command in the Grand Hotel Guest Services team; you report directly to the Guest Relations Manager. The primary job of the Guest Services team is to ensure that customers of the hotel receive an efficient and friendly welcome and departure, while ensuring the reception and front of house departments operate in an organised manner. The team must ensure a professional, friendly and courteous service is provided to all guests and that all complaints the hotel receives are handled properly. The Guest Services staff must also implement Superluxe occupancy policy which is to try to maximise occupancy on a daily basis.",
+            question: "It is 7.30pm. You are on duty at the concierge desk when a guest calls down to say that they have just checked in and are extremely unhappy with the cleanliness of their room. They say that the sink has hair in it, the tea cups are smeared and the curtains are dusty. The guest is only at the Grand for one night and has a business meeting in Alpston first thing in the morning. Review the following responses A to D and indicate which one you believe to be the response to the situation you would be 'most likely to make' and the response to the situation which you would be 'least likely to make'.",
             options: [
-                "Explain that the hotel is fully booked and they must stay in their current room",
-                "Offer a partial refund and explain the situation while maintaining professionalism",
-                "Immediately move them to a staff room temporarily",
-                "Tell them to call the general manager to complain"
+                "Apologise to the customer and say that you will ensure that the room is cleaned thoroughly within the next hour.",
+                "Apologise and offer the customer a different room immediately; if necessary an upgraded room if no others are available in his original price range.",
+                "Apologise and offer the customer a discount on his room rate.",
+                "Apologise and arrange a complimentary room service meal and bottle of wine to be sent to the room."
             ],
             correctAnswer: 1,
-            explanation: "The most effective response is to acknowledge the guest's concerns, explain the situation professionally, and offer a partial refund as compensation. This shows empathy while maintaining the hotel's standards and finding a practical solution."
+            explanation: "The most effective response is B - offering a different room immediately. This solves the problem quickly without making the guest wait, which is important given they have an early meeting. The least effective response is D - offering food and wine doesn't address the cleanliness issue and assumes the guest wants these items."
         },
         {
-            passage: "You are a front desk manager at Superluxe Hotels, a high-end hotel chain. A guest approaches the front desk, visibly upset, complaining about noise from a renovation project in the room next to theirs. The guest demands an immediate room change, but the hotel is fully booked due to a major conference. The renovation is necessary maintenance that cannot be postponed, and the guest paid a premium rate for their current room.",
-            question: "What is the least effective response in this situation?",
+            passage: "You are a trainee manager on a two year programme working for Superluxe Hotels, a national chain of 4 and 5 star hotels. The programme ensures that trainees gain experience in all areas of hotel and hospitality management through a rotational scheme of 4 month placements. You are currently undertaking your 'Guest Services' placement and you are based at the Alpston Grand, a five-star property and one of Superluxe's flagship hotels. You are working as second-in-command in the Grand Hotel Guest Services team; you report directly to the Guest Relations Manager. The primary job of the Guest Services team is to ensure that customers of the hotel receive an efficient and friendly welcome and departure, while ensuring the reception and front of house departments operate in an organised manner. The team must ensure a professional, friendly and courteous service is provided to all guests and that all complaints the hotel receives are handled properly. The Guest Services staff must also implement Superluxe occupancy policy which is to try to maximise occupancy on a daily basis.",
+            question: "It is 8pm on a Thursday evening in February. Fifty percent of the hotel's 300 rooms are currently occupied and a customer without a previous reservation has just arrived at the reception desk. The customer has enquired about the price of a standard double room. You have informed her that the room rate is £120 per night, including breakfast. The customer then asks whether you can let her have the room and breakfast for £80. Review the following responses A to D and indicate which one you believe to be the response to the situation you would be 'most likely to make' and the response to the situation which you would be 'least likely to make'.",
             options: [
-                "Listen to the guest's concerns and offer a partial refund",
-                "Explain the situation and offer alternative solutions",
-                "Tell them to call the general manager to complain",
-                "Apologize and offer a complimentary service"
+                "Give her information on the town's inexpensive B&B accommodation and how to find it.",
+                "Say that you can offer her the room at £100 for the night and breakfast.",
+                "Say that the room rate is £120 and there are no discounts available.",
+                "Say that if she returns at 9pm you will probably be able to give her a discount on the standard room rate then."
+            ],
+            correctAnswer: 1,
+            explanation: "The most effective response is B - offering £100 is a reasonable compromise that follows the hotel's policy of maximizing occupancy while still maintaining profitability. The least effective response is C - refusing any discount goes against the hotel's policy of maximizing occupancy when rooms are available."
+        },
+        {
+            passage: "You are a trainee manager on a two year programme working for Superluxe Hotels, a national chain of 4 and 5 star hotels. The programme ensures that trainees gain experience in all areas of hotel and hospitality management through a rotational scheme of 4 month placements. You are currently undertaking your 'Guest Services' placement and you are based at the Alpston Grand, a five-star property and one of Superluxe's flagship hotels. You are working as second-in-command in the Grand Hotel Guest Services team; you report directly to the Guest Relations Manager. The primary job of the Guest Services team is to ensure that customers of the hotel receive an efficient and friendly welcome and departure, while ensuring the reception and front of house departments operate in an organised manner. The team must ensure a professional, friendly and courteous service is provided to all guests and that all complaints the hotel receives are handled properly. The Guest Services staff must also implement Superluxe occupancy policy which is to try to maximise occupancy on a daily basis.",
+            question: "The hotel is hosting a large banquet tomorrow night on behalf of a corporate client. The guest list was due to be 150 people, however, just now, you have received a call from the client contact and they have informed you that they had underestimated the numbers and that they need to increase the guestlist to 200 people. It is 10am. Review the following responses A to D and indicate which one you believe to be the response to the situation you would be 'most likely to make' and the response to the situation which you would be 'least likely to make'.",
+            options: [
+                "Tell the client what the increased cost will be for the extra 50 guests based on the amount quoted per person for the original 150.",
+                "Thank the client for informing you and say you will call back to confirm the booking once you have spoken to the Catering team.",
+                "Thank the client for letting you know about the increase in numbers and then inform the Catering team that there will be 50 extra guests.",
+                "Tell the client that the hotel will do everything it can to accommodate the extra numbers and you hope to be able to call them back and confirm the booking shortly."
+            ],
+            correctAnswer: 3,
+            explanation: "The most effective response is D - showing willingness to help while being clear that confirmation is needed. The least effective response is A - discussing costs before confirming capacity is premature and could create false expectations."
+        },
+        {
+            passage: "You are a trainee manager on a two year programme working for Superluxe Hotels, a national chain of 4 and 5 star hotels. The programme ensures that trainees gain experience in all areas of hotel and hospitality management through a rotational scheme of 4 month placements. You are currently undertaking your 'Guest Services' placement and you are based at the Alpston Grand, a five-star property and one of Superluxe's flagship hotels. You are working as second-in-command in the Grand Hotel Guest Services team; you report directly to the Guest Relations Manager. The primary job of the Guest Services team is to ensure that customers of the hotel receive an efficient and friendly welcome and departure, while ensuring the reception and front of house departments operate in an organised manner. The team must ensure a professional, friendly and courteous service is provided to all guests and that all complaints the hotel receives are handled properly. The Guest Services staff must also implement Superluxe occupancy policy which is to try to maximise occupancy on a daily basis.",
+            question: "It is Saturday morning and you have just been informed that a large group booking is going to be transferred from the Saldringham Regent Hotel (also part of the Superluxe chain) to your hotel, as the Regent is overbooked. The group requires 110 rooms and the main conference suite to be made available from 6pm this evening. You have room availability tonight but not all of the rooms have been prepared as you weren't expecting a high occupancy level. In order for all the rooms to be prepared the morning shift housekeeping staff will need to work an additional 2 hours each for which they will be paid overtime. Their shift normally finishes at 2pm. Review the following responses A to D and indicate which one you believe to be the response to the situation you would be 'most likely to make' and the response to the situation which you would be 'least likely to make'.",
+            options: [
+                "Call the housekeeping staff together as soon as is convenient and then explain the situation to them saying that the group booking is great for the Alpston Grand as occupancy has been low recently and that they will be helping to keep the hotel running successfully.",
+                "Ask the Senior Housekeeper to let the staff know that they will be required to work an extra 2 hours today.",
+                "Call the housekeeping staff together and say you are sorry they will be needed for the extra two hours but hopefully the overtime pay will come in handy.",
+                "Talk to the housekeeping staff and say that unfortunately they will have to work an extra 2 hours and you are very sorry."
+            ],
+            correctAnswer: 0,
+            explanation: "The most effective response is A - explaining the business benefits and showing appreciation for their help. The least effective response is B - delegating this important communication to someone else shows poor leadership."
+        },
+        {
+            passage: "You are a Field Sales Representative for Handy Goods Ltd. Your company supplies independent corner shops and convenience stores with non-food 'home essential' products such as sewing thread, scissors, paperclips, nail clippers, bootlaces, drawing pins, liquid paper etc. Your brand prides itself on providing all the items that the stores' customers might find it handy to be able to pick up along with their milk, bread and newspapers rather than having to make a special trip to the town centre shops. You have a range of 200 products and each is priced to allow your customers to be competitive with the High Street retailers. You are able to give discounts for bulk purchases. Your sales area is Saldringham City, its suburbs and outlying villages. You have 93 shops on your patch and you are tasked with visiting each one at least once each month. You spend an average of 20 to 30 minutes in a shop when you visit your customers.",
+            question: "You are visiting The Pop-in Shop convenience store on Bentley Road, Saldringham this morning. You have a friendly relationship with the proprietor, Ellen Gurty. Ellen has a regular order for a large number of your stationery lines such as pens, pencils, notepads, paper, wall tack and clear tape. However Ellen is grumbling today as trade hasn't been brilliant for her of late and one of your rival suppliers, MoreThanPens Direct, has approached her with a great introductory deal on stationery. They are a specialist office goods supplier and are usually more expensive than Handy Goods, although the quality of their products is also slightly superior. The deal that MoreThanPens have offered Ellen is a bargain, and she has told you today that she has been sorely tempted. You are authorised to give a 15% one-off discount to customers who say they might switch suppliers. You aren't sure how serious Ellen is about swapping as you know she enjoys your visits and the MoreThanPens representative will not hang around for a cup of tea like you do as his patch is much larger. Review the following responses A to D and indicate whether you believe the response to be 1 – The most effective response, 2 – The second most effective response, 3 – The third most effective response or 4 – The least effective response.",
+            options: [
+                "Say to Ellen that you can understand that she is tempted by the offer from MoreThanPens and empathise with her recent poor sales. Talk to her about the likelihood that when the introductory offer runs out the prices could go higher than Handy Goods. Say you'd really like to talk to her this morning about what Handy Goods can do to keep her as a customer.",
+                "Ignore Ellen's grumblings and have a nice cup of tea and a chat with her about her grandchildren; that always seems to cheer her up.",
+                "Have a chat with Ellen and ask her what her sales problems have been caused by. Say you can help her out with a 10% discount on this order if that will be helpful.",
+                "Offer her a 15% discount on her latest order from Handy Goods. This will undercut MoreThanPens quite neatly."
+            ],
+            correctAnswer: 0,
+            explanation: "The most effective response is A - acknowledging her concerns, explaining the long-term implications of the competitor's offer, and showing willingness to discuss solutions. The least effective response is B - ignoring the business issue and focusing only on social aspects."
+        },
+        {
+            passage: "You are a Field Sales Representative for Handy Goods Ltd. Your company supplies independent corner shops and convenience stores with non-food 'home essential' products such as sewing thread, scissors, paperclips, nail clippers, bootlaces, drawing pins, liquid paper etc. Your brand prides itself on providing all the items that the stores' customers might find it handy to be able to pick up along with their milk, bread and newspapers rather than having to make a special trip to the town centre shops. You have a range of 200 products and each is priced to allow your customers to be competitive with the High Street retailers. You are able to give discounts for bulk purchases. Your sales area is Saldringham City, its suburbs and outlying villages. You have 93 shops on your patch and you are tasked with visiting each one at least once each month. You spend an average of 20 to 30 minutes in a shop when you visit your customers.",
+            question: "It is a Monday morning in May. You have five shop visits booked in today all for shops in the central area of Saldringham City. You were then planning on returning to the office for the later part of the afternoon in order to catch up on a backlog of paperwork. Your manager has just called you to say that your colleague Wendy is off sick today. Wendy had three appointments today in Alpston which is a town about 40 minutes' drive from Saldringham. Your manager is calling to ask whether you can cover any of the appointments as you are the closest sales rep to Wendy's patch. Review the following responses A to D and indicate whether you believe the response to be 1 – The most effective response, 2 – The second most effective response, 3 – The third most effective response or 4 – The least effective response.",
+            options: [
+                "Apologise to your manager and explain that you would love to help but that you have a full schedule today and therefore you are unable to do so. Your paperwork needs to take precedence here otherwise you risk falling behind.",
+                "Say that you are busy today but may be able to take one of the visits on Wendy's behalf, if other colleagues could cover the other two.",
+                "Agree to take all three appointments. You can attend all of your 5 visits this morning and there will still be time to drive to Alpston and visit the three customers there.",
+                "Agree to take all three appointments and call two of your customers to see if you can re-schedule their visits for tomorrow."
             ],
             correctAnswer: 2,
-            explanation: "Passing the complaint to the general manager is the least effective response as it shows a lack of initiative and problem-solving skills. A front desk manager should handle such situations directly."
+            explanation: "The most effective response is C - taking all three appointments shows team spirit and maximizes efficiency. The least effective response is A - prioritizing paperwork over customer visits and team support."
         },
         {
-            passage: "You are a front desk manager at Superluxe Hotels, a high-end hotel chain. A guest approaches the front desk, visibly upset, complaining about noise from a renovation project in the room next to theirs. The guest demands an immediate room change, but the hotel is fully booked due to a major conference. The renovation is necessary maintenance that cannot be postponed, and the guest paid a premium rate for their current room.",
-            question: "Which competency is most important in handling this situation?",
+            passage: "You are a Field Sales Representative for Handy Goods Ltd. Your company supplies independent corner shops and convenience stores with non-food 'home essential' products such as sewing thread, scissors, paperclips, nail clippers, bootlaces, drawing pins, liquid paper etc. Your brand prides itself on providing all the items that the stores' customers might find it handy to be able to pick up along with their milk, bread and newspapers rather than having to make a special trip to the town centre shops. You have a range of 200 products and each is priced to allow your customers to be competitive with the High Street retailers. You are able to give discounts for bulk purchases. Your sales area is Saldringham City, its suburbs and outlying villages. You have 93 shops on your patch and you are tasked with visiting each one at least once each month. You spend an average of 20 to 30 minutes in a shop when you visit your customers.",
+            question: "You have just come out of a Monday morning team briefing. You have been informed that sales of children's pocket toys and games have been very slow recently and that Handy Goods wish to ensure that sales targets for this product line are achieved, and preferably exceeded. As such, each Field Sales Representative will be reviewed fortnightly on their toys & games sales. The representative who achieves the highest sales for this line each fortnight will receive a cash bonus and the representative with the lowest sales will be shadowed by the Field Sales trainer and given intensive coaching. This representative will also be required to complete a detailed report on all of their visits over that fortnight in order for selling opportunities to be analysed by the trainer to inform the coaching sessions. You are keen to be the highest selling representative but at the very least you are desperate to avoid being the lowest selling as the extra work sounds quite onerous and dispiriting. Review the following responses A to D and indicate whether you believe the response to be 1 – The most effective response, 2 – The second most effective response, 3 – The third most effective response or 4 – The least effective response.",
             options: [
-                "Technical knowledge of hotel operations",
-                "Customer service and conflict resolution",
-                "Financial management",
-                "Staff supervision"
+                "Decide that for every visit you do from now on you won't leave the shop until the customer agrees to at least look at the product line of toys & games.",
+                "Switch your appointments around this month so that over the next two weeks you will visit all the shops that are located near schools and nurseries. You will have the best chance of selling the pocket toys & games product line to these shops.",
+                "Ensure that your product samples for toys & games are bang up-to-date and that you know all about each product and its target market. Aim to talk about toys & games at every sales visit and ask detailed questions to the customers about their requirements in this area.",
+                "Ask all your customers about their sales of toys & games and talk in more detail to the ones who have a good turnover of these types of products about Handy Goods' range."
             ],
-            correctAnswer: 1,
-            explanation: "Customer service and conflict resolution are the most important competencies in this situation, as it requires handling a difficult customer interaction while maintaining professionalism and finding a satisfactory solution."
+            correctAnswer: 2,
+            explanation: "The most effective response is C - being well-prepared and knowledgeable about the products while maintaining a professional approach. The least effective response is A - being overly aggressive could damage customer relationships."
         },
         {
-            passage: "You are a front desk manager at Superluxe Hotels, a high-end hotel chain. A guest approaches the front desk, visibly upset, complaining about noise from a renovation project in the room next to theirs. The guest demands an immediate room change, but the hotel is fully booked due to a major conference. The renovation is necessary maintenance that cannot be postponed, and the guest paid a premium rate for their current room.",
-            question: "What would be the best long-term solution to prevent similar situations?",
+            passage: "You are a Field Sales Representative for Handy Goods Ltd. Your company supplies independent corner shops and convenience stores with non-food 'home essential' products such as sewing thread, scissors, paperclips, nail clippers, bootlaces, drawing pins, liquid paper etc. Your brand prides itself on providing all the items that the stores' customers might find it handy to be able to pick up along with their milk, bread and newspapers rather than having to make a special trip to the town centre shops. You have a range of 200 products and each is priced to allow your customers to be competitive with the High Street retailers. You are able to give discounts for bulk purchases. Your sales area is Saldringham City, its suburbs and outlying villages. You have 93 shops on your patch and you are tasked with visiting each one at least once each month. You spend an average of 20 to 30 minutes in a shop when you visit your customers.",
+            question: "You are conducting a regular visit with one of your customers in Saldringham's outlying villages. The Village Store in Brancombe Brook is the only shop in the area and incorporates the Post Office, a delicatessen, an upmarket off-licence and general store. Ruth Hardlow is the manager of the shop which is owned and run as a cooperative by the villagers. Shortly after you arrived today Miss Hardlow brought up an issue with regard to the quality of some of the products that Handy Goods supply to the store. Miss Hardlow said that in recent weeks she has had 7 customers return products from the Handy Goods range, according to her, due to 'shoddy quality'. Miss Hardlow particularly mentioned the sewing items, needles, thread and scissors as well as some items of stationery. She reminded you that customers here rely on the shop and need to know that the things they buy here are as good quality as those in town. Miss Hardlow appears upset and angry about the issue and the last thing she has said to you is that she is seriously considering looking at other suppliers for her non-food items. Review the following responses A to D and indicate whether you believe the response to be 1 – The most effective response, 2 – The second most effective response, 3 – The third most effective response or 4 – The least effective response.",
             options: [
-                "Stop all renovations during peak season",
-                "Implement a policy of informing guests about ongoing renovations",
-                "Increase room rates to cover potential refunds",
-                "Hire more staff to handle complaints"
+                "Take a note of the products which have been found faulty by The Village Store customers and say that you will report the matter to your Product Line team when you get back to the office.",
+                "Give Miss Hardlow some 'free gift' items in her next order as an apology. Say that you are sure these products were just from a 'bad batch' that slipped past quality control and you are sure it won't happen again. After all her customers are bound to come back to the Store even if there are problems, as it's the only shop in the village.",
+                "Apologise to Miss Hardlow. Ask to see the returned products and examine them. Say that you will investigate what has happened and contact her next week to update her.",
+                "Apologise to Miss Hardlow and offer a full refund for the goods."
             ],
-            correctAnswer: 1,
-            explanation: "Implementing a policy of informing guests about ongoing renovations is the best long-term solution as it sets proper expectations and allows guests to make informed decisions about their stay."
-        },
-        // Handy Goods Ltd. Scenario
-        {
-            passage: "You are a sales manager at Handy Goods Ltd., a home improvement retailer. Your team has been underperforming for the last quarter, with sales 15% below target. The team consists of experienced salespeople who have previously met their targets. You've noticed that team morale is low, and there's been some tension between team members.",
-            question: "What is the most effective first step to address this situation?",
-            options: [
-                "Implement stricter sales targets and monitoring",
-                "Hold individual meetings to understand each team member's perspective",
-                "Reorganize the team structure",
-                "Offer financial incentives for better performance"
-            ],
-            correctAnswer: 1,
-            explanation: "Holding individual meetings to understand each team member's perspective is the most effective first step as it helps identify the root causes of the performance issues and shows that you value their input."
+            correctAnswer: 2,
+            explanation: "The most effective response is C - taking the issue seriously, examining the products, and promising to investigate. The least effective response is B - making assumptions about quality control and customer loyalty while offering inadequate compensation."
         },
         {
-            passage: "You are a sales manager at Handy Goods Ltd., a home improvement retailer. Your team has been underperforming for the last quarter, with sales 15% below target. The team consists of experienced salespeople who have previously met their targets. You've noticed that team morale is low, and there's been some tension between team members.",
-            question: "What is the least effective approach to improve team performance?",
+            passage: "You are a customer advisor at the UK contact centre for Greenwinds Energy. Greenwinds is a renewable-source electricity and gas supplier to European domestic and business customers. Your role is to answer inbound telephone calls and emails from customers in the UK, answering questions and queries about Greenwinds products and services and dealing with customer complaints and issues. You work in a team of 15 and you report into a Customer Service Team Leader. Greenwinds has recently introduced a 'one-rate' policy for all its energy packages. Customers will be charged the same rate per unit of electricity or gas regardless of their method of payment or when their peak usage of energy is. This has many advantages including, greater clarity of charging, no encouragement for use of electrical appliances at night, which can be unsafe, and no discrimination against people using pre-pay meters, pre pay cards or monthly cheque payment, all of whom are traditionally the less prosperous customers.",
+            question: "A customer has come through to you with a complaint about Greenwinds billing system. He is a new customer who has used the Greenwinds Dual Fuel electricity and gas product for a month. He says that he wasn't told by the doorstep sales person when he signed up that the electricity would not be split into off-peak and peak rate units. With his previous supplier he had been used to maximising his energy use at night in order to benefit from the cheaper rate electricity. He was under the impression that he would be able to continue to do this with Greenwinds and now he is very upset as he has realised, upon receiving his first bill, that this is not the case. Review the following responses A to D and indicate which you believe to be the 'most effective' response to the situation and which the 'least effective'.",
             options: [
-                "Address interpersonal conflicts within the team",
-                "Implement stricter sales targets and monitoring",
-                "Provide additional training and support",
-                "Recognize and reward good performance"
+                "Apologise for the confusion but state that the Greenwinds charging policy is clearly written on the joining contract and on the website.",
+                "Apologise for the confusion and ask the customer for more detail about the sales conversation, including the salesperson's name or description. Say that you will ask your manager to investigate the way that the contract was sold and to look at whether any miscommunication had happened on the doorstep. Say you will get back to the customer on a daily basis to keep him updated of progress.",
+                "Apologise for the confusion and offer the customer a goodwill waiver of one month's standing charge.",
+                "Apologise for the confusion and say that you are sorry to hear that he is feeling upset and hope that Greenwinds excellent service and eco-friendly product will make up for the initial misunderstanding in the long-run."
             ],
             correctAnswer: 1,
-            explanation: "Implementing stricter sales targets and monitoring is the least effective approach as it may further demotivate the team and not address the underlying issues causing the performance problems."
+            explanation: "The most effective response is B - taking the complaint seriously, investigating the sales process, and maintaining regular communication. The least effective response is A - being dismissive and not addressing the customer's concerns."
         },
         {
-            passage: "You are a sales manager at Handy Goods Ltd., a home improvement retailer. Your team has been underperforming for the last quarter, with sales 15% below target. The team consists of experienced salespeople who have previously met their targets. You've noticed that team morale is low, and there's been some tension between team members.",
-            question: "Which leadership style would be most effective in this situation?",
+            passage: "You are a customer advisor at the UK contact centre for Greenwinds Energy. Greenwinds is a renewable-source electricity and gas supplier to European domestic and business customers. Your role is to answer inbound telephone calls and emails from customers in the UK, answering questions and queries about Greenwinds products and services and dealing with customer complaints and issues. You work in a team of 15 and you report into a Customer Service Team Leader. Greenwinds has recently introduced a 'one-rate' policy for all its energy packages. Customers will be charged the same rate per unit of electricity or gas regardless of their method of payment or when their peak usage of energy is. This has many advantages including, greater clarity of charging, no encouragement for use of electrical appliances at night, which can be unsafe, and no discrimination against people using pre-pay meters, pre pay cards or monthly cheque payment, all of whom are traditionally the less prosperous customers.",
+            question: "You have recently noticed that your fellow team member, Sandy, is raising his voice quite frequently at the customers and has terminated a few calls early when customers have been expressing dissatisfaction in a rude or discourteous way. Another colleague told you in confidence that Sandy has got problems at home, his wife recently lost her job, they are experiencing financial strain and it is taking its toll on their relationship. Sandy is worried that his wife is depressed and he is finding it hard to concentrate on work properly. You sit next to Sandy in the contact centre and you have noticed his behaviour becoming more erratic over the last few weeks. Review the following responses A to D and indicate which you believe to be the 'most effective' response to the situation and which the 'least effective'.",
             options: [
-                "Autocratic leadership",
-                "Democratic leadership",
-                "Laissez-faire leadership",
-                "Transactional leadership"
+                "Do nothing. It is not your responsibility to intervene with Sandy, it is up to the Customer Service Team Leader to respond if his work is suffering. You feel that Sandy would be upset and offended if you 'poked your nose in' with his personal problems.",
+                "Speak to Sandy and say that you want him to know that you are always available for a chat if he ever needs someone to talk to. Ask him if there is anything that you can do to help and support him at work as you have noticed him dealing with customers differently recently, not in his usual friendly, calm manner.",
+                "Say to Sandy that you have noticed that his personal life is affecting his work and say that he had better watch out that the Team Leader doesn't give him a formal warning about the way he is dealing with customers.",
+                "Tell your Team Leader that you are worried about Sandy and that you know that he has some problems at home. Say to the Team Leader that you are happy to take on some of Sandy's workload whilst he is feeling stressed and under pressure."
             ],
             correctAnswer: 1,
-            explanation: "Democratic leadership would be most effective as it involves the team in decision-making, builds trust, and helps address the underlying issues affecting performance."
+            explanation: "The most effective response is B - offering support and showing concern while maintaining professionalism. The least effective response is C - being confrontational and threatening."
         },
         {
-            passage: "You are a sales manager at Handy Goods Ltd., a home improvement retailer. Your team has been underperforming for the last quarter, with sales 15% below target. The team consists of experienced salespeople who have previously met their targets. You've noticed that team morale is low, and there's been some tension between team members.",
-            question: "What would be the best way to measure improvement in team performance?",
+            passage: "You are a customer advisor at the UK contact centre for Greenwinds Energy. Greenwinds is a renewable-source electricity and gas supplier to European domestic and business customers. Your role is to answer inbound telephone calls and emails from customers in the UK, answering questions and queries about Greenwinds products and services and dealing with customer complaints and issues. You work in a team of 15 and you report into a Customer Service Team Leader. Greenwinds has recently introduced a 'one-rate' policy for all its energy packages. Customers will be charged the same rate per unit of electricity or gas regardless of their method of payment or when their peak usage of energy is. This has many advantages including, greater clarity of charging, no encouragement for use of electrical appliances at night, which can be unsafe, and no discrimination against people using pre-pay meters, pre pay cards or monthly cheque payment, all of whom are traditionally the less prosperous customers.",
+            question: "Today is Monday. You had a team meeting this morning in which your Team Leader mentioned that Head Office was unhappy with current levels of customer satisfaction with the contact centre and that there has been a dip in service quality. She said that, therefore, she would be looking closely at the service quality report every week and is expecting an improvement. The way that the contact centre service quality is measured has recently been changed: a new customer satisfaction survey has been introduced which is emailed to customers. Mystery shoppers have also been employed to call at random and record the way that they are dealt with by contact centre staff. Review the following responses A to D and indicate which you believe to be the 'most effective' response to the situation and which the 'least effective'.",
             options: [
-                "Focus only on sales numbers",
-                "Track both sales numbers and team morale",
-                "Compare performance with other teams",
-                "Set new, higher targets"
+                "Make an extra special effort to be warm, friendly and helpful to customers throughout the week.",
+                "Look at Greenwinds intranet 'service quality' site which outlines the new measurement methods in detail. Analyse the customer satisfaction questions and the mystery shopper criteria and change your behaviour, if necessary, to ensure that you are fulfilling these requirements.",
+                "Wait for a further briefing from your Team Leader. She usually sends a note round following the team meeting summarising what was said. You are hopeful that she will be more specific in this note as to what is required of you in order to improve the service quality ratings.",
+                "Ask for a quick chat with your Team Leader sometime today and find out from her what she feels will be the best way for you to contribute to the service quality targets. Make sure you are aware of the details of the new customer satisfaction measure and the Mystery Shopper criteria before you talk to her."
             ],
-            correctAnswer: 1,
-            explanation: "Tracking both sales numbers and team morale is the best way to measure improvement as it provides a comprehensive view of the team's progress and ensures sustainable performance improvement."
-        },
-        // Greenwinds Energy Scenario
-        {
-            passage: "You are a team leader at Greenwinds Energy, a renewable energy company. Your team is responsible for installing solar panels in residential properties. A customer has complained about the quality of the installation, citing poor workmanship and delays. The customer is demanding a full refund and removal of the system.",
-            question: "What is the most effective first response to the customer's complaint?",
-            options: [
-                "Immediately offer a full refund",
-                "Listen to the customer's concerns and gather all relevant information",
-                "Defend the team's work and explain the delays",
-                "Refer the complaint to senior management"
-            ],
-            correctAnswer: 1,
-            explanation: "Listening to the customer's concerns and gathering all relevant information is the most effective first response as it shows respect for the customer's experience and helps identify the specific issues that need to be addressed."
+            correctAnswer: 3,
+            explanation: "The most effective response is D - proactively seeking guidance while being prepared with knowledge of the new measures. The least effective response is C - passively waiting for more information instead of taking initiative."
         },
         {
-            passage: "You are a team leader at Greenwinds Energy, a renewable energy company. Your team is responsible for installing solar panels in residential properties. A customer has complained about the quality of the installation, citing poor workmanship and delays. The customer is demanding a full refund and removal of the system.",
-            question: "What is the least effective approach to resolve this situation?",
+            passage: "You are a customer advisor at the UK contact centre for Greenwinds Energy. Greenwinds is a renewable-source electricity and gas supplier to European domestic and business customers. Your role is to answer inbound telephone calls and emails from customers in the UK, answering questions and queries about Greenwinds products and services and dealing with customer complaints and issues. You work in a team of 15 and you report into a Customer Service Team Leader. Greenwinds has recently introduced a 'one-rate' policy for all its energy packages. Customers will be charged the same rate per unit of electricity or gas regardless of their method of payment or when their peak usage of energy is. This has many advantages including, greater clarity of charging, no encouragement for use of electrical appliances at night, which can be unsafe, and no discrimination against people using pre-pay meters, pre pay cards or monthly cheque payment, all of whom are traditionally the less prosperous customers.",
+            question: "You are working a 10am to 6pm shift today. You have just returned from your lunch break at 2pm and your colleague informs you that the IT system which allows access to customer account and billing information has crashed. IT support have said that they won't be able to fix the system until 4.30pm. Your normal rate of calls is 7 or 8 queries an hour. Your Team Leader has sent an email to the whole team asking you to carry on answering customer calls and deal with them as best you can until the system is fixed. Review the following responses A to D and indicate which you believe to be the 'most effective' response to the situation and which the 'least effective'.",
             options: [
-                "Conduct a thorough investigation of the installation",
-                "Defend the team's work and explain the delays",
-                "Offer to fix any issues identified",
-                "Provide regular updates to the customer"
+                "Calculate that you will probably receive about 20 calls over the next 2.5 hours and that some of these may be queries that you can deal with easily using the website or other resources. Resolve to take the details of the other customers and call them back between 4.30pm and 6pm. You may have to call some of them on the following day as 5pm onwards is peak evening call time and you will be busy with new calls.",
+                "Go and see your Team Leader and ask her what she expects you to do with customers who need to respond to a billing or account query today, after all it's her responsibility to provide some leadership in this stressful situation. It's probably not realistic to call them all back after 4.30pm as that is the start of the peak evening call time and inbound calls will be going up to 9 or 10 calls an hour per advisor then.",
+                "Suggest to your Team Leader that when the system is back up and running after 4.30pm that one customer advisor could be allocated to getting back to all the afternoon customers who's queries were not resolved, whilst the other advisors deal with the new inbound calls.",
+                "Deal with the straightforward queries that come in but ask all other customers to call back after 4.30pm. It will be too difficult to schedule outbound calls when the evening peak begins."
             ],
-            correctAnswer: 1,
-            explanation: "Defending the team's work and explaining the delays is the least effective approach as it may appear dismissive of the customer's concerns and could escalate the situation."
+            correctAnswer: 0,
+            explanation: "The most effective response is A - taking initiative to manage the situation while considering both immediate and future workload. The least effective response is D - not taking responsibility for following up with customers."
         },
         {
-            passage: "You are a team leader at Greenwinds Energy, a renewable energy company. Your team is responsible for installing solar panels in residential properties. A customer has complained about the quality of the installation, citing poor workmanship and delays. The customer is demanding a full refund and removal of the system.",
-            question: "Which quality management principle is most relevant to this situation?",
+            passage: "You are an advisor working in a customer contact centre for a large telecommunications company called JoinedUp. The company provides mobile phone services and handsets, broadband internet and landline services to domestic and business customers in the UK and Europe.",
+            question: "A customer has called the contact centre and is interested in changing her mobile phone tariff and handset as her annual contract is due for renewal next month. She has come through to you and has said that she is finding the information on the website very confusing and isn't sure which would be the best tariff for her and how to get the latest 'smartphone' as inexpensively as possible. She says that her phone, text and data usage is liable to stay pretty much the same in the coming year as it was in the past 12 months. She is confident in her choice of handset. Review the following responses A to E and indicate whether you believe the response to be Very Effective, Effective, Slightly Effective, Ineffective or Counterproductive.",
             options: [
-                "Cost reduction",
-                "Customer focus",
-                "Process automation",
-                "Employee training"
+                "Tell her that you will take a detailed look at her account and then email her the details of the three best price packages for her. State that you will call her in an hour or two (or some other time convenient to her), once she has had a chance to read the email and talk her through the information and answer any questions.",
+                "Talk through the information about all the various available tariffs with her and the related prices of the handset she wants.",
+                "State that the best place to find all the information is the website and that if she puts the name of the handset that she requires into the search engine then she will find some useful information.",
+                "Ask her to wait whilst you take a thorough look at her account and then talk her through the details of the two or three best price packages for her. Once you have established her preferred package through the conversation, then email her the details of this including the cost of the handset.",
+                "Tell her that you will take a detailed look at her account and then email her the details of the two or three best price packages for her."
             ],
-            correctAnswer: 1,
-            explanation: "Customer focus is the most relevant quality management principle in this situation as it emphasizes understanding and meeting customer requirements and expectations."
+            correctAnswer: 0,
+            explanation: "The most effective response is A - providing personalized information in both written and verbal formats, with follow-up support. The least effective response is C - directing her back to the website that she already finds confusing."
         },
         {
-            passage: "You are a team leader at Greenwinds Energy, a renewable energy company. Your team is responsible for installing solar panels in residential properties. A customer has complained about the quality of the installation, citing poor workmanship and delays. The customer is demanding a full refund and removal of the system.",
-            question: "What would be the best way to prevent similar issues in the future?",
+            passage: "You are an advisor working in a customer contact centre for a large telecommunications company called JoinedUp. The company provides mobile phone services and handsets, broadband internet and landline services to domestic and business customers in the UK and Europe.",
+            question: "You have just finished a customer call and turned to your colleague, Alexis, who looked troubled and concerned. You asked what was wrong and she said that she had just had to put a customer through to the team leader because she wasn't able to explain a new mobile phone text & data tariff which had just been released by JoinedUp today. The team leader briefed the team about the new tariff this morning and said that it was important to promote it as it had been designed to compete directly with an offer made by a competitor in TV ads last week. Review the following responses A to E and indicate whether you believe the response to be Very Effective, Effective, Slightly Effective, Ineffective or Counterproductive.",
             options: [
-                "Increase the number of installations per day",
-                "Implement a quality control checklist and regular team training",
-                "Reduce the price of installations",
-                "Hire more team members"
+                "Offer to talk Alexis through the new tariff and answer any questions she may have.",
+                "As time is tight you write down a few key points about the tariff and leave it on her workstation for her to have as a reminder if another customer enquiries.",
+                "Say that the tariff is very straightforward to understand really and that she'll soon get the hang of it.",
+                "Suggest that Alexis asks the team leader for another briefing on the tariff and that it's nothing to be worried about as you have sometimes found new products difficult to fathom at first.",
+                "Tell her that you'll email her the briefing document that your team leader handed out this morning to remind her of the details of the tariff."
             ],
-            correctAnswer: 1,
-            explanation: "Implementing a quality control checklist and regular team training is the best way to prevent similar issues as it ensures consistent quality and helps identify potential problems before they affect customers."
-        },
-        // JoinedUp Scenario
-        {
-            passage: "You are a customer service representative at JoinedUp, a telecommunications company. A customer calls to cancel their service due to poor network coverage in their area. The customer has been with the company for five years and has always paid on time. They mention that a competitor is offering better coverage in their area.",
-            question: "What is the most effective response to the customer's request?",
-            options: [
-                "Process the cancellation immediately",
-                "Acknowledge their concerns and explore retention options",
-                "Explain that network coverage will improve soon",
-                "Transfer them to the sales department"
-            ],
-            correctAnswer: 1,
-            explanation: "Acknowledging their concerns and exploring retention options is the most effective response as it shows respect for their loyalty and may lead to a mutually beneficial solution."
+            correctAnswer: 0,
+            explanation: "The most effective response is A - offering direct support and guidance to help Alexis understand the new tariff. The least effective response is C - being dismissive of her concerns and not providing actual help."
         },
         {
-            passage: "You are a customer service representative at JoinedUp, a telecommunications company. A customer calls to cancel their service due to poor network coverage in their area. The customer has been with the company for five years and has always paid on time. They mention that a competitor is offering better coverage in their area.",
-            question: "What is the least effective approach to handle this situation?",
+            passage: "You are an advisor working in a customer contact centre for a large telecommunications company called JoinedUp. The company provides mobile phone services and handsets, broadband internet and landline services to domestic and business customers in the UK and Europe.",
+            question: "Your team leader called you over this morning and said that she thought you would like to know that, in the last quarter results, you were one of the JoinedUp top 20 UK customer advisors for call quality and efficiency. This means that, compared to other customer advisors, you had managed your calls effectively in terms of customer satisfaction and that you had answered the right number of calls per hour and your calls had mostly been of the target length suggested by JoinedUp. This result suggests that in this current quarter you have a chance of achieving a longstanding personal goal and earning a substantial bonus payment into the bargain. The top 10 customer advisors each quarter receive a bonus payment worth 15% of their salary. There are 2 months of this current quarter remaining and you are keen to do your best to get into that 'top 10' list. Review the following responses A to E and indicate whether you believe the response to be Very Effective, Effective, Slightly Effective, Ineffective or Counterproductive.",
             options: [
-                "Listen to the customer's concerns",
-                "Process the cancellation immediately",
-                "Offer alternative solutions",
-                "Document the feedback for improvement"
+                "Find out from your team leader who the advisors in the Top 10 were last quarter. Email them and ask if any can spare fifteen minutes for a chat and see if you can glean any hints and tips for improving your performance even further.",
+                "Tell your colleagues that you are in the Top 20 advisors and say that you will bring cakes and doughnuts tomorrow to celebrate.",
+                "Cancel the three days annual leave that you had booked in for next week as you want to make sure you are one of the top performers.",
+                "Keep working as you have been. After all 'if it ain't broke...' as the saying goes.",
+                "Ask your team leader for feedback and advice on how to achieve Top 10 status."
             ],
-            correctAnswer: 1,
-            explanation: "Processing the cancellation immediately is the least effective approach as it doesn't attempt to understand the customer's needs or explore potential solutions to retain their business."
+            correctAnswer: 0,
+            explanation: "The most effective response is A - seeking advice from top performers to improve your performance. The least effective response is C - sacrificing planned time off which could lead to burnout."
         },
         {
-            passage: "You are a customer service representative at JoinedUp, a telecommunications company. A customer calls to cancel their service due to poor network coverage in their area. The customer has been with the company for five years and has always paid on time. They mention that a competitor is offering better coverage in their area.",
-            question: "Which customer service skill is most important in this situation?",
+            passage: "You are an advisor working in a customer contact centre for a large telecommunications company called JoinedUp. The company provides mobile phone services and handsets, broadband internet and landline services to domestic and business customers in the UK and Europe.",
+            question: "It is 10am on a Tuesday. JoinedUp launched the 'Yphone Xtra' mobile handset today which is the new, sought-after handset of the moment. Customers can acquire the Yphone at a very low cost when they sign up to a 12 or 24 month contract for mobile phone services with JoinedUp. There is an additional offer that the first 1000 customers who sign-up for a relevant JoinedUp mobile contract qualify for a free Yphone. The handset and the offer were made available from 9am today and since then the call centre has been experiencing a very high level of calls. Your team leader has told you that you will be required to work an extra 4 hours from 4pm until 8pm, at the end of your 8 hour shift today but you'll be able to take the time-off-in-lieu sometime next week. Everyone in the team will also have shortened lunch breaks today, again with the time being recouped next week. You haven't said anything to your team leader but you have a report to write for your BTEC in Contact Centre Leadership tonight; it is due in by midday tomorrow and you are working tomorrow morning. Review the following responses A to E and indicate whether you believe the response to be Very Effective, Effective, Slightly Effective, Ineffective or Counterproductive.",
             options: [
-                "Technical knowledge of the network",
-                "Active listening and problem-solving",
-                "Sales techniques",
-                "Data entry skills"
+                "Contact your BTEC tutor and ask for an extension on the report deadline, if at all possible, explain that you are in a uniquely demanding work situation. If the extension isn't granted see if you can reduce your shift from 12 to 10 hours by explaining your predicament to your team leader.",
+                "Work very quickly through the calls that you receive in the hope that the call numbers will dwindle later and your team leader will let you go earlier.",
+                "Refuse to work the extra time tonight although you will take a shorter lunch break. Tell your team leader that you have a prior engagement this evening that you cannot break.",
+                "Call a colleague who is on leave today and see if they can cover for your extra 4 hours.",
+                "Ask your team leader if there is any lee-way in this arrangement as you have an urgent report to write tonight and it is a work-related assignment. Say that you will take a minimal break and work 10 hours without distraction."
             ],
-            correctAnswer: 1,
-            explanation: "Active listening and problem-solving are the most important skills in this situation as they help understand the customer's needs and find appropriate solutions."
-        },
-        {
-            passage: "You are a customer service representative at JoinedUp, a telecommunications company. A customer calls to cancel their service due to poor network coverage in their area. The customer has been with the company for five years and has always paid on time. They mention that a competitor is offering better coverage in their area.",
-            question: "What would be the best way to improve customer retention in similar situations?",
-            options: [
-                "Lower prices for all customers",
-                "Implement a proactive network coverage monitoring system",
-                "Increase marketing efforts",
-                "Hire more customer service representatives"
-            ],
-            correctAnswer: 1,
-            explanation: "Implementing a proactive network coverage monitoring system is the best way to improve retention as it helps identify and address coverage issues before they lead to customer dissatisfaction."
+            correctAnswer: 0,
+            explanation: "The most effective response is A - proactively addressing both work and study commitments by seeking extensions and negotiating hours. The least effective response is B - rushing through calls could compromise service quality."
         }
-    ]
+    ],
+    timeLimit: 20 * 60 // 20 minutes
 };
 
-let currentQuestion = 0;
-let userAnswers = [];
-
-function initTest() {
-    displayCurrentQuestion();
-    updateNavigation();
-    
-    // Add event listeners for navigation buttons
-    document.getElementById('prev-button').addEventListener('click', () => navigate('prev'));
-    document.getElementById('next-button').addEventListener('click', () => navigate('next'));
-    document.getElementById('submit-button').addEventListener('click', calculateScore);
-}
-
-function displayCurrentQuestion() {
-    const question = testConfig.questions[currentQuestion];
-    document.getElementById('passage').textContent = question.passage;
-    document.getElementById('question-text').textContent = question.question;
-    
-    const optionsContainer = document.getElementById('options');
-    optionsContainer.innerHTML = '';
-    
-    question.options.forEach((option, index) => {
-        const optionElement = document.createElement('div');
-        optionElement.className = 'option';
-        optionElement.textContent = option;
-        optionElement.onclick = () => selectOption(index);
-        optionsContainer.appendChild(optionElement);
-    });
-    
-    updateNavigation();
-}
-
-function selectOption(index) {
-    userAnswers[currentQuestion] = index;
-    const options = document.getElementsByClassName('option');
-    for (let i = 0; i < options.length; i++) {
-        options[i].classList.remove('selected');
-    }
-    options[index].classList.add('selected');
-    updateNavigation();
-}
-
-function navigate(direction) {
-    if (direction === 'prev' && currentQuestion > 0) {
-        currentQuestion--;
-        displayCurrentQuestion();
-    } else if (direction === 'next' && currentQuestion < testConfig.questions.length - 1) {
-        currentQuestion++;
-        displayCurrentQuestion();
-    }
-}
-
-function updateNavigation() {
-    const prevButton = document.getElementById('prev-button');
-    const nextButton = document.getElementById('next-button');
-    const submitButton = document.getElementById('submit-button');
-    
-    prevButton.style.display = currentQuestion === 0 ? 'none' : 'block';
-    nextButton.style.display = currentQuestion === testConfig.questions.length - 1 ? 'none' : 'block';
-    submitButton.style.display = currentQuestion === testConfig.questions.length - 1 ? 'block' : 'none';
-}
-
-function calculateScore() {
-    let score = 0;
-    const results = [];
-    
-    testConfig.questions.forEach((question, index) => {
-        const isCorrect = userAnswers[index] === question.correctAnswer;
-        if (isCorrect) score++;
-        
-        results.push({
-            question: question.question,
-            userAnswer: question.options[userAnswers[index]],
-            correctAnswer: question.options[question.correctAnswer],
-            explanation: question.explanation,
-            isCorrect: isCorrect
-        });
-    });
-    
-    displayResults(score, results);
-}
-
-function displayResults(score, results) {
-    const container = document.querySelector('.question-container');
-    container.innerHTML = `
-        <div class="results">
-            <h2>Test Results</h2>
-            <p>Your score: ${score} out of ${testConfig.questions.length}</p>
-            <div class="results-details">
-                ${results.map((result, index) => `
-                    <div class="result-item ${result.isCorrect ? 'correct' : 'incorrect'}">
-                        <h3>Question ${index + 1}</h3>
-                        <p><strong>Your answer:</strong> ${result.userAnswer}</p>
-                        <p><strong>Correct answer:</strong> ${result.correctAnswer}</p>
-                        <p><strong>Explanation:</strong> ${result.explanation}</p>
-                    </div>
-                `).join('')}
-            </div>
-        </div>
-    `;
-}
-
-// Initialize the test when the page loads
-window.onload = initTest; 
+window.addEventListener('DOMContentLoaded', function() {
+    window.testCore = new TestCore(testConfig);
+    window.testCore.displayQuestion();
+    window.testCore.timerInterval = setInterval(window.testCore.updateTimer, 1000);
+}); 
