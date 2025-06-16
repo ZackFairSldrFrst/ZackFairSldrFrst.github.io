@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Message Scheduler - iOS Shortcuts</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🤖 AI Message Scheduler</h1>
+            <p>Create personalized iOS shortcuts to schedule messages using AI</p>
+        </header>
+
+        <main class="main">
+            <div class="form-section">
+                <div class="input-group">
+                    <label for="recipient">Recipient Name</label>
+                    <input type="text" id="recipient" placeholder="Enter recipient's name" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" placeholder="+1 (555) 123-4567" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="occasion">Message Occasion</label>
+                    <select id="occasion">
+                        <option value="">Select an occasion</option>
+                        <option value="birthday">Birthday</option>
+                        <option value="anniversary">Anniversary</option>
+                        <option value="holiday">Holiday</option>
+                        <option value="reminder">Reminder</option>
+                        <option value="good_morning">Good Morning</option>
+                        <option value="good_night">Good Night</option>
+                        <option value="check_in">Check In</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                </div>
+
+                <div class="input-group" id="custom-prompt-group" style="display: none;">
+                    <label for="custom-prompt">Custom Message Description</label>
+                    <textarea id="custom-prompt" placeholder="Describe what kind of message you want to send..." rows="3"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="tone">Message Tone</label>
+                    <select id="tone">
+                        <option value="friendly">Friendly</option>
+                        <option value="formal">Formal</option>
+                        <option value="casual">Casual</option>
+                        <option value="romantic">Romantic</option>
+                        <option value="professional">Professional</option>
+                        <option value="funny">Funny</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="schedule-time">Schedule Time</label>
+                    <input type="datetime-local" id="schedule-time" required>
+                </div>
+
+                <button id="generate-btn" class="generate-btn">
+                    <span id="btn-text">🚀 Generate AI Message & Shortcut</span>
+                    <div id="loading-spinner" class="spinner" style="display: none;"></div>
+                </button>
+            </div>
+
+            <div class="results-section" id="results-section" style="display: none;">
+                <div class="message-preview">
+                    <h3>📱 AI Generated Message</h3>
+                    <div id="generated-message" class="message-content"></div>
+                    <button id="regenerate-btn" class="secondary-btn">🔄 Regenerate Message</button>
+                </div>
+
+                <div class="shortcut-section">
+                    <h3>⚡ iOS Shortcut</h3>
+                    <p class="shortcut-instructions">
+                        Your iOS shortcut has been generated! Click the button below to add it to your iPhone:
+                    </p>
+                    <button id="download-shortcut" class="download-btn">📲 Add to iPhone</button>
+                    <div class="qr-section">
+                        <p>Or scan this QR code with your iPhone:</p>
+                        <div id="qr-code"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Powered by DeepSeek AI | Made with ❤️ for better communication</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script src="shortcut-generator.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
