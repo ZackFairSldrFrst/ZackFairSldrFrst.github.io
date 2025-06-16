@@ -9,22 +9,103 @@ const typingIndicator = document.getElementById('typingIndicator');
 // Store conversation messages
 let conversationMessages = [];
 
+// localStorage keys for chat history
+const STORAGE_KEYS = {
+    CONVERSATION_MESSAGES: 'smutai_conversation_messages',
+    CHAT_HISTORY: 'smutai_chat_history',
+    LAST_SAVE_TIME: 'smutai_last_save_time'
+};
+
 // Debug logging function
 function debugLog(message, data = null) {
     console.log(`[Smut AI Debug] ${message}`, data || '');
 }
 
-// Function to add message to chat
-function addMessage(content, isUser = false) {
+// localStorage utility functions
+function saveToLocalStorage(key, data) {
+    try {
+        localStorage.setItem(key, JSON.stringify(data));
+        debugLog(`Saved to localStorage: ${key}`);
+    } catch (error) {
+        console.error('Error saving to localStorage:', error);
+    }
+}
+
+function loadFromLocalStorage(key, defaultValue = null) {
+    try {
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data) : defaultValue;
+    } catch (error) {
+        console.error('Error loading from localStorage:', error);
+        return defaultValue;
+    }
+}
+
+// Save chat message to history
+function saveChatMessage(content, isUser, timestamp = null) {
+    const message = {
+        content: content,
+        isUser: isUser,
+        timestamp: timestamp || new Date().toISOString(),
+        formattedTime: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+    };
+    
+    // Load existing chat history
+    const chatHistory = loadFromLocalStorage(STORAGE_KEYS.CHAT_HISTORY, []);
+    chatHistory.push(message);
+    
+    // Keep only last 100 messages to prevent localStorage from getting too large
+    if (chatHistory.length > 100) {
+        chatHistory.splice(0, chatHistory.length - 100);
+    }
+    
+    // Save updated history
+    saveToLocalStorage(STORAGE_KEYS.CHAT_HISTORY, chatHistory);
+    saveToLocalStorage(STORAGE_KEYS.CONVERSATION_MESSAGES, conversationMessages);
+    saveToLocalStorage(STORAGE_KEYS.LAST_SAVE_TIME, new Date().toISOString());
+}
+
+// Load and display chat history
+function loadChatHistory() {
+    debugLog('Loading chat history from localStorage...');
+    
+    // Load conversation messages for API
+    const savedConversationMessages = loadFromLocalStorage(STORAGE_KEYS.CONVERSATION_MESSAGES, []);
+    conversationMessages = savedConversationMessages;
+    
+    // Load chat history for display
+    const chatHistory = loadFromLocalStorage(STORAGE_KEYS.CHAT_HISTORY, []);
+    
+    if (chatHistory.length > 0) {
+        // Clear the default welcome message
+        messagesContainer.innerHTML = '';
+        
+        // Restore all messages
+        chatHistory.forEach(message => {
+            displayMessage(message.content, message.isUser, message.formattedTime);
+        });
+        
+        debugLog(`Loaded ${chatHistory.length} messages from history`);
+    } else {
+        debugLog('No chat history found, starting fresh');
+    }
+}
+
+// Display a message in the chat (used for both new and loaded messages)
+function displayMessage(content, isUser = false, customTime = null) {
     const messageDiv = document.createElement('div');
-    messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+    // Add liquid glass classes to messages
+    const glassClass = isUser ? 'liquid-glass-message liquid-glass-user' : 'liquid-glass-message';
+    messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'} ${glassClass}`;
+    
+    const timeString = customTime || new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
     
     if (isUser) {
         messageDiv.innerHTML = `
             <div class="message-content">
                 <span>${content}</span>
             </div>
-            <div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+            <div class="message-time">${timeString}</div>
         `;
     } else {
         messageDiv.innerHTML = `
@@ -32,12 +113,43 @@ function addMessage(content, isUser = false) {
                 <i class="fas fa-robot"></i>
                 <span>${content}</span>
             </div>
-            <div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+            <div class="message-time">${timeString}</div>
         `;
     }
     
     messagesContainer.appendChild(messageDiv);
     messageDiv.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Clear chat history
+function clearChatHistory() {
+    if (confirm('Are you sure you want to clear all chat history? This action cannot be undone.')) {
+        localStorage.removeItem(STORAGE_KEYS.CONVERSATION_MESSAGES);
+        localStorage.removeItem(STORAGE_KEYS.CHAT_HISTORY);
+        localStorage.removeItem(STORAGE_KEYS.LAST_SAVE_TIME);
+        
+        conversationMessages = [];
+        messagesContainer.innerHTML = `
+            <div class="message bot-message liquid-glass-message">
+                <div class="message-content">
+                    <i class="fas fa-robot"></i>
+                    <span>Welcome to Smut AI! I'm here to help you with creative writing, storytelling, and character development. What would you like to explore today?</span>
+                </div>
+                <div class="message-time">Just now</div>
+            </div>
+        `;
+        
+        debugLog('Chat history cleared');
+    }
+}
+
+// Function to add message to chat (wrapper for displayMessage with saving)
+function addMessage(content, isUser = false) {
+    // Display the message
+    displayMessage(content, isUser);
+    
+    // Save to localStorage
+    saveChatMessage(content, isUser);
 }
 
 // Function to show/hide typing indicator
@@ -199,6 +311,88 @@ Always focus on the craft of writing and storytelling. Help users create compell
     }
 }
 
+// Initialize chat history on page load
+function initializeChat() {
+    debugLog('Initializing Smut AI Chat Interface...');
+    
+    // Load existing chat history
+    loadChatHistory();
+    
+    // Add clear history button to header
+    addClearHistoryButton();
+    
+    debugLog('Smut AI Chat Interface initialized');
+}
+
+// Add clear history button to the chat header
+function addClearHistoryButton() {
+    const chatHeader = document.querySelector('.chat-header');
+    if (chatHeader) {
+        const clearButton = document.createElement('button');
+        clearButton.innerHTML = '<i class="fas fa-trash-alt"></i> Clear History';
+        clearButton.className = 'clear-history-btn liquid-glass-button';
+        clearButton.style.cssText = `
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+        `;
+        clearButton.onclick = clearChatHistory;
+        chatHeader.appendChild(clearButton);
+    }
+}
+
+// Export chat history as JSON
+function exportChatHistory() {
+    const chatHistory = loadFromLocalStorage(STORAGE_KEYS.CHAT_HISTORY, []);
+    const conversationData = loadFromLocalStorage(STORAGE_KEYS.CONVERSATION_MESSAGES, []);
+    
+    const exportData = {
+        chatHistory: chatHistory,
+        conversationMessages: conversationData,
+        exportDate: new Date().toISOString(),
+        totalMessages: chatHistory.length
+    };
+    
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportData, null, 2));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "smutai_chat_history.json");
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+    
+    debugLog('Chat history exported');
+}
+
+// Import chat history from JSON
+function importChatHistory(jsonData) {
+    try {
+        const importData = JSON.parse(jsonData);
+        
+        if (importData.chatHistory && importData.conversationMessages) {
+            // Save imported data
+            saveToLocalStorage(STORAGE_KEYS.CHAT_HISTORY, importData.chatHistory);
+            saveToLocalStorage(STORAGE_KEYS.CONVERSATION_MESSAGES, importData.conversationMessages);
+            
+            // Reload the chat
+            loadChatHistory();
+            
+            debugLog(`Imported ${importData.chatHistory.length} messages`);
+            alert(`Successfully imported ${importData.chatHistory.length} messages!`);
+        } else {
+            throw new Error('Invalid chat history format');
+        }
+    } catch (error) {
+        console.error('Error importing chat history:', error);
+        alert('Error importing chat history. Please check the file format.');
+    }
+}
+
 // Event listeners
 sendButton.addEventListener('click', sendMessage);
 
@@ -214,4 +408,24 @@ messageInput.addEventListener('input', function() {
     this.style.height = this.scrollHeight + 'px';
 });
 
-debugLog('Smut AI Chat Interface initialized'); 
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', initializeChat);
+
+// Expose functions to global scope for console access
+window.smutAI = {
+    clearHistory: clearChatHistory,
+    exportHistory: exportChatHistory,
+    importHistory: importChatHistory,
+    getStorageInfo: () => {
+        const chatHistory = loadFromLocalStorage(STORAGE_KEYS.CHAT_HISTORY, []);
+        const conversationMessages = loadFromLocalStorage(STORAGE_KEYS.CONVERSATION_MESSAGES, []);
+        const lastSaveTime = loadFromLocalStorage(STORAGE_KEYS.LAST_SAVE_TIME);
+        
+        return {
+            totalMessages: chatHistory.length,
+            conversationLength: conversationMessages.length,
+            lastSaved: lastSaveTime,
+            storageUsed: JSON.stringify({chatHistory, conversationMessages}).length + ' characters'
+        };
+    }
+}; 
