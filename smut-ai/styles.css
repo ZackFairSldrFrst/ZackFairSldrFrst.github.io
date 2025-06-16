@@ -78,58 +78,17 @@ body::before {
     }
 }
 
-/* Header Styles */
-header {
-    background-color: var(--card-background);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1000;
-}
-
-nav {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--primary-color);
-}
-
-nav ul {
-    display: flex;
-    list-style: none;
-    gap: 2rem;
-}
-
-nav a {
-    text-decoration: none;
-    color: var(--text-color);
-    font-weight: 500;
-    transition: color 0.3s ease;
-}
-
-nav a:hover {
-    color: var(--primary-color);
-}
+/* Removed header styles - no longer needed */
 
 /* Chat Container */
 .chat-container {
     max-width: 1000px;
-    margin: 80px auto 2rem;
+    margin: 0 auto;
     padding: 1rem;
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 160px);
-    min-height: 600px;
-    max-height: calc(100vh - 160px);
+    height: 100vh;
+    max-height: 100vh;
     overflow: hidden;
 }
 
@@ -348,69 +307,15 @@ nav a:hover {
     transform: translateY(0);
 }
 
-/* About Section */
-.about {
-    padding: 4rem 1rem;
-    text-align: center;
-    background: var(--card-background);
-    margin: 2rem auto;
-    max-width: 1000px;
-    border-radius: 20px;
-    border: 1px solid #4a4a4a;
-}
-
-.about h2 {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-    color: var(--primary-color);
-}
-
-.about p {
-    font-size: 1.1rem;
-    color: #ccc;
-    max-width: 800px;
-    margin: 0 auto;
-    line-height: 1.8;
-}
-
-/* Footer */
-footer {
-    background: var(--card-background);
-    padding: 2rem 1rem 1rem;
-    border-top: 1px solid #4a4a4a;
-}
-
-.footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-}
-
-.footer-section h4 {
-    color: var(--primary-color);
-    margin-bottom: 0.5rem;
-}
-
-.footer-section p {
-    color: #ccc;
-}
-
-.footer-bottom {
-    text-align: center;
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid #4a4a4a;
-    color: #999;
-}
+/* Removed about and footer styles - no longer needed */
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .chat-container {
-        margin: 80px 0.5rem 1rem;
-        height: calc(100vh - 100px);
-        max-height: calc(100vh - 100px);
+        margin: 0;
+        padding: 0.5rem;
+        height: 100vh;
+        max-height: 100vh;
         overflow: hidden;
     }
     
@@ -439,15 +344,6 @@ footer {
         padding: 0.8rem 1rem;
         min-width: 45px;
     }
-    
-    nav ul {
-        gap: 1rem;
-    }
-    
-    .about {
-        margin: 1rem;
-        padding: 2rem 1rem;
-    }
 }
 
 /* Utility Classes */
@@ -455,14 +351,7 @@ footer {
     display: none !important;
 }
 
-/* Remove old styles that are no longer needed */
-.hero, .search-container, .search-box, .features, .feature-grid, .feature-card,
-.tax-reference, .compliance-warning, .source-citation,
-#searchInput, #searchButton, #searchResults, .result-content,
-.conversation-container, .conversation-history, .follow-up-container,
-.follow-up-input, #followUpInput, #followUpButton {
-    /* These styles are removed or replaced by chat interface styles */
-}
+/* All unnecessary page elements removed - pure chat interface */
 
 /* ============================
    LIQUID GLASS CSS - WebGL SHADER REPLICA
@@ -514,40 +403,7 @@ footer {
 
 /* Liquid Glass Variants */
 
-/* Header Glass Effect */
-.liquid-glass-header {
-    background: rgba(255, 255, 255, 0.12);
-    backdrop-filter: 
-        blur(15px) 
-        saturate(1.5) 
-        contrast(1.2) 
-        brightness(1.15);
-    -webkit-backdrop-filter: 
-        blur(15px) 
-        saturate(1.5) 
-        contrast(1.2) 
-        brightness(1.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5),
-        0 4px 16px rgba(255, 255, 255, 0.1);
-}
-
-.liquid-glass-header::before {
-    background: radial-gradient(
-        ellipse 120% 120% at 30% 50%,
-        rgba(255, 107, 107, 0.2) 0%,
-        transparent 60%
-    );
-    animation: liquidRefractHeader 10s ease-in-out infinite;
-}
-
-@keyframes liquidRefractHeader {
-    0%, 100% { transform: rotate(0deg) scale(1) translateX(0); }
-    33% { transform: rotate(60deg) scale(1.1) translateX(10px); }
-    66% { transform: rotate(-60deg) scale(0.95) translateX(-10px); }
-}
+/* Header glass styles removed - no header needed */
 
 /* Chat Window Glass Effect */
 .liquid-glass-chat {
