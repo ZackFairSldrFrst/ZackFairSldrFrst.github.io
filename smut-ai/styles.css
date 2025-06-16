@@ -490,6 +490,119 @@ body::before {
 /* All unnecessary page elements removed - pure chat interface */
 
 /* ============================
+   SAFARI MOBILE FALLBACK STYLES
+   ============================ */
+
+/* Detect Safari mobile and provide fallbacks */
+@supports not (backdrop-filter: blur(1px)) {
+    .chat-header {
+        background: rgba(45, 45, 45, 0.95) !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+    }
+    
+    .chat-window {
+        background: rgba(35, 35, 35, 0.95) !important;
+    }
+    
+    .chat-input-container {
+        background: rgba(45, 45, 45, 0.95) !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.3) !important;
+    }
+    
+    .chat-input {
+        background: rgba(60, 60, 60, 0.9) !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    }
+    
+    .liquid-glass-message {
+        background: rgba(50, 50, 50, 0.9) !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    }
+    
+    .liquid-glass-user {
+        background: rgba(255, 107, 107, 0.95) !important;
+    }
+    
+    .liquid-glass-button {
+        background: rgba(255, 107, 107, 0.95) !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+    
+    .copy-button {
+        background: rgba(70, 70, 70, 0.9) !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+    
+    .clear-history-btn {
+        background: rgba(255, 107, 107, 0.95) !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+}
+
+/* Additional Safari-specific fallbacks */
+@media not all and (min-resolution:.001dpcm) {
+    @supports (-webkit-appearance:none) {
+        .chat-header {
+            background: linear-gradient(135deg, rgba(45, 45, 45, 0.95) 0%, rgba(55, 55, 55, 0.95) 100%) !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+        
+        .chat-input-container {
+            background: linear-gradient(135deg, rgba(45, 45, 45, 0.95) 0%, rgba(55, 55, 55, 0.95) 100%) !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+        
+        .liquid-glass-message {
+            background: rgba(50, 50, 50, 0.92) !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+    }
+}
+
+/* iOS Safari specific fallbacks */
+@supports (-webkit-touch-callout: none) {
+    .liquid-glass,
+    .liquid-glass-header,
+    .liquid-glass-chat,
+    .liquid-glass-message,
+    .liquid-glass-input,
+    .liquid-glass-button {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+    
+    .chat-header {
+        background: rgba(45, 45, 45, 0.96) !important;
+    }
+    
+    .chat-input-container {
+        background: rgba(45, 45, 45, 0.96) !important;
+    }
+    
+    .bot-message.liquid-glass-message {
+        background: rgba(50, 50, 50, 0.94) !important;
+    }
+    
+    .user-message.liquid-glass-user {
+        background: rgba(255, 107, 107, 0.96) !important;
+    }
+}
+
+/* ============================
    LIQUID GLASS CSS - WebGL SHADER REPLICA
    ============================ */
 

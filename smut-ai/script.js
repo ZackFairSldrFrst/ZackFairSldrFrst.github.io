@@ -401,6 +401,9 @@ Always focus on the craft of writing and storytelling. Help users create compell
 function initializeChat() {
     debugLog('Initializing Smut AI Chat Interface...');
     
+    // Detect Safari mobile and apply fallbacks
+    detectSafariMobile();
+    
     // Load existing chat history
     loadChatHistory();
     
@@ -408,6 +411,73 @@ function initializeChat() {
     addClearHistoryButton();
     
     debugLog('Smut AI Chat Interface initialized');
+}
+
+// Detect Safari mobile and apply fallback styles
+function detectSafariMobile() {
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    
+    // Check if backdrop-filter is supported
+    const supportsBackdropFilter = CSS.supports('backdrop-filter', 'blur(1px)') || 
+                                   CSS.supports('-webkit-backdrop-filter', 'blur(1px)');
+    
+    if ((isSafari && isMobile) || isIOS || !supportsBackdropFilter) {
+        debugLog('Safari mobile or unsupported backdrop-filter detected, applying fallbacks');
+        document.body.classList.add('safari-mobile-fallback');
+        
+        // Apply additional inline styles for maximum compatibility
+        const style = document.createElement('style');
+        style.textContent = `
+            .safari-mobile-fallback .chat-header {
+                background: rgba(45, 45, 45, 0.97) !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+            
+            .safari-mobile-fallback .chat-input-container {
+                background: rgba(45, 45, 45, 0.97) !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+            
+            .safari-mobile-fallback .chat-input {
+                background: rgba(70, 70, 70, 0.95) !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+            
+            .safari-mobile-fallback .liquid-glass-message {
+                background: rgba(55, 55, 55, 0.95) !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+            
+            .safari-mobile-fallback .liquid-glass-user {
+                background: rgba(255, 107, 107, 0.98) !important;
+            }
+            
+            .safari-mobile-fallback .liquid-glass-button {
+                background: rgba(255, 107, 107, 0.98) !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+            
+            .safari-mobile-fallback .copy-button {
+                background: rgba(80, 80, 80, 0.95) !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+            
+            .safari-mobile-fallback .chat-window {
+                background: rgba(40, 40, 40, 0.97) !important;
+            }
+        `;
+        document.head.appendChild(style);
+    } else {
+        debugLog('Modern browser detected, using liquid glass effects');
+    }
 }
 
 // Add clear history button to the chat header
