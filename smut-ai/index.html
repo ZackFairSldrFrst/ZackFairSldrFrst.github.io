@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smut AI - Your Creative Writing Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Smut AI</div>
+            <ul>
+                <li><a href="#chat">Chat</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="chat-container">
+            <div class="chat-header">
+                <h1>Smut AI</h1>
+                <p>Your creative writing assistant for adult fiction</p>
+            </div>
+            
+            <div class="chat-window">
+                <div class="messages" id="messagesContainer">
+                    <div class="message bot-message">
+                        <div class="message-content">
+                            <i class="fas fa-robot"></i>
+                            <span>Welcome to Smut AI! I'm here to help you with creative writing, storytelling, and character development. What would you like to explore today?</span>
+                        </div>
+                        <div class="message-time">Just now</div>
+                    </div>
+                </div>
+                
+                <div class="typing-indicator hidden" id="typingIndicator">
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <span>Smut AI is typing...</span>
+                </div>
+            </div>
+            
+            <div class="chat-input-container">
+                <div class="chat-input">
+                    <input type="text" id="messageInput" placeholder="Type your message...">
+                    <button id="sendButton">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <section id="about" class="about">
+            <h2>About Smut AI</h2>
+            <p>Smut AI is your creative writing companion, designed to help you craft compelling adult fiction, develop complex characters, and explore narrative possibilities. Whether you're writing romance, erotica, or character-driven stories, I'm here to inspire and assist your creative process.</p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Smut AI</h4>
+                <p>Creative writing assistant</p>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>Email: info@smutai.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Smut AI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html> 
