@@ -463,7 +463,7 @@ Adult Content Guidelines:
    - Provide detailed, vivid descriptions of intimate moments
    - Include rich sensory details (touch, taste, smell, sound, sight)
    - Describe physical sensations and emotional responses
-   - Use explicit but tasteful language
+   - Use explicit but tasteful language, but get progressively more explicit each chapter
    - Maintain a balance between subtlety and explicitness
 
 2. Character Intimacy:
