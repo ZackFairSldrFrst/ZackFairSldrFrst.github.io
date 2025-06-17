@@ -1,16 +1,89 @@
 const testConfig = {
     questions: [
         {
+            type: 'most-least',
             passage: "You are a trainee manager on a two year programme working for Superluxe Hotels, a national chain of 4 and 5 star hotels. The programme ensures that trainees gain experience in all areas of hotel and hospitality management through a rotational scheme of 4 month placements. You are currently undertaking your 'Guest Services' placement and you are based at the Alpston Grand, a five-star property and one of Superluxe's flagship hotels. You are working as second-in-command in the Grand Hotel Guest Services team; you report directly to the Guest Relations Manager. The primary job of the Guest Services team is to ensure that customers of the hotel receive an efficient and friendly welcome and departure, while ensuring the reception and front of house departments operate in an organised manner. The team must ensure a professional, friendly and courteous service is provided to all guests and that all complaints the hotel receives are handled properly. The Guest Services staff must also implement Superluxe occupancy policy which is to try to maximise occupancy on a daily basis.",
-            question: "It is 7.30pm. You are on duty at the concierge desk when a guest calls down to say that they have just checked in and are extremely unhappy with the cleanliness of their room. They say that the sink has hair in it, the tea cups are smeared and the curtains are dusty. The guest is only at the Grand for one night and has a business meeting in Alpston first thing in the morning. Review the following responses A to D and indicate which one you believe to be the response to the situation you would be 'most likely to make' and the response to the situation which you would be 'least likely to make'.",
+            question: "It is 7.30pm. You are on duty at the concierge desk when a guest calls down to say that they have just checked in and are extremely unhappy with the cleanliness of their room. They say that the sink has hair in it, the tea cups are smeared and the curtains are dusty. The guest is only at the Grand for one night and has a business meeting in Alpston first thing in the morning. Review the following responses and indicate which one you would be most likely to make and which one you would be least likely to make.",
             options: [
                 "Apologise to the customer and say that you will ensure that the room is cleaned thoroughly within the next hour.",
                 "Apologise and offer the customer a different room immediately; if necessary an upgraded room if no others are available in his original price range.",
                 "Apologise and offer the customer a discount on his room rate.",
                 "Apologise and arrange a complimentary room service meal and bottle of wine to be sent to the room."
             ],
-            correctAnswer: 1,
+            correctAnswer: {
+                most: 1,
+                least: 3
+            },
             explanation: "The most effective response is B - offering a different room immediately. This solves the problem quickly without making the guest wait, which is important given they have an early meeting. The least effective response is D - offering food and wine doesn't address the cleanliness issue and assumes the guest wants these items."
+        },
+        {
+            type: 'ranking',
+            passage: "You are a sales representative for Handy Goods, a company that supplies office supplies to businesses. You have noticed that your sales of the toys & games product line have been lower than expected this month. Your manager has asked you to develop a strategy to improve sales in this area. The toys & games line is an important part of Handy Goods' product range as it has high profit margins and helps to differentiate the company from its competitors who focus mainly on traditional office supplies.",
+            question: "Review the following responses and rank them from 1 (most effective) to 4 (least effective) in terms of how you would address the situation of low sales in the toys & games product line.",
+            options: [
+                "Decide that for every visit you do from now on you won't leave the shop until the customer agrees to at least look at the product line of toys & games.",
+                "Switch your appointments around this month so that over the next two weeks you will visit all the shops that are located near schools and nurseries. You will have the best chance of selling the pocket toys & games product line to these shops.",
+                "Ensure that your product samples for toys & games are bang up-to-date and that you know all about each product and its target market. Aim to talk about toys & games at every sales visit and ask detailed questions to the customers about their requirements in this area.",
+                "Ask all your customers about their sales of toys & games and talk in more detail to the ones who have a good turnover of these types of products about Handy Goods' range."
+            ],
+            correctAnswer: [2, 3, 0, 1],
+            explanation: "The most effective response is C - being well-prepared and knowledgeable about the products while maintaining a professional approach. The second most effective is D - gathering information about customer needs. The third most effective is A - being proactive but not overly aggressive. The least effective is B - limiting visits to specific locations may miss other potential customers."
+        },
+        {
+            type: 'most-least',
+            passage: "You are a customer service advisor at Greenwinds, a company that provides eco-friendly energy solutions to domestic customers. You have just received a complaint from a customer who says that when they signed up for Greenwinds' service, the salesperson told them there would be no standing charge. However, they have now received their first bill which includes a standing charge of £10 per month. The customer is very upset about this and feels they were misled during the sales process.",
+            question: "Review the following responses and indicate which one you would be most likely to make and which one you would be least likely to make when handling this customer complaint.",
+            options: [
+                "Apologise for the confusion but state that the Greenwinds charging policy is clearly written on the joining contract and on the website.",
+                "Apologise for the confusion and ask the customer for more detail about the sales conversation, including the salesperson's name or description. Say that you will ask your manager to investigate the way that the contract was sold and to look at whether any miscommunication had happened on the doorstep. Say you will get back to the customer on a daily basis to keep them updated of progress.",
+                "Apologise for the confusion and offer the customer a goodwill waiver of one month's standing charge.",
+                "Apologise for the confusion and say that you are sorry to hear that they are feeling upset and hope that Greenwinds excellent service and eco-friendly product will make up for the initial misunderstanding in the long-run."
+            ],
+            correctAnswer: {
+                most: 1,
+                least: 3
+            },
+            explanation: "The most effective response is B - taking the complaint seriously, investigating the sales process, and maintaining regular communication. The least effective response is D - being dismissive of their concerns and not addressing the actual issue of the standing charge."
+        },
+        {
+            type: 'ranking',
+            passage: "You are a team leader in a customer contact centre for a large telecommunications company. Your team has been informed that the company is introducing new customer satisfaction measures and mystery shopper criteria next week. The team meeting to discuss this was cut short due to an urgent system issue, and you feel that your team members need more guidance on how to meet these new standards.",
+            question: "Review the following responses and rank them from 1 (most effective) to 4 (least effective) in terms of how you would prepare your team for the new customer satisfaction measures.",
+            options: [
+                "Make an extra special effort to be warm, friendly and helpful to customers throughout the week.",
+                "Look at the company intranet 'service quality' site which outlines the new measurement methods in detail. Analyse the customer satisfaction questions and the mystery shopper criteria and change your behaviour, if necessary, to ensure that you are fulfilling these requirements.",
+                "Wait for a further briefing from your Team Leader. They usually send a note round following the team meeting summarising what was said. You are hopeful that they will be more specific in this note as to what is required of you in order to improve the service quality ratings.",
+                "Ask for a quick chat with your Team Leader sometime today and find out from them what they feel will be the best way for you to contribute to the service quality targets. Make sure you are aware of the details of the new customer satisfaction measure and the Mystery Shopper criteria before you talk to them."
+            ],
+            correctAnswer: [3, 1, 0, 2],
+            explanation: "The most effective response is D - proactively seeking guidance while being prepared with knowledge of the new measures. The second most effective is B - taking initiative to understand the new requirements. The third most effective is A - showing commitment to customer service. The least effective is C - passively waiting for more information instead of taking initiative."
+        },
+        {
+            passage: "You are a hotel manager at the Alpston Grand Hotel. A guest has just checked in and is complaining that their room is not clean enough for their standards. They have an important business meeting early tomorrow morning and need to get some rest.",
+            question: "Review the following responses and indicate which one you would be most likely to make and which one you would be least likely to make.",
+            options: [
+                "Apologise to the customer and say that you will ensure that the room is cleaned thoroughly within the next hour.",
+                "Apologise and offer the customer a different room immediately; if necessary an upgraded room if no others are available in his original price range.",
+                "Apologise and offer the customer a discount on his room rate.",
+                "Apologise and arrange a complimentary room service meal and bottle of wine to be sent to the room."
+            ],
+            correctAnswer: {
+                most: 1,
+                least: 3
+            },
+            explanation: "The most effective response is B - offering a different room immediately. This solves the problem quickly without making the guest wait, which is important given they have an early meeting. The least effective response is D - offering food and wine doesn't address the cleanliness issue and assumes the guest wants these items."
+        },
+        {
+            passage: "You are a sales representative for Handy Goods, a company that supplies office supplies to businesses. You have noticed that your sales of the toys & games product line have been lower than expected this month.",
+            question: "Rank the following responses from 1 (most effective) to 4 (least effective) in terms of how you would address this situation.",
+            options: [
+                "Decide that for every visit you do from now on you won't leave the shop until the customer agrees to at least look at the product line of toys & games.",
+                "Switch your appointments around this month so that over the next two weeks you will visit all the shops that are located near schools and nurseries. You will have the best chance of selling the pocket toys & games product line to these shops.",
+                "Ensure that your product samples for toys & games are bang up-to-date and that you know all about each product and its target market. Aim to talk about toys & games at every sales visit and ask detailed questions to the customers about their requirements in this area.",
+                "Ask all your customers about their sales of toys & games and talk in more detail to the ones who have a good turnover of these types of products about Handy Goods' range."
+            ],
+            correctAnswer: [2, 3, 0, 1],
+            explanation: "The most effective response is C - being well-prepared and knowledgeable about the products while maintaining a professional approach. The second most effective is D - gathering information about customer needs. The third most effective is A - being proactive but not overly aggressive. The least effective is B - limiting visits to specific locations may miss other potential customers."
         },
         {
             passage: "You are a trainee manager on a two year programme working for Superluxe Hotels, a national chain of 4 and 5 star hotels. The programme ensures that trainees gain experience in all areas of hotel and hospitality management through a rotational scheme of 4 month placements. You are currently undertaking your 'Guest Services' placement and you are based at the Alpston Grand, a five-star property and one of Superluxe's flagship hotels. You are working as second-in-command in the Grand Hotel Guest Services team; you report directly to the Guest Relations Manager. The primary job of the Guest Services team is to ensure that customers of the hotel receive an efficient and friendly welcome and departure, while ensuring the reception and front of house departments operate in an organised manner. The team must ensure a professional, friendly and courteous service is provided to all guests and that all complaints the hotel receives are handled properly. The Guest Services staff must also implement Superluxe occupancy policy which is to try to maximise occupancy on a daily basis.",
@@ -98,15 +171,16 @@ const testConfig = {
         },
         {
             passage: "You are a customer advisor at the UK contact centre for Greenwinds Energy. Greenwinds is a renewable-source electricity and gas supplier to European domestic and business customers. Your role is to answer inbound telephone calls and emails from customers in the UK, answering questions and queries about Greenwinds products and services and dealing with customer complaints and issues. You work in a team of 15 and you report into a Customer Service Team Leader. Greenwinds has recently introduced a 'one-rate' policy for all its energy packages. Customers will be charged the same rate per unit of electricity or gas regardless of their method of payment or when their peak usage of energy is. This has many advantages including, greater clarity of charging, no encouragement for use of electrical appliances at night, which can be unsafe, and no discrimination against people using pre-pay meters, pre pay cards or monthly cheque payment, all of whom are traditionally the less prosperous customers.",
-            question: "A customer has come through to you with a complaint about Greenwinds billing system. He is a new customer who has used the Greenwinds Dual Fuel electricity and gas product for a month. He says that he wasn't told by the doorstep sales person when he signed up that the electricity would not be split into off-peak and peak rate units. With his previous supplier he had been used to maximising his energy use at night in order to benefit from the cheaper rate electricity. He was under the impression that he would be able to continue to do this with Greenwinds and now he is very upset as he has realised, upon receiving his first bill, that this is not the case. Review the following responses A to D and indicate which you believe to be the 'most effective' response to the situation and which the 'least effective'.",
+            question: "A customer has called the contact centre and is interested in changing her mobile phone tariff and handset as her annual contract is due for renewal next month. She has come through to you and has said that she is finding the information on the website very confusing and isn't sure which would be the best tariff for her and how to get the latest 'smartphone' as inexpensively as possible. She says that her phone, text and data usage is liable to stay pretty much the same in the coming year as it was in the past 12 months. She is confident in her choice of handset. Review the following responses A to E and indicate whether you believe the response to be Very Effective, Effective, Slightly Effective, Ineffective or Counterproductive.",
             options: [
-                "Apologise for the confusion but state that the Greenwinds charging policy is clearly written on the joining contract and on the website.",
-                "Apologise for the confusion and ask the customer for more detail about the sales conversation, including the salesperson's name or description. Say that you will ask your manager to investigate the way that the contract was sold and to look at whether any miscommunication had happened on the doorstep. Say you will get back to the customer on a daily basis to keep him updated of progress.",
-                "Apologise for the confusion and offer the customer a goodwill waiver of one month's standing charge.",
-                "Apologise for the confusion and say that you are sorry to hear that he is feeling upset and hope that Greenwinds excellent service and eco-friendly product will make up for the initial misunderstanding in the long-run."
+                "Tell her that you will take a detailed look at her account and then email her the details of the three best price packages for her. State that you will call her in an hour or two (or some other time convenient to her), once she has had a chance to read the email and talk her through the information and answer any questions.",
+                "Talk through the information about all the various available tariffs with her and the related prices of the handset she wants.",
+                "State that the best place to find all the information is the website and that if she puts the name of the handset that she requires into the search engine then she will find some useful information.",
+                "Ask her to wait whilst you take a thorough look at her account and then talk her through the details of the two or three best price packages for her. Once you have established her preferred package through the conversation, then email her the details of this including the cost of the handset.",
+                "Tell her that you will take a detailed look at her account and then email her the details of the two or three best price packages for her."
             ],
-            correctAnswer: 1,
-            explanation: "The most effective response is B - taking the complaint seriously, investigating the sales process, and maintaining regular communication. The least effective response is A - being dismissive and not addressing the customer's concerns."
+            correctAnswer: 0,
+            explanation: "The most effective response is A - providing personalized information in both written and verbal formats, with follow-up support. The least effective response is C - directing her back to the website that she already finds confusing."
         },
         {
             passage: "You are a customer advisor at the UK contact centre for Greenwinds Energy. Greenwinds is a renewable-source electricity and gas supplier to European domestic and business customers. Your role is to answer inbound telephone calls and emails from customers in the UK, answering questions and queries about Greenwinds products and services and dealing with customer complaints and issues. You work in a team of 15 and you report into a Customer Service Team Leader. Greenwinds has recently introduced a 'one-rate' policy for all its energy packages. Customers will be charged the same rate per unit of electricity or gas regardless of their method of payment or when their peak usage of energy is. This has many advantages including, greater clarity of charging, no encouragement for use of electrical appliances at night, which can be unsafe, and no discrimination against people using pre-pay meters, pre pay cards or monthly cheque payment, all of whom are traditionally the less prosperous customers.",
@@ -197,7 +271,7 @@ const testConfig = {
             explanation: "The most effective response is A - proactively addressing both work and study commitments by seeking extensions and negotiating hours. The least effective response is B - rushing through calls could compromise service quality."
         }
     ],
-    timeLimit: 20 * 60 // 20 minutes
+    timeLimit: 25 * 60 // 25 minutes
 };
 
 window.addEventListener('DOMContentLoaded', function() {

@@ -20,6 +20,10 @@ class TestCore {
         this.updateTimer = this.updateTimer.bind(this);
         this.displayQuestion = this.displayQuestion.bind(this);
         this.selectAnswer = this.selectAnswer.bind(this);
+        this.selectMostLeast = this.selectMostLeast.bind(this);
+        this.handleDragStart = this.handleDragStart.bind(this);
+        this.handleDragOver = this.handleDragOver.bind(this);
+        this.handleDrop = this.handleDrop.bind(this);
         this.nextQuestion = this.nextQuestion.bind(this);
         this.prevQuestion = this.prevQuestion.bind(this);
         this.endTest = this.endTest.bind(this);
@@ -48,12 +52,35 @@ class TestCore {
     
     displayQuestion() {
         const question = this.questions[this.currentQuestion];
-        this.questionContainer.innerHTML = `
-            <div class="question-content">
-                ${question.passage ? `<div class="passage">${question.passage}</div>` : ''}
-                ${question.scenario ? `<div class="scenario">${question.scenario}</div>` : ''}
-                ${question.diagram ? `<div class="diagram-container">${question.diagram}</div>` : ''}
-                <div class="question-text">${question.question}</div>
+        let optionsHtml = '';
+        
+        if (question.type === 'most-least') {
+            optionsHtml = `
+                <div class="options most-least">
+                    ${question.options.map((option, index) => `
+                        <div class="option" data-index="${index}">
+                            <div class="option-content">${option}</div>
+                            <div class="option-buttons">
+                                <button class="most-btn" onclick="testCore.selectMostLeast(${index}, 'most')">Most Likely</button>
+                                <button class="least-btn" onclick="testCore.selectMostLeast(${index}, 'least')">Least Likely</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        } else if (question.type === 'ranking') {
+            optionsHtml = `
+                <div class="options ranking">
+                    ${question.options.map((option, index) => `
+                        <div class="option" draggable="true" data-index="${index}">
+                            <div class="rank-number">${index + 1}</div>
+                            <div class="option-content">${option}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        } else {
+            optionsHtml = `
                 <div class="options">
                     ${question.options.map((option, index) => `
                         <div class="option" onclick="testCore.selectAnswer(${index})">
@@ -61,8 +88,22 @@ class TestCore {
                         </div>
                     `).join('')}
                 </div>
+            `;
+        }
+
+        this.questionContainer.innerHTML = `
+            <div class="question-content">
+                ${question.passage ? `<div class="passage">${question.passage}</div>` : ''}
+                ${question.scenario ? `<div class="scenario">${question.scenario}</div>` : ''}
+                ${question.diagram ? `<div class="diagram-container">${question.diagram}</div>` : ''}
+                <div class="question-text">${question.question}</div>
+                ${optionsHtml}
             </div>
         `;
+
+        if (question.type === 'ranking') {
+            this.initializeDragAndDrop();
+        }
         
         this.updateProgress();
     }
@@ -74,6 +115,116 @@ class TestCore {
         
         this.userAnswers[this.currentQuestion] = index;
         this.nextButton.disabled = false;
+    }
+    
+    selectMostLeast(index, type) {
+        const option = document.querySelector(`.option[data-index="${index}"]`);
+        const mostBtn = option.querySelector('.most-btn');
+        const leastBtn = option.querySelector('.least-btn');
+        
+        // If selecting most likely
+        if (type === 'most') {
+            // If this option was previously selected as least likely, remove that selection
+            if (this.userAnswers[this.currentQuestion]?.least === index) {
+                const prevLeastOption = document.querySelector(`.option[data-index="${index}"]`);
+                prevLeastOption.querySelector('.least-btn').classList.remove('selected');
+                this.userAnswers[this.currentQuestion].least = null;
+            }
+            
+            // Remove most likely selection from any other option
+            document.querySelectorAll('.most-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            // Select this option as most likely
+            mostBtn.classList.add('selected');
+            leastBtn.classList.remove('selected');
+        }
+        // If selecting least likely
+        else {
+            // If this option was previously selected as most likely, remove that selection
+            if (this.userAnswers[this.currentQuestion]?.most === index) {
+                const prevMostOption = document.querySelector(`.option[data-index="${index}"]`);
+                prevMostOption.querySelector('.most-btn').classList.remove('selected');
+                this.userAnswers[this.currentQuestion].most = null;
+            }
+            
+            // Remove least likely selection from any other option
+            document.querySelectorAll('.least-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            // Select this option as least likely
+            leastBtn.classList.add('selected');
+            mostBtn.classList.remove('selected');
+        }
+        
+        // Initialize the answer object if it doesn't exist
+        if (!this.userAnswers[this.currentQuestion]) {
+            this.userAnswers[this.currentQuestion] = { most: null, least: null };
+        }
+        
+        // Update the answer
+        this.userAnswers[this.currentQuestion][type] = index;
+        
+        // Enable next button if both most and least are selected
+        if (this.userAnswers[this.currentQuestion].most !== null && 
+            this.userAnswers[this.currentQuestion].least !== null) {
+            this.nextButton.disabled = false;
+        }
+    }
+    
+    initializeDragAndDrop() {
+        const options = document.querySelectorAll('.option');
+        options.forEach(option => {
+            option.addEventListener('dragstart', this.handleDragStart);
+            option.addEventListener('dragover', this.handleDragOver);
+            option.addEventListener('drop', this.handleDrop);
+        });
+    }
+    
+    handleDragStart(e) {
+        e.dataTransfer.setData('text/plain', e.target.dataset.index);
+        e.target.classList.add('dragging');
+    }
+    
+    handleDragOver(e) {
+        e.preventDefault();
+    }
+    
+    handleDrop(e) {
+        e.preventDefault();
+        const draggedIndex = e.dataTransfer.getData('text/plain');
+        const targetIndex = e.target.closest('.option').dataset.index;
+        
+        if (draggedIndex !== targetIndex) {
+            const options = Array.from(document.querySelectorAll('.option'));
+            const draggedOption = options[draggedIndex];
+            const targetOption = options[targetIndex];
+            
+            // Swap the options
+            const tempContent = draggedOption.innerHTML;
+            draggedOption.innerHTML = targetOption.innerHTML;
+            targetOption.innerHTML = tempContent;
+            
+            // Update the data-index attributes
+            draggedOption.dataset.index = targetIndex;
+            targetOption.dataset.index = draggedIndex;
+            
+            // Update the rank numbers
+            options.forEach((option, index) => {
+                option.querySelector('.rank-number').textContent = index + 1;
+            });
+            
+            // Store the new order
+            this.userAnswers[this.currentQuestion] = options.map(option => 
+                parseInt(option.dataset.index)
+            );
+            
+            this.nextButton.disabled = false;
+        }
+        
+        e.target.classList.remove('dragging');
     }
     
     updateProgress() {

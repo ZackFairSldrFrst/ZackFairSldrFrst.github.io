@@ -836,8 +836,6 @@ body {
     color: var(--text-primary);
 }
 
-
-
 .category-description {
     color: var(--text-secondary);
     margin-bottom: 1.5rem;
@@ -1031,4 +1029,101 @@ body {
         width: 100%;
         max-width: 300px;
     }
+}
+
+/* Most/Least Likely Question Styles */
+.options.most-least .option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    background: #fff;
+    transition: all 0.2s ease;
+}
+
+.options.most-least .option:hover {
+    border-color: #228be6;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.options.most-least .option-content {
+    flex: 1;
+    margin-right: 1rem;
+}
+
+.options.most-least .option-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.options.most-least .most-btn,
+.options.most-least .least-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #228be6;
+    border-radius: 4px;
+    background: #fff;
+    color: #228be6;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.options.most-least .most-btn:hover,
+.options.most-least .least-btn:hover {
+    background: #228be6;
+    color: #fff;
+}
+
+.options.most-least .most-btn.selected,
+.options.most-least .least-btn.selected {
+    background: #228be6;
+    color: #fff;
+}
+
+/* Ranking Question Styles */
+.options.ranking .option {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    background: #fff;
+    cursor: move;
+    transition: all 0.2s ease;
+}
+
+.options.ranking .option:hover {
+    border-color: #228be6;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.options.ranking .rank-number {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #228be6;
+    color: #fff;
+    border-radius: 50%;
+    margin-right: 1rem;
+    font-weight: 600;
+}
+
+.options.ranking .option.dragging {
+    opacity: 0.5;
+    background: #f8f9fa;
+}
+
+.options.ranking .option-content {
+    flex: 1;
+}
+
+/* Add a visual indicator for the drag target */
+.options.ranking .option.drag-over {
+    border: 2px dashed #228be6;
+    background: #e7f5ff;
 } 
