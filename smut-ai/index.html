@@ -3,57 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smut AI - Spice up your reading</title>
+    <title>Smut AI - Creative Writing Assistant</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <main>
-        <div class="chat-container">
-            <div class="chat-header">
-                <h1>Smut AI</h1>
-                <p>Your creative writing assistant for adult fiction</p>
-            </div>
-            
-            <div class="chat-window">
-                <div class="messages" id="messagesContainer">
-                    <div class="message bot-message">
-                        <div class="message-content">
-                            <i class="fas fa-robot"></i>
-                            <span>Welcome to Smut AI! I'm here to help you with creative writing, storytelling, and character development. I can help you create characters like Marcus Blackwood the seductive vampire or Victoria Sterling the mysterious CEO, develop steamy office romances between James and Sophia, craft intimate scenes in luxurious settings, write flirty dialogue, and suggest story ideas like forbidden romances between Professor Daniel and his student Olivia.</span>
-                        </div>
-                        <div class="message-time">Just now</div>
+    <div class="particles" id="particles"></div>
+    <div class="chat-container">
+        <div class="chat-window">
+            <div class="messages" id="messagesContainer">
+                <div class="message bot-message">
+                    <div class="message-content">
+                        <i class="fas fa-robot"></i>
+                        <span>Welcome to Smut AI! I'm here to help you with creative writing, storytelling, and character development. I can help you create characters like Marcus Blackwood the seductive vampire or Victoria Sterling the mysterious CEO, develop steamy office romances between James and Sophia, craft intimate scenes in luxurious settings, write flirty dialogue, and suggest story ideas like forbidden romances between Professor Daniel and his student Olivia.</span>
                     </div>
-                    <div class="message bot-message">
-                        <div class="message-content">
-                            <i class="fas fa-robot"></i>
-                            <span>What would you like to explore today?</span>
-                        </div>
-                        <div class="message-time">Just now</div>
-                    </div>
+                    <div class="message-time">Just now</div>
                 </div>
-                
-                <div class="typing-indicator hidden" id="typingIndicator">
-                    <div class="typing-dots">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                <div class="message bot-message">
+                    <div class="message-content">
+                        <i class="fas fa-robot"></i>
+                        <span>What would you like to explore today?</span>
                     </div>
-                    <span>Smut AI is typing...</span>
+                    <div class="message-time">Just now</div>
                 </div>
             </div>
             
-            <div class="chat-input-container">
-                <div class="chat-input">
-                    <input type="text" id="messageInput" placeholder="Type your message...">
-                    <button id="sendButton">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
+            <div class="typing-indicator hidden" id="typingIndicator">
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </div>
+                <span>Smut AI is typing...</span>
             </div>
         </div>
-    </main>
+        
+        <div class="chat-input-container">
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="Type your message...">
+                <button id="sendButton">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
 
-    <script src="script.js"></script>
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random size between 2px and 6px
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random starting position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Random animation duration between 10s and 20s
+                const duration = Math.random() * 10 + 10;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Random delay
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Initialize particles when the page loads
+        window.addEventListener('load', createParticles);
+
+        // Chat functionality
+        const messagesContainer = document.getElementById('messagesContainer');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+
+        function addMessage(content, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+            
+            const icon = document.createElement('i');
+            icon.className = isUser ? 'fas fa-user' : 'fas fa-robot';
+            
+            const text = document.createElement('span');
+            text.textContent = content;
+            
+            messageContent.appendChild(icon);
+            messageContent.appendChild(text);
+            
+            const time = document.createElement('div');
+            time.className = 'message-time';
+            time.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            messageDiv.appendChild(messageContent);
+            messageDiv.appendChild(time);
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing-indicator';
+            typingDiv.innerHTML = `
+                <i class="fas fa-robot"></i>
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            `;
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            return typingDiv;
+        }
+
+        function removeTypingIndicator(indicator) {
+            if (indicator && indicator.parentNode) {
+                indicator.parentNode.removeChild(indicator);
+            }
+        }
+
+        async function handleUserMessage(message) {
+            addMessage(message, true);
+            const typingIndicator = showTypingIndicator();
+            
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message }),
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const data = await response.json();
+                removeTypingIndicator(typingIndicator);
+                addMessage(data.response);
+            } catch (error) {
+                console.error('Error:', error);
+                removeTypingIndicator(typingIndicator);
+                addMessage('Sorry, I encountered an error. Please try again.');
+            }
+        }
+
+        function handleSend() {
+            const message = messageInput.value.trim();
+            if (message) {
+                handleUserMessage(message);
+                messageInput.value = '';
+            }
+        }
+
+        sendButton.addEventListener('click', handleSend);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleSend();
+            }
+        });
+
+        // Add welcome message
+        window.addEventListener('load', () => {
+            addMessage('Hello! I\'m your AI assistant. How can I help you today?');
+        });
+    </script>
 </body>
 </html> 
