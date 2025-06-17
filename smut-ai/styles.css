@@ -472,14 +472,56 @@ body::after {
     }
 }
 
-/* Chat Input */
+/* Chat Input Area */
 .chat-input-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
     padding: 1rem;
-    background: linear-gradient(180deg, rgba(26, 26, 46, 0.95) 0%, rgba(15, 15, 35, 0.95) 100%);
+    background: linear-gradient(to top, #1a1a1a 0%, #1a1a1a 100%);
     border-top: 1px solid rgba(255, 77, 141, 0.2);
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    /* Add padding for Safari mobile bottom bar */
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
 }
 
+/* Mobile Safari specific adjustments */
+@supports (-webkit-touch-callout: none) {
+    .chat-input-container {
+        /* Add extra padding for Safari mobile */
+        padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px) + 60px);
+    }
+    
+    /* Adjust messages container to prevent overlap */
+    .messages-container {
+        padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px));
+    }
+}
+
+/* Update messages container padding */
+.messages-container {
+    padding: 1rem;
+    padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Ensure the chat container takes full height */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: -webkit-fill-available;
+    background: #1a1a1a;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Chat Input */
 .chat-input {
     display: flex;
     gap: 1rem;
