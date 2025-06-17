@@ -1,12 +1,12 @@
 :root {
-    --primary-color: #ff6b6b;
-    --secondary-color: #ee5a52;
+    --primary-color: #ff4d8d;
+    --secondary-color: #ff3377;
     --background-color: #1a1a1a;
     --text-color: #ffffff;
     --card-background: #2d2d2d;
     --message-background: #3a3a3a;
-    --user-message-color: #ff6b6b;
-    --bot-message-color: #4a9eff;
+    --user-message-color: #ff4d8d;
+    --bot-message-color: #ff3377;
 }
 
 * {
@@ -113,24 +113,24 @@ body::after {
 
 .chat-header {
     text-align: center;
-    padding: 2rem;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    border-bottom: 1px solid rgba(64, 224, 255, 0.3);
+    padding: 1rem;
+    background: linear-gradient(135deg, #ff4d8d 0%, #ff3377 100%);
+    border-bottom: 1px solid rgba(255, 77, 141, 0.3);
     box-shadow: 
-        0 4px 20px rgba(0, 0, 0, 0.3),
-        0 0 40px rgba(42, 82, 152, 0.2);
+        0 4px 20px rgba(255, 77, 141, 0.2),
+        0 0 40px rgba(255, 51, 119, 0.2);
     position: relative;
     flex-shrink: 0;
     animation: headerGlow 3s ease-in-out infinite alternate;
 }
 
 .chat-header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
+    font-size: 2rem;
+    margin-bottom: 0.25rem;
     color: #ffffff;
     text-shadow: 
         0 2px 4px rgba(0, 0, 0, 0.3),
-        0 0 20px rgba(64, 224, 255, 0.5);
+        0 0 20px rgba(255, 77, 141, 0.5);
     font-weight: 700;
     animation: textGlow 4s ease-in-out infinite alternate;
 }
@@ -139,12 +139,12 @@ body::after {
     0% { 
         text-shadow: 
             0 2px 4px rgba(0, 0, 0, 0.3),
-            0 0 20px rgba(64, 224, 255, 0.3);
+            0 0 20px rgba(255, 77, 141, 0.3);
     }
     100% { 
         text-shadow: 
             0 2px 4px rgba(0, 0, 0, 0.3),
-            0 0 30px rgba(64, 224, 255, 0.7),
+            0 0 30px rgba(255, 77, 141, 0.7),
             0 0 40px rgba(0, 210, 255, 0.3);
     }
 }
@@ -205,6 +205,9 @@ body::after {
     opacity: 0;
     transform: translateY(20px);
     animation: messageSlideIn 0.5s ease-out forwards;
+    backdrop-filter: blur(10px);
+    background: rgba(58, 58, 58, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 @keyframes messageSlideIn {
@@ -241,7 +244,7 @@ body::after {
     border-radius: 8px;
     margin-left: 0.5rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    opacity: 0;
+    opacity: 0.8;
     flex-shrink: 0;
     min-width: auto;
     height: auto;
@@ -251,36 +254,59 @@ body::after {
     color: #ffffff;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     font-weight: 600;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border: 1px solid rgba(102, 126, 234, 0.4);
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-    transform: translateX(10px);
+    background: linear-gradient(135deg, #ff4d8d 0%, #ff3377 100%);
+    border: 1px solid rgba(255, 77, 141, 0.4);
+    box-shadow: 0 2px 8px rgba(255, 77, 141, 0.3);
+    transform: translateX(0);
 }
 
-.copy-button:hover {
+.copy-button:hover, .copy-button:active {
     opacity: 1;
-    transform: translateY(-2px) translateX(0) scale(1.05);
-    background: linear-gradient(135deg, #5a67d8 0%, #667eea 100%);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    transform: translateY(-2px) scale(1.05);
+    background: linear-gradient(135deg, #ff3377 0%, #ff4d8d 100%);
+    box-shadow: 0 6px 20px rgba(255, 77, 141, 0.4);
 }
 
 .copy-button i {
     font-size: 0.9rem;
 }
 
-/* Copy button visibility on hover */
+/* Copy button visibility */
 .message.bot-message .copy-button {
-    opacity: 0;
+    opacity: 0.8;
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .message.bot-message:hover .copy-button {
-    opacity: 0.8;
-    transform: translateX(0);
+    opacity: 1;
 }
 
 .message.bot-message .copy-button:hover {
     opacity: 1;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+    .copy-button {
+        padding: 0.5rem;
+        opacity: 0.9;
+        background: linear-gradient(135deg, #ff4d8d 0%, #ff3377 100%);
+        border: 1px solid rgba(255, 77, 141, 0.4);
+        box-shadow: 0 2px 8px rgba(255, 77, 141, 0.3);
+    }
+    
+    .copy-button:active {
+        transform: scale(0.95);
+        opacity: 1;
+    }
+    
+    .message.bot-message .copy-button {
+        opacity: 0.9;
+    }
+    
+    .message.bot-message:hover .copy-button {
+        opacity: 0.9;
+    }
 }
 
 /* Clear History Button Styles */
@@ -326,42 +352,44 @@ body::after {
 }
 
 .user-message {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 50%, #ff4757 100%);
+    background: linear-gradient(135deg, rgba(255, 77, 141, 0.2) 0%, rgba(255, 51, 119, 0.2) 100%);
+    border: 1px solid rgba(255, 77, 141, 0.3);
+    margin-left: auto;
     color: #ffffff;
+    box-shadow: 
+        0 4px 15px rgba(255, 77, 141, 0.1),
+        0 0 30px rgba(255, 51, 119, 0.1);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     align-self: flex-end;
     border-bottom-right-radius: 5px;
-    border: 1px solid rgba(255, 107, 107, 0.6);
-    box-shadow: 
-        0 4px 15px rgba(255, 107, 107, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
     transition: all 0.3s ease;
 }
 
 .user-message:hover {
     transform: translateY(-2px);
     box-shadow: 
-        0 6px 20px rgba(255, 107, 107, 0.4),
+        0 6px 20px rgba(255, 77, 141, 0.4),
         inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .bot-message {
-    background: linear-gradient(135deg, #4a69bd 0%, #5a7bd8 50%, #3742fa 100%);
+    background: linear-gradient(135deg, rgba(255, 51, 119, 0.2) 0%, rgba(255, 77, 141, 0.2) 100%);
+    border: 1px solid rgba(255, 51, 119, 0.3);
+    margin-right: auto;
     color: #ffffff;
+    box-shadow: 
+        0 4px 15px rgba(255, 51, 119, 0.1),
+        0 0 30px rgba(255, 77, 141, 0.1);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     align-self: flex-start;
     border-bottom-left-radius: 5px;
-    border: 1px solid rgba(74, 105, 189, 0.6);
-    box-shadow: 
-        0 4px 15px rgba(74, 105, 189, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
     transition: all 0.3s ease;
 }
 
 .bot-message:hover {
     transform: translateY(-2px);
     box-shadow: 
-        0 6px 20px rgba(74, 105, 189, 0.4),
+        0 6px 20px rgba(255, 51, 119, 0.4),
         inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
@@ -440,35 +468,31 @@ body::after {
 
 /* Chat Input */
 .chat-input-container {
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    padding: 1.5rem;
-    border-top: 1px solid rgba(64, 224, 255, 0.3);
-    box-shadow: 
-        0 -4px 20px rgba(0, 0, 0, 0.3),
-        0 0 40px rgba(42, 82, 152, 0.2);
-    flex-shrink: 0;
-    animation: inputGlow 3s ease-in-out infinite alternate;
+    padding: 1rem;
+    background: linear-gradient(180deg, rgba(26, 26, 46, 0.95) 0%, rgba(15, 15, 35, 0.95) 100%);
+    border-top: 1px solid rgba(255, 77, 141, 0.2);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .chat-input {
     display: flex;
-    gap: 0.5rem;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-    padding: 0.5rem;
+    gap: 1rem;
+    align-items: center;
+    background: rgba(45, 45, 45, 0.7);
     border-radius: 25px;
-    border: 1px solid rgba(64, 224, 255, 0.4);
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(255, 77, 141, 0.2);
     box-shadow: 
-        0 4px 15px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        0 4px 15px rgba(0, 0, 0, 0.1),
+        0 0 30px rgba(255, 77, 141, 0.1);
     transition: all 0.3s ease;
 }
 
 .chat-input:focus-within {
-    border-color: rgba(64, 224, 255, 0.8);
+    border-color: rgba(255, 77, 141, 0.4);
     box-shadow: 
-        0 4px 25px rgba(0, 0, 0, 0.3),
-        0 0 20px rgba(64, 224, 255, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        0 4px 20px rgba(255, 77, 141, 0.2),
+        0 0 40px rgba(255, 51, 119, 0.2);
     transform: translateY(-2px);
 }
 
@@ -500,72 +524,78 @@ body::after {
 
 #messageInput {
     flex: 1;
-    padding: 1rem 1.5rem;
-    border: none;
-    border-radius: 20px;
-    font-size: 1rem;
-    outline: none;
     background: transparent;
+    border: none;
     color: #ffffff;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    font-size: 1rem;
+    padding: 0.5rem;
+    outline: none;
+    resize: none;
+    max-height: 120px;
+    min-height: 24px;
+    line-height: 1.5;
 }
 
 #messageInput::placeholder {
-    color: rgba(255, 255, 255, 0.6);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
 }
 
 #sendButton {
-    background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
-    color: #ffffff;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #ff4d8d 0%, #ff3377 100%);
+    color: white;
     border: none;
-    padding: 1rem 1.5rem;
-    border-radius: 20px;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
     cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    font-weight: 600;
-    min-width: 50px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(0, 210, 255, 0.4);
     box-shadow: 
-        0 4px 15px rgba(0, 210, 255, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    position: relative;
-    overflow: hidden;
+        0 4px 15px rgba(255, 77, 141, 0.3),
+        0 0 30px rgba(255, 51, 119, 0.2);
 }
 
 #sendButton::before {
     content: '';
     position: absolute;
     top: 0;
-    left: -100%;
+    left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: left 0.5s;
+    background: linear-gradient(135deg, #ff3377 0%, #ff4d8d 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 #sendButton:hover {
-    background: linear-gradient(135deg, #00c4ff 0%, #2563eb 100%);
-    transform: translateY(-3px) scale(1.05);
+    transform: scale(1.1) rotate(5deg);
     box-shadow: 
-        0 8px 25px rgba(0, 210, 255, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        0 6px 20px rgba(255, 77, 141, 0.4),
+        0 0 40px rgba(255, 51, 119, 0.3);
 }
 
 #sendButton:hover::before {
-    left: 100%;
+    opacity: 1;
 }
 
 #sendButton:active {
-    transform: translateY(-1px) scale(1.02);
+    transform: scale(0.95);
 }
 
-#sendButton:active {
-    transform: translateY(0);
+#sendButton i {
+    position: relative;
+    z-index: 1;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+#sendButton:hover i {
+    transform: translateX(2px);
 }
 
 /* Removed about and footer styles - no longer needed */
