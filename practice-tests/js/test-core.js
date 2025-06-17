@@ -267,15 +267,43 @@ class TestCore {
         let explanations = [];
         
         this.questions.forEach((question, index) => {
-            if (this.userAnswers[index] === question.correctAnswer) {
+            const userAnswer = this.userAnswers[index];
+            const isCorrect = Array.isArray(question.correctAnswer) 
+                ? JSON.stringify(userAnswer) === JSON.stringify(question.correctAnswer)
+                : JSON.stringify(userAnswer) === JSON.stringify(question.correctAnswer);
+            
+            if (isCorrect) {
                 score++;
             }
+            
+            let userAnswerText;
+            if (question.type === 'most-least') {
+                const mostOption = userAnswer?.most !== undefined ? question.options[userAnswer.most] : 'Not selected';
+                const leastOption = userAnswer?.least !== undefined ? question.options[userAnswer.least] : 'Not selected';
+                userAnswerText = `Most Likely: ${mostOption}<br>Least Likely: ${leastOption}`;
+            } else if (question.type === 'ranking') {
+                userAnswerText = userAnswer ? userAnswer.map(i => question.options[i]).join('<br>') : 'Not ranked';
+            } else {
+                userAnswerText = userAnswer !== null ? question.options[userAnswer] : 'Not selected';
+            }
+            
+            let correctAnswerText;
+            if (question.type === 'most-least') {
+                const mostOption = question.options[question.correctAnswer.most];
+                const leastOption = question.options[question.correctAnswer.least];
+                correctAnswerText = `Most Likely: ${mostOption}<br>Least Likely: ${leastOption}`;
+            } else if (question.type === 'ranking') {
+                correctAnswerText = question.correctAnswer.map(i => question.options[i]).join('<br>');
+            } else {
+                correctAnswerText = question.options[question.correctAnswer];
+            }
+            
             explanations.push({
                 question: question.question,
-                userAnswer: question.options[this.userAnswers[index]],
-                correctAnswer: question.options[question.correctAnswer],
+                userAnswer: userAnswerText,
+                correctAnswer: correctAnswerText,
                 explanation: question.explanation,
-                isCorrect: this.userAnswers[index] === question.correctAnswer
+                isCorrect: isCorrect
             });
         });
         
@@ -303,11 +331,11 @@ class TestCore {
             </div>
             <div class="explanations">
                 ${explanations.map((exp, index) => `
-                    <div class="explanation">
+                    <div class="explanation ${exp.isCorrect ? 'correct' : 'incorrect'}">
                         <h4>Question ${index + 1}</h4>
-                        <p><strong>Your answer:</strong> ${exp.userAnswer}</p>
-                        <p><strong>Correct answer:</strong> ${exp.correctAnswer}</p>
-                        <p>${exp.explanation}</p>
+                        <p><strong>Your answer:</strong><br>${exp.userAnswer}</p>
+                        <p><strong>Correct answer:</strong><br>${exp.correctAnswer}</p>
+                        <p><strong>Explanation:</strong><br>${exp.explanation}</p>
                     </div>
                 `).join('')}
             </div>
