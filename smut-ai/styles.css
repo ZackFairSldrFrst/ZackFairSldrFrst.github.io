@@ -113,44 +113,25 @@ body::after {
 
 .chat-header {
     text-align: center;
-    padding: 1rem;
+    padding: 0.5rem;
     background: linear-gradient(135deg, #ff4d8d 0%, #ff3377 100%);
     border-bottom: 1px solid rgba(255, 77, 141, 0.3);
-    box-shadow: 
-        0 4px 20px rgba(255, 77, 141, 0.2),
-        0 0 40px rgba(255, 51, 119, 0.2);
+    box-shadow: 0 2px 10px rgba(255, 77, 141, 0.2);
     position: relative;
     flex-shrink: 0;
-    animation: headerGlow 3s ease-in-out infinite alternate;
 }
 
 .chat-header h1 {
-    font-size: 2rem;
-    margin-bottom: 0.25rem;
+    font-size: 1.2rem;
+    margin: 0;
     color: #ffffff;
-    text-shadow: 
-        0 2px 4px rgba(0, 0, 0, 0.3),
-        0 0 20px rgba(255, 77, 141, 0.5);
-    font-weight: 700;
-    animation: textGlow 4s ease-in-out infinite alternate;
-}
-
-@keyframes textGlow {
-    0% { 
-        text-shadow: 
-            0 2px 4px rgba(0, 0, 0, 0.3),
-            0 0 20px rgba(255, 77, 141, 0.3);
-    }
-    100% { 
-        text-shadow: 
-            0 2px 4px rgba(0, 0, 0, 0.3),
-            0 0 30px rgba(255, 77, 141, 0.7),
-            0 0 40px rgba(0, 210, 255, 0.3);
-    }
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    font-weight: 600;
 }
 
 .chat-header p {
-    font-size: 1.1rem;
+    font-size: 0.8rem;
+    margin: 0;
     color: rgba(255, 255, 255, 0.9);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
@@ -168,7 +149,7 @@ body::after {
 
 .messages {
     flex: 1;
-    padding: 1.5rem;
+    padding: 1rem;
     overflow-y: auto;
     overflow-x: hidden;
     display: flex;
