@@ -1,13 +1,15 @@
 const API_KEY = 'sk-b98786a940d54865bdb21f9fe2a98eb1';
 const API_URL = 'https://api.deepseek.com/v1/chat/completions';
 
-const messageInput = document.getElementById('messageInput');
-const sendButton = document.getElementById('sendButton');
-const messagesContainer = document.getElementById('messagesContainer');
-const typingIndicator = document.getElementById('typingIndicator');
+// Payment and limit constants
+const FREE_MESSAGE_LIMIT = 3;
+const SESSION_DURATION = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
+const PAYMENT_AMOUNT = 2;
 
-// Store conversation messages
-let conversationMessages = [];
+// Payment and limit tracking
+let messageCount = 0;
+let sessionStartTime = null;
+let isPaid = false;
 
 // localStorage keys for chat history
 const STORAGE_KEYS = {
@@ -15,6 +17,22 @@ const STORAGE_KEYS = {
     CHAT_HISTORY: 'smutai_chat_history',
     LAST_SAVE_TIME: 'smutai_last_save_time'
 };
+
+// localStorage keys for payment tracking
+const PAYMENT_KEYS = {
+    MESSAGE_COUNT: 'smutai_message_count',
+    SESSION_START: 'smutai_session_start',
+    IS_PAID: 'smutai_is_paid',
+    PAYMENT_EXPIRY: 'smutai_payment_expiry'
+};
+
+const messageInput = document.getElementById('messageInput');
+const sendButton = document.getElementById('sendButton');
+const messagesContainer = document.getElementById('messagesContainer');
+const typingIndicator = document.getElementById('typingIndicator');
+
+// Store conversation messages
+let conversationMessages = [];
 
 // Debug logging function
 function debugLog(message, data = null) {
@@ -293,14 +311,99 @@ function formatResponse(text) {
     return text;
 }
 
-// Function to handle sending messages
+// Function to check if user can send messages
+function canSendMessage() {
+    if (isPaid) {
+        const expiryTime = loadFromLocalStorage(PAYMENT_KEYS.PAYMENT_EXPIRY);
+        if (expiryTime && new Date().getTime() < expiryTime) {
+            return true;
+        } else {
+            // Payment expired
+            isPaid = false;
+            saveToLocalStorage(PAYMENT_KEYS.IS_PAID, false);
+            showPaymentPrompt();
+            return false;
+        }
+    }
+    
+    return messageCount < FREE_MESSAGE_LIMIT;
+}
+
+// Function to process payment
+function processPayment() {
+    // Open Stripe payment link in a new tab
+    window.open('https://buy.stripe.com/00w9ATacx7bZ1Pfaes0ZW07', '_blank');
+    
+    // Add a message to inform the user
+    addMessage(`Please complete the payment in the new tab. Once you've paid, you'll be able to continue chatting for 3 hours.`, false);
+    
+    // Remove payment prompt
+    const paymentPrompt = document.querySelector('.payment-prompt');
+    if (paymentPrompt) {
+        paymentPrompt.remove();
+    }
+    
+    // Add a check for successful payment
+    // Note: In a production environment, you would implement webhook handling
+    // to verify the payment status from Stripe
+    const checkPaymentStatus = setInterval(() => {
+        // Here you would typically check with your backend
+        // to verify if the payment was successful
+        // For now, we'll simulate a successful payment after 5 seconds
+        setTimeout(() => {
+            const expiryTime = new Date().getTime() + SESSION_DURATION;
+            isPaid = true;
+            saveToLocalStorage(PAYMENT_KEYS.IS_PAID, true);
+            saveToLocalStorage(PAYMENT_KEYS.PAYMENT_EXPIRY, expiryTime);
+            
+            addMessage(`Payment successful! You can continue chatting for the next 3 hours.`, false);
+            clearInterval(checkPaymentStatus);
+        }, 5000);
+    }, 1000);
+}
+
+// Function to show payment prompt
+function showPaymentPrompt() {
+    const paymentDiv = document.createElement('div');
+    paymentDiv.className = 'payment-prompt';
+    paymentDiv.innerHTML = `
+        <div class="payment-content">
+            <h3>Continue Your Story</h3>
+            <p>You've used your free messages. Pay $${PAYMENT_AMOUNT} to continue for 3 more hours!</p>
+            <button onclick="processPayment()" class="payment-button">
+                Pay $${PAYMENT_AMOUNT}
+            </button>
+            <p class="payment-note">You'll be redirected to our secure payment processor.</p>
+        </div>
+    `;
+    document.body.appendChild(paymentDiv);
+}
+
+// Function to update message count
+function updateMessageCount() {
+    messageCount++;
+    saveToLocalStorage(PAYMENT_KEYS.MESSAGE_COUNT, messageCount);
+    
+    if (!isPaid && messageCount >= FREE_MESSAGE_LIMIT) {
+        showPaymentPrompt();
+    }
+}
+
+// Modified sendMessage function
 async function sendMessage() {
     const message = messageInput.value.trim();
     if (!message) return;
 
+    if (!canSendMessage()) {
+        return;
+    }
+
     // Add user message to chat
     addMessage(message, true);
     messageInput.value = '';
+    
+    // Update message count
+    updateMessageCount();
     
     // Add to conversation history
     conversationMessages.push({
@@ -449,9 +552,23 @@ Your goal is to create an engaging, consistent narrative that readers can follow
     }
 }
 
-// Initialize chat history on page load
+// Modified initializeChat function
 function initializeChat() {
     debugLog('Initializing Smut AI Chat Interface...');
+    
+    // Load payment and limit data
+    messageCount = loadFromLocalStorage(PAYMENT_KEYS.MESSAGE_COUNT, 0);
+    isPaid = loadFromLocalStorage(PAYMENT_KEYS.IS_PAID, false);
+    sessionStartTime = loadFromLocalStorage(PAYMENT_KEYS.SESSION_START, new Date().getTime());
+    
+    // Check if payment is expired
+    if (isPaid) {
+        const expiryTime = loadFromLocalStorage(PAYMENT_KEYS.PAYMENT_EXPIRY);
+        if (expiryTime && new Date().getTime() >= expiryTime) {
+            isPaid = false;
+            saveToLocalStorage(PAYMENT_KEYS.IS_PAID, false);
+        }
+    }
     
     // Detect Safari mobile and apply fallbacks
     detectSafariMobile();

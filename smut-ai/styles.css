@@ -671,4 +671,95 @@ body::after {
 
 /* All unnecessary page elements removed - pure chat interface */
 
-/* Clean, solid styling - no glass effects */ 
+/* Clean, solid styling - no glass effects */
+
+/* Payment Prompt */
+.payment-prompt {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.payment-content {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    padding: 2rem 2rem 1.5rem 2rem;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    border: 1px solid rgba(255, 77, 141, 0.3);
+    box-shadow: 
+        0 4px 15px rgba(255, 77, 141, 0.2),
+        0 0 30px rgba(255, 51, 119, 0.1);
+}
+
+.payment-content h3 {
+    color: #fff;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.payment-content p {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.payment-button {
+    background: linear-gradient(135deg, #ff4d8d 0%, #ff3377 100%);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 77, 141, 0.3);
+}
+
+.payment-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 77, 141, 0.4);
+}
+
+.payment-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(255, 77, 141, 0.3);
+}
+
+/* Mobile styles for payment prompt */
+@media (max-width: 768px) {
+    .payment-content {
+        padding: 1.5rem;
+        width: 85%;
+    }
+    
+    .payment-content h3 {
+        font-size: 1.3rem;
+    }
+    
+    .payment-content p {
+        font-size: 0.9rem;
+    }
+    
+    .payment-button {
+        padding: 0.8rem 1.6rem;
+        font-size: 1rem;
+    }
+}
+
+.payment-note {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+    margin-top: 1rem;
+    font-style: italic;
+} 
