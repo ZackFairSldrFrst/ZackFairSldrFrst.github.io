@@ -16,8 +16,51 @@
             <p>Master your skills with our comprehensive assessment practice tests</p>
         </header>
 
-        <div class="search-bar">
-            <input type="text" placeholder="Search practice tests...">
+        <!-- AI Aptitude Test Generator -->
+        <div class="ai-test-generator">
+            <h2>🤖 Generate AI Practice Test</h2>
+            <p>I want to practice <select id="testTypeSelect">
+                <option value="">Select a test type...</option>
+                <option value="verbal-reasoning">Verbal Reasoning</option>
+                <option value="numerical-reasoning">Numerical Reasoning</option>
+                <option value="logical-reasoning">Logical Reasoning</option>
+                <option value="abstract-reasoning">Abstract Reasoning</option>
+                <option value="critical-thinking">Critical Thinking</option>
+                <option value="reading-comprehension">Reading Comprehension</option>
+                <option value="problem-solving">Problem Solving</option>
+                <option value="spatial-reasoning">Spatial Reasoning</option>
+            </select></p>
+            <button id="generateTestBtn" disabled>Generate Practice Test</button>
+            <div id="loadingIndicator" style="display: none;">
+                <p>🔄 Generating your personalized test... This may take a moment.</p>
+            </div>
+        </div>
+
+        <!-- Generated Test Container (Initially Hidden) -->
+        <div id="generatedTestContainer" style="display: none;">
+            <div class="test-header">
+                <h1 id="generatedTestTitle">AI Generated Practice Test</h1>
+                <p class="test-description" id="generatedTestDescription">Test your skills with AI-generated questions</p>
+                <div class="test-info">
+                    <span class="test-meta-item">10 Questions</span>
+                    <span class="test-meta-item">15 Minutes</span>
+                    <span class="difficulty intermediate">Intermediate</span>
+                </div>
+                <div id="timer">Time Remaining: 15:00</div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress"></div>
+            </div>
+            
+            <div id="questionContainer"></div>
+            
+            <div class="navigation">
+                <button id="prevButton" class="nav-button" disabled>Previous</button>
+                <button id="nextButton" class="nav-button" disabled>Next</button>
+            </div>
+            
+            <div id="results" style="display: none;"></div>
         </div>
 
         <div class="test-categories">
@@ -156,5 +199,9 @@
             <p>&copy; 2024 Practice Tests Hub. All rights reserved.</p>
         </footer>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/test-core.js"></script>
+    <script src="js/ai-test-generator.js"></script>
 </body>
 </html> 
