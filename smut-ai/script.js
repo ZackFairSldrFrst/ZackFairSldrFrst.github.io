@@ -2,7 +2,7 @@ const API_KEY = 'sk-b98786a940d54865bdb21f9fe2a98eb1';
 const API_URL = 'https://api.deepseek.com/v1/chat/completions';
 
 // Payment and limit constants
-const FREE_MESSAGE_LIMIT = 3;
+const FREE_MESSAGE_LIMIT = 1000;
 const SESSION_DURATION = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
 const PAYMENT_AMOUNT = 2;
 
