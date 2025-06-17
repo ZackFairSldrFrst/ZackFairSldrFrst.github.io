@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Practice Tests Hub</title>
+    <title>Practice Tests Hub - Master Your Assessment Skills</title>
+    <meta name="description" content="Transform your test performance with AI-powered practice tests and expertly crafted assessments. Master verbal reasoning, numerical analysis, and workplace scenarios.">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,42 +12,116 @@
 </head>
 <body>
     <div class="container">
-        <header class="header">
-            <h1>Practice Tests Hub</h1>
-            <p>Master your skills with our comprehensive assessment practice tests</p>
+        <!-- Hero Section -->
+        <header class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">Master Any Assessment with Confidence</h1>
+                <p class="hero-subtitle">Transform your test performance with AI-powered practice tests and expertly crafted assessments designed by industry professionals</p>
+                
+                <!-- Key Benefits -->
+                <div class="benefits-grid">
+                    <div class="benefit-item">
+                        <span class="benefit-icon">🎯</span>
+                        <span class="benefit-text">Targeted Practice</span>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">⚡</span>
+                        <span class="benefit-text">Instant Feedback</span>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">🏆</span>
+                        <span class="benefit-text">Proven Results</span>
+                    </div>
+                </div>
+            </div>
         </header>
 
-        <!-- AI Aptitude Test Generator -->
-        <div class="ai-test-generator">
-            <h2>🤖 Generate Practice Test with AI</h2>
-            <p>I want to practice <select id="testTypeSelect">
-                <option value="">Select a test type...</option>
-                <option value="verbal-reasoning">Verbal Reasoning</option>
-                <option value="numerical-reasoning">Numerical Reasoning</option>
-                <option value="logical-reasoning">Logical Reasoning</option>
-                <option value="abstract-reasoning">Abstract Reasoning</option>
-                <option value="critical-thinking">Critical Thinking</option>
-                <option value="reading-comprehension">Reading Comprehension</option>
-                <option value="problem-solving">Problem Solving</option>
-                <option value="spatial-reasoning">Spatial Reasoning</option>
-            </select></p>
-            <button id="generateTestBtn" disabled>Generate Practice Test</button>
-            <div id="loadingIndicator" style="display: none;">
-                <p>🔄 Generating your personalized test... This may take a moment.</p>
+        <!-- Practice Options Section -->
+        <section class="practice-options">
+            <div class="options-header">
+                <h2>Choose Your Practice Method</h2>
+                <p>Select the approach that works best for your learning style and goals</p>
             </div>
-        </div>
+            
+            <div class="options-grid">
+                <!-- AI Generator Option -->
+                <div class="option-card ai-option">
+                    <div class="option-header">
+                        <span class="option-icon">🤖</span>
+                        <h3>AI-Powered Generator</h3>
+                        <span class="option-badge">Smart & Adaptive</span>
+                    </div>
+                    <div class="option-content">
+                        <p>Get unlimited, personalized practice tests generated in real-time by advanced AI</p>
+                        
+                        <div class="ai-test-generator">
+                            <div class="generator-input">
+                                <label for="testTypeSelect">I want to practice:</label>
+                                <select id="testTypeSelect" class="styled-select">
+                                    <option value="">Select your focus area...</option>
+                                    <option value="verbal-reasoning">Verbal Reasoning</option>
+                                    <option value="numerical-reasoning">Numerical Reasoning</option>
+                                    <option value="logical-reasoning">Logical Reasoning</option>
+                                    <option value="abstract-reasoning">Abstract Reasoning</option>
+                                    <option value="critical-thinking">Critical Thinking</option>
+                                    <option value="reading-comprehension">Reading Comprehension</option>
+                                    <option value="problem-solving">Problem Solving</option>
+                                    <option value="spatial-reasoning">Spatial Reasoning</option>
+                                </select>
+                            </div>
+                            <button id="generateTestBtn" class="cta-button" disabled>
+                                <span class="button-text">Generate My Practice Test</span>
+                                <span class="button-icon">⚡</span>
+                            </button>
+                            <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+                                <div class="loading-spinner"></div>
+                                <p class="loading-text">🧠 Creating your personalized test...</p>
+                                <p class="loading-subtext">This may take up to 60 seconds</p>
+                            </div>
+                        </div>
+                        
+                        <div class="option-features">
+                            <span class="feature-tag">✨ 10 Fresh Questions</span>
+                            <span class="feature-tag">⏱️ 5-Minute Tests</span>
+                            <span class="feature-tag">🎲 Always Different</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Curated Tests Option -->
+                <div class="option-card curated-option">
+                    <div class="option-header">
+                        <span class="option-icon">📚</span>
+                        <h3>Expert-Curated Tests</h3>
+                        <span class="option-badge">Professional Quality</span>
+                    </div>
+                    <div class="option-content">
+                        <p>Access our library of professionally designed practice tests with detailed explanations</p>
+                        <a href="#test-library" class="cta-button secondary-button">
+                            <span class="button-text">Browse Test Library</span>
+                            <span class="button-icon">📖</span>
+                        </a>
+                        <div class="option-features">
+                            <span class="feature-tag">👨‍💼 Industry Experts</span>
+                            <span class="feature-tag">📊 Detailed Analytics</span>
+                            <span class="feature-tag">🔄 Multiple Attempts</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- Generated Test Container (Initially Hidden) -->
-        <div id="generatedTestContainer" style="display: none;">
+        <div id="generatedTestContainer" class="generated-test-wrapper" style="display: none;">
             <div class="test-header">
                 <h1 id="generatedTestTitle">AI Generated Practice Test</h1>
                 <p class="test-description" id="generatedTestDescription">Test your skills with AI-generated questions</p>
                 <div class="test-info">
                     <span class="test-meta-item">10 Questions</span>
-                    <span class="test-meta-item">15 Minutes</span>
-                    <span class="difficulty intermediate">Intermediate</span>
+                    <span class="test-meta-item">5 Minutes</span>
+                    <span class="difficulty intermediate">AI Generated</span>
                 </div>
-                <div id="timer">Time Remaining: 15:00</div>
+                <div id="timer">Time Remaining: 05:00</div>
             </div>
             
             <div class="progress-container">
@@ -63,140 +138,195 @@
             <div id="results" style="display: none;"></div>
         </div>
 
-        <div class="test-categories">
-            <!-- Situational Judgment Tests -->
-            <div class="category-card">
-                <div class="category-image">
-                    <span>🧠</span>
-                </div>
-                <div class="category-content">
-                    <h2>Situational Judgment Tests</h2>
-                    <p>Master workplace scenarios and decision-making with realistic practice tests.</p>
-                    <ul class="test-list">
-                        <li class="test-item">
-                            <a href="situational-judgment/sj-01/index.html" class="test-link">
-                                <h3>SJ-01: Customer Service & Teamwork</h3>
-                                <p>Real-world scenarios from hospitality, sales, energy, and telecommunications sectors.</p>
-                                <div class="test-meta">
-                                    <span>15 Questions</span>
-                                    <span>30 Minutes</span>
-                                    <span class="difficulty intermediate">Intermediate</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="test-item">
-                            <a href="situational-judgment/sj-fundamentals.html" class="test-link">
-                                <h3>SJ-02: Workplace Fundamentals</h3>
-                                <p>Essential workplace scenarios covering communication, teamwork, and problem-solving.</p>
-                                <div class="test-meta">
-                                    <span>15 Questions</span>
-                                    <span>25 Minutes</span>
-                                    <span class="difficulty beginner">Beginner</span>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+        <!-- Test Library Section -->
+        <section id="test-library" class="test-library">
+            <div class="library-header">
+                <h2>Professional Practice Test Library</h2>
+                <p>Expertly crafted assessments covering all major aptitude test categories</p>
             </div>
 
-            <!-- Verbal Comprehension Tests -->
-            <div class="category-card">
-                <div class="category-image">
-                    <span>🔤</span>
+            <div class="test-categories">
+                <!-- Situational Judgment Tests -->
+                <div class="category-card">
+                    <div class="category-header">
+                        <div class="category-image">
+                            <span>🧠</span>
+                        </div>
+                        <div class="category-info">
+                            <h3>Situational Judgment Tests</h3>
+                            <p class="category-description">Excel in workplace scenarios with realistic practice tests that mirror actual assessment conditions.</p>
+                        </div>
+                    </div>
+                    <div class="category-content">
+                        <ul class="test-list">
+                            <li class="test-item">
+                                <a href="situational-judgment/sj-01/index.html" class="test-link">
+                                    <div class="test-info-section">
+                                        <h4>SJ-01: Customer Service & Teamwork</h4>
+                                        <p>Real-world scenarios from hospitality, sales, energy, and telecommunications sectors.</p>
+                                    </div>
+                                    <div class="test-meta">
+                                        <span class="meta-tag">15 Questions</span>
+                                        <span class="meta-tag">30 Minutes</span>
+                                        <span class="difficulty intermediate">Intermediate</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="test-item">
+                                <a href="situational-judgment/sj-fundamentals.html" class="test-link">
+                                    <div class="test-info-section">
+                                        <h4>SJ-02: Workplace Fundamentals</h4>
+                                        <p>Essential workplace scenarios covering communication, teamwork, and problem-solving.</p>
+                                    </div>
+                                    <div class="test-meta">
+                                        <span class="meta-tag">15 Questions</span>
+                                        <span class="meta-tag">25 Minutes</span>
+                                        <span class="difficulty beginner">Beginner</span>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="category-content">
-                    <h2>Verbal Comprehension Tests</h2>
-                    <p>Enhance your ability to understand, analyze, and interpret written information.</p>
-                    <ul class="test-list">
-                        <li class="test-item">
-                            <a href="verbal-comprehension/vc-01/index.html" class="test-link">
-                                <h3>VC-01: Classic Comprehension Challenge</h3>
-                                <p>Timeless passages and questions to sharpen your core reading and reasoning skills.</p>
-                                <div class="test-meta">
-                                    <span>30 Questions</span>
-                                    <span>20 Minutes</span>
-                                    <span class="difficulty intermediate">Intermediate</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="test-item">
-                            <a href="verbal-comprehension/vc-02/index.html" class="test-link">
-                                <h3>VC-02: Modern Context Mastery</h3>
-                                <p>Contemporary scenarios and analytical questions to test your comprehension in today's world.</p>
-                                <div class="test-meta">
-                                    <span>30 Questions</span>
-                                    <span>20 Minutes</span>
-                                    <span class="difficulty intermediate">Intermediate</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="test-item">
-                            <a href="verbal-comprehension/vc-03/index.html" class="test-link">
-                                <h3>VC-03: Practice Passages</h3>
-                                <p>Test your ability to understand and analyze written passages with diverse topics.</p>
-                                <div class="test-meta">
-                                    <span>30 Questions</span>
-                                    <span>20 Minutes</span>
-                                    <span class="difficulty intermediate">Intermediate</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="test-item">
-                            <a href="verbal-comprehension/vc-04/index.html" class="test-link">
-                                <h3>VC-04: Practice Passages</h3>
-                                <p>Advanced comprehension challenges covering current affairs, technology, and global issues.</p>
-                                <div class="test-meta">
-                                    <span>30 Questions</span>
-                                    <span>20 Minutes</span>
-                                    <span class="difficulty intermediate">Intermediate</span>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
 
-            <!-- Diagrammatic Reasoning Tests -->
-            <div class="category-card">
-                <div class="category-image">
-                    <span>🔶</span>
+                <!-- Verbal Comprehension Tests -->
+                <div class="category-card">
+                    <div class="category-header">
+                        <div class="category-image">
+                            <span>🔤</span>
+                        </div>
+                        <div class="category-info">
+                            <h3>Verbal Comprehension Tests</h3>
+                            <p class="category-description">Enhance your ability to understand, analyze, and interpret written information across diverse topics.</p>
+                        </div>
+                    </div>
+                    <div class="category-content">
+                        <ul class="test-list">
+                            <li class="test-item">
+                                <a href="verbal-comprehension/vc-01/index.html" class="test-link">
+                                    <div class="test-info-section">
+                                        <h4>VC-01: Classic Comprehension Challenge</h4>
+                                        <p>Timeless passages and questions to sharpen your core reading and reasoning skills.</p>
+                                    </div>
+                                    <div class="test-meta">
+                                        <span class="meta-tag">30 Questions</span>
+                                        <span class="meta-tag">20 Minutes</span>
+                                        <span class="difficulty intermediate">Intermediate</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="test-item">
+                                <a href="verbal-comprehension/vc-02/index.html" class="test-link">
+                                    <div class="test-info-section">
+                                        <h4>VC-02: Modern Context Mastery</h4>
+                                        <p>Contemporary scenarios and analytical questions to test your comprehension in today's world.</p>
+                                    </div>
+                                    <div class="test-meta">
+                                        <span class="meta-tag">30 Questions</span>
+                                        <span class="meta-tag">20 Minutes</span>
+                                        <span class="difficulty intermediate">Intermediate</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="test-item">
+                                <a href="verbal-comprehension/vc-03/index.html" class="test-link">
+                                    <div class="test-info-section">
+                                        <h4>VC-03: Diverse Topic Practice</h4>
+                                        <p>Test your ability to understand and analyze written passages with diverse topics.</p>
+                                    </div>
+                                    <div class="test-meta">
+                                        <span class="meta-tag">30 Questions</span>
+                                        <span class="meta-tag">20 Minutes</span>
+                                        <span class="difficulty intermediate">Intermediate</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="test-item">
+                                <a href="verbal-comprehension/vc-04/index.html" class="test-link">
+                                    <div class="test-info-section">
+                                        <h4>VC-04: Advanced Analysis</h4>
+                                        <p>Advanced comprehension challenges covering current affairs, technology, and global issues.</p>
+                                    </div>
+                                    <div class="test-meta">
+                                        <span class="meta-tag">30 Questions</span>
+                                        <span class="meta-tag">20 Minutes</span>
+                                        <span class="difficulty intermediate">Intermediate</span>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="category-content">
-                    <h2>Diagrammatic Reasoning Tests</h2>
-                    <p>Master visual patterns, logical sequences, and abstract reasoning challenges.</p>
-                    <ul class="test-list">
-                        <li class="test-item">
-                            <a href="diagrammatic-reasoning/dr-pattern-recognition.html" class="test-link">
-                                <h3>DR-01: Pattern Recognition</h3>
-                                <p>Identify visual patterns and sequences in geometric shapes and symbols.</p>
-                                <div class="test-meta">
-                                    <span>18 Questions</span>
-                                    <span>25 Minutes</span>
-                                    <span class="difficulty beginner">Beginner</span>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
 
-            <!-- Numerical Reasoning Tests -->
-            <div class="category-card">
-                <div class="category-image">
-                    <span>📊</span>
+                <!-- Diagrammatic Reasoning Tests -->
+                <div class="category-card">
+                    <div class="category-header">
+                        <div class="category-image">
+                            <span>🔶</span>
+                        </div>
+                        <div class="category-info">
+                            <h3>Diagrammatic Reasoning Tests</h3>
+                            <p class="category-description">Develop your visual reasoning skills with challenging pattern recognition and abstract thinking exercises.</p>
+                        </div>
+                    </div>
+                    <div class="category-content">
+                        <ul class="test-list">
+                            <li class="test-item">
+                                <a href="diagrammatic-reasoning/dr-pattern-recognition.html" class="test-link">
+                                    <div class="test-info-section">
+                                        <h4>DR-01: Pattern Recognition Mastery</h4>
+                                        <p>Identify visual patterns and sequences in geometric shapes and symbols.</p>
+                                    </div>
+                                    <div class="test-meta">
+                                        <span class="meta-tag">18 Questions</span>
+                                        <span class="meta-tag">25 Minutes</span>
+                                        <span class="difficulty beginner">Beginner</span>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="category-content">
-                    <h2>Numerical Reasoning Tests</h2>
-                    <p>Develop your quantitative analysis and data interpretation skills.</p>
-                    <ul class="test-list">
-                        <!-- No numerical reasoning tests currently available -->
-                    </ul>
+
+                <!-- Numerical Reasoning Tests -->
+                <div class="category-card coming-soon">
+                    <div class="category-header">
+                        <div class="category-image">
+                            <span>📊</span>
+                        </div>
+                        <div class="category-info">
+                            <h3>Numerical Reasoning Tests</h3>
+                            <p class="category-description">Sharpen your numerical skills with data analysis, percentage calculations, and statistical reasoning challenges.</p>
+                        </div>
+                    </div>
+                    <div class="category-content">
+                        <div class="coming-soon-message">
+                            <p>🚀 Exciting numerical reasoning tests are currently in development. Check back soon!</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <!-- Call to Action Section -->
+        <section class="cta-section">
+            <div class="cta-content">
+                <h2>Ready to Boost Your Performance?</h2>
+                <p>Join thousands of successful test-takers who've improved their scores with our practice platform</p>
+                <div class="cta-buttons">
+                    <a href="#practice-options" class="cta-button primary">Start Practicing Now</a>
+                    <a href="#test-library" class="cta-button secondary">Explore Test Library</a>
+                </div>
+            </div>
+        </section>
 
         <footer class="footer">
-            <p>&copy; 2024 Practice Tests Hub. All rights reserved.</p>
+            <div class="footer-content">
+                <p>&copy; 2024 Practice Tests Hub. Empowering test success through intelligent practice.</p>
+                <div class="footer-links">
+                    <span>Made with 💡 for ambitious learners</span>
+                </div>
+            </div>
         </footer>
     </div>
 
