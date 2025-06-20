@@ -97,6 +97,7 @@ class TestCore {
                 ${question.scenario ? `<div class="scenario">${question.scenario}</div>` : ''}
                 ${question.diagram ? `<div class="diagram-container">${question.diagram}</div>` : ''}
                 <div class="question-text">${question.question}</div>
+                ${question.image ? `<div class="question-image"><img src="images/${question.image}" alt="Question illustration" loading="lazy"></div>` : ''}
                 ${optionsHtml}
             </div>
         `;

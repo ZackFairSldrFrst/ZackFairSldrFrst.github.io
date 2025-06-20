@@ -182,6 +182,18 @@ class TestCreator {
                     </div>
                     
                     <div class="form-group">
+                        <label>Question Image <span class="label-help">(Optional)</span></label>
+                        <input type="text" placeholder="e.g., chart1.png, diagram-a.jpg, graph.png" onchange="updateQuestionData('${questionId}', 'image', this.value)">
+                        <div class="help-text">
+                            <strong>📁 File Organization Instructions:</strong><br>
+                            1. Name your image file clearly (e.g., "chart1.png", "diagram-a.jpg")<br>
+                            2. Upload the image to your Google Drive test folder: <code>category/test-code/images/filename.ext</code><br>
+                            3. The test will reference: <code>images/filename.ext</code> (relative to the test directory)<br>
+                            <strong>Supported formats:</strong> JPG, PNG, GIF, SVG
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
                         <div class="options-header">
                             <label class="field-required">Answer Options</label>
                             <button type="button" class="btn btn-sm btn-primary" onclick="addOption('${questionId}')">➕ Add Option</button>
@@ -429,6 +441,7 @@ class TestCreator {
             <div class="question-content">
                 ${question.passage ? `<div class="passage">${question.passage}</div>` : ''}
                 <div class="question-text">${question.question}</div>
+                ${question.image ? `<div class="question-image"><div style="padding: 15px; background: #f8f9fa; border: 2px dashed #dee2e6; border-radius: 8px; text-align: center; margin: 15px 0; color: #6c757d;"><strong>🖼️ Image will display here:</strong><br><code>images/${question.image}</code><br><em>Upload this image to your test folder's images/ directory</em></div></div>` : ''}
                 <div class="options ${question.type === 'most-least' ? 'most-least' : question.type === 'ranking' ? 'ranking' : ''}">
                     ${optionsHtml}
                 </div>
@@ -461,16 +474,21 @@ class TestCreator {
             const htmlContent = this.generateTestHtml(testData);
             const jsContent = this.generateTestJs(testData);
             
-            // Create and download HTML file first
-            this.downloadFile(`${testData.testCode}.html`, htmlContent, 'text/html');
+            // Create and download HTML file as index.html (standard structure)
+            this.downloadFile(`index.html`, htmlContent, 'text/html');
             
             // Delay JS file download to prevent browser blocking
             setTimeout(() => {
-                this.downloadFile(`${testData.testCode}-script.js`, jsContent, 'text/javascript');
+                this.downloadFile(`script.js`, jsContent, 'text/javascript');
                 
                 // Show success message after both files
                 setTimeout(() => {
-                    alert(`Test files have been generated and downloaded!\n\n- ${testData.testCode}.html\n- ${testData.testCode}-script.js\n\nBoth files are needed to run your test.`);
+                    const hasImages = testData.questions.some(q => q.image && q.image.trim() !== '');
+                    const imageInstructions = hasImages ? 
+                        `\n\n📁 FOLDER STRUCTURE REQUIRED:\n${testData.category}/${testData.testCode}/\n  ├── index.html\n  ├── script.js\n  └── images/\n      ├── ${testData.questions.filter(q => q.image).map(q => q.image).join('\n      ├── ')}\n\n📋 UPLOAD INSTRUCTIONS:\n1. Navigate to your "${testData.category}" folder in Google Drive\n2. Create a subfolder named "${testData.testCode}"\n3. Upload index.html and script.js to the ${testData.testCode} folder\n4. Create an "images" subfolder inside ${testData.testCode}\n5. Upload your image files to the images subfolder\n6. Ensure image filenames match exactly what you entered` : 
+                        `\n\n📁 FOLDER STRUCTURE:\n${testData.category}/${testData.testCode}/\n  ├── index.html\n  └── script.js`;
+                    
+                    alert(`Test files have been generated and downloaded!\n\n- index.html\n- script.js${imageInstructions}`);
                 }, 100);
             }, 500);
             
@@ -521,7 +539,7 @@ class TestCreator {
     </div>
     
     <script src="../../js/test-core.js"></script>
-    <script src="${testData.testCode}-script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>`;
     }
@@ -541,6 +559,10 @@ class TestCreator {
             
             if (q.passage && q.passage.trim() !== '') {
                 questionObj.passage = q.passage;
+            }
+            
+            if (q.image && q.image.trim() !== '') {
+                questionObj.image = q.image;
             }
             
             return questionObj;
@@ -773,6 +795,12 @@ testCore.start();`;
         const explanationTextarea = document.querySelector(`#${question.id} textarea[onchange*="explanation"]`);
         if (explanationTextarea && question.explanation) {
             explanationTextarea.value = question.explanation;
+        }
+        
+        // Restore image filename
+        const imageInput = document.querySelector(`#${question.id} input[onchange*="image"]`);
+        if (imageInput && question.image) {
+            imageInput.value = question.image;
         }
     }
     
