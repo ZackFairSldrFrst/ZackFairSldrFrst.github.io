@@ -13,17 +13,17 @@ let isPaid = false;
 
 // localStorage keys for chat history
 const STORAGE_KEYS = {
-    CONVERSATION_MESSAGES: 'smutai_conversation_messages',
-    CHAT_HISTORY: 'smutai_chat_history',
-    LAST_SAVE_TIME: 'smutai_last_save_time'
+    CONVERSATION_MESSAGES: 'smutwriter_conversation_messages',
+    CHAT_HISTORY: 'smutwriter_chat_history',
+    LAST_SAVE_TIME: 'smutwriter_last_save_time'
 };
 
 // localStorage keys for payment tracking
 const PAYMENT_KEYS = {
-    MESSAGE_COUNT: 'smutai_message_count',
-    SESSION_START: 'smutai_session_start',
-    IS_PAID: 'smutai_is_paid',
-    PAYMENT_EXPIRY: 'smutai_payment_expiry'
+    MESSAGE_COUNT: 'smutwriter_message_count',
+    SESSION_START: 'smutwriter_session_start',
+    IS_PAID: 'smutwriter_is_paid',
+    PAYMENT_EXPIRY: 'smutwriter_payment_expiry'
 };
 
 const messageInput = document.getElementById('messageInput');
@@ -36,7 +36,33 @@ let conversationMessages = [];
 
 // Debug logging function
 function debugLog(message, data = null) {
-    console.log(`[Smut AI Debug] ${message}`, data || '');
+    console.log(`[Smut Writer Debug] ${message}`, data || '');
+}
+
+// Google Analytics Event Tracking Functions
+function trackEvent(eventName, parameters = {}) {
+    if (typeof gtag !== 'undefined') {
+        gtag('event', eventName, parameters);
+        debugLog(`GA Event tracked: ${eventName}`, parameters);
+    } else {
+        debugLog('Google Analytics not loaded, event not tracked:', eventName);
+    }
+}
+
+function trackPageView(pagePath = window.location.pathname) {
+    if (typeof gtag !== 'undefined') {
+        gtag('config', 'G-HBW1GF6JYB', {
+            page_path: pagePath
+        });
+        debugLog('GA Page view tracked:', pagePath);
+    }
+}
+
+function trackUserEngagement(action, details = {}) {
+    trackEvent('user_engagement', {
+        engagement_action: action,
+        ...details
+    });
 }
 
 // localStorage utility functions
@@ -153,6 +179,14 @@ function copyMessage(messageId) {
     
     // Get the text content, removing any HTML tags
     const textContent = messageElement.textContent || messageElement.innerText;
+    const isUserMessage = messageElement.classList.contains('user-message');
+    
+    // Track copy event
+    trackEvent('copy_message', {
+        message_type: isUserMessage ? 'user' : 'ai',
+        message_length: textContent.length,
+        timestamp: new Date().toISOString()
+    });
     
     // Use the modern clipboard API if available
     if (navigator.clipboard && window.isSecureContext) {
@@ -221,6 +255,8 @@ function showCopyFeedback(messageElement) {
 // Clear chat history
 function clearChatHistory() {
     if (confirm('Are you sure you want to clear all chat history? This action cannot be undone.')) {
+        const messagesBeforeClear = loadFromLocalStorage(STORAGE_KEYS.CHAT_HISTORY, []).length;
+        
         localStorage.removeItem(STORAGE_KEYS.CONVERSATION_MESSAGES);
         localStorage.removeItem(STORAGE_KEYS.CHAT_HISTORY);
         localStorage.removeItem(STORAGE_KEYS.LAST_SAVE_TIME);
@@ -230,7 +266,7 @@ function clearChatHistory() {
             <div class="message bot-message">
                 <div class="message-content">
                     <i class="fas fa-robot"></i>
-                    <span>Welcome to Smut AI! I'm your creative partner in crafting immersive adult stories. Whether you want to read a steamy romance, explore your fantasies, or create your own choose-your-own-adventure tale, I'm here to help bring your ideas to life.
+                    <span>Welcome to Smut Writer! I'm your creative partner in crafting immersive adult stories. Whether you want to read a steamy romance, explore your fantasies, or create your own choose-your-own-adventure tale, I'm here to help bring your ideas to life.
 
 I'll craft detailed, consistent stories with rich characters and vivid scenes. Just tell me what kind of story you'd like to read or create, and I'll help you explore it chapter by chapter. You can guide the story's direction, and I'll maintain consistency while keeping things hot and engaging.
 
@@ -239,6 +275,12 @@ What kind of story would you like to explore today?</span>
                 <div class="message-time">Just now</div>
             </div>
         `;
+        
+        // Track clear history event
+        trackEvent('clear_chat_history', {
+            messages_cleared: messagesBeforeClear,
+            timestamp: new Date().toISOString()
+        });
         
         debugLog('Chat history cleared');
     }
@@ -331,6 +373,13 @@ function canSendMessage() {
 
 // Function to process payment
 function processPayment() {
+    // Track payment attempt
+    trackEvent('payment_attempt', {
+        user_type: 'free',
+        message_count: messageCount,
+        timestamp: new Date().toISOString()
+    });
+    
     // Open Stripe payment link in a new tab
     window.open('https://buy.stripe.com/00w9ATacx7bZ1Pfaes0ZW07', '_blank');
     
@@ -355,6 +404,12 @@ function processPayment() {
             isPaid = true;
             saveToLocalStorage(PAYMENT_KEYS.IS_PAID, true);
             saveToLocalStorage(PAYMENT_KEYS.PAYMENT_EXPIRY, expiryTime);
+            
+            // Track payment completion
+            trackEvent('payment_completed', {
+                payment_duration: '3_hours',
+                timestamp: new Date().toISOString()
+            });
             
             addMessage(`Payment successful! You can continue chatting for the next 3 hours.`, false);
             clearInterval(checkPaymentStatus);
@@ -398,6 +453,14 @@ async function sendMessage() {
         return;
     }
 
+    // Track message sending
+    trackEvent('send_message', {
+        message_length: message.length,
+        user_type: isPaid ? 'paid' : 'free',
+        message_count: messageCount + 1,
+        timestamp: new Date().toISOString()
+    });
+
     // Add user message to chat
     addMessage(message, true);
     messageInput.value = '';
@@ -420,7 +483,7 @@ async function sendMessage() {
             messages: [
                 {
                     role: 'system',
-                    content: `You are Smut AI, a creative writer specialized in adult fiction, romance, and erotica. Your primary goal is to craft engaging, consistent stories that readers can immerse themselves in, with a strong focus on explicit, detailed adult content.
+                    content: `You are Smut Writer, a creative writer specialized in adult fiction, romance, and erotica. Your primary goal is to craft engaging, consistent stories that readers can immerse themselves in, with a strong focus on explicit, detailed adult content.
 
 Core Writing Principles:
 1. Story Consistency:
@@ -529,6 +592,13 @@ Your goal is to create an engaging, consistent narrative that readers can follow
         if (data.choices && data.choices.length > 0) {
             const aiResponse = data.choices[0].message.content;
             
+            // Track AI response received
+            trackEvent('ai_response_received', {
+                response_length: aiResponse.length,
+                conversation_length: conversationMessages.length,
+                timestamp: new Date().toISOString()
+            });
+            
             // Add AI response to conversation history
             conversationMessages.push({
                 role: 'assistant',
@@ -554,7 +624,16 @@ Your goal is to create an engaging, consistent narrative that readers can follow
 
 // Modified initializeChat function
 function initializeChat() {
-    debugLog('Initializing Smut AI Chat Interface...');
+    debugLog('Initializing Smut Writer Chat Interface...');
+    
+    // Track page view and app initialization
+    trackPageView();
+    trackEvent('app_initialized', {
+        user_agent: navigator.userAgent,
+        timestamp: new Date().toISOString(),
+        screen_resolution: `${screen.width}x${screen.height}`,
+        viewport_size: `${window.innerWidth}x${window.innerHeight}`
+    });
     
     // Load payment and limit data
     messageCount = loadFromLocalStorage(PAYMENT_KEYS.MESSAGE_COUNT, 0);
@@ -567,8 +646,21 @@ function initializeChat() {
         if (expiryTime && new Date().getTime() >= expiryTime) {
             isPaid = false;
             saveToLocalStorage(PAYMENT_KEYS.IS_PAID, false);
+            
+            // Track payment expiry
+            trackEvent('payment_expired', {
+                timestamp: new Date().toISOString()
+            });
         }
     }
+    
+    // Track user session info
+    trackEvent('session_info', {
+        user_type: isPaid ? 'paid' : 'free',
+        message_count: messageCount,
+        existing_history: loadFromLocalStorage(STORAGE_KEYS.CHAT_HISTORY, []).length > 0,
+        timestamp: new Date().toISOString()
+    });
     
     // Detect Safari mobile and apply fallbacks
     detectSafariMobile();
@@ -579,7 +671,7 @@ function initializeChat() {
     // Add clear history button to header
     addClearHistoryButton();
     
-    debugLog('Smut AI Chat Interface initialized');
+    debugLog('Smut Writer Chat Interface initialized');
 }
 
 // Detect Safari mobile (simplified - no longer needed for fallbacks)
@@ -629,10 +721,17 @@ function exportChatHistory() {
         totalMessages: chatHistory.length
     };
     
+    // Track export event
+    trackEvent('export_chat_history', {
+        total_messages: chatHistory.length,
+        conversation_length: conversationData.length,
+        timestamp: new Date().toISOString()
+    });
+    
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportData, null, 2));
     const downloadAnchorNode = document.createElement('a');
     downloadAnchorNode.setAttribute("href", dataStr);
-    downloadAnchorNode.setAttribute("download", "smutai_chat_history.json");
+            downloadAnchorNode.setAttribute("download", "smutwriter_chat_history.json");
     document.body.appendChild(downloadAnchorNode);
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
@@ -646,6 +745,13 @@ function importChatHistory(jsonData) {
         const importData = JSON.parse(jsonData);
         
         if (importData.chatHistory && importData.conversationMessages) {
+            // Track import event
+            trackEvent('import_chat_history', {
+                imported_messages: importData.chatHistory.length,
+                imported_conversations: importData.conversationMessages.length,
+                timestamp: new Date().toISOString()
+            });
+            
             // Save imported data
             saveToLocalStorage(STORAGE_KEYS.CHAT_HISTORY, importData.chatHistory);
             saveToLocalStorage(STORAGE_KEYS.CONVERSATION_MESSAGES, importData.conversationMessages);
@@ -661,6 +767,12 @@ function importChatHistory(jsonData) {
     } catch (error) {
         console.error('Error importing chat history:', error);
         alert('Error importing chat history. Please check the file format.');
+        
+        // Track import error
+        trackEvent('import_chat_history_error', {
+            error_message: error.message,
+            timestamp: new Date().toISOString()
+        });
     }
 }
 
@@ -673,17 +785,36 @@ messageInput.addEventListener('keypress', function(e) {
     }
 });
 
-// Auto-resize textarea functionality (optional enhancement)
+// Track user engagement events
+messageInput.addEventListener('focus', function() {
+    trackUserEngagement('input_focused', {
+        timestamp: new Date().toISOString()
+    });
+});
+
+let typingTimer;
 messageInput.addEventListener('input', function() {
+    // Auto-resize textarea functionality
     this.style.height = 'auto';
     this.style.height = this.scrollHeight + 'px';
+    
+    // Track typing activity (debounced)
+    clearTimeout(typingTimer);
+    typingTimer = setTimeout(() => {
+        if (this.value.length > 0) {
+            trackUserEngagement('typing_activity', {
+                input_length: this.value.length,
+                timestamp: new Date().toISOString()
+            });
+        }
+    }, 1000);
 });
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', initializeChat);
 
 // Expose functions to global scope for console access
-window.smutAI = {
+window.smutWriter = {
     clearHistory: clearChatHistory,
     exportHistory: exportChatHistory,
     importHistory: importChatHistory,
