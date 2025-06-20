@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice Test Creator | Build Your Own Tests</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Creator-specific overrides and enhancements */
+        .creator-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        /* Hero section similar to test pages */
+        .creator-header {
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .creator-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .creator-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Step-by-step wizard layout */
+        .wizard-container {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+        
+        .wizard-sidebar {
+            flex: 0 0 280px;
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 2rem;
+        }
+        
+        .wizard-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .wizard-steps {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .wizard-step {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--bg-tertiary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .wizard-step:last-child {
+            border-bottom: none;
+        }
+        
+        .wizard-step:hover {
+            background: var(--bg-tertiary);
+            margin: 0 -1rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            border-radius: var(--border-radius);
+        }
+        
+        .step-number {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-right: 0.75rem;
+            transition: var(--transition);
+        }
+        
+        .wizard-step.completed .step-number {
+            background: var(--success-color);
+            color: white;
+        }
+        
+        .wizard-step.active .step-number {
+            background: var(--accent-color);
+            color: white;
+        }
+        
+        .step-title {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .wizard-step.completed .step-title {
+            color: var(--success-color);
+        }
+        
+        /* Form sections with better spacing */
+        .form-section {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--bg-tertiary);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--bg-tertiary);
+        }
+        
+        .section-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background: var(--accent-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .section-title {
+            flex: 1;
+        }
+        
+        .section-title h2 {
+            margin: 0 0 0.25rem 0;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+        }
+        
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin: 0;
+        }
+        
+        /* Enhanced form styling */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+        
+        .label-help {
+            margin-left: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            font-size: 0.85rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--bg-tertiary);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(34, 139, 230, 0.1);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+            line-height: 1.5;
+        }
+        
+        /* Smart grid system */
+        .form-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        .form-grid.cols-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+        
+        .form-grid.cols-3 {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        
+        /* Question builder with better visual hierarchy */
+        .questions-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .question-builder {
+            background: var(--bg-primary);
+            border: 2px solid var(--bg-tertiary);
+            border-radius: var(--border-radius);
+            padding: 0;
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .question-builder:hover {
+            border-color: var(--accent-color);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .question-header {
+            background: var(--bg-secondary);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--bg-tertiary);
+        }
+        
+        .question-number {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            color: var(--accent-color);
+            font-size: 1.1rem;
+        }
+        
+        .question-type-badge {
+            background: var(--accent-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-left: 1rem;
+        }
+        
+        .question-content {
+            padding: 1.5rem;
+        }
+        
+        .question-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        /* Enhanced option inputs */
+        .options-container {
+            margin-top: 1rem;
+        }
+        
+        .options-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .option-input {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            align-items: center;
+        }
+        
+        .option-number {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        
+        .option-input input {
+            flex: 1;
+            margin: 0;
+        }
+        
+        /* Better button styling */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            text-decoration: none;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: var(--accent-color);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-secondary {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: 2px solid var(--bg-tertiary);
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--accent-color);
+            background: var(--bg-secondary);
+        }
+        
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn-success:hover {
+            background: #37b24d;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-danger {
+            background: var(--error-color);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #e03131;
+        }
+        
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+        
+        .btn-icon {
+            padding: 0.5rem;
+            width: 2.25rem;
+            height: 2.25rem;
+            justify-content: center;
+        }
+        
+        /* Action button groups */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .button-group-start {
+            justify-content: flex-start;
+        }
+        
+        .button-group-end {
+            justify-content: flex-end;
+        }
+        
+        /* Save controls with better UX */
+        .save-controls {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border: 1px solid var(--bg-tertiary);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .save-status {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .save-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-primary);
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            border: 1px solid var(--bg-tertiary);
+        }
+        
+        .save-indicator.saved {
+            color: var(--success-color);
+            border-color: var(--success-color);
+        }
+        
+        .save-indicator.saving {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+        
+        .save-indicator.error {
+            color: var(--error-color);
+            border-color: var(--error-color);
+        }
+        
+        .save-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        /* Preview section improvements */
+        .preview-section {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 1px solid var(--bg-tertiary);
+            box-shadow: var(--shadow-sm);
+            display: none;
+        }
+        
+        /* Correct answer selectors */
+        .correct-answer-selector {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--bg-tertiary);
+        }
+        
+        .most-least-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .ranking-info {
+            background: #e3f2fd;
+            border: 1px solid #90caf9;
+            color: #1565c0;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-top: 1.5rem;
+        }
+        
+        .ranking-info p {
+            margin: 0 0 1rem 0;
+            font-size: 0.9rem;
+        }
+        
+        /* Help text and tooltips */
+        .help-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+            line-height: 1.4;
+        }
+        
+        .field-required::after {
+            content: "*";
+            color: var(--error-color);
+            margin-left: 0.25rem;
+        }
+        
+        /* Progress indicators */
+        .progress-indicator {
+            background: var(--bg-tertiary);
+            height: 4px;
+            border-radius: 2px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 1024px) {
+            .wizard-container {
+                flex-direction: column;
+            }
+            
+            .wizard-sidebar {
+                flex: none;
+                position: static;
+                order: -1;
+            }
+            
+            .wizard-steps {
+                display: flex;
+                overflow-x: auto;
+                gap: 1rem;
+                padding-bottom: 0.5rem;
+            }
+            
+            .wizard-step {
+                flex-shrink: 0;
+                border-bottom: none;
+                border-radius: var(--border-radius);
+                padding: 0.75rem 1rem;
+                background: var(--bg-tertiary);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .creator-container {
+                padding: 0.5rem;
+            }
+            
+            .creator-header {
+                padding: 2rem 1rem;
+            }
+            
+            .creator-header h1 {
+                font-size: 2rem;
+            }
+            
+            .form-grid.cols-2,
+            .form-grid.cols-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-section {
+                padding: 1.5rem;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .most-least-controls {
+                grid-template-columns: 1fr;
+            }
+            
+            .save-actions {
+                flex-direction: column;
+            }
+            
+            .option-input {
+                flex-wrap: wrap;
+            }
+            
+            .option-number {
+                order: -1;
+            }
+        }
+        
+        /* Animation and micro-interactions */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .question-builder {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        /* Focus states for accessibility */
+        .btn:focus,
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: 2px solid var(--accent-color);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="creator-container">
+        <div class="creator-header">
+            <h1>🎯 Practice Test Creator</h1>
+            <p>Build professional practice tests with the same quality and formatting as our existing platform</p>
+        </div>
+        
+        <div class="wizard-container">
+            <div class="wizard-sidebar">
+                <ul class="wizard-steps">
+                    <li class="wizard-step active" data-step="1">
+                        <div class="step-number">1</div>
+                        <div class="step-title">Test Setup</div>
+                    </li>
+                    <li class="wizard-step" data-step="2">
+                        <div class="step-number">2</div>
+                        <div class="step-title">Add Questions</div>
+                    </li>
+                    <li class="wizard-step" data-step="3">
+                        <div class="step-number">3</div>
+                        <div class="step-title">Preview & Export</div>
+                    </li>
+                </ul>
+                
+                <div class="progress-indicator">
+                    <div class="progress-fill" style="width: 33%"></div>
+                </div>
+                
+                <div class="save-controls">
+                    <div class="save-status" id="saveStatus">
+                        <span class="save-indicator">💾 Auto-save ready</span>
+                    </div>
+                    <div class="save-actions">
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="manualSave()">💾 Save</button>
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="loadFromSave()">📂 Load</button>
+                        <button type="button" class="btn btn-sm btn-danger" onclick="startOver()">🗑️ Reset</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="wizard-content">
+                <!-- Step 1: Test Configuration -->
+                <div class="form-section" id="step1">
+                    <div class="section-header">
+                        <div class="section-icon">⚙️</div>
+                        <div class="section-title">
+                            <h2>Test Configuration</h2>
+                            <p class="section-subtitle">Set up the basic information and parameters for your test</p>
+                        </div>
+                    </div>
+                    
+                    <form id="testCreatorForm">
+                        <div class="form-grid cols-2">
+                            <div class="form-group">
+                                <label for="testTitle" class="field-required">Test Title</label>
+                                <input type="text" id="testTitle" placeholder="e.g., VR-05: Advanced Reasoning" required>
+                                <div class="help-text">Follow the naming convention: PREFIX-NUMBER: Description</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="testCategory" class="field-required">Test Category</label>
+                                <select id="testCategory" required>
+                                    <option value="">Select Category</option>
+                                    <option value="verbal-reasoning">🔤 Verbal Reasoning (VR)</option>
+                                    <option value="numerical-reasoning">📊 Numerical Reasoning (NR)</option>
+                                    <option value="situational-judgment">🧠 Situational Judgment (SJ)</option>
+                                    <option value="logical-reasoning">🧩 Logical Reasoning (LR)</option>
+                                    <option value="diagrammatic-reasoning">🔶 Diagrammatic Reasoning (DR)</option>
+                                    <option value="other">📝 Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-grid cols-3">
+                            <div class="form-group">
+                                <label for="difficulty" class="field-required">Difficulty Level</label>
+                                <select id="difficulty" required>
+                                    <option value="">Select Difficulty</option>
+                                    <option value="beginner">🟢 Beginner</option>
+                                    <option value="intermediate">🟡 Intermediate</option>
+                                    <option value="advanced">🔴 Advanced</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="timeLimit" class="field-required">Time Limit (minutes)</label>
+                                <input type="number" id="timeLimit" min="5" max="120" value="20" required>
+                                <div class="help-text">Recommended: 1-2 minutes per question</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="testCode">Test Code</label>
+                                <input type="text" id="testCode" placeholder="Auto-generated" pattern="[a-z0-9-]+">
+                                <div class="help-text">Generated automatically from title, but you can customize it</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="testDescription" class="field-required">Test Description</label>
+                            <textarea id="testDescription" placeholder="Brief description of what this test assesses and what skills it develops..." required></textarea>
+                            <div class="help-text">Write a compelling description that explains the value and focus of your test</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="questionType">Default Question Type</label>
+                            <select id="questionType">
+                                <option value="multiple-choice">📝 Multiple Choice</option>
+                                <option value="most-least">⚖️ Most/Least Likely</option>
+                                <option value="ranking">📊 Ranking</option>
+                            </select>
+                            <div class="help-text">You can change this for individual questions later</div>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Step 2: Questions -->
+                <div class="form-section" id="step2">
+                    <div class="section-header">
+                        <div class="section-icon">❓</div>
+                        <div class="section-title">
+                            <h2>Questions</h2>
+                            <p class="section-subtitle">Create engaging questions with clear options and explanations</p>
+                        </div>
+                    </div>
+                    
+                    <div class="questions-container" id="questionsContainer"></div>
+                    
+                    <div class="button-group button-group-start">
+                        <button type="button" class="btn btn-primary" onclick="addQuestion()">
+                            ➕ Add Question
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Preview & Export -->
+                <div class="form-section" id="step3">
+                    <div class="section-header">
+                        <div class="section-icon">🚀</div>
+                        <div class="section-title">
+                            <h2>Preview & Export</h2>
+                            <p class="section-subtitle">Review your test and export the files for upload</p>
+                        </div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" onclick="previewTest()">
+                            👁️ Preview Test
+                        </button>
+                        <button type="button" class="btn btn-success" onclick="exportTest()">
+                            📤 Export Test Files
+                        </button>
+                    </div>
+                    
+                    <div class="preview-section" id="previewSection">
+                        <h3>Test Preview</h3>
+                        <div id="previewContent"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="test-creator.js"></script>
+</body>
+</html> 
