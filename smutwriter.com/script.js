@@ -129,8 +129,8 @@ function loadChatHistory() {
             displayMessage(message.content, message.isUser, message.formattedTime);
         });
         
-        // Scroll to bottom after loading all history messages
-        setTimeout(scrollToBottom, 100);
+        // Scroll to bottom and show input after loading all history messages
+        setTimeout(scrollToBottomAndShowInput, 100);
         
         debugLog(`Loaded ${chatHistory.length} messages from history`);
     } else {
@@ -287,8 +287,8 @@ What kind of story would you like to explore today?</span>
             timestamp: new Date().toISOString()
         });
         
-        // Scroll to bottom after clearing history
-        setTimeout(scrollToBottom, 100);
+        // Scroll to bottom and show input after clearing history
+        setTimeout(scrollToBottomAndShowInput, 100);
         
         debugLog('Chat history cleared');
     }
@@ -333,23 +333,23 @@ function addMessage(content, isUser = false) {
     // Save to localStorage
     saveChatMessage(content, isUser);
     
-    // Ensure we scroll to bottom after adding message
-    setTimeout(scrollToBottom, 100);
+    // Ensure we scroll to bottom and show input after adding message
+    setTimeout(scrollToBottomAndShowInput, 100);
 }
 
 // Function to show/hide typing indicator
 function showTypingIndicator() {
     typingIndicator.classList.remove('hidden');
     
-    // Scroll to bottom when typing indicator appears
-    scrollToBottom();
+    // Scroll to bottom and show input when typing indicator appears
+    scrollToBottomAndShowInput();
 }
 
 function hideTypingIndicator() {
     typingIndicator.classList.add('hidden');
     
-    // Scroll to bottom when hiding typing indicator
-    scrollToBottom();
+    // Scroll to bottom and show input when hiding typing indicator
+    scrollToBottomAndShowInput();
 }
 
 // Function to format the response
@@ -718,8 +718,8 @@ function initializeChat() {
     // Add clear history button to header
     addClearHistoryButton();
     
-    // Scroll to bottom after loading history
-    setTimeout(scrollToBottom, 200);
+    // Scroll to bottom and show input after loading history
+    setTimeout(scrollToBottomAndShowInput, 200);
     
     debugLog('Smut Writer Chat Interface initialized');
 }
@@ -860,8 +860,131 @@ messageInput.addEventListener('input', function() {
     }, 1000);
 });
 
+// Smart input visibility management
+let lastScrollTop = 0;
+let scrollTimeout = null;
+let isInputVisible = true;
+
+function initializeSmartInput() {
+    const messagesContainer = document.getElementById('messagesContainer');
+    const inputContainer = document.querySelector('.chat-input-container');
+    const scrollHint = document.getElementById('scrollHint');
+    
+    if (!messagesContainer || !inputContainer || !scrollHint) {
+        debugLog('Smart input elements not found');
+        return;
+    }
+    
+    // Function definitions
+    function showInputField() {
+        isInputVisible = true;
+        inputContainer.classList.remove('hidden-input');
+        scrollHint.classList.remove('visible');
+        messagesContainer.classList.add('input-visible');
+        
+        // Focus input if user is interacting
+        if (document.hasFocus()) {
+            setTimeout(() => {
+                const messageInput = document.getElementById('messageInput');
+                if (messageInput && !messageInput.disabled) {
+                    messageInput.focus();
+                }
+            }, 300);
+        }
+    }
+    
+    function hideInputField() {
+        isInputVisible = false;
+        inputContainer.classList.add('hidden-input');
+        messagesContainer.classList.remove('input-visible');
+        
+        // Show hint after a delay
+        setTimeout(() => {
+            if (!isInputVisible) {
+                scrollHint.classList.add('visible');
+            }
+        }, 200);
+    }
+    
+    // Initially show input and hide hint
+    showInputField();
+    
+    // Throttled scroll handler for performance
+    function handleScroll() {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            const { scrollTop, scrollHeight, clientHeight } = messagesContainer;
+            const isAtBottom = scrollHeight - scrollTop - clientHeight < 50;
+            const isScrollingUp = scrollTop < lastScrollTop;
+            const isScrollingDown = scrollTop > lastScrollTop;
+            
+            // Show input when at bottom or scrolling down near bottom
+            if (isAtBottom || (isScrollingDown && scrollHeight - scrollTop - clientHeight < 200)) {
+                if (!isInputVisible) {
+                    showInputField();
+                }
+            }
+            // Hide input when scrolling up and not near bottom
+            else if (isScrollingUp && scrollHeight - scrollTop - clientHeight > 100) {
+                if (isInputVisible) {
+                    hideInputField();
+                }
+            }
+            
+            lastScrollTop = scrollTop;
+                 }, 16); // ~60fps throttling
+     }
+    
+    // Add scroll event listener
+    messagesContainer.addEventListener('scroll', handleScroll);
+    
+    // Add touch scroll event for mobile
+    messagesContainer.addEventListener('touchmove', handleScroll);
+    
+    // Click hint to scroll to bottom
+    scrollHint.addEventListener('click', () => {
+        scrollToBottomAndShowInput();
+    });
+    
+    // Touch/tap hint to scroll to bottom (mobile)
+    scrollHint.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        scrollToBottomAndShowInput();
+    });
+    
+    // Also make the hint work with keyboard
+    scrollHint.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            scrollToBottomAndShowInput();
+        }
+    });
+    
+    debugLog('Smart input system initialized');
+}
+
+// Enhanced scroll to bottom function that ensures input is visible
+function scrollToBottomAndShowInput() {
+    scrollToBottom();
+    setTimeout(() => {
+        const inputContainer = document.querySelector('.chat-input-container');
+        const scrollHint = document.getElementById('scrollHint');
+        const messagesContainer = document.getElementById('messagesContainer');
+        
+        if (inputContainer && scrollHint && messagesContainer) {
+            isInputVisible = true;
+            inputContainer.classList.remove('hidden-input');
+            scrollHint.classList.remove('visible');
+            messagesContainer.classList.add('input-visible');
+        }
+    }, 100);
+}
+
 // Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', initializeChat);
+document.addEventListener('DOMContentLoaded', () => {
+    initializeChat();
+    initializeSmartInput();
+});
 
 // Handle window resize to maintain scroll position
 window.addEventListener('resize', function() {
