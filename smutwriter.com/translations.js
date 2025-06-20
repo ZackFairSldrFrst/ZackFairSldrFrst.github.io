@@ -232,6 +232,201 @@ const translations = {
         'export_success': '聊天历史记录导出成功！',
         'import_success': '聊天历史记录导入成功！',
         'import_error': '导入聊天历史记录时出错。请检查文件格式。'
+    },
+    
+    'id': {
+        // Header
+        'title': 'Penulis Erotis',
+        'subtitle': 'Pilih petualanganmu sendiri (edisi erotis)',
+        
+        // Welcome message
+        'welcome_title': 'Selamat datang di Penulis Erotis!',
+        'welcome_intro': 'Saya adalah mitra kreatif Anda dalam menciptakan cerita dewasa yang imersif. Baik Anda ingin membaca roman yang panas, mengeksplorasi fantasi Anda, atau menciptakan cerita pilih-sendiri petualangan Anda sendiri, saya di sini untuk membantu menghidupkan ide-ide Anda.',
+        'welcome_features': 'Saya akan menciptakan cerita yang detail dan konsisten dengan karakter yang kaya dan adegan yang hidup. Cukup beri tahu saya jenis cerita apa yang ingin Anda baca atau buat, dan saya akan membantu Anda mengeksplorasinya bab demi bab. Anda dapat mengarahkan arah cerita, dan saya akan menjaga konsistensi sambil menjaga hal-hal tetap panas dan menarik.',
+        'multilingual_support': '🌍 Dukungan Multibahasa:',
+        'multilingual_description': 'Jangan ragu untuk berkomunikasi dengan saya dalam bahasa apa pun yang Anda sukai! Cukup ketik permintaan Anda dalam bahasa pilihan Anda, dan saya akan merespons dalam bahasa yang sama. Baik itu Inggris, Spanyol, Prancis, Jerman, Jepang, Cina, atau bahasa lain, saya di sini untuk membantu Anda menciptakan cerita dalam bahasa pilihan Anda.',
+        'welcome_question': 'Jenis cerita apa yang ingin Anda eksplorasi hari ini?',
+        
+        // UI Elements
+        'typing_indicator': 'Penulis Erotis sedang mengetik...',
+        'input_placeholder': 'Ketik pesan Anda...',
+        'scroll_hint': 'Gulir ke bawah untuk mengetik',
+        'clear_history': 'Hapus Riwayat',
+        'copy_message': 'Salin pesan',
+        
+        // Payment related
+        'free_limit_reached': 'Anda telah mencapai batas pesan gratis.',
+        'upgrade_prompt': 'Upgrade untuk terus membuat cerita tanpa batas!',
+        'payment_amount': 'Rp30.000',
+        'pay_button': 'Bayar Rp30.000 untuk Lanjutkan',
+        'payment_processing': 'Memproses pembayaran...',
+        'payment_success': 'Pembayaran berhasil! Anda sekarang dapat terus membuat cerita.',
+        'payment_error': 'Pembayaran gagal. Silakan coba lagi.',
+        
+        // Error messages
+        'error_message': 'Maaf, terjadi kesalahan. Silakan coba lagi.',
+        'network_error': 'Kesalahan jaringan. Silakan periksa koneksi Anda.',
+        
+        // Export/Import
+        'export_success': 'Riwayat chat berhasil diekspor!',
+        'import_success': 'Riwayat chat berhasil diimpor!',
+        'import_error': 'Error mengimpor riwayat chat. Silakan periksa format file.'
+    },
+    
+    'pt': {
+        // Header
+        'title': 'Escritor Erótico',
+        'subtitle': 'Escolha sua própria aventura (edizione erotica)',
+        
+        // Welcome message
+        'welcome_title': 'Bem-vindo ao Escritor Erótico!',
+        'welcome_intro': 'Sou seu parceiro criativo na criação de histórias adultas imersivas. Seja para ler um romance picante, explorar suas fantasias, ou criar sua própria história de escolha sua própria aventura, estou aqui para ajudar a dar vida às suas ideias.',
+        'welcome_features': 'Vou criar histórias detalhadas e consistentes com personagens ricos e cenas vívidas. Apenas me diga que tipo de história você gostaria de ler ou criar, e eu ajudarei você a explorá-la capítulo por capítulo. Você pode guiar a direção da história, e eu manterei a consistência enquanto mantenho as coisas quentes e envolventes.',
+        'multilingual_support': '🌍 Suporte Multilíngue:',
+        'multilingual_description': 'Sinta-se à vontade para se comunicar comigo em qualquer idioma que preferir! Simplesmente digite seus pedidos em seu idioma preferido, e eu responderei no mesmo idioma. Seja inglês, espanhol, francês, alemão, japonês, chinês ou qualquer outro idioma, estou aqui para ajudá-lo a criar histórias em seu idioma de escolha.',
+        'welcome_question': 'Que tipo de história você gostaria de explorar hoje?',
+        
+        // UI Elements
+        'typing_indicator': 'Escritor Erótico está digitando...',
+        'input_placeholder': 'Digite sua mensagem...',
+        'scroll_hint': 'Role para baixo para digitar',
+        'clear_history': 'Limpar Histórico',
+        'copy_message': 'Copiar mensagem',
+        
+        // Payment related
+        'free_limit_reached': 'Você atingiu o limite de mensagens gratuitas.',
+        'upgrade_prompt': 'Atualize para continuar criando histórias ilimitadas!',
+        'payment_amount': 'R$10',
+        'pay_button': 'Pagar R$10 para Continuar',
+        'payment_processing': 'Processando pagamento...',
+        'payment_success': 'Pagamento bem-sucedido! Agora você pode continuar criando histórias.',
+        'payment_error': 'Pagamento falhou. Por favor, tente novamente.',
+        
+        // Error messages
+        'error_message': 'Desculpe, algo deu errado. Por favor, tente novamente.',
+        'network_error': 'Erro de rede. Por favor, verifique sua conexão.',
+        
+        // Export/Import
+        'export_success': 'Histórico de chat exportado com sucesso!',
+        'import_success': 'Histórico de chat importado com sucesso!',
+        'import_error': 'Erro ao importar histórico de chat. Por favor, verifique o formato do arquivo.'
+    },
+    
+    'ru': {
+        // Header
+        'title': 'Эротический Писатель',
+        'subtitle': 'Выбери свое приключение (эротическое издание)',
+        
+        // Welcome message
+        'welcome_title': 'Добро пожаловать в Эротический Писатель!',
+        'welcome_intro': 'Я ваш творческий партнер в создании захватывающих взрослых историй. Хотите ли вы читать страстный роман, исследовать свои фантазии или создать свою собственную историю "выбери свое приключение", я здесь, чтобы помочь воплотить ваши идеи в жизнь.',
+        'welcome_features': 'Я создам детальные, последовательные истории с богатыми персонажами и яркими сценами. Просто скажите мне, какую историю вы хотели бы прочитать или создать, и я помогу вам исследовать её глава за главой. Вы можете направлять развитие истории, а я буду поддерживать последовательность, сохраняя всё горячим и увлекательным.',
+        'multilingual_support': '🌍 Многоязычная Поддержка:',
+        'multilingual_description': 'Не стесняйтесь общаться со мной на любом языке, который вы предпочитаете! Просто введите ваши запросы на предпочитаемом языке, и я отвечу на том же языке. Будь то английский, испанский, французский, немецкий, японский, китайский или любой другой язык, я здесь, чтобы помочь вам создавать истории на выбранном вами языке.',
+        'welcome_question': 'Какую историю вы хотели бы исследовать сегодня?',
+        
+        // UI Elements
+        'typing_indicator': 'Эротический Писатель печатает...',
+        'input_placeholder': 'Введите ваше сообщение...',
+        'scroll_hint': 'Прокрутите вниз, чтобы печатать',
+        'clear_history': 'Очистить Историю',
+        'copy_message': 'Копировать сообщение',
+        
+        // Payment related
+        'free_limit_reached': 'Вы достигли лимита бесплатных сообщений.',
+        'upgrade_prompt': 'Обновитесь, чтобы продолжить создавать неограниченные истории!',
+        'payment_amount': '200₽',
+        'pay_button': 'Заплатить 200₽ для Продолжения',
+        'payment_processing': 'Обработка платежа...',
+        'payment_success': 'Платеж успешен! Теперь вы можете продолжить создавать истории.',
+        'payment_error': 'Платеж не удался. Пожалуйста, попробуйте снова.',
+        
+        // Error messages
+        'error_message': 'Извините, что-то пошло не так. Пожалуйста, попробуйте снова.',
+        'network_error': 'Ошибка сети. Пожалуйста, проверьте ваше соединение.',
+        
+        // Export/Import
+        'export_success': 'История чата успешно экспортирована!',
+        'import_success': 'История чата успешно импортирована!',
+        'import_error': 'Ошибка импорта истории чата. Пожалуйста, проверьте формат файла.'
+    },
+    
+    'ko': {
+        // Header
+        'title': '에로틱 작가',
+        'subtitle': '당신만의 모험을 선택하세요 (에로틱 에디션)',
+        
+        // Welcome message
+        'welcome_title': '에로틱 작가에 오신 것을 환영합니다!',
+        'welcome_intro': '저는 몰입감 있는 성인 스토리를 창작하는 여러분의 창작 파트너입니다. 뜨거운 로맨스를 읽고 싶거나, 여러분의 판타지를 탐험하거나, 여러분만의 선택형 모험 이야기를 만들고 싶다면, 저는 여러분의 아이디어에 생명을 불어넣는 것을 도와드리기 위해 여기 있습니다.',
+        'welcome_features': '저는 풍부한 캐릭터와 생생한 장면을 가진 상세하고 일관성 있는 스토리를 만들어드릴 것입니다. 어떤 종류의 스토리를 읽거나 만들고 싶은지 알려주시면, 장별로 탐험하는 것을 도와드리겠습니다. 스토리의 방향을 이끌 수 있고, 저는 일관성을 유지하면서 모든 것을 뜨겁고 매력적으로 유지할 것입니다.',
+        'multilingual_support': '🌍 다국어 지원:',
+        'multilingual_description': '원하는 언어로 저와 자유롭게 소통하세요! 선호하는 언어로 요청을 입력하시면 같은 언어로 답변드리겠습니다. 영어, 스페인어, 프랑스어, 독일어, 일본어, 중국어 또는 기타 언어든 상관없이, 저는 여러분이 선택한 언어로 스토리를 만드는 것을 도와드리기 위해 여기 있습니다.',
+        'welcome_question': '오늘 어떤 종류의 스토리를 탐험하고 싶으신가요?',
+        
+        // UI Elements
+        'typing_indicator': '에로틱 작가가 입력 중...',
+        'input_placeholder': '메시지를 입력하세요...',
+        'scroll_hint': '입력하려면 아래로 스크롤하세요',
+        'clear_history': '기록 지우기',
+        'copy_message': '메시지 복사',
+        
+        // Payment related
+        'free_limit_reached': '무료 메시지 한도에 도달했습니다.',
+        'upgrade_prompt': '무제한 스토리 작성을 계속하려면 업그레이드하세요!',
+        'payment_amount': '₩2,500',
+        'pay_button': '계속하려면 ₩2,500 지불',
+        'payment_processing': '결제 처리 중...',
+        'payment_success': '결제 성공! 이제 스토리 작성을 계속할 수 있습니다.',
+        'payment_error': '결제에 실패했습니다. 다시 시도해 주세요.',
+        
+        // Error messages
+        'error_message': '죄송합니다. 문제가 발생했습니다. 다시 시도해 주세요.',
+        'network_error': '네트워크 오류. 연결을 확인해 주세요.',
+        
+        // Export/Import
+        'export_success': '채팅 기록이 성공적으로 내보내졌습니다!',
+        'import_success': '채팅 기록이 성공적으로 가져왔습니다!',
+        'import_error': '채팅 기록 가져오기 오류. 파일 형식을 확인해 주세요.'
+    },
+    
+    'it': {
+        // Header
+        'title': 'Scrittore Erotico',
+        'subtitle': 'Scegli la tua avventura (edizione erotica)',
+        
+        // Welcome message
+        'welcome_title': 'Benvenuto in Scrittore Erotico!',
+        'welcome_intro': 'Sono il tuo partner creativo nella creazione di storie adulte coinvolgenti. Che tu voglia leggere un romanzo rosa bollente, esplorare le tue fantasie, o creare la tua storia di scegli la tua avventura, sono qui per aiutarti a dare vita alle tue idee.',
+        'welcome_features': 'Creerò storie dettagliate e coerenti con personaggi ricchi e scene vivide. Dimmi semplicemente che tipo di storia vorresti leggere o creare, e ti aiuterò a esplorarla capitolo per capitolo. Puoi guidare la direzione della storia, e manterrò la coerenza mantenendo le cose calde e coinvolgenti.',
+        'multilingual_support': '🌍 Supporto Multilingue:',
+        'multilingual_description': 'Sentiti libero di comunicare con me in qualsiasi lingua preferisci! Basta digitare le tue richieste nella tua lingua preferita, e risponderò nella stessa lingua. Che sia inglese, spagnolo, francese, tedesco, giapponese, cinese o qualsiasi altra lingua, sono qui per aiutarti a creare storie nella tua lingua di scelta.',
+        'welcome_question': 'Che tipo di storia vorresti esplorare oggi?',
+        
+        // UI Elements
+        'typing_indicator': 'Scrittore Erotico sta scrivendo...',
+        'input_placeholder': 'Scrivi il tuo messaggio...',
+        'scroll_hint': 'Scorri verso il basso per scrivere',
+        'clear_history': 'Cancella Cronologia',
+        'copy_message': 'Copia messaggio',
+        
+        // Payment related
+        'free_limit_reached': 'Hai raggiunto il limite di messaggi gratuiti.',
+        'upgrade_prompt': 'Aggiorna per continuare a creare storie illimitate!',
+        'payment_amount': '2€',
+        'pay_button': 'Paga 2€ per Continuare',
+        'payment_processing': 'Elaborazione del pagamento...',
+        'payment_success': 'Pagamento riuscito! Ora puoi continuare a creare storie.',
+        'payment_error': 'Pagamento fallito. Per favore riprova.',
+        
+        // Error messages
+        'error_message': 'Scusa, qualcosa è andato storto. Per favore riprova.',
+        'network_error': 'Errore di rete. Per favore controlla la tua connessione.',
+        
+        // Export/Import
+        'export_success': 'Cronologia chat esportata con successo!',
+        'import_success': 'Cronologia chat importata con successo!',
+        'import_error': 'Errore nell\'importazione della cronologia chat. Per favore controlla il formato del file.'
     }
 };
 
@@ -409,14 +604,19 @@ ${this.get('welcome_question')}
                 cursor: pointer;
             `;
             
-            // Add language options
+            // Add language options with native names
             const languages = {
-                'en': 'English',
-                'es': 'Español',
-                'fr': 'Français',
-                'de': 'Deutsch',
-                'ja': '日本語',
-                'zh': '中文'
+                'en': '🇺🇸 English',
+                'es': '🇪🇸 Español',
+                'fr': '🇫🇷 Français',
+                'de': '🇩🇪 Deutsch',
+                'ja': '🇯🇵 日本語',
+                'zh': '🇨🇳 中文',
+                'id': '🇮🇩 Bahasa Indonesia',
+                'pt': '🇧🇷 Português',
+                'ru': '🇷🇺 Русский',
+                'ko': '🇰🇷 한국어',
+                'it': '🇮🇹 Italiano'
             };
             
             Object.entries(languages).forEach(([code, name]) => {
