@@ -2,7 +2,7 @@ const API_KEY = 'sk-b98786a940d54865bdb21f9fe2a98eb1';
 const API_URL = 'https://api.deepseek.com/v1/chat/completions';
 
 // Payment and limit constants
-const FREE_MESSAGE_LIMIT = 1000;
+const FREE_MESSAGE_LIMIT = 10;
 const SESSION_DURATION = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
 const PAYMENT_AMOUNT = 2;
 
@@ -129,6 +129,9 @@ function loadChatHistory() {
             displayMessage(message.content, message.isUser, message.formattedTime);
         });
         
+        // Scroll to bottom after loading all history messages
+        setTimeout(scrollToBottom, 100);
+        
         debugLog(`Loaded ${chatHistory.length} messages from history`);
     } else {
         debugLog('No chat history found, starting fresh');
@@ -166,7 +169,9 @@ function displayMessage(content, isUser = false, customTime = null) {
     }
     
     messagesContainer.appendChild(messageDiv);
-    messageDiv.scrollIntoView({ behavior: 'smooth' });
+    
+    // Scroll to bottom of messages container
+    scrollToBottom();
 }
 
 // Copy message content to clipboard
@@ -282,7 +287,41 @@ What kind of story would you like to explore today?</span>
             timestamp: new Date().toISOString()
         });
         
+        // Scroll to bottom after clearing history
+        setTimeout(scrollToBottom, 100);
+        
         debugLog('Chat history cleared');
+    }
+}
+
+// Function to scroll messages container to bottom
+function scrollToBottom() {
+    const messagesContainer = document.getElementById('messagesContainer');
+    if (messagesContainer) {
+        // Use requestAnimationFrame to ensure DOM is updated
+        requestAnimationFrame(() => {
+            // Smooth scroll to bottom
+            messagesContainer.scrollTo({
+                top: messagesContainer.scrollHeight,
+                behavior: 'smooth'
+            });
+        });
+    }
+}
+
+// Function to check if user is near bottom of chat
+function isNearBottom() {
+    const messagesContainer = document.getElementById('messagesContainer');
+    if (!messagesContainer) return true;
+    
+    const { scrollTop, scrollHeight, clientHeight } = messagesContainer;
+    return scrollHeight - scrollTop - clientHeight < 100; // Within 100px of bottom
+}
+
+// Enhanced scroll to bottom that only scrolls if user is near bottom
+function scrollToBottomIfNearBottom() {
+    if (isNearBottom()) {
+        scrollToBottom();
     }
 }
 
@@ -293,16 +332,24 @@ function addMessage(content, isUser = false) {
     
     // Save to localStorage
     saveChatMessage(content, isUser);
+    
+    // Ensure we scroll to bottom after adding message
+    setTimeout(scrollToBottom, 100);
 }
 
 // Function to show/hide typing indicator
 function showTypingIndicator() {
     typingIndicator.classList.remove('hidden');
-    typingIndicator.scrollIntoView({ behavior: 'smooth' });
+    
+    // Scroll to bottom when typing indicator appears
+    scrollToBottom();
 }
 
 function hideTypingIndicator() {
     typingIndicator.classList.add('hidden');
+    
+    // Scroll to bottom when hiding typing indicator
+    scrollToBottom();
 }
 
 // Function to format the response
@@ -671,6 +718,9 @@ function initializeChat() {
     // Add clear history button to header
     addClearHistoryButton();
     
+    // Scroll to bottom after loading history
+    setTimeout(scrollToBottom, 200);
+    
     debugLog('Smut Writer Chat Interface initialized');
 }
 
@@ -812,6 +862,16 @@ messageInput.addEventListener('input', function() {
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', initializeChat);
+
+// Handle window resize to maintain scroll position
+window.addEventListener('resize', function() {
+    setTimeout(scrollToBottom, 100);
+});
+
+// Handle orientation change on mobile devices
+window.addEventListener('orientationchange', function() {
+    setTimeout(scrollToBottom, 300);
+});
 
 // Expose functions to global scope for console access
 window.smutWriter = {

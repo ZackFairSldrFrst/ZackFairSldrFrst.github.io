@@ -145,11 +145,13 @@ body::after {
     min-height: 0;
     overflow: hidden;
     position: relative;
+    height: calc(100vh - 120px); /* Account for header and input */
 }
 
 .messages {
     flex: 1;
     padding: 1rem;
+    padding-bottom: calc(1rem + 120px); /* Space for input container */
     overflow-y: auto;
     overflow-x: hidden;
     display: flex;
@@ -157,6 +159,7 @@ body::after {
     gap: 1rem;
     min-height: 0;
     max-height: 100%;
+    scroll-behavior: smooth;
 }
 
 .messages::-webkit-scrollbar {
@@ -165,11 +168,17 @@ body::after {
 
 .messages::-webkit-scrollbar-track {
     background: #2d2d2d;
+    border-radius: 4px;
 }
 
 .messages::-webkit-scrollbar-thumb {
     background: #555;
     border-radius: 4px;
+    border: 1px solid #333;
+}
+
+.messages::-webkit-scrollbar-thumb:hover {
+    background: #666;
 }
 
 /* Message Styles */
@@ -634,9 +643,14 @@ body::after {
     .chat-container {
         width: 100vw;
         height: 100vh;
+        height: -webkit-fill-available; /* Better iOS support */
         margin: 0;
         padding: 0;
         overflow: hidden;
+    }
+    
+    .messages {
+        padding-bottom: calc(1rem + 140px); /* Extra space for mobile input */
     }
     
     .chat-header {
