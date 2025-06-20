@@ -17,6 +17,7 @@
     
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="translations.js"></script>
 </head>
 <body>
     <main>
@@ -31,9 +32,11 @@
                     <div class="message bot-message">
                         <div class="message-content">
                             <i class="fas fa-robot"></i>
-                            <span>Welcome to Smut Writer! I'm your creative partner in crafting immersive adult stories. Whether you want to read a steamy romance, explore your fantasies, or create your own choose-your-own-adventure tale, I'm here to help bring your ideas to life.
+                            <span id="welcomeMessage">Welcome to Smut Writer! I'm your creative partner in crafting immersive adult stories. Whether you want to read a steamy romance, explore your fantasies, or create your own choose-your-own-adventure tale, I'm here to help bring your ideas to life.
 
 I'll craft detailed, consistent stories with rich characters and vivid scenes. Just tell me what kind of story you'd like to read or create, and I'll help you explore it chapter by chapter. You can guide the story's direction, and I'll maintain consistency while keeping things hot and engaging.
+
+🌍 Multilingual Support: Feel free to communicate with me in any language you prefer! Simply type your requests in your preferred language, and I'll respond in the same language. Whether it's English, Spanish, French, German, Japanese, Chinese, or any other language, I'm here to help you create stories in your language of choice.
 
 What kind of story would you like to explore today?</span>
                         </div>
@@ -62,7 +65,7 @@ What kind of story would you like to explore today?</span>
             
             <!-- Scroll hint for when input is hidden -->
             <div class="scroll-hint" id="scrollHint" role="button" tabindex="0" aria-label="Scroll to bottom to show input field">
-                <i class="fas fa-arrow-down"></i> Scroll to bottom to type
+                <i class="fas fa-arrow-down"></i> <span>Scroll to bottom to type</span>
             </div>
         </div>
     </main>

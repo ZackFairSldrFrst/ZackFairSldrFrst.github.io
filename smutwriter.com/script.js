@@ -427,6 +427,11 @@ function processPayment() {
         timestamp: new Date().toISOString()
     });
     
+    // Get translated text or fallback to English
+    const getText = (key) => {
+        return typeof TranslationManager !== 'undefined' ? TranslationManager.get(key) : translations['en'][key] || key;
+    };
+    
     // Open Stripe payment link in a new tab
     window.open('https://buy.stripe.com/00w9ATacx7bZ1Pfaes0ZW07', '_blank');
     
@@ -458,7 +463,7 @@ function processPayment() {
                 timestamp: new Date().toISOString()
             });
             
-            addMessage(`Payment successful! You can continue chatting for the next 3 hours.`, false);
+            addMessage(getText('payment_success'), false);
             clearInterval(checkPaymentStatus);
         }, 5000);
     }, 1000);
@@ -468,12 +473,18 @@ function processPayment() {
 function showPaymentPrompt() {
     const paymentDiv = document.createElement('div');
     paymentDiv.className = 'payment-prompt';
+    
+    // Get translated text or fallback to English
+    const getText = (key) => {
+        return typeof TranslationManager !== 'undefined' ? TranslationManager.get(key) : translations['en'][key] || key;
+    };
+    
     paymentDiv.innerHTML = `
         <div class="payment-content">
             <h3>Continue Your Story</h3>
-            <p>You've used your free messages. Pay $${PAYMENT_AMOUNT} to continue for 3 more hours!</p>
+            <p>${getText('free_limit_reached')} ${getText('upgrade_prompt')}</p>
             <button onclick="processPayment()" class="payment-button">
-                Pay $${PAYMENT_AMOUNT}
+                ${getText('pay_button')}
             </button>
             <p class="payment-note">You'll be redirected to our secure payment processor.</p>
         </div>
@@ -665,7 +676,13 @@ Your goal is to create an engaging, consistent narrative that readers can follow
     } catch (error) {
         debugLog('Error:', error);
         hideTypingIndicator();
-        addMessage('Sorry, I encountered an error. Please try again.', false);
+        
+        // Get translated error message or fallback to English
+        const errorMessage = typeof TranslationManager !== 'undefined' ? 
+            TranslationManager.get('error_message') : 
+            'Sorry, I encountered an error. Please try again.';
+        
+        addMessage(errorMessage, false);
     }
 }
 
@@ -673,13 +690,22 @@ Your goal is to create an engaging, consistent narrative that readers can follow
 function initializeChat() {
     debugLog('Initializing Smut Writer Chat Interface...');
     
+    // Initialize translation system first
+    if (typeof TranslationManager !== 'undefined') {
+        TranslationManager.init();
+        debugLog(`Translation system initialized with language: ${TranslationManager.currentLanguage}`);
+    } else {
+        debugLog('TranslationManager not found, proceeding without translations');
+    }
+    
     // Track page view and app initialization
     trackPageView();
     trackEvent('app_initialized', {
         user_agent: navigator.userAgent,
         timestamp: new Date().toISOString(),
         screen_resolution: `${screen.width}x${screen.height}`,
-        viewport_size: `${window.innerWidth}x${window.innerHeight}`
+        viewport_size: `${window.innerWidth}x${window.innerHeight}`,
+        language: typeof TranslationManager !== 'undefined' ? TranslationManager.currentLanguage : 'en'
     });
     
     // Load payment and limit data
@@ -715,7 +741,7 @@ function initializeChat() {
     // Load existing chat history
     loadChatHistory();
     
-    // Add clear history button to header
+    // Add clear history button to header (will be translated by TranslationManager)
     addClearHistoryButton();
     
     // Scroll to bottom and show input after loading history
@@ -742,7 +768,8 @@ function addClearHistoryButton() {
     const chatHeader = document.querySelector('.chat-header');
     if (chatHeader) {
         const clearButton = document.createElement('button');
-        clearButton.innerHTML = '<i class="fas fa-trash-alt"></i> Clear History';
+        const clearText = typeof TranslationManager !== 'undefined' ? TranslationManager.get('clear_history') : 'Clear History';
+        clearButton.innerHTML = `<i class="fas fa-trash-alt"></i> ${clearText}`;
         clearButton.className = 'clear-history-btn';
         clearButton.style.cssText = `
             position: absolute;
@@ -810,13 +837,25 @@ function importChatHistory(jsonData) {
             loadChatHistory();
             
             debugLog(`Imported ${importData.chatHistory.length} messages`);
-            alert(`Successfully imported ${importData.chatHistory.length} messages!`);
+            
+            // Get translated success message or fallback to English
+            const successMessage = typeof TranslationManager !== 'undefined' ? 
+                TranslationManager.get('import_success') : 
+                `Successfully imported ${importData.chatHistory.length} messages!`;
+            
+            alert(successMessage);
         } else {
             throw new Error('Invalid chat history format');
         }
     } catch (error) {
         console.error('Error importing chat history:', error);
-        alert('Error importing chat history. Please check the file format.');
+        
+        // Get translated error message or fallback to English
+        const errorMessage = typeof TranslationManager !== 'undefined' ? 
+            TranslationManager.get('import_error') : 
+            'Error importing chat history. Please check the file format.';
+        
+        alert(errorMessage);
         
         // Track import error
         trackEvent('import_chat_history_error', {
