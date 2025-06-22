@@ -1260,8 +1260,11 @@ function scrollToBottomAndShowInput() {
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM Content Loaded - initializing app...');
     initializeChat();
     initializeSmartInput();
+    initializeNavigation();
+    checkForPromptPrefill();
 });
 
 // Handle window resize to maintain scroll position
@@ -1295,11 +1298,37 @@ window.smutWriter = {
 
 // Navigation functionality
 function initializeNavigation() {
+    console.log('Initializing navigation...');
     const navToggle = document.getElementById('nav-toggle');
     const navMenu = document.getElementById('nav-menu');
     
+    console.log('Nav toggle element:', navToggle);
+    console.log('Nav menu element:', navMenu);
+    
     if (navToggle && navMenu) {
-        navToggle.addEventListener('click', () => {
+        console.log('Adding click event listener to nav toggle');
+        
+        // Add click event with debugging
+        navToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Nav toggle clicked!');
+            
+            const isActive = navMenu.classList.contains('active');
+            console.log('Menu is currently active:', isActive);
+            
+            navMenu.classList.toggle('active');
+            navToggle.classList.toggle('active');
+            
+            console.log('Menu is now active:', navMenu.classList.contains('active'));
+        });
+        
+        // Add touch event for mobile
+        navToggle.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Nav toggle touched!');
+            
             navMenu.classList.toggle('active');
             navToggle.classList.toggle('active');
         });
@@ -1308,6 +1337,7 @@ function initializeNavigation() {
         const navLinks = document.querySelectorAll('.nav-link');
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
+                console.log('Nav link clicked, closing menu');
                 navMenu.classList.remove('active');
                 navToggle.classList.remove('active');
             });
@@ -1320,11 +1350,15 @@ function initializeNavigation() {
                 navToggle.classList.remove('active');
             }
         });
+        
+        console.log('Navigation initialized successfully!');
+    } else {
+        console.error('Navigation elements not found!');
     }
 }
 
 // Prefill chat input from prompt example if available
-window.addEventListener('DOMContentLoaded', () => {
+function checkForPromptPrefill() {
     const prompt = localStorage.getItem('smutwriter_story_prompt');
     if (prompt) {
         const input = document.getElementById('messageInput');
@@ -1334,6 +1368,4 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         localStorage.removeItem('smutwriter_story_prompt');
     }
-});
-
-// ... existing code ... 
+} 
