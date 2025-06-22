@@ -486,17 +486,6 @@ const TranslationManager = {
         // Update document title
         document.title = this.get('title') + ' - Spice up your reading';
         
-        // Update header
-        const titleElement = document.querySelector('.chat-header h1');
-        if (titleElement) {
-            titleElement.textContent = this.get('title');
-        }
-        
-        const subtitleElement = document.querySelector('.chat-header p');
-        if (subtitleElement) {
-            subtitleElement.textContent = this.get('subtitle');
-        }
-        
         // Update welcome message
         this.updateWelcomeMessage();
         
@@ -560,9 +549,12 @@ ${this.get('welcome_question')}
     
     // Update clear history button
     updateClearHistoryButton() {
-        const clearButton = document.querySelector('.clear-history-btn');
+        const clearButton = document.querySelector('.nav-clear-history-btn');
         if (clearButton) {
-            clearButton.innerHTML = `<i class="fas fa-trash-alt"></i> ${this.get('clear_history')}`;
+            const span = clearButton.querySelector('span');
+            if (span) {
+                span.textContent = this.get('clear_history');
+            }
         }
     },
     
@@ -571,72 +563,21 @@ ${this.get('welcome_question')}
         this.currentLanguage = this.detectLanguage();
         this.translatePage();
         
-        // Add language selector to the page
-        this.addLanguageSelector();
+        // Set up the existing navigation language selector
+        this.setupNavigationLanguageSelector();
     },
     
-    // Add language selector to the page
-    addLanguageSelector() {
-        const chatHeader = document.querySelector('.chat-header');
-        if (chatHeader) {
-            const languageSelector = document.createElement('div');
-            languageSelector.className = 'language-selector';
-            languageSelector.style.cssText = `
-                position: absolute;
-                top: 1rem;
-                left: 1rem;
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-            `;
+    // Set up the navigation language selector
+    setupNavigationLanguageSelector() {
+        const languageSelector = document.getElementById('languageSelector');
+        if (languageSelector) {
+            // Set the current language
+            languageSelector.value = this.currentLanguage;
             
-            const label = document.createElement('span');
-            label.textContent = '🌍';
-            label.style.fontSize = '1.2rem';
-            
-            const select = document.createElement('select');
-            select.style.cssText = `
-                padding: 0.3rem 0.5rem;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-                background: white;
-                font-size: 0.9rem;
-                cursor: pointer;
-            `;
-            
-            // Add language options with native names
-            const languages = {
-                'en': '🇺🇸 English',
-                'es': '🇪🇸 Español',
-                'fr': '🇫🇷 Français',
-                'de': '🇩🇪 Deutsch',
-                'ja': '🇯🇵 日本語',
-                'zh': '🇨🇳 中文',
-                'id': '🇮🇩 Bahasa Indonesia',
-                'pt': '🇧🇷 Português',
-                'ru': '🇷🇺 Русский',
-                'ko': '🇰🇷 한국어',
-                'it': '🇮🇹 Italiano'
-            };
-            
-            Object.entries(languages).forEach(([code, name]) => {
-                const option = document.createElement('option');
-                option.value = code;
-                option.textContent = name;
-                if (code === this.currentLanguage) {
-                    option.selected = true;
-                }
-                select.appendChild(option);
-            });
-            
-            // Handle language change
-            select.addEventListener('change', (e) => {
+            // Add change event listener
+            languageSelector.addEventListener('change', (e) => {
                 this.setLanguage(e.target.value);
             });
-            
-            languageSelector.appendChild(label);
-            languageSelector.appendChild(select);
-            chatHeader.appendChild(languageSelector);
         }
     }
 };

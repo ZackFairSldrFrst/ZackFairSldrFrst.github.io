@@ -910,6 +910,25 @@ Your goal is to create an engaging, consistent narrative that readers can follow
 function initializeChat() {
     debugLog('Initializing Smut Writer Chat Interface...');
     
+    // Initialize navigation
+    initializeNavigation();
+    
+    // Check for story prompt from stories page
+    const storyPrompt = localStorage.getItem('smutwriter_story_prompt');
+    if (storyPrompt) {
+        // Clear the prompt from localStorage
+        localStorage.removeItem('smutwriter_story_prompt');
+        
+        // Set the prompt in the input field
+        const messageInput = document.getElementById('messageInput');
+        if (messageInput) {
+            messageInput.value = storyPrompt;
+            messageInput.focus();
+        }
+        
+        debugLog('Story prompt loaded:', storyPrompt);
+    }
+    
     // Initialize translation system first
     if (typeof TranslationManager !== 'undefined') {
         TranslationManager.init();
@@ -1272,4 +1291,36 @@ window.smutWriter = {
             storageUsed: JSON.stringify({chatHistory, conversationMessages}).length + ' characters'
         };
     }
-}; 
+};
+
+// Navigation functionality
+function initializeNavigation() {
+    const navToggle = document.getElementById('nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    
+    if (navToggle && navMenu) {
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+        
+        // Close menu when clicking on a link
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+            });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+            }
+        });
+    }
+}
+
+// ... existing code ... 

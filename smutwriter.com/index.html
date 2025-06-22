@@ -20,13 +20,70 @@
     <script src="translations.js"></script>
 </head>
 <body>
-    <main>
-        <div class="chat-container">
-            <div class="chat-header">
-                <h1>Smut Writer</h1>
-                <p>Choose your own adventure (smut edition)</p>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <i class="fas fa-pen-fancy"></i>
+                    <span>Smut Writer</span>
+                </a>
             </div>
             
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link active">
+                    <i class="fas fa-comments"></i>
+                    <span>Chat</span>
+                </a>
+                <a href="stories.html" class="nav-link">
+                    <i class="fas fa-book-open"></i>
+                    <span>Stories</span>
+                </a>
+                <a href="https://reddit.com/r/SmutWriter" class="nav-link" target="_blank">
+                    <i class="fab fa-reddit"></i>
+                    <span>Community</span>
+                </a>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSe7HbV_V71M9FuKvEAdCENJho8TN-GaGUU73PkmaOOuM1i6JQ/viewform?usp=sharing&ouid=101448214260710069814" class="nav-link" target="_blank">
+                    <i class="fas fa-envelope"></i>
+                    <span>Newsletter</span>
+                </a>
+                
+                <!-- Language Selector -->
+                <div class="nav-language-selector">
+                    <span><i class="fas fa-globe"></i></span>
+                    <select id="languageSelector" onchange="changeLanguage(this.value)">
+                        <option value="en">English</option>
+                        <option value="es">Español</option>
+                        <option value="fr">Français</option>
+                        <option value="de">Deutsch</option>
+                        <option value="it">Italiano</option>
+                        <option value="pt">Português</option>
+                        <option value="ru">Русский</option>
+                        <option value="ja">日本語</option>
+                        <option value="ko">한국어</option>
+                        <option value="zh">中文</option>
+                        <option value="ar">العربية</option>
+                        <option value="hi">हिन्दी</option>
+                    </select>
+                </div>
+                
+                <!-- Clear History Button -->
+                <button class="nav-clear-history-btn" onclick="clearChatHistory()" title="Clear chat history">
+                    <i class="fas fa-trash-alt"></i>
+                    <span>Clear History</span>
+                </button>
+            </div>
+            
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="chat-container">
             <div class="chat-window">
                 <div class="messages" id="messagesContainer">
                     <div class="message bot-message">

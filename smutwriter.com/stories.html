@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prewritten Stories - Smut Writer</title>
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HBW1GF6JYB"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-HBW1GF6JYB');
+    </script>
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="translations.js"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <i class="fas fa-pen-fancy"></i>
+                    <span>Smut Writer</span>
+                </a>
+            </div>
+            
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-comments"></i>
+                    <span>Chat</span>
+                </a>
+                <a href="stories.html" class="nav-link active">
+                    <i class="fas fa-book-open"></i>
+                    <span>Stories</span>
+                </a>
+                <a href="https://reddit.com/r/SmutWriter" class="nav-link" target="_blank">
+                    <i class="fab fa-reddit"></i>
+                    <span>Community</span>
+                </a>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSe7HbV_V71M9FuKvEAdCENJho8TN-GaGUU73PkmaOOuM1i6JQ/viewform?usp=sharing&ouid=101448214260710069814" class="nav-link" target="_blank">
+                    <i class="fas fa-envelope"></i>
+                    <span>Newsletter</span>
+                </a>
+            </div>
+            
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stories-main">
+        <div class="stories-container">
+            <div class="stories-header">
+                <h1><i class="fas fa-book-open"></i> Prewritten Stories</h1>
+                <p>Explore our collection of steamy, ready-to-read adult stories</p>
+            </div>
+            
+            <div class="stories-grid">
+                <div class="story-card">
+                    <div class="story-image">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="story-content">
+                        <h3>The Office Affair</h3>
+                        <p class="story-excerpt">When Sarah's new boss turns out to be her college crush, the tension in the office becomes unbearable...</p>
+                        <div class="story-meta">
+                            <span class="story-length"><i class="fas fa-clock"></i> 15 min read</span>
+                            <span class="story-genre"><i class="fas fa-tag"></i> Office Romance</span>
+                        </div>
+                        <button class="read-story-btn" onclick="readStory('office-affair')">
+                            <i class="fas fa-book-open"></i> Read Story
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="story-card">
+                    <div class="story-image">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <div class="story-content">
+                        <h3>Midnight Encounter</h3>
+                        <p class="story-excerpt">A chance meeting at a late-night diner leads to an unforgettable night of passion...</p>
+                        <div class="story-meta">
+                            <span class="story-length"><i class="fas fa-clock"></i> 12 min read</span>
+                            <span class="story-genre"><i class="fas fa-tag"></i> Contemporary</span>
+                        </div>
+                        <button class="read-story-btn" onclick="readStory('midnight-encounter')">
+                            <i class="fas fa-book-open"></i> Read Story
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="story-card">
+                    <div class="story-image">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="story-content">
+                        <h3>Study Session</h3>
+                        <p class="story-excerpt">When the study group becomes a private tutoring session, things get heated...</p>
+                        <div class="story-meta">
+                            <span class="story-length"><i class="fas fa-clock"></i> 18 min read</span>
+                            <span class="story-genre"><i class="fas fa-tag"></i> College Romance</span>
+                        </div>
+                        <button class="read-story-btn" onclick="readStory('study-session')">
+                            <i class="fas fa-book-open"></i> Read Story
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="story-card">
+                    <div class="story-image">
+                        <i class="fas fa-plane"></i>
+                    </div>
+                    <div class="story-content">
+                        <h3>Flight of Fantasy</h3>
+                        <p class="story-excerpt">A business trip turns into a romantic adventure at 30,000 feet...</p>
+                        <div class="story-meta">
+                            <span class="story-length"><i class="fas fa-clock"></i> 20 min read</span>
+                            <span class="story-genre"><i class="fas fa-tag"></i> Travel Romance</span>
+                        </div>
+                        <button class="read-story-btn" onclick="readStory('flight-fantasy')">
+                            <i class="fas fa-book-open"></i> Read Story
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="story-card">
+                    <div class="story-image">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <div class="story-content">
+                        <h3>Neighborly Love</h3>
+                        <p class="story-excerpt">When the new neighbor moves in, the whole neighborhood notices the chemistry...</p>
+                        <div class="story-meta">
+                            <span class="story-length"><i class="fas fa-clock"></i> 16 min read</span>
+                            <span class="story-genre"><i class="fas fa-tag"></i> Neighbor Romance</span>
+                        </div>
+                        <button class="read-story-btn" onclick="readStory('neighborly-love')">
+                            <i class="fas fa-book-open"></i> Read Story
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="story-card">
+                    <div class="story-image">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <div class="story-content">
+                        <h3>Royal Seduction</h3>
+                        <p class="story-excerpt">A commoner catches the eye of royalty in this modern fairy tale...</p>
+                        <div class="story-meta">
+                            <span class="story-length"><i class="fas fa-clock"></i> 25 min read</span>
+                            <span class="story-genre"><i class="fas fa-tag"></i> Royal Romance</span>
+                        </div>
+                        <button class="read-story-btn" onclick="readStory('royal-seduction')">
+                            <i class="fas fa-book-open"></i> Read Story
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stories-footer">
+                <p>Want more stories? <a href="index.html">Start a conversation</a> with our AI to create your own custom story!</p>
+                <div class="social-links">
+                    <a href="https://reddit.com/r/SmutWriter" target="_blank" class="social-link">
+                        <i class="fab fa-reddit"></i> Join our community
+                    </a>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSe7HbV_V71M9FuKvEAdCENJho8TN-GaGUU73PkmaOOuM1i6JQ/viewform?usp=sharing&ouid=101448214260710069814" target="_blank" class="social-link">
+                        <i class="fas fa-envelope"></i> Subscribe to newsletter
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        // Stories page specific functionality
+        function readStory(storyId) {
+            // For now, redirect to chat with a story prompt
+            const storyPrompts = {
+                'office-affair': 'Write a steamy office romance story about Sarah and her new boss who was her college crush',
+                'midnight-encounter': 'Write a passionate story about a chance meeting at a late-night diner that leads to an unforgettable night',
+                'study-session': 'Write an erotic story about a private tutoring session that becomes much more than studying',
+                'flight-fantasy': 'Write a romantic story about a business trip that turns into a passionate adventure at 30,000 feet',
+                'neighborly-love': 'Write a steamy story about the chemistry between new neighbors that the whole neighborhood notices',
+                'royal-seduction': 'Write a modern fairy tale about a commoner who catches the eye of royalty'
+            };
+            
+            const prompt = storyPrompts[storyId];
+            if (prompt) {
+                // Store the prompt in localStorage and redirect to chat
+                localStorage.setItem('smutwriter_story_prompt', prompt);
+                window.location.href = 'index.html';
+            }
+        }
+        
+        // Initialize navigation for stories page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeNavigation();
+        });
+    </script>
+</body>
+</html> 
