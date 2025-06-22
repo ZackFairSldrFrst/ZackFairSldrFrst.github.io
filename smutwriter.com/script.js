@@ -1323,4 +1323,17 @@ function initializeNavigation() {
     }
 }
 
+// Prefill chat input from prompt example if available
+window.addEventListener('DOMContentLoaded', () => {
+    const prompt = localStorage.getItem('smutwriter_story_prompt');
+    if (prompt) {
+        const input = document.getElementById('messageInput');
+        if (input) {
+            input.value = prompt;
+            input.focus();
+        }
+        localStorage.removeItem('smutwriter_story_prompt');
+    }
+});
+
 // ... existing code ... 
