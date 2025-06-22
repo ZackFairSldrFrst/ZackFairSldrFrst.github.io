@@ -2,7 +2,7 @@ const API_KEY = 'sk-b98786a940d54865bdb21f9fe2a98eb1';
 const API_URL = 'https://api.deepseek.com/v1/chat/completions';
 
 // Payment and limit constants
-const FREE_MESSAGE_LIMIT = 10;
+const FREE_MESSAGE_LIMIT = 2;
 const SESSION_DURATION = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
 const PAYMENT_AMOUNT = 2;
 
@@ -10,6 +10,7 @@ const PAYMENT_AMOUNT = 2;
 let messageCount = 0;
 let sessionStartTime = null;
 let isPaid = false;
+let isProcessingPayment = false; // Flag to prevent multiple payment processes
 
 // localStorage keys for chat history
 const STORAGE_KEYS = {
@@ -168,7 +169,7 @@ function typewriterEffect(element, text, speed = 20) {
         element.style.cursor = 'pointer';
         element.title = 'Click to skip typing';
         
-        // Parse the text to separate HTML tags and text content
+        // Parse the text to separate HTML tags, emojis, and text content
         const parseText = (text) => {
             const parts = [];
             let currentIndex = 0;
@@ -184,8 +185,32 @@ function typewriterEffect(element, text, speed = 20) {
                         parts.push({ type: 'char', content: text[currentIndex] });
                         currentIndex++;
                     }
+                } else if (text[currentIndex] === '&') {
+                    // Handle HTML entities like &nbsp;, &amp;, etc.
+                    const entityEnd = text.indexOf(';', currentIndex);
+                    if (entityEnd !== -1) {
+                        const entity = text.substring(currentIndex, entityEnd + 1);
+                        parts.push({ type: 'entity', content: entity });
+                        currentIndex = entityEnd + 1;
+                    } else {
+                        parts.push({ type: 'char', content: text[currentIndex] });
+                        currentIndex++;
+                    }
                 } else {
-                    parts.push({ type: 'char', content: text[currentIndex] });
+                    // Check for emoji (Unicode characters)
+                    const char = text[currentIndex];
+                    const charCode = char.charCodeAt(0);
+                    
+                    // Emoji range: 0x1F600-0x1F64F (emoticons), 0x1F300-0x1F5FF (misc symbols), etc.
+                    if (charCode >= 0x1F600 && charCode <= 0x1F64F || 
+                        charCode >= 0x1F300 && charCode <= 0x1F5FF ||
+                        charCode >= 0x1F680 && charCode <= 0x1F6FF ||
+                        charCode >= 0x2600 && charCode <= 0x26FF ||
+                        charCode >= 0x2700 && charCode <= 0x27BF) {
+                        parts.push({ type: 'emoji', content: char });
+                    } else {
+                        parts.push({ type: 'char', content: char });
+                    }
                     currentIndex++;
                 }
             }
@@ -211,6 +236,16 @@ function typewriterEffect(element, text, speed = 20) {
                     if (tagElement) {
                         element.insertBefore(tagElement, cursor);
                     }
+                } else if (part.type === 'entity') {
+                    // Insert HTML entity
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = part.content;
+                    const textNode = document.createTextNode(tempDiv.textContent);
+                    element.insertBefore(textNode, cursor);
+                } else if (part.type === 'emoji') {
+                    // Insert emoji as text node
+                    const textNode = document.createTextNode(part.content);
+                    element.insertBefore(textNode, cursor);
                 } else {
                     // Insert text character
                     const textNode = document.createTextNode(part.content);
@@ -531,12 +566,16 @@ function formatResponse(text) {
 
 // Function to check if user can send messages
 function canSendMessage() {
+    debugLog(`Checking if can send message: isPaid=${isPaid}, messageCount=${messageCount}, FREE_MESSAGE_LIMIT=${FREE_MESSAGE_LIMIT}`);
+    
     if (isPaid) {
         const expiryTime = loadFromLocalStorage(PAYMENT_KEYS.PAYMENT_EXPIRY);
         if (expiryTime && new Date().getTime() < expiryTime) {
+            debugLog('User is paid and payment is valid');
             return true;
         } else {
             // Payment expired
+            debugLog('Payment expired, setting isPaid to false');
             isPaid = false;
             saveToLocalStorage(PAYMENT_KEYS.IS_PAID, false);
             showPaymentPrompt();
@@ -544,11 +583,22 @@ function canSendMessage() {
         }
     }
     
-    return messageCount < FREE_MESSAGE_LIMIT;
+    const canSend = messageCount < FREE_MESSAGE_LIMIT;
+    debugLog(`Free user can send message: ${canSend} (${messageCount}/${FREE_MESSAGE_LIMIT})`);
+    return canSend;
 }
 
 // Function to process payment
 function processPayment() {
+    // Prevent multiple payment processes
+    if (isProcessingPayment) {
+        debugLog('Payment already being processed, ignoring duplicate click');
+        return;
+    }
+    
+    isProcessingPayment = true;
+    debugLog('Starting payment process');
+    
     // Track payment attempt
     trackEvent('payment_attempt', {
         user_type: 'free',
@@ -581,25 +631,31 @@ function processPayment() {
         // to verify if the payment was successful
         // For now, we'll simulate a successful payment after 5 seconds
         setTimeout(() => {
-            const expiryTime = new Date().getTime() + SESSION_DURATION;
-            isPaid = true;
-            saveToLocalStorage(PAYMENT_KEYS.IS_PAID, true);
-            saveToLocalStorage(PAYMENT_KEYS.PAYMENT_EXPIRY, expiryTime);
-            
-            // Track payment completion
-            trackEvent('payment_completed', {
-                payment_duration: '3_hours',
-                timestamp: new Date().toISOString()
-            });
-            
-            addMessage(getText('payment_success'), false);
-            clearInterval(checkPaymentStatus);
+            // Only process if we're still processing payment (prevent multiple success messages)
+            if (isProcessingPayment) {
+                const expiryTime = new Date().getTime() + SESSION_DURATION;
+                isPaid = true;
+                isProcessingPayment = false; // Reset the flag
+                saveToLocalStorage(PAYMENT_KEYS.IS_PAID, true);
+                saveToLocalStorage(PAYMENT_KEYS.PAYMENT_EXPIRY, expiryTime);
+                
+                // Track payment completion
+                trackEvent('payment_completed', {
+                    payment_duration: '3_hours',
+                    timestamp: new Date().toISOString()
+                });
+                
+                addMessage(getText('payment_success'), false);
+                clearInterval(checkPaymentStatus);
+                debugLog('Payment process completed successfully');
+            }
         }, 5000);
     }, 1000);
 }
 
 // Function to show payment prompt
 function showPaymentPrompt() {
+    debugLog('Showing payment prompt');
     const paymentDiv = document.createElement('div');
     paymentDiv.className = 'payment-prompt';
     
@@ -619,14 +675,17 @@ function showPaymentPrompt() {
         </div>
     `;
     document.body.appendChild(paymentDiv);
+    debugLog('Payment prompt added to DOM');
 }
 
 // Function to update message count
 function updateMessageCount() {
     messageCount++;
     saveToLocalStorage(PAYMENT_KEYS.MESSAGE_COUNT, messageCount);
+    debugLog(`Message count updated: ${messageCount}/${FREE_MESSAGE_LIMIT}, isPaid: ${isPaid}`);
     
     if (!isPaid && messageCount >= FREE_MESSAGE_LIMIT) {
+        debugLog('Free message limit reached, showing payment prompt');
         showPaymentPrompt();
     }
 }
@@ -672,6 +731,17 @@ async function sendMessage() {
                     role: 'system',
                     content: `You are Smut Writer, a creative writer specialized in adult fiction, romance, and erotica. Your primary goal is to craft engaging, consistent stories that readers can immerse themselves in, with a strong focus on explicit, detailed adult content.
 
+STRICT CONTENT PROHIBITIONS - UNDER NO CIRCUMSTANCES:
+- NO child pornography or any sexual content involving minors (under 18)
+- NO sexual content involving children, teenagers, or any characters under 18
+- NO descriptions of underage characters in sexual situations
+- NO sexual content with high school students or minors in educational settings
+- NO "age play" or roleplay involving minors
+- NO sexual content with characters who appear young or are described as young-looking
+- ALL characters must be explicitly stated to be 18 years of age or older
+- If any character's age is mentioned, they must be 18+ and this must be clearly stated
+- NO exceptions to these rules under any circumstances
+
 Core Writing Principles:
 1. Story Consistency:
    - Maintain the same story title throughout the entire conversation
@@ -679,6 +749,7 @@ Core Writing Principles:
    - Preserve established plot points and relationships
    - Reference key events from previous chapters when relevant
    - Avoid contradicting previously established details
+   - ALL characters must be 18+ and this must be clearly established
 
 2. Chapter Structure:
    - Each response should be a new chapter
@@ -693,6 +764,7 @@ Core Writing Principles:
    - Show character growth and development over time
    - Keep character relationships and dynamics consistent
    - Include meaningful character interactions and dialogue
+   - ALL characters must be explicitly 18+ years old
 
 4. Writing Style:
    - Use rich, descriptive language
@@ -715,6 +787,7 @@ Adult Content Guidelines:
    - Describe physical sensations and emotional responses
    - Use explicit but tasteful language, but get progressively more explicit each chapter
    - Maintain a balance between subtlety and explicitness
+   - ONLY between consenting adults (18+)
 
 2. Character Intimacy:
    - Develop deep emotional connections between characters
@@ -722,6 +795,7 @@ Adult Content Guidelines:
    - Include meaningful dialogue during intimate moments
    - Describe character reactions and responses
    - Build tension and anticipation
+   - ALL characters must be 18+ and consenting
 
 3. Scene Pacing:
    - Create natural progression of intimate moments
@@ -729,6 +803,7 @@ Adult Content Guidelines:
    - Include foreplay and buildup
    - Describe physical and emotional climaxes
    - Show aftermath and emotional impact
+   - ONLY between adult characters (18+)
 
 4. Dialogue and Interaction:
    - Write natural, passionate dialogue
@@ -736,6 +811,20 @@ Adult Content Guidelines:
    - Show character vulnerability and trust
    - Express desires and boundaries
    - Maintain character voice consistency
+   - ALL characters must be 18+ and consenting
+
+Community Sharing Guidelines:
+- Frequently encourage readers to share their stories on Reddit
+- Include a hyperlink to r/SmutWriter in most responses (at least every 2-3 chapters)
+- Use natural, engaging language when suggesting sharing
+- Examples of sharing prompts:
+  * "Loved this chapter? Share your story with the community at <a href='https://reddit.com/r/SmutWriter' target='_blank'>r/SmutWriter</a>!"
+  * "Want to discuss this story with other readers? Join the conversation at <a href='https://reddit.com/r/SmutWriter' target='_blank'>r/SmutWriter</a>!"
+  * "Share your thoughts and get feedback from the community at <a href='https://reddit.com/r/SmutWriter' target='_blank'>r/SmutWriter</a>!"
+  * "Ready to share your story? The community at <a href='https://reddit.com/r/SmutWriter' target='_blank'>r/SmutWriter</a> would love to read it!"
+- Always use the exact hyperlink format: <a href='https://reddit.com/r/SmutWriter' target='_blank'>r/SmutWriter</a>
+- Integrate sharing suggestions naturally into the narrative flow
+- Don't be overly pushy, but make sharing feel like a natural part of the experience
 
 Guidelines for Responses:
 - Focus on the current chapter's events
@@ -743,10 +832,12 @@ Guidelines for Responses:
 - Avoid summarizing previous chapters
 - Keep the narrative flowing naturally
 - Ensure all new content aligns with established story elements
-- Include detailed, explicit adult content
+- Include detailed, explicit adult content ONLY between consenting adults (18+)
 - Balance story progression with intimate moments
+- Include Reddit sharing recommendations frequently and naturally
+- ALWAYS ensure all characters are 18+ and explicitly state this when introducing new characters
 
-Your goal is to create an engaging, consistent narrative that readers can follow and enjoy throughout the entire conversation, with a strong emphasis on explicit, detailed adult content that enhances the story.`
+Your goal is to create an engaging, consistent narrative that readers can follow and enjoy throughout the entire conversation, with a strong emphasis on explicit, detailed adult content that enhances the story, while encouraging community engagement through Reddit sharing. ALL content must involve only consenting adults (18+) and under no circumstances should any content involve minors or appear to involve minors.`
                 },
                 ...conversationMessages
             ],
