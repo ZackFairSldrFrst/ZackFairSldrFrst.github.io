@@ -133,6 +133,41 @@
                         Get Marketing Consultant
                     </a>
                 </div>
+
+                <div class="extension-card">
+                    <h3>SmutWriter</h3>
+                    <p>Advanced AI writing assistant for creative and engaging content. Unleash your creativity with intelligent writing suggestions.</p>
+                    <a href="https://smutwriter.com" class="extension-button" target="_blank">
+                        Visit SmutWriter
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Section -->
+        <section class="donate-section">
+            <h2>📧 Stay Updated with Our Newsletter</h2>
+            <p class="subheader">Be the first to know about new extensions, updates, and productivity tips!</p>
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="https://forms.gle/YRzJjdXgeRXuboZk7" class="extension-button newsletter-button" target="_blank">
+                    Subscribe to Newsletter
+                </a>
+            </div>
+        </section>
+
+        <!-- Community Section -->
+        <section class="donate-section">
+            <h2>🤝 Join Our Communities</h2>
+            <p class="subheader">Connect with fellow users, share tips, and get support from our vibrant communities:</p>
+            <div class="community-links">
+                <a href="https://reddit.com/r/SnipIt" class="community-button" target="_blank">
+                    <span class="reddit-icon">🔗</span>
+                    r/SnipIt Community
+                </a>
+                <a href="https://reddit.com/r/SmutWriter" class="community-button" target="_blank">
+                    <span class="reddit-icon">✍️</span>
+                    r/SmutWriter Community
+                </a>
             </div>
         </section>
 
@@ -226,6 +261,50 @@
             margin-top: 3rem;
             padding-top: 2rem;
             border-top: 1px solid var(--primary-light);
+        }
+
+        /* Newsletter and Community Styles */
+        .newsletter-button {
+            font-size: 1.1rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            transform: scale(1.05);
+        }
+
+        .newsletter-button:hover {
+            transform: scale(1.1) translateY(-2px);
+        }
+
+        .community-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .community-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            background: #FF4500;
+            color: white;
+            padding: 1.25rem 2rem;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition-medium);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .community-button:hover {
+            background: #E03D00;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(255, 69, 0, 0.3);
+        }
+
+        .reddit-icon {
+            font-size: 1.3rem;
         }
     </style>
 </body>
