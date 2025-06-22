@@ -114,6 +114,30 @@
                     <i class="fas fa-crown"></i>
                     <span>Historical</span>
                 </button>
+                <button class="category-tab" data-category="scifi">
+                    <i class="fas fa-rocket"></i>
+                    <span>Sci-Fi</span>
+                </button>
+                <button class="category-tab" data-category="mystery">
+                    <i class="fas fa-search"></i>
+                    <span>Mystery</span>
+                </button>
+                <button class="category-tab" data-category="adventure">
+                    <i class="fas fa-compass"></i>
+                    <span>Adventure</span>
+                </button>
+                <button class="category-tab" data-category="celebrity">
+                    <i class="fas fa-star"></i>
+                    <span>Celebrity</span>
+                </button>
+                <button class="category-tab" data-category="supernatural">
+                    <i class="fas fa-ghost"></i>
+                    <span>Supernatural</span>
+                </button>
+                <button class="category-tab" data-category="taboo">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Taboo</span>
+                </button>
             </div>
             
             <div class="prompts-grid" id="promptsGrid">
@@ -156,6 +180,81 @@
                             <div class="prompt-meta">
                                 <span><i class="fas fa-eye"></i> Secret</span>
                                 <span><i class="fas fa-clock"></i> 6 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                    
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Wedding Crasher Romance</h3>
+                            <p class="prompt-text">Create a story about two strangers who meet at a wedding and have an instant connection. The romantic atmosphere leads to a passionate night together.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-ring"></i> Wedding</span>
+                                <span><i class="fas fa-clock"></i> 7 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                    
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Coffee Shop Meet-Cute</h3>
+                            <p class="prompt-text">Write about a daily coffee routine that turns into romance when the barista and customer develop feelings. Include cute interactions and growing tension.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-coffee"></i> Cute</span>
+                                <span><i class="fas fa-clock"></i> 5 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                    
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Fake Relationship</h3>
+                            <p class="prompt-text">Create a story about two people who pretend to be dating for practical reasons, but fake feelings turn into real passion. Include the moment they realize it's not pretend anymore.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-mask"></i> Fake Dating</span>
+                                <span><i class="fas fa-clock"></i> 9 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                    
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Best Friend's Sibling</h3>
+                            <p class="prompt-text">Write about falling for your best friend's attractive sibling. Include the forbidden nature, secret glances, and the risk of ruining friendships.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-users"></i> Forbidden</span>
+                                <span><i class="fas fa-clock"></i> 8 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                    
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Enemies to Lovers</h3>
+                            <p class="prompt-text">Create a story about two people who can't stand each other but are forced to work together. The hate slowly turns to passion in unexpected ways.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-fire"></i> Tension</span>
+                                <span><i class="fas fa-clock"></i> 10 min read</span>
                             </div>
                         </div>
                         <button class="copy-prompt-btn" onclick="usePrompt(this)">
@@ -396,6 +495,339 @@
                             <div class="prompt-meta">
                                 <span><i class="fas fa-shield-alt"></i> Chivalry</span>
                                 <span><i class="fas fa-clock"></i> 11 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Sci-Fi Category -->
+                <div class="prompt-category" id="scifi">
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Alien Encounter</h3>
+                            <p class="prompt-text">Write about first contact with an attractive alien species. Explore the cultural differences and forbidden attraction between species.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-rocket"></i> Alien</span>
+                                <span><i class="fas fa-clock"></i> 8 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                    
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Space Station Romance</h3>
+                            <p class="prompt-text">Create a story about crew members on a long space mission who develop feelings. The isolation of space intensifies their connection.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-satellite"></i> Space</span>
+                                <span><i class="fas fa-clock"></i> 10 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                    
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Cyberpunk Love</h3>
+                            <p class="prompt-text">Write about romance in a dystopian cyberpunk future. Include high-tech enhancement, virtual reality, and digital intimacy.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-microchip"></i> Cyberpunk</span>
+                                <span><i class="fas fa-clock"></i> 9 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                    
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Android Romance</h3>
+                            <p class="prompt-text">Create a story about a human falling in love with an advanced android. Explore what makes love real and the nature of consciousness.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-robot"></i> AI</span>
+                                <span><i class="fas fa-clock"></i> 11 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Mystery Category -->
+                <div class="prompt-category" id="mystery">
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Detective's Temptation</h3>
+                            <p class="prompt-text">Write about a detective who becomes attracted to a suspect in their case. The professional boundaries blur as passion interferes with justice.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-search"></i> Detective</span>
+                                <span><i class="fas fa-clock"></i> 12 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                    
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Mysterious Stranger</h3>
+                            <p class="prompt-text">Create a story about someone who keeps encountering the same mysterious stranger in different places. The intrigue leads to seduction.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-question"></i> Mystery</span>
+                                <span><i class="fas fa-clock"></i> 8 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                    
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Secret Identity</h3>
+                            <p class="prompt-text">Write about two people with secret identities who fall for each other without knowing the truth. Include the tension of hidden lives.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-mask"></i> Secret</span>
+                                <span><i class="fas fa-clock"></i> 10 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Adventure Category -->
+                <div class="prompt-category" id="adventure">
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Treasure Hunters</h3>
+                            <p class="prompt-text">Create a story about treasure hunters who find more than gold on their expedition. The danger and adrenaline fuel their passion.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-compass"></i> Adventure</span>
+                                <span><i class="fas fa-clock"></i> 9 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                    
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Survival Romance</h3>
+                            <p class="prompt-text">Write about strangers stranded together who must survive in the wilderness. The life-or-death situation brings them closer than ever.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-tree"></i> Survival</span>
+                                <span><i class="fas fa-clock"></i> 11 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                    
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Spy Seduction</h3>
+                            <p class="prompt-text">Create a story about rival spies who use seduction as a weapon but end up genuinely falling for each other. Include espionage and betrayal.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-user-secret"></i> Spy</span>
+                                <span><i class="fas fa-clock"></i> 13 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Celebrity Category -->
+                <div class="prompt-category" id="celebrity">
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Pop Star Encounter</h3>
+                            <p class="prompt-text">Write about a fan who meets their celebrity crush backstage. The fantasy becomes reality as they share an intimate moment away from the spotlight.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-star"></i> Celebrity</span>
+                                <span><i class="fas fa-clock"></i> 7 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                    
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Movie Star Romance</h3>
+                            <p class="prompt-text">Create a story about a famous actor who falls for someone outside the industry. Include the challenges of fame and finding real love.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-film"></i> Hollywood</span>
+                                <span><i class="fas fa-clock"></i> 10 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                    
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Bodyguard Protection</h3>
+                            <p class="prompt-text">Write about a celebrity who develops feelings for their protective bodyguard. The professional relationship becomes intensely personal.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-shield-alt"></i> Protection</span>
+                                <span><i class="fas fa-clock"></i> 9 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Supernatural Category -->
+                <div class="prompt-category" id="supernatural">
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Werewolf Pack</h3>
+                            <p class="prompt-text">Create a story about joining a werewolf pack and finding your mate. Include primal instincts, pack dynamics, and wild passion.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-wolf"></i> Werewolf</span>
+                                <span><i class="fas fa-clock"></i> 12 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                    
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Demon Seduction</h3>
+                            <p class="prompt-text">Write about a demon who appears to seduce someone but ends up being seduced themselves. Include supernatural powers and forbidden desire.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-fire"></i> Demon</span>
+                                <span><i class="fas fa-clock"></i> 10 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                    
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Angel's Fall</h3>
+                            <p class="prompt-text">Create a story about an angel who falls from grace for mortal love. Include the sacrifice of immortality for passion.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-feather"></i> Angel</span>
+                                <span><i class="fas fa-clock"></i> 11 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                    
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Witch's Spell</h3>
+                            <p class="prompt-text">Write about a witch who casts a love spell but accidentally falls under its influence. Magic and desire intertwine in unexpected ways.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-hat-wizard"></i> Witch</span>
+                                <span><i class="fas fa-clock"></i> 8 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Taboo Category -->
+                <div class="prompt-category" id="taboo">
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Forbidden Age Gap</h3>
+                            <p class="prompt-text">Write about an older, experienced person who mentors someone younger, and the professional relationship evolves into something more intimate. (All characters 18+)</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-exclamation-triangle"></i> Age Gap</span>
+                                <span><i class="fas fa-clock"></i> 9 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                    
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Power Exchange</h3>
+                            <p class="prompt-text">Create a story exploring consensual power dynamics in a relationship. Include trust, communication, and the psychology of dominance and submission.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-link"></i> Power Play</span>
+                                <span><i class="fas fa-clock"></i> 11 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                    
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Exhibitionist Thrill</h3>
+                            <p class="prompt-text">Write about the excitement of public displays of affection that risk being seen. Include the adrenaline rush and careful planning.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-eye"></i> Public</span>
+                                <span><i class="fas fa-clock"></i> 7 min read</span>
+                            </div>
+                        </div>
+                        <button class="copy-prompt-btn" onclick="usePrompt(this)">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Use Prompt</span>
+                        </button>
+                    </div>
+                    
+                    <div class="prompt-card">
+                        <div class="prompt-content">
+                            <h3>Polyamorous Discovery</h3>
+                            <p class="prompt-text">Create a story about discovering polyamory and navigating multiple loving relationships. Include communication, jealousy, and compersion.</p>
+                            <div class="prompt-meta">
+                                <span><i class="fas fa-heart"></i> Polyamory</span>
+                                <span><i class="fas fa-clock"></i> 13 min read</span>
                             </div>
                         </div>
                         <button class="copy-prompt-btn" onclick="usePrompt(this)">
