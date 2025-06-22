@@ -236,7 +236,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const response = await callDeepSeekAPI([{ role: 'user', content: prompt }]);
             displayGeneratedContent(generatedCharContent, response, 'generated-character');
-            showToast('Character generated!', 'success');
+            
+            // Add import button for generated character
+            const importBtn = document.createElement('button');
+            importBtn.className = 'btn btn-primary';
+            importBtn.textContent = '📋 Import to Character Sheet';
+            importBtn.style.marginTop = '1rem';
+            importBtn.onclick = () => importGeneratedCharacter(response);
+            generatedCharContent.appendChild(importBtn);
+            
+            showToast('Character generated! Click Import to add to character sheet.', 'success');
         } catch (error) {
             displayError(generatedCharContent, error.message);
         }
@@ -296,7 +305,26 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         
         displayGeneratedContent(generatedCharContent, content, 'rolled-stats');
-        showToast('Stats rolled!', 'success');
+        
+        // Create stats object for import functionality
+        const statsObject = {
+            STR: stats[0],
+            DEX: stats[1],
+            CON: stats[2],
+            INT: stats[3],
+            WIS: stats[4],
+            CHA: stats[5]
+        };
+        
+        // Add import button for stats
+        const importBtn = document.createElement('button');
+        importBtn.className = 'btn btn-primary';
+        importBtn.textContent = '📊 Import to Character Sheet';
+        importBtn.style.marginTop = '1rem';
+        importBtn.onclick = () => useGeneratedStats(statsObject);
+        generatedCharContent.appendChild(importBtn);
+        
+        showToast('Stats rolled! Click Import to add to character sheet.', 'success');
     }
 
     // Batch 3: Story Generator Functions
@@ -409,7 +437,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const response = await callDeepSeekAPI([{ role: 'user', content: prompt }]);
             displayGeneratedContent(generatedStoryContent, response, 'generated-loot');
-            showToast('Loot generated!', 'success');
+            
+            // Add import button for loot
+            const importBtn = document.createElement('button');
+            importBtn.className = 'btn btn-primary';
+            importBtn.textContent = '🎒 Add to Character Equipment';
+            importBtn.style.marginTop = '1rem';
+            importBtn.onclick = () => addToCharacterEquipment(response);
+            generatedStoryContent.appendChild(importBtn);
+            
+            showToast('Loot generated! Click Add to import to character sheet.', 'success');
         } catch (error) {
             displayError(generatedStoryContent, error.message);
         }
@@ -701,6 +738,527 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Integration functions to connect all tabs
+    function importGeneratedCharacter(characterData) {
+        try {
+            // Switch to character sheet tab
+            switchTab('character-sheet');
+            
+            // Parse character data and populate fields
+            const lines = characterData.split('\n');
+            let characterInfo = {};
+            
+            // Extract character information
+            lines.forEach(line => {
+                if (line.includes('Name:')) characterInfo.name = line.split(':')[1]?.trim();
+                if (line.includes('Race:')) characterInfo.race = line.split(':')[1]?.trim();
+                if (line.includes('Class:')) characterInfo.class = line.split(':')[1]?.trim();
+                if (line.includes('Level:')) characterInfo.level = line.split(':')[1]?.trim();
+                if (line.includes('Background:')) characterInfo.background = line.split(':')[1]?.trim();
+                if (line.includes('Alignment:')) characterInfo.alignment = line.split(':')[1]?.trim();
+            });
+            
+            // Populate character sheet fields
+            if (characterInfo.name) {
+                const nameField = document.getElementById('characterName');
+                if (nameField) nameField.value = characterInfo.name;
+            }
+            
+            if (characterInfo.race) {
+                const raceField = document.getElementById('race');
+                if (raceField) raceField.value = characterInfo.race;
+            }
+            
+            if (characterInfo.class) {
+                const classField = document.getElementById('characterClass');
+                if (classField) classField.value = characterInfo.class;
+            }
+            
+            if (characterInfo.level) {
+                const levelField = document.getElementById('level');
+                if (levelField) levelField.value = characterInfo.level;
+            }
+            
+            if (characterInfo.background) {
+                const backgroundField = document.getElementById('background');
+                if (backgroundField) backgroundField.value = characterInfo.background;
+            }
+            
+            // Trigger save if function exists
+            if (typeof window.saveCharacterSheet === 'function') {
+                window.saveCharacterSheet();
+            }
+            
+            showToast('Character imported successfully!', 'success');
+            
+        } catch (error) {
+            console.error('Error importing character:', error);
+            showToast('Error importing character', 'error');
+        }
+    }
+
+    function useGeneratedStats(stats) {
+        try {
+            // Switch to character sheet tab
+            switchTab('character-sheet');
+            
+            // Apply stats to character sheet
+            Object.keys(stats).forEach(stat => {
+                const fieldId = stat.toLowerCase();
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.value = stats[stat];
+                    console.log(`Set ${fieldId} to ${stats[stat]}`);
+                    // Trigger change event to update modifiers
+                    field.dispatchEvent(new Event('change'));
+                    field.dispatchEvent(new Event('input'));
+                } else {
+                    console.warn(`Field not found: ${fieldId}`);
+                }
+            });
+            
+            // Save character sheet if function exists
+            if (typeof window.saveCharacterSheet === 'function') {
+                window.saveCharacterSheet();
+            }
+            
+            showToast('Stats imported successfully!', 'success');
+            
+        } catch (error) {
+            console.error('Error importing stats:', error);
+            showToast('Error importing stats', 'error');
+        }
+    }
+
+    function addToCharacterEquipment(item) {
+        try {
+            switchTab('character-sheet');
+            
+            const equipmentField = document.getElementById('equipment');
+            if (equipmentField) {
+                const currentEquipment = equipmentField.value;
+                const newEquipment = currentEquipment ? currentEquipment + '\n' + item : item;
+                equipmentField.value = newEquipment;
+                
+                if (typeof window.saveCharacterSheet === 'function') {
+                    window.saveCharacterSheet();
+                }
+                
+                showToast('Item added to equipment!', 'success');
+            }
+        } catch (error) {
+            console.error('Error adding equipment:', error);
+            showToast('Error adding equipment', 'error');
+        }
+    }
+
+    function addToCombatFromCharacterSheet() {
+        try {
+            const nameField = document.getElementById('characterName');
+            const levelField = document.getElementById('level');
+            const hpField = document.getElementById('hitPoints');
+            const acField = document.getElementById('armorClass');
+            
+            console.log('Adding character to combat...', {
+                name: nameField?.value,
+                hp: hpField?.value,
+                ac: acField?.value
+            });
+            
+            if (!nameField?.value) {
+                showToast('Please enter character name first', 'warning');
+                return;
+            }
+            
+            // Get dex modifier for initiative
+            const dexField = document.getElementById('dex');
+            const dexScore = parseInt(dexField?.value) || 10;
+            const dexMod = Math.floor((dexScore - 10) / 2);
+            const initiativeRoll = Math.floor(Math.random() * 20) + 1 + dexMod;
+            
+            const character = {
+                id: Date.now(),
+                name: nameField.value || 'Player Character',
+                initiative: initiativeRoll,
+                maxHp: parseInt(hpField?.value) || 20,
+                currentHp: parseInt(hpField?.value) || 20,
+                ac: parseInt(acField?.value) || 10,
+                type: 'player',
+                conditions: []
+            };
+            
+            console.log('Character object created:', character);
+            
+            // Initialize aiState if it doesn't exist
+            if (!window.aiState) {
+                window.aiState = {
+                    combatants: [],
+                    combatActive: false,
+                    currentRound: 0,
+                    currentTurn: 0
+                };
+            }
+            
+            window.aiState.combatants.push(character);
+            console.log('Character added to combatants:', window.aiState.combatants);
+            
+            switchTab('combat-tracker');
+            
+            // Update combat list if function exists
+            if (typeof updateCombatantsList === 'function') {
+                updateCombatantsList();
+            } else {
+                console.log('updateCombatantsList function not found');
+            }
+            
+            showToast(`${character.name} added to combat! (Initiative: ${initiativeRoll})`, 'success');
+            
+        } catch (error) {
+            console.error('Error adding character to combat:', error);
+            showToast('Error adding character to combat: ' + error.message, 'error');
+        }
+    }
+
+    // Preserve original dice rolling functionality
+    function preserveOriginalDiceRoller() {
+        const rollButton = document.getElementById('rollButton');
+        const resultDiv = document.getElementById('result');
+        
+        if (rollButton && !rollButton.hasAttribute('data-ai-enhanced')) {
+            rollButton.setAttribute('data-ai-enhanced', 'true');
+            
+            rollButton.addEventListener('click', function() {
+                try {
+                    // Get original roll results
+                    const diceValue = parseInt(document.getElementById('dice')?.value) || 20;
+                    const modifierValue = parseInt(document.getElementById('modifier')?.value) || 0;
+                    const numDice = parseInt(document.getElementById('numDice')?.value) || 1;
+                    
+                    // Roll dice
+                    let total = 0;
+                    let results = [];
+                    
+                    for (let i = 0; i < numDice; i++) {
+                        const roll = Math.floor(Math.random() * diceValue) + 1;
+                        results.push(roll);
+                        total += roll;
+                    }
+                    
+                    total += modifierValue;
+                    
+                    // Display result
+                    let resultText = `Rolled ${numDice}d${diceValue}`;
+                    if (modifierValue !== 0) {
+                        resultText += (modifierValue > 0 ? '+' : '') + modifierValue;
+                    }
+                    resultText += `: ${results.join(', ')}`;
+                    if (modifierValue !== 0) {
+                        resultText += ` (${total})`;
+                    } else if (numDice > 1) {
+                        resultText += ` = ${total}`;
+                    }
+                    
+                    if (resultDiv) {
+                        resultDiv.innerHTML = `<h3>${resultText}</h3>`;
+                    }
+                    
+                    // Play sound if it exists
+                    const sound = document.getElementById('rollSound');
+                    if (sound) {
+                        sound.currentTime = 0;
+                        sound.play().catch(() => {}); // Ignore audio errors
+                    }
+                    
+                } catch (error) {
+                    console.error('Error during dice roll:', error);
+                    if (resultDiv) {
+                        resultDiv.innerHTML = '<h3>Error rolling dice</h3>';
+                    }
+                }
+            });
+        }
+    }
+
+    // Initialize preserved functionality
+    preserveOriginalDiceRoller();
+    
+    // Initialize character sheet functionality
+    initializeCharacterSheet();
+    
+    // Fallback toast function if not available
+    if (!window.showToast) {
+        window.showToast = function(message, type = 'info') {
+            console.log(`Toast (${type}):`, message);
+            
+            // Create simple toast notification
+            const toast = document.createElement('div');
+            toast.className = `toast ${type} show`;
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 1000;
+                background: ${type === 'success' ? '#00b894' : type === 'error' ? '#d63031' : type === 'warning' ? '#fdcb6e' : '#6c5ce7'};
+            `;
+            
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        };
+    }
+    
+    // Character Sheet Management Functions
+    function initializeCharacterSheet() {
+        console.log('Initializing character sheet...');
+        
+        // Set up event listeners for character sheet (backup - primary is onclick)
+        const saveBtn = document.getElementById('save-character-btn');
+        const loadBtn = document.getElementById('load-character-btn');
+        const exportBtn = document.getElementById('export-character-btn');
+        
+        console.log('Found buttons:', { saveBtn: !!saveBtn, loadBtn: !!loadBtn, exportBtn: !!exportBtn });
+        
+        if (saveBtn) saveBtn.addEventListener('click', saveCharacterSheet);
+        if (loadBtn) loadBtn.addEventListener('click', loadCharacterSheet);
+        if (exportBtn) exportBtn.addEventListener('click', exportCharacterSheet);
+        
+        // Set up ability score change listeners
+        const abilityScores = ['str', 'dex', 'con', 'int', 'wis', 'cha'];
+        abilityScores.forEach(ability => {
+            const input = document.getElementById(ability);
+            if (input) {
+                input.addEventListener('change', () => updateModifiers());
+                input.addEventListener('input', () => updateModifiers());
+            }
+        });
+        
+        // Set up level change listener for proficiency bonus
+        const levelInput = document.getElementById('level');
+        if (levelInput) {
+            levelInput.addEventListener('change', updateProficiencyBonus);
+            levelInput.addEventListener('input', updateProficiencyBonus);
+        }
+        
+        // Load saved character on page load
+        setTimeout(() => {
+            loadCharacterSheet();
+            updateModifiers();
+            updateProficiencyBonus();
+        }, 500);
+        
+        console.log('Character sheet initialized');
+    }
+    
+    function updateModifiers() {
+        const abilityScores = ['str', 'dex', 'con', 'int', 'wis', 'cha'];
+        
+        abilityScores.forEach(ability => {
+            const input = document.getElementById(ability);
+            const modDiv = document.getElementById(`${ability}-mod`);
+            
+            if (input && modDiv) {
+                const score = parseInt(input.value) || 10;
+                const modifier = Math.floor((score - 10) / 2);
+                modDiv.textContent = modifier >= 0 ? `+${modifier}` : `${modifier}`;
+            }
+        });
+    }
+    
+    function updateProficiencyBonus() {
+        const levelInput = document.getElementById('level');
+        const proficiencyInput = document.getElementById('proficiencyBonus');
+        
+        if (levelInput && proficiencyInput) {
+            const level = parseInt(levelInput.value) || 1;
+            const proficiency = Math.ceil(level / 4) + 1;
+            proficiencyInput.value = proficiency;
+        }
+    }
+    
+    function saveCharacterSheet() {
+        try {
+            console.log('Saving character sheet...');
+            
+            const character = {
+                characterName: document.getElementById('characterName')?.value || '',
+                characterClass: document.getElementById('characterClass')?.value || '',
+                level: document.getElementById('level')?.value || 1,
+                race: document.getElementById('race')?.value || '',
+                background: document.getElementById('background')?.value || '',
+                alignment: document.getElementById('alignment')?.value || '',
+                
+                // Combat stats
+                armorClass: document.getElementById('armorClass')?.value || 10,
+                hitPoints: document.getElementById('hitPoints')?.value || 8,
+                maxHitPoints: document.getElementById('maxHitPoints')?.value || 8,
+                initiative: document.getElementById('initiative')?.value || 0,
+                speed: document.getElementById('speed')?.value || 30,
+                proficiencyBonus: document.getElementById('proficiencyBonus')?.value || 2,
+                
+                // Ability scores
+                str: document.getElementById('str')?.value || 10,
+                dex: document.getElementById('dex')?.value || 10,
+                con: document.getElementById('con')?.value || 10,
+                int: document.getElementById('int')?.value || 10,
+                wis: document.getElementById('wis')?.value || 10,
+                cha: document.getElementById('cha')?.value || 10,
+                
+                // Additional info
+                equipment: document.getElementById('equipment')?.value || '',
+                features: document.getElementById('features')?.value || '',
+                spells: document.getElementById('spells')?.value || '',
+                notes: document.getElementById('notes')?.value || '',
+                
+                // Save timestamp
+                savedAt: new Date().toISOString()
+            };
+            
+            console.log('Character data to save:', character);
+            localStorage.setItem('dnd-character-sheet', JSON.stringify(character));
+            console.log('Character saved to localStorage');
+            showToast('✅ Character saved successfully!', 'success');
+            
+        } catch (error) {
+            console.error('Error saving character:', error);
+            showToast('❌ Error saving character: ' + error.message, 'error');
+        }
+    }
+    
+    function loadCharacterSheet() {
+        try {
+            console.log('Loading character sheet...');
+            const savedCharacter = localStorage.getItem('dnd-character-sheet');
+            
+            if (!savedCharacter) {
+                console.log('No saved character found');
+                showToast('💭 No saved character found', 'info');
+                return;
+            }
+            
+            const character = JSON.parse(savedCharacter);
+            console.log('Character data loaded:', character);
+            
+            // Populate all fields
+            Object.keys(character).forEach(key => {
+                if (key === 'savedAt') return; // Skip metadata
+                
+                const element = document.getElementById(key);
+                if (element) {
+                    element.value = character[key];
+                    console.log(`Set ${key} to ${character[key]}`);
+                }
+            });
+            
+            // Update calculated values
+            updateModifiers();
+            updateProficiencyBonus();
+            
+            showToast('📂 Character loaded successfully!', 'success');
+            
+        } catch (error) {
+            console.error('Error loading character:', error);
+            showToast('❌ Error loading character: ' + error.message, 'error');
+        }
+    }
+    
+    function exportCharacterSheet() {
+        try {
+            const character = {
+                characterName: document.getElementById('characterName')?.value || '',
+                characterClass: document.getElementById('characterClass')?.value || '',
+                level: document.getElementById('level')?.value || 1,
+                race: document.getElementById('race')?.value || '',
+                background: document.getElementById('background')?.value || '',
+                alignment: document.getElementById('alignment')?.value || '',
+                
+                // Combat stats
+                armorClass: document.getElementById('armorClass')?.value || 10,
+                hitPoints: document.getElementById('hitPoints')?.value || 8,
+                maxHitPoints: document.getElementById('maxHitPoints')?.value || 8,
+                
+                // Ability scores
+                str: document.getElementById('str')?.value || 10,
+                dex: document.getElementById('dex')?.value || 10,
+                con: document.getElementById('con')?.value || 10,
+                int: document.getElementById('int')?.value || 10,
+                wis: document.getElementById('wis')?.value || 10,
+                cha: document.getElementById('cha')?.value || 10,
+                
+                equipment: document.getElementById('equipment')?.value || '',
+                features: document.getElementById('features')?.value || '',
+                spells: document.getElementById('spells')?.value || '',
+                notes: document.getElementById('notes')?.value || ''
+            };
+            
+            const exportText = `
+=== D&D CHARACTER SHEET ===
+
+NAME: ${character.characterName}
+CLASS: ${character.characterClass}
+LEVEL: ${character.level}
+RACE: ${character.race}
+BACKGROUND: ${character.background}
+ALIGNMENT: ${character.alignment}
+
+=== COMBAT STATS ===
+AC: ${character.armorClass}
+HP: ${character.hitPoints}/${character.maxHitPoints}
+
+=== ABILITY SCORES ===
+STR: ${character.str} (${Math.floor((character.str - 10) / 2) >= 0 ? '+' : ''}${Math.floor((character.str - 10) / 2)})
+DEX: ${character.dex} (${Math.floor((character.dex - 10) / 2) >= 0 ? '+' : ''}${Math.floor((character.dex - 10) / 2)})
+CON: ${character.con} (${Math.floor((character.con - 10) / 2) >= 0 ? '+' : ''}${Math.floor((character.con - 10) / 2)})
+INT: ${character.int} (${Math.floor((character.int - 10) / 2) >= 0 ? '+' : ''}${Math.floor((character.int - 10) / 2)})
+WIS: ${character.wis} (${Math.floor((character.wis - 10) / 2) >= 0 ? '+' : ''}${Math.floor((character.wis - 10) / 2)})
+CHA: ${character.cha} (${Math.floor((character.cha - 10) / 2) >= 0 ? '+' : ''}${Math.floor((character.cha - 10) / 2)})
+
+=== EQUIPMENT ===
+${character.equipment}
+
+=== FEATURES & TRAITS ===
+${character.features}
+
+=== SPELLS & ABILITIES ===
+${character.spells}
+
+=== NOTES ===
+${character.notes}
+
+Generated by D&D AI Assistant
+            `.trim();
+            
+            // Create download
+            const blob = new Blob([exportText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${character.characterName || 'character'}_sheet.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showToast('Character exported successfully!', 'success');
+            
+        } catch (error) {
+            console.error('Error exporting character:', error);
+            showToast('Error exporting character', 'error');
+        }
+    }
+    
+    // Make character sheet functions globally available
+    window.saveCharacterSheet = saveCharacterSheet;
+    window.loadCharacterSheet = loadCharacterSheet;
+    window.exportCharacterSheet = exportCharacterSheet;
+    window.updateModifiers = updateModifiers;
+    window.updateProficiencyBonus = updateProficiencyBonus;
+
     // Make functions globally available
     window.aiEnhanced = {
         callDeepSeekAPI,
@@ -722,6 +1280,15 @@ document.addEventListener('DOMContentLoaded', () => {
         generateEnemy,
         damageCombatant,
         healCombatant,
-        removeCombatant
+        removeCombatant,
+        importGeneratedCharacter,
+        useGeneratedStats,
+        addToCharacterEquipment,
+        addToCombatFromCharacterSheet,
+        saveCharacterSheet,
+        loadCharacterSheet,
+        exportCharacterSheet,
+        updateModifiers,
+        updateProficiencyBonus
     };
 }); 

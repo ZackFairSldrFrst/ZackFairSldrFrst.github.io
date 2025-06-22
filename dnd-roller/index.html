@@ -183,12 +183,12 @@
                     <h2>Character Information</h2>
                     <div class="character-info-grid">
                         <div class="info-group">
-                            <label for="char-name">Character Name:</label>
-                            <input type="text" id="char-name" placeholder="Enter character name">
+                            <label for="characterName">Character Name:</label>
+                            <input type="text" id="characterName" placeholder="Enter character name">
                         </div>
                         <div class="info-group">
-                            <label for="char-class">Class:</label>
-                            <select id="char-class">
+                            <label for="characterClass">Class:</label>
+                            <select id="characterClass">
                                 <option value="">Select Class</option>
                                 <option value="barbarian">Barbarian</option>
                                 <option value="bard">Bard</option>
@@ -205,20 +205,20 @@
                             </select>
                         </div>
                         <div class="info-group">
-                            <label for="char-level">Level:</label>
-                            <input type="number" id="char-level" min="1" max="20" value="1">
+                            <label for="level">Level:</label>
+                            <input type="number" id="level" min="1" max="20" value="1">
                         </div>
                         <div class="info-group">
-                            <label for="char-race">Race:</label>
-                            <input type="text" id="char-race" placeholder="Enter race">
+                            <label for="race">Race:</label>
+                            <input type="text" id="race" placeholder="Enter race">
                         </div>
                         <div class="info-group">
-                            <label for="char-background">Background:</label>
-                            <input type="text" id="char-background" placeholder="Enter background">
+                            <label for="background">Background:</label>
+                            <input type="text" id="background" placeholder="Enter background">
                         </div>
                         <div class="info-group">
-                            <label for="char-alignment">Alignment:</label>
-                            <select id="char-alignment">
+                            <label for="alignment">Alignment:</label>
+                            <select id="alignment">
                                 <option value="">Select Alignment</option>
                                 <option value="lg">Lawful Good</option>
                                 <option value="ng">Neutral Good</option>
@@ -234,6 +234,37 @@
                     </div>
                 </section>
 
+                <!-- Combat Stats Section -->
+                <section class="section" id="combat-stats">
+                    <h2>Combat Statistics</h2>
+                    <div class="character-info-grid">
+                        <div class="info-group">
+                            <label for="armorClass">Armor Class (AC):</label>
+                            <input type="number" id="armorClass" min="10" max="30" value="10">
+                        </div>
+                        <div class="info-group">
+                            <label for="hitPoints">Hit Points:</label>
+                            <input type="number" id="hitPoints" min="1" max="999" value="8">
+                        </div>
+                        <div class="info-group">
+                            <label for="maxHitPoints">Max Hit Points:</label>
+                            <input type="number" id="maxHitPoints" min="1" max="999" value="8">
+                        </div>
+                        <div class="info-group">
+                            <label for="initiative">Initiative Modifier:</label>
+                            <input type="number" id="initiative" min="-5" max="10" value="0">
+                        </div>
+                        <div class="info-group">
+                            <label for="speed">Speed:</label>
+                            <input type="number" id="speed" min="0" max="120" value="30" placeholder="30 ft">
+                        </div>
+                        <div class="info-group">
+                            <label for="proficiencyBonus">Proficiency Bonus:</label>
+                            <input type="number" id="proficiencyBonus" min="2" max="6" value="2" readonly>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- Ability Scores Section -->
                 <section class="section" id="ability-scores">
                     <h2>Ability Scores</h2>
@@ -241,7 +272,7 @@
                         <div class="ability-score">
                             <h3>Strength</h3>
                             <div class="score-input">
-                                <input type="number" id="str-score" min="3" max="20" value="10">
+                                <input type="number" id="str" min="3" max="20" value="10">
                                 <div class="modifier" id="str-mod">+0</div>
                             </div>
                             <div class="saving-throw">
@@ -252,7 +283,7 @@
                         <div class="ability-score">
                             <h3>Dexterity</h3>
                             <div class="score-input">
-                                <input type="number" id="dex-score" min="3" max="20" value="10">
+                                <input type="number" id="dex" min="3" max="20" value="10">
                                 <div class="modifier" id="dex-mod">+0</div>
                             </div>
                             <div class="saving-throw">
@@ -263,7 +294,7 @@
                         <div class="ability-score">
                             <h3>Constitution</h3>
                             <div class="score-input">
-                                <input type="number" id="con-score" min="3" max="20" value="10">
+                                <input type="number" id="con" min="3" max="20" value="10">
                                 <div class="modifier" id="con-mod">+0</div>
                             </div>
                             <div class="saving-throw">
@@ -274,7 +305,7 @@
                         <div class="ability-score">
                             <h3>Intelligence</h3>
                             <div class="score-input">
-                                <input type="number" id="int-score" min="3" max="20" value="10">
+                                <input type="number" id="int" min="3" max="20" value="10">
                                 <div class="modifier" id="int-mod">+0</div>
                             </div>
                             <div class="saving-throw">
@@ -285,7 +316,7 @@
                         <div class="ability-score">
                             <h3>Wisdom</h3>
                             <div class="score-input">
-                                <input type="number" id="wis-score" min="3" max="20" value="10">
+                                <input type="number" id="wis" min="3" max="20" value="10">
                                 <div class="modifier" id="wis-mod">+0</div>
                             </div>
                             <div class="saving-throw">
@@ -296,7 +327,7 @@
                         <div class="ability-score">
                             <h3>Charisma</h3>
                             <div class="score-input">
-                                <input type="number" id="cha-score" min="3" max="20" value="10">
+                                <input type="number" id="cha" min="3" max="20" value="10">
                                 <div class="modifier" id="cha-mod">+0</div>
                             </div>
                             <div class="saving-throw">
@@ -479,13 +510,38 @@
                     </div>
                 </section>
 
+                <!-- Equipment & Notes Section -->
+                <section class="section" id="equipment-notes">
+                    <h2>Equipment & Notes</h2>
+                    <div class="character-info-grid">
+                        <div class="info-group">
+                            <label for="equipment">Equipment & Inventory:</label>
+                            <textarea id="equipment" rows="6" placeholder="List your weapons, armor, tools, and other equipment..."></textarea>
+                        </div>
+                        <div class="info-group">
+                            <label for="features">Features & Traits:</label>
+                            <textarea id="features" rows="6" placeholder="Class features, racial traits, feats, etc..."></textarea>
+                        </div>
+                        <div class="info-group">
+                            <label for="spells">Spells & Abilities:</label>
+                            <textarea id="spells" rows="6" placeholder="Known spells, spell slots, special abilities..."></textarea>
+                        </div>
+                        <div class="info-group">
+                            <label for="notes">Character Notes:</label>
+                            <textarea id="notes" rows="6" placeholder="Backstory, personality, goals, relationships..."></textarea>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- Save Character Section -->
                 <section class="section" id="save-character">
                     <h2>Save & Load Character</h2>
                     <div class="btn-group">
-                        <button id="save-character-btn" class="btn btn-primary">Save Character</button>
-                        <button id="load-character-btn" class="btn">Load Character</button>
-                        <button id="export-character-btn" class="btn">Export Character</button>
+                        <button id="save-character-btn" class="btn btn-primary" onclick="window.aiEnhanced.saveCharacterSheet()">💾 Save Character</button>
+                        <button id="load-character-btn" class="btn" onclick="window.aiEnhanced.loadCharacterSheet()">📂 Load Character</button>
+                        <button id="export-character-btn" class="btn" onclick="window.aiEnhanced.exportCharacterSheet()">📄 Export Character</button>
+                        <button id="add-to-combat" class="btn btn-secondary" onclick="window.aiEnhanced.addToCombatFromCharacterSheet()">⚔️ Add to Combat</button>
+                        <button class="btn" onclick="console.log('Functions available:', Object.keys(window.aiEnhanced)); window.showToast('Check console for debug info', 'info');">🔧 Debug</button>
                     </div>
                 </section>
             </main>

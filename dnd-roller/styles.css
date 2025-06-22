@@ -759,13 +759,16 @@ main {
 }
 
 .info-group input,
-.info-group select {
+.info-group select,
+.info-group textarea {
     padding: 0.5rem;
     border: 2px solid var(--primary);
     border-radius: var(--radius-md);
     font-size: 1rem;
     background-color: var(--surface);
     color: var(--text);
+    font-family: inherit;
+    resize: vertical;
 }
 
 /* Ability Scores Grid */
@@ -1466,5 +1469,101 @@ main {
     
     .combatant-stats {
         font-size: 0.8rem;
+    }
+}
+
+/* Integration Styles for Tab Communication */
+.import-btn, .integration-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    margin: 0.5rem 0.5rem 0 0;
+    box-shadow: var(--shadow-sm);
+}
+
+.import-btn:hover, .integration-btn:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.import-btn:active, .integration-btn:active {
+    transform: translateY(0);
+}
+
+/* Enhanced generated content styling */
+.generated-content {
+    position: relative;
+    animation: fadeIn 0.3s ease;
+}
+
+.integration-notice {
+    background: rgba(108, 92, 231, 0.1);
+    border: 1px solid var(--primary);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    margin: 1rem 0;
+    text-align: center;
+    font-style: italic;
+    color: var(--primary);
+}
+
+/* Toast notification enhancement */
+.toast.integration {
+    background: linear-gradient(45deg, var(--primary), var(--accent));
+}
+
+/* Stat roll grid enhancement */
+.rolled-stats {
+    border: 1px solid rgba(108, 92, 231, 0.2);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.stat-roll {
+    transition: all var(--transition-fast);
+}
+
+.stat-roll:hover {
+    transform: scale(1.05);
+    background: var(--primary) !important;
+    color: white !important;
+}
+
+/* Combat integration enhancements */
+.combatant-item.from-character {
+    border-left: 4px solid var(--accent);
+    background: rgba(253, 121, 168, 0.05);
+}
+
+/* Better button group layout */
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+/* Mobile responsiveness for integration features */
+@media (max-width: 768px) {
+    .import-btn, .integration-btn {
+        width: 100%;
+        margin: 0.25rem 0;
+        padding: 1rem;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+    }
+    
+    .integration-notice {
+        font-size: 0.9rem;
+        padding: 0.75rem;
     }
 }
