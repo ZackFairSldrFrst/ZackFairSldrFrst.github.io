@@ -140,7 +140,7 @@ function loadChatHistory() {
 }
 
 // Typewriter effect function
-function typewriterEffect(element, text, speed = 20) {
+function typewriterEffect(element, text, speed = 10) {
     return new Promise((resolve) => {
         let index = 0;
         let isTyping = true;
