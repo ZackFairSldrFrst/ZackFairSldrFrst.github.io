@@ -137,6 +137,86 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Password Protection Styles */
+        .password-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            backdrop-filter: blur(10px);
+        }
+
+        .password-modal {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .password-modal h2 {
+            color: var(--text);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .password-modal p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .password-submit {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            width: 100%;
+        }
+
+        .password-submit:hover {
+            background: var(--primary-dark);
+        }
+
+        .password-error {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .protected-content {
+            display: none;
+        }
     </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-VDZNRELZ6H"></script>
@@ -148,12 +228,25 @@
     </script>
 </head>
 <body>
-    <header class="header">
-        <h1>My Projects</h1>
-        <p class="subtitle">A collection of web applications and tools I've built</p>
-    </header>
+    <!-- Password Protection Overlay -->
+    <div id="passwordOverlay" class="password-overlay">
+        <div class="password-modal">
+            <h2>Access Required</h2>
+            <p>Please enter the password to view this page</p>
+            <input type="password" id="passwordInput" class="password-input" placeholder="Enter password" maxlength="4">
+            <button onclick="checkPassword()" class="password-submit">Access</button>
+            <div id="passwordError" class="password-error">Incorrect password. Please try again.</div>
+        </div>
+    </div>
 
-    <main class="container">
+    <!-- Protected Content -->
+    <div id="protectedContent" class="protected-content">
+        <header class="header">
+            <h1>My Projects</h1>
+            <p class="subtitle">A collection of web applications and tools I've built</p>
+        </header>
+
+        <main class="container">
         <section>
             <h2 class="category-title">Games & Entertainment</h2>
             <div class="projects-grid">
@@ -183,6 +276,20 @@
                         <h3 class="card-title">Mahjong</h3>
                         <p class="card-description">Classic tile-matching puzzle game with beautiful graphics</p>
                         <a href="mahjong/index.html" class="card-link">Play Now</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="card-title">Escape Room</h3>
+                        <p class="card-description">Solve puzzles and escape from virtual rooms</p>
+                        <a href="escape-room/index.html" class="card-link">Start Escaping</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="card-title">Swiped</h3>
+                        <p class="card-description">Interactive card-based game with beautiful visuals</p>
+                        <a href="swiped/index.html" class="card-link">Play Now</a>
                     </div>
                 </div>
             </div>
@@ -219,21 +326,156 @@
                         <a href="countdown/index.html" class="card-link">View Countdown</a>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="category-title">Contact</h2>
-            <div class="projects-grid">
                 <div class="card">
                     <div class="card-content">
-                        <h3 class="card-title">Contact Me</h3>
-                        <p class="card-description">Get in touch with me for collaborations or questions</p>
-                        <a href="contact-me/index.html" class="card-link">Contact</a>
+                        <h3 class="card-title">Auto iMessage</h3>
+                        <p class="card-description">Automate your iMessage sending with this handy tool</p>
+                        <a href="auto-imessage/index.html" class="card-link">Try It</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="card-title">Tax AI</h3>
+                        <p class="card-description">AI-powered tax assistance and calculation tool</p>
+                        <a href="tax-ai/index.html" class="card-link">Get Tax Help</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="card-title">Business Scraper</h3>
+                        <p class="card-description">Web scraper for finding businesses without websites</p>
+                        <a href="scraper/index.html" class="card-link">Start Scraping</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="card-title">Support Extensions</h3>
+                        <p class="card-description">Browser extension support and management tool</p>
+                        <a href="support-extensions/index.html" class="card-link">Get Support</a>
                     </div>
                 </div>
             </div>
         </section>
-    </main>
+
+        <section>
+            <h2 class="category-title">AI & Generators</h2>
+            <div class="projects-grid">
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="card-title">1Page Site Builder</h3>
+                        <p class="card-description">AI-powered one-page website generator with beautiful templates</p>
+                        <a href="1page.site/index.html" class="card-link">Build Site</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="card-title">AI Slides</h3>
+                        <p class="card-description">Generate beautiful presentations with AI assistance</p>
+                        <a href="ai-slides/index.html" class="card-link">Create Slides</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="card-title">Practice Tests</h3>
+                        <p class="card-description">AI-generated practice tests for various subjects and skills</p>
+                        <a href="practice-tests/index.html" class="card-link">Take Test</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="card-title">TikTok Reply Bot</h3>
+                        <p class="card-description">AI-powered automated TikTok reply system</p>
+                        <a href="tiktok-reply/" class="card-link">View Project</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="category-title">Social & Communication</h2>
+            <div class="projects-grid">
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="card-title">Ask Reddit</h3>
+                        <p class="card-description">Reddit-style Q&A platform for community discussions</p>
+                        <a href="ask-reddit/public/index.html" class="card-link">Ask Away</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="card-title">Contact Me</h3>
+                        <p class="card-description">Professional contact form and portfolio showcase</p>
+                        <a href="contact-me/index.html" class="card-link">Contact</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="card-title">Smut Writer</h3>
+                        <p class="card-description">Creative writing platform for adult fiction</p>
+                        <a href="smutwriter.com/index.html" class="card-link">Start Writing</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="category-title">Business & Professional</h2>
+            <div class="projects-grid">
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="card-title">RentAmenity</h3>
+                        <p class="card-description">Rental property amenity management and booking system</p>
+                        <a href="rentamenity/index.html" class="card-link">Explore</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="card-title">Email Builder</h3>
+                        <p class="card-description">Create professional email templates with ease</p>
+                        <a href="email-builder/pacificderm.html" class="card-link">Build Email</a>
+                    </div>
+                </div>
+                         </div>
+         </section>
+        </main>
+    </div>
+
+    <script>
+        const correctPassword = '0000';
+        
+        function checkPassword() {
+            const inputPassword = document.getElementById('passwordInput').value;
+            const errorDiv = document.getElementById('passwordError');
+            
+            if (inputPassword === correctPassword) {
+                document.getElementById('passwordOverlay').style.display = 'none';
+                document.getElementById('protectedContent').style.display = 'block';
+                
+                // Store access in session storage so user doesn't need to re-enter on refresh
+                sessionStorage.setItem('authenticated', 'true');
+            } else {
+                errorDiv.style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordInput').focus();
+            }
+        }
+        
+        // Check if user is already authenticated in this session
+        window.addEventListener('load', function() {
+            if (sessionStorage.getItem('authenticated') === 'true') {
+                document.getElementById('passwordOverlay').style.display = 'none';
+                document.getElementById('protectedContent').style.display = 'block';
+            } else {
+                document.getElementById('passwordInput').focus();
+            }
+        });
+        
+        // Allow Enter key to submit password
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+    </script>
 </body>
 </html>

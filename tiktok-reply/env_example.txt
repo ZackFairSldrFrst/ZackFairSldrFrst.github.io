@@ -1,0 +1,12 @@
+# TikTok API Credentials
+# Get these from TikTok Developer Portal: https://developers.tiktok.com/
+TIKTOK_ACCESS_TOKEN=your_tiktok_access_token_here
+TIKTOK_APP_ID=your_tiktok_app_id_here
+TIKTOK_APP_SECRET=your_tiktok_app_secret_here
+
+# OpenAI API Key (optional - for AI-generated responses)
+# Get from: https://platform.openai.com/api-keys
+OPENAI_API_KEY=your_openai_api_key_here
+
+# Your TikTok Username (to identify your videos)
+TIKTOK_USERNAME=your_username_here 
