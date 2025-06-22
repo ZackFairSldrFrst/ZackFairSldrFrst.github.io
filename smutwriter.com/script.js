@@ -1435,6 +1435,17 @@ window.smutWriter = {
     }
 };
 
+// Language change functionality
+function changeLanguage(language) {
+    trackEvent('language_changed', {
+        language: language,
+        page: 'index',
+        timestamp: new Date().toISOString()
+    });
+    
+    debugLog('Language changed to:', language);
+}
+
 // Navigation functionality
 function initializeNavigation() {
     console.log('Initializing navigation...');
@@ -1460,6 +1471,13 @@ function initializeNavigation() {
             const isActive = navMenu.classList.contains('active');
             console.log('Menu is currently active:', isActive);
             
+            // Track mobile menu toggle
+            trackEvent('mobile_menu_toggle', {
+                action: isActive ? 'close' : 'open',
+                page: 'index',
+                timestamp: new Date().toISOString()
+            });
+            
             navMenu.classList.toggle('active');
             newNavToggle.classList.toggle('active');
             
@@ -1469,10 +1487,37 @@ function initializeNavigation() {
         // Close menu when clicking on a link
         const navLinks = document.querySelectorAll('.nav-link');
         navLinks.forEach(link => {
-            link.addEventListener('click', () => {
+            link.addEventListener('click', (e) => {
+                const linkText = link.querySelector('span') ? link.querySelector('span').textContent : link.textContent;
+                const linkHref = link.href;
+                
+                // Track navigation link clicks
+                trackEvent('navigation_click', {
+                    link_text: linkText,
+                    link_url: linkHref,
+                    page: 'index',
+                    timestamp: new Date().toISOString()
+                });
+
                 console.log('Nav link clicked, closing menu');
                 navMenu.classList.remove('active');
                 newNavToggle.classList.remove('active');
+            });
+        });
+
+        // Track social link clicks if they exist on index page
+        const socialLinks = document.querySelectorAll('.social-link');
+        socialLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const linkText = link.querySelector('span') ? link.querySelector('span').textContent : link.textContent;
+                const linkHref = link.href;
+                
+                trackEvent('social_link_click', {
+                    link_text: linkText,
+                    link_url: linkHref,
+                    page: 'index',
+                    timestamp: new Date().toISOString()
+                });
             });
         });
         
@@ -1498,6 +1543,13 @@ function checkForPromptPrefill() {
         if (input) {
             input.value = prompt;
             input.focus();
+            
+            // Track prompt prefill from stories page
+            trackEvent('prompt_prefilled', {
+                prompt_length: prompt.length,
+                source: 'stories_page',
+                timestamp: new Date().toISOString()
+            });
         }
         localStorage.removeItem('smutwriter_story_prompt');
     }

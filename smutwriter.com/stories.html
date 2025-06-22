@@ -1097,9 +1097,36 @@
     </main>
 
     <script>
+        // Google Analytics tracking functions
+        function trackEvent(eventName, parameters = {}) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', eventName, parameters);
+                console.log(`[Stories] GA Event tracked: ${eventName}`, parameters);
+            } else {
+                console.log('[Stories] Google Analytics not loaded, event not tracked:', eventName);
+            }
+        }
+
+        function trackPageView(pagePath = window.location.pathname) {
+            if (typeof gtag !== 'undefined') {
+                gtag('config', 'G-HBW1GF6JYB', {
+                    page_path: pagePath
+                });
+                console.log('[Stories] GA Page view tracked:', pagePath);
+            }
+        }
+
         // Category tab functionality
         document.querySelectorAll('.category-tab').forEach(tab => {
             tab.addEventListener('click', () => {
+                // Track category selection
+                const categoryId = tab.getAttribute('data-category');
+                trackEvent('category_selected', {
+                    category: categoryId,
+                    page: 'stories',
+                    timestamp: new Date().toISOString()
+                });
+
                 // Remove active class from all tabs and categories
                 document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('.prompt-category').forEach(c => c.classList.remove('active'));
@@ -1108,7 +1135,6 @@
                 tab.classList.add('active');
                 
                 // Show corresponding category
-                const categoryId = tab.getAttribute('data-category');
                 document.getElementById(categoryId).classList.add('active');
             });
         });
@@ -1117,8 +1143,49 @@
         function usePrompt(button) {
             const promptCard = button.closest('.prompt-card');
             const promptText = promptCard.querySelector('.prompt-text').textContent;
+            const promptTitle = promptCard.querySelector('h3').textContent;
+            const category = promptCard.closest('.prompt-category').id;
+            
+            // Track prompt usage
+            trackEvent('prompt_used', {
+                prompt_title: promptTitle,
+                category: category,
+                prompt_length: promptText.length,
+                page: 'stories',
+                timestamp: new Date().toISOString()
+            });
+
             localStorage.setItem('smutwriter_story_prompt', promptText);
             window.location.href = 'index.html';
+        }
+
+        // Language change functionality
+        function changeLanguage(language) {
+            trackEvent('language_changed', {
+                language: language,
+                page: 'stories',
+                timestamp: new Date().toISOString()
+            });
+            
+            // Add your language change logic here if needed
+            console.log('Language changed to:', language);
+        }
+
+        // Clear chat history functionality (needs to be available on stories page)
+        function clearChatHistory() {
+            if (confirm('Are you sure you want to clear all chat history? This action cannot be undone.')) {
+                // Clear localStorage
+                localStorage.removeItem('smutwriter_conversation_messages');
+                localStorage.removeItem('smutwriter_chat_history');
+                localStorage.removeItem('smutwriter_last_save_time');
+                
+                trackEvent('clear_chat_history', {
+                    page: 'stories',
+                    timestamp: new Date().toISOString()
+                });
+                
+                alert('Chat history cleared successfully!');
+            }
         }
         
         // Initialize navigation
@@ -1127,21 +1194,67 @@
             const navMenu = document.getElementById('nav-menu');
             
             navToggle.addEventListener('click', () => {
+                const isOpening = !navToggle.classList.contains('active');
+                
+                // Track mobile menu toggle
+                trackEvent('mobile_menu_toggle', {
+                    action: isOpening ? 'open' : 'close',
+                    page: 'stories',
+                    timestamp: new Date().toISOString()
+                });
+
                 navToggle.classList.toggle('active');
                 navMenu.classList.toggle('active');
             });
             
             // Close mobile menu when clicking on a link
             document.querySelectorAll('.nav-link').forEach(link => {
-                link.addEventListener('click', () => {
+                link.addEventListener('click', (e) => {
+                    const linkText = link.querySelector('span').textContent;
+                    const linkHref = link.href;
+                    
+                    // Track navigation link clicks
+                    trackEvent('navigation_click', {
+                        link_text: linkText,
+                        link_url: linkHref,
+                        page: 'stories',
+                        timestamp: new Date().toISOString()
+                    });
+
                     navToggle.classList.remove('active');
                     navMenu.classList.remove('active');
+                });
+            });
+
+            // Track social link clicks
+            document.querySelectorAll('.social-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const linkText = link.querySelector('span').textContent;
+                    const linkHref = link.href;
+                    
+                    trackEvent('social_link_click', {
+                        link_text: linkText,
+                        link_url: linkHref,
+                        page: 'stories',
+                        timestamp: new Date().toISOString()
+                    });
                 });
             });
         }
         
         // Initialize when DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
+            // Track page view
+            trackPageView('/stories.html');
+            
+            // Track page load event
+            trackEvent('page_loaded', {
+                page: 'stories',
+                total_prompts: document.querySelectorAll('.prompt-card').length,
+                total_categories: document.querySelectorAll('.category-tab').length,
+                timestamp: new Date().toISOString()
+            });
+
             initializeNavigation();
         });
     </script>
