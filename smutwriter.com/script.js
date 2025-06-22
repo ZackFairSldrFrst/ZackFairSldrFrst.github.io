@@ -307,6 +307,9 @@ function displayMessage(content, isUser = false, customTime = null, useTypewrite
             <div class="message-content">
                 <i class="fas fa-robot"></i>
                 <span id="${messageId}"></span>
+                <button class="tts-button" onclick="speakMessage('${messageId}')" title="Listen to message" style="display: none;">
+                    <i class="fas fa-volume-up"></i>
+                </button>
                 <button class="copy-button" onclick="copyMessage('${messageId}')" title="Copy message" style="display: none;">
                     <i class="fas fa-copy"></i>
                 </button>
@@ -317,11 +320,15 @@ function displayMessage(content, isUser = false, customTime = null, useTypewrite
         messagesContainer.appendChild(messageDiv);
         const messageElement = document.getElementById(messageId);
         const copyButton = messageDiv.querySelector('.copy-button');
+        const ttsButton = messageDiv.querySelector('.tts-button');
         
         if (useTypewriter) {
             // Start typewriter effect
             typewriterEffect(messageElement, content).then(() => {
-                // Show copy button after typing is complete
+                // Show buttons after typing is complete
+                if (ttsButton) {
+                    ttsButton.style.display = 'inline-block';
+                }
                 if (copyButton) {
                     copyButton.style.display = 'inline-block';
                 }
@@ -329,6 +336,9 @@ function displayMessage(content, isUser = false, customTime = null, useTypewrite
         } else {
             // Display immediately (for loaded history)
             messageElement.innerHTML = content;
+            if (ttsButton) {
+                ttsButton.style.display = 'inline-block';
+            }
             if (copyButton) {
                 copyButton.style.display = 'inline-block';
             }
@@ -420,6 +430,135 @@ function showCopyFeedback(messageElement) {
         }, 2000);
     }
 }
+
+// Text-to-Speech functionality
+let currentSpeech = null;
+let isSpeaking = false;
+
+function speakMessage(messageId) {
+    const messageElement = document.getElementById(messageId);
+    if (!messageElement) {
+        debugLog('Message element not found for TTS');
+        return;
+    }
+
+    // Check if Web Speech API is supported
+    if (!('speechSynthesis' in window)) {
+        alert('Text-to-speech is not supported in your browser.');
+        return;
+    }
+
+    const ttsButton = messageElement.parentElement.querySelector('.tts-button');
+    
+    // If currently speaking this message, stop it
+    if (isSpeaking && currentSpeech) {
+        speechSynthesis.cancel();
+        resetTTSButton(ttsButton);
+        return;
+    }
+
+    // Get the text content, removing any HTML tags
+    let textContent = messageElement.textContent || messageElement.innerText;
+    
+    // Clean up the text for better speech
+    textContent = textContent
+        .replace(/\*\*(.*?)\*\*/g, '$1') // Remove markdown bold
+        .replace(/\*(.*?)\*/g, '$1') // Remove markdown italic
+        .replace(/\[(.*?)\]\(.*?\)/g, '$1') // Convert links to just text
+        .replace(/\n+/g, '. ') // Replace line breaks with pauses
+        .replace(/\s+/g, ' ') // Normalize whitespace
+        .trim();
+
+    if (!textContent) {
+        alert('No text to speak.');
+        return;
+    }
+
+    // Create speech synthesis utterance
+    currentSpeech = new SpeechSynthesisUtterance(textContent);
+    
+    // Configure speech settings
+    currentSpeech.rate = 0.9; // Slightly slower for better comprehension
+    currentSpeech.pitch = 1.0;
+    currentSpeech.volume = 0.8;
+    
+    // Try to use a female voice if available
+    const voices = speechSynthesis.getVoices();
+    const femaleVoice = voices.find(voice => 
+        voice.name.toLowerCase().includes('female') || 
+        voice.name.toLowerCase().includes('woman') ||
+        voice.name.toLowerCase().includes('samantha') ||
+        voice.name.toLowerCase().includes('karen') ||
+        voice.name.toLowerCase().includes('susan')
+    );
+    
+    if (femaleVoice) {
+        currentSpeech.voice = femaleVoice;
+    } else {
+        // Fallback to first available voice
+        const englishVoice = voices.find(voice => voice.lang.startsWith('en'));
+        if (englishVoice) {
+            currentSpeech.voice = englishVoice;
+        }
+    }
+
+    // Set up event handlers
+    currentSpeech.onstart = () => {
+        isSpeaking = true;
+        updateTTSButton(ttsButton, true);
+        debugLog('TTS started');
+        
+        // Track TTS usage
+        trackEvent('tts_used', {
+            message_length: textContent.length,
+            voice_name: currentSpeech.voice ? currentSpeech.voice.name : 'default',
+            timestamp: new Date().toISOString()
+        });
+    };
+
+    currentSpeech.onend = () => {
+        isSpeaking = false;
+        resetTTSButton(ttsButton);
+        currentSpeech = null;
+        debugLog('TTS ended');
+    };
+
+    currentSpeech.onerror = (event) => {
+        isSpeaking = false;
+        resetTTSButton(ttsButton);
+        currentSpeech = null;
+        console.error('TTS error:', event.error);
+        alert('Speech synthesis failed. Please try again.');
+    };
+
+    // Start speaking
+    speechSynthesis.speak(currentSpeech);
+}
+
+function updateTTSButton(button, isPlaying) {
+    if (!button) return;
+    
+    if (isPlaying) {
+        button.innerHTML = '<i class="fas fa-stop"></i>';
+        button.title = 'Stop speaking';
+        button.style.background = 'rgba(255, 87, 34, 0.9)';
+    }
+}
+
+function resetTTSButton(button) {
+    if (!button) return;
+    
+    button.innerHTML = '<i class="fas fa-volume-up"></i>';
+    button.title = 'Listen to message';
+    button.style.background = '';
+}
+
+// Stop all speech when page is unloaded
+window.addEventListener('beforeunload', () => {
+    if (speechSynthesis.speaking) {
+        speechSynthesis.cancel();
+    }
+});
 
 // Clear chat history
 function clearChatHistory() {

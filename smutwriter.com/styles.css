@@ -225,6 +225,77 @@ body {
     .message.bot-message:hover .copy-button {
         opacity: 0.9;
     }
+    
+    .tts-button {
+        padding: 0.5rem;
+        opacity: 0.9;
+        background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        border: 1px solid rgba(76, 175, 80, 0.4);
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+    }
+    
+    .tts-button:active {
+        transform: scale(0.95);
+        opacity: 1;
+    }
+    
+    .message.bot-message .tts-button {
+        opacity: 0.9;
+    }
+    
+    .message.bot-message:hover .tts-button {
+        opacity: 0.9;
+    }
+}
+
+/* TTS Button Styles */
+.tts-button {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-left: 0.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0.8;
+    flex-shrink: 0;
+    min-width: auto;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    font-weight: 600;
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    border: 1px solid rgba(76, 175, 80, 0.4);
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+    transform: translateX(0);
+}
+
+.tts-button:hover, .tts-button:active {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.05);
+    background: linear-gradient(135deg, #45a049 0%, #4CAF50 100%);
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+}
+
+.tts-button i {
+    font-size: 0.9rem;
+}
+
+/* TTS button visibility */
+.message.bot-message .tts-button {
+    opacity: 0.8;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.message.bot-message:hover .tts-button {
+    opacity: 1;
+}
+
+.message.bot-message .tts-button:hover {
+    opacity: 1;
 }
 
 /* Clear History Button Styles */
