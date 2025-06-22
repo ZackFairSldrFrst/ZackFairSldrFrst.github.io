@@ -969,6 +969,11 @@ body::after {
     font-size: 1rem;
 }
 
+/* Hide hamburger menu on desktop */
+.nav-toggle {
+    display: none;
+}
+
 /* Mobile Navigation */
 @media (max-width: 768px) {
     .nav-toggle {

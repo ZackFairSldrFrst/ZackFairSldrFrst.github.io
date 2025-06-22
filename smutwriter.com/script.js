@@ -1308,8 +1308,12 @@ function initializeNavigation() {
     if (navToggle && navMenu) {
         console.log('Adding click event listener to nav toggle');
         
+        // Remove any existing event listeners first
+        navToggle.replaceWith(navToggle.cloneNode(true));
+        const newNavToggle = document.getElementById('nav-toggle');
+        
         // Add click event with debugging
-        navToggle.addEventListener('click', (e) => {
+        newNavToggle.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
             console.log('Nav toggle clicked!');
@@ -1318,19 +1322,9 @@ function initializeNavigation() {
             console.log('Menu is currently active:', isActive);
             
             navMenu.classList.toggle('active');
-            navToggle.classList.toggle('active');
+            newNavToggle.classList.toggle('active');
             
             console.log('Menu is now active:', navMenu.classList.contains('active'));
-        });
-        
-        // Add touch event for mobile
-        navToggle.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('Nav toggle touched!');
-            
-            navMenu.classList.toggle('active');
-            navToggle.classList.toggle('active');
         });
         
         // Close menu when clicking on a link
@@ -1339,15 +1333,15 @@ function initializeNavigation() {
             link.addEventListener('click', () => {
                 console.log('Nav link clicked, closing menu');
                 navMenu.classList.remove('active');
-                navToggle.classList.remove('active');
+                newNavToggle.classList.remove('active');
             });
         });
         
         // Close menu when clicking outside
         document.addEventListener('click', (e) => {
-            if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+            if (!newNavToggle.contains(e.target) && !navMenu.contains(e.target)) {
                 navMenu.classList.remove('active');
-                navToggle.classList.remove('active');
+                newNavToggle.classList.remove('active');
             }
         });
         
