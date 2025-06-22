@@ -231,6 +231,18 @@ body::after {
     flex: 1;
 }
 
+/* Typewriter cursor animation */
+.typewriter-cursor {
+    animation: blink 1s infinite;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
 /* Copy Button Styles */
 .copy-button {
     padding: 0.4rem 0.6rem;

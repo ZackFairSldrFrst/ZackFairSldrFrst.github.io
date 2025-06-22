@@ -124,9 +124,9 @@ function loadChatHistory() {
         // Clear the default welcome message
         messagesContainer.innerHTML = '';
         
-        // Restore all messages
+        // Restore all messages without typewriter effect
         chatHistory.forEach(message => {
-            displayMessage(message.content, message.isUser, message.formattedTime);
+            displayMessage(message.content, message.isUser, message.formattedTime, false);
         });
         
         // Scroll to bottom and show input after loading all history messages
@@ -138,8 +138,118 @@ function loadChatHistory() {
     }
 }
 
-// Display a message in the chat (used for both new and loaded messages)
-function displayMessage(content, isUser = false, customTime = null) {
+// Typewriter effect function
+function typewriterEffect(element, text, speed = 20) {
+    return new Promise((resolve) => {
+        let index = 0;
+        let isTyping = true;
+        element.textContent = '';
+        
+        // Add blinking cursor
+        const cursor = document.createElement('span');
+        cursor.className = 'typewriter-cursor';
+        cursor.textContent = '|';
+        element.appendChild(cursor);
+        
+        // Add click handler to skip typing
+        const skipTyping = () => {
+            if (isTyping) {
+                isTyping = false;
+                element.innerHTML = text;
+                if (cursor.parentNode) {
+                    cursor.parentNode.removeChild(cursor);
+                }
+                element.removeEventListener('click', skipTyping);
+                resolve();
+            }
+        };
+        
+        element.addEventListener('click', skipTyping);
+        element.style.cursor = 'pointer';
+        element.title = 'Click to skip typing';
+        
+        // Parse the text to separate HTML tags and text content
+        const parseText = (text) => {
+            const parts = [];
+            let currentIndex = 0;
+            
+            while (currentIndex < text.length) {
+                if (text[currentIndex] === '<') {
+                    const tagEnd = text.indexOf('>', currentIndex);
+                    if (tagEnd !== -1) {
+                        const tag = text.substring(currentIndex, tagEnd + 1);
+                        parts.push({ type: 'tag', content: tag });
+                        currentIndex = tagEnd + 1;
+                    } else {
+                        parts.push({ type: 'char', content: text[currentIndex] });
+                        currentIndex++;
+                    }
+                } else {
+                    parts.push({ type: 'char', content: text[currentIndex] });
+                    currentIndex++;
+                }
+            }
+            
+            return parts;
+        };
+        
+        const textParts = parseText(text);
+        let partIndex = 0;
+        
+        function type() {
+            if (!isTyping) return;
+            
+            if (partIndex < textParts.length) {
+                const part = textParts[partIndex];
+                
+                if (part.type === 'tag') {
+                    // Insert HTML tag as a complete element
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = part.content;
+                    const tagElement = tempDiv.firstChild;
+                    
+                    if (tagElement) {
+                        element.insertBefore(tagElement, cursor);
+                    }
+                } else {
+                    // Insert text character
+                    const textNode = document.createTextNode(part.content);
+                    element.insertBefore(textNode, cursor);
+                }
+                
+                partIndex++;
+                
+                // Scroll to keep the typing visible
+                scrollToBottom();
+                
+                // Add extra pause after sentences for more natural typing
+                let currentSpeed = speed;
+                if (part.type === 'char' && (part.content === '.' || part.content === '!' || part.content === '?')) {
+                    currentSpeed = speed * 3; // Longer pause after sentences
+                } else if (part.type === 'char' && part.content === ',') {
+                    currentSpeed = speed * 1.5; // Slight pause after commas
+                }
+                
+                setTimeout(type, currentSpeed);
+            } else {
+                // Remove cursor when typing is complete
+                if (cursor.parentNode) {
+                    cursor.parentNode.removeChild(cursor);
+                }
+                element.removeEventListener('click', skipTyping);
+                element.style.cursor = 'default';
+                element.title = '';
+                isTyping = false;
+                resolve();
+            }
+        }
+        
+        type();
+    });
+}
+
+// Modified displayMessage function to support typewriter effect
+function displayMessage(content, isUser = false, customTime = null, useTypewriter = false) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
     
@@ -152,6 +262,8 @@ function displayMessage(content, isUser = false, customTime = null) {
             </div>
             <div class="message-time">${timeString}</div>
         `;
+        messagesContainer.appendChild(messageDiv);
+        scrollToBottom();
     } else {
         // Create unique ID for this message
         const messageId = 'msg-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
@@ -159,19 +271,36 @@ function displayMessage(content, isUser = false, customTime = null) {
         messageDiv.innerHTML = `
             <div class="message-content">
                 <i class="fas fa-robot"></i>
-                <span id="${messageId}">${content}</span>
-                <button class="copy-button" onclick="copyMessage('${messageId}')" title="Copy message">
+                <span id="${messageId}"></span>
+                <button class="copy-button" onclick="copyMessage('${messageId}')" title="Copy message" style="display: none;">
                     <i class="fas fa-copy"></i>
                 </button>
             </div>
             <div class="message-time">${timeString}</div>
         `;
+        
+        messagesContainer.appendChild(messageDiv);
+        const messageElement = document.getElementById(messageId);
+        const copyButton = messageDiv.querySelector('.copy-button');
+        
+        if (useTypewriter) {
+            // Start typewriter effect
+            typewriterEffect(messageElement, content).then(() => {
+                // Show copy button after typing is complete
+                if (copyButton) {
+                    copyButton.style.display = 'inline-block';
+                }
+            });
+        } else {
+            // Display immediately (for loaded history)
+            messageElement.innerHTML = content;
+            if (copyButton) {
+                copyButton.style.display = 'inline-block';
+            }
+        }
+        
+        scrollToBottom();
     }
-    
-    messagesContainer.appendChild(messageDiv);
-    
-    // Scroll to bottom of messages container
-    scrollToBottom();
 }
 
 // Copy message content to clipboard
@@ -327,8 +456,8 @@ function scrollToBottomIfNearBottom() {
 
 // Function to add message to chat (wrapper for displayMessage with saving)
 function addMessage(content, isUser = false) {
-    // Display the message
-    displayMessage(content, isUser);
+    // Display the message with typewriter effect for bot responses
+    displayMessage(content, isUser, null, !isUser);
     
     // Save to localStorage
     saveChatMessage(content, isUser);
