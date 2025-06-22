@@ -68,6 +68,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 switchTab(tab);
             });
         });
+        
+        // Restore active tab from localStorage
+        restoreActiveTab();
+    }
+    
+    function restoreActiveTab() {
+        const savedTab = localStorage.getItem('dnd-active-tab');
+        const defaultTab = 'character-sheet'; // Changed from dice-roller default
+        const tabToShow = savedTab || defaultTab;
+        
+        console.log('Restoring tab:', tabToShow, 'from localStorage:', savedTab);
+        
+        // Verify the tab exists before switching
+        const tabExists = document.getElementById(tabToShow);
+        if (tabExists) {
+            switchTab(tabToShow);
+        } else {
+            console.warn('Saved tab not found, using default:', defaultTab);
+            switchTab(defaultTab);
+        }
     }
 
     function switchTab(tabId) {
@@ -79,6 +99,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (activeBtn) activeBtn.classList.add('active');
         if (activeContent) activeContent.classList.add('active');
+        
+        // Save active tab to localStorage
+        localStorage.setItem('dnd-active-tab', tabId);
+        console.log('Active tab saved:', tabId);
     }
 
     // AI DM Chat Functions
@@ -105,6 +129,55 @@ document.addEventListener('DOMContentLoaded', () => {
                 tag.classList.add('active');
                 window.aiState.currentContext = tag.dataset.context;
             });
+        });
+        
+        // Load chat history from localStorage
+        loadChatHistory();
+    }
+    
+    function saveChatHistory() {
+        try {
+            localStorage.setItem('dnd-chat-history', JSON.stringify(window.aiState.chatHistory));
+            console.log('Chat history saved, messages:', window.aiState.chatHistory.length);
+        } catch (error) {
+            console.error('Error saving chat history:', error);
+        }
+    }
+    
+    function loadChatHistory() {
+        try {
+            const savedHistory = localStorage.getItem('dnd-chat-history');
+            if (savedHistory) {
+                window.aiState.chatHistory = JSON.parse(savedHistory);
+                console.log('Chat history loaded, messages:', window.aiState.chatHistory.length);
+                
+                // Restore chat messages to UI
+                restoreChatMessagesToUI();
+            }
+        } catch (error) {
+            console.error('Error loading chat history:', error);
+            window.aiState.chatHistory = [];
+        }
+    }
+    
+    function restoreChatMessagesToUI() {
+        const dmChatMessages = document.getElementById('dm-chat-messages');
+        if (!dmChatMessages || window.aiState.chatHistory.length === 0) return;
+        
+        // Clear existing messages (except system message)
+        const systemMessage = dmChatMessages.querySelector('.system-message');
+        dmChatMessages.innerHTML = '';
+        if (systemMessage) {
+            dmChatMessages.appendChild(systemMessage);
+        }
+        
+        // Add all saved messages
+        window.aiState.chatHistory.forEach(msg => {
+            if (msg.role === 'user') {
+                addChatMessage('user', msg.content);
+            } else if (msg.role === 'assistant') {
+                addChatMessage('ai', msg.content);
+            }
         });
     }
 
@@ -141,6 +214,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 { role: 'user', content: message },
                 { role: 'assistant', content: response }
             );
+            
+            // Save chat history to localStorage
+            saveChatHistory();
         } catch (error) {
             loadingMsg.remove();
             addChatMessage('ai', `Sorry, I encountered an error: ${error.message}`);
@@ -525,6 +601,49 @@ document.addEventListener('DOMContentLoaded', () => {
         if (endCombatBtn) endCombatBtn.addEventListener('click', endCombat);
         if (addCombatantBtn) addCombatantBtn.addEventListener('click', addCombatant);
         if (generateEnemyBtn) generateEnemyBtn.addEventListener('click', generateEnemy);
+        
+        // Load combat state from localStorage
+        loadCombatState();
+    }
+    
+    function saveCombatState() {
+        try {
+            const combatState = {
+                combatants: window.aiState.combatants,
+                combatActive: window.aiState.combatActive,
+                currentRound: window.aiState.currentRound,
+                currentTurn: window.aiState.currentTurn
+            };
+            localStorage.setItem('dnd-combat-state', JSON.stringify(combatState));
+            console.log('Combat state saved');
+        } catch (error) {
+            console.error('Error saving combat state:', error);
+        }
+    }
+    
+    function loadCombatState() {
+        try {
+            const savedState = localStorage.getItem('dnd-combat-state');
+            if (savedState) {
+                const combatState = JSON.parse(savedState);
+                window.aiState.combatants = combatState.combatants || [];
+                window.aiState.combatActive = combatState.combatActive || false;
+                window.aiState.currentRound = combatState.currentRound || 0;
+                window.aiState.currentTurn = combatState.currentTurn || 0;
+                
+                // Update UI to reflect loaded state
+                updateCombatUI();
+                updateCombatantsList();
+                
+                console.log('Combat state loaded:', {
+                    combatants: window.aiState.combatants.length,
+                    active: window.aiState.combatActive,
+                    round: window.aiState.currentRound
+                });
+            }
+        } catch (error) {
+            console.error('Error loading combat state:', error);
+        }
     }
 
     function startCombat() {
@@ -540,6 +659,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         updateCombatUI();
         updateCombatantsList();
+        saveCombatState();
         showToast('⚔️ Combat started!', 'success');
     }
 
@@ -551,6 +671,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         updateCombatUI();
         updateCombatantsList();
+        saveCombatState();
         showToast(`Turn: ${window.aiState.combatants[window.aiState.currentTurn]?.name || 'Unknown'}`, 'info');
     }
 
@@ -560,6 +681,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.aiState.currentTurn = 0;
         updateCombatUI();
         updateCombatantsList();
+        saveCombatState();
         showToast('Combat ended!', 'success');
     }
 
@@ -588,6 +710,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         window.aiState.combatants.push(combatant);
         updateCombatantsList();
+        saveCombatState();
         
         // Clear form
         const nameField = document.getElementById('combatant-name');
@@ -711,6 +834,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (combatant) {
                 combatant.currentHp = Math.max(0, combatant.currentHp - parseInt(damage));
                 updateCombatantsList();
+                saveCombatState();
                 showToast(`${combatant.name} takes ${damage} damage${combatant.currentHp === 0 ? ' and is down!' : ''}`, 
                          combatant.currentHp === 0 ? 'error' : 'warning');
             }
@@ -724,6 +848,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (combatant) {
                 combatant.currentHp = Math.min(combatant.maxHp, combatant.currentHp + parseInt(healing));
                 updateCombatantsList();
+                saveCombatState();
                 showToast(`${combatant.name} heals ${healing} HP`, 'success');
             }
         }
@@ -734,6 +859,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (combatant && confirm(`Remove ${combatant.name} from combat?`)) {
             window.aiState.combatants = window.aiState.combatants.filter(c => c.id !== id);
             updateCombatantsList();
+            saveCombatState();
             showToast(`${combatant.name} removed from combat`, 'info');
         }
     }
@@ -907,6 +1033,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Update combat list if function exists
             if (typeof updateCombatantsList === 'function') {
                 updateCombatantsList();
+                saveCombatState();
             } else {
                 console.log('updateCombatantsList function not found');
             }
@@ -1258,6 +1385,57 @@ Generated by D&D AI Assistant
     window.exportCharacterSheet = exportCharacterSheet;
     window.updateModifiers = updateModifiers;
     window.updateProficiencyBonus = updateProficiencyBonus;
+    
+    // Data Management Functions
+    function clearAllData() {
+        if (confirm('This will clear ALL saved data including character sheets, chat history, and combat state. Are you sure?')) {
+            // Clear all localStorage items related to DND assistant
+            localStorage.removeItem('dnd-character-sheet');
+            localStorage.removeItem('dnd-chat-history');
+            localStorage.removeItem('dnd-combat-state');
+            localStorage.removeItem('dnd-active-tab');
+            
+            // Reset in-memory state
+            window.aiState = {
+                chatHistory: [],
+                currentContext: 'general',
+                combatants: [],
+                combatActive: false,
+                currentRound: 0,
+                currentTurn: 0
+            };
+            
+            // Reload page to reset UI
+            location.reload();
+        }
+    }
+    
+    function exportAllData() {
+        try {
+            const allData = {
+                characterSheet: JSON.parse(localStorage.getItem('dnd-character-sheet') || '{}'),
+                chatHistory: JSON.parse(localStorage.getItem('dnd-chat-history') || '[]'),
+                combatState: JSON.parse(localStorage.getItem('dnd-combat-state') || '{}'),
+                activeTab: localStorage.getItem('dnd-active-tab') || 'character-sheet',
+                exportedAt: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(allData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `dnd-assistant-backup-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showToast('All data exported successfully!', 'success');
+        } catch (error) {
+            console.error('Error exporting data:', error);
+            showToast('Error exporting data: ' + error.message, 'error');
+        }
+    }
 
     // Make functions globally available
     window.aiEnhanced = {
@@ -1289,6 +1467,12 @@ Generated by D&D AI Assistant
         loadCharacterSheet,
         exportCharacterSheet,
         updateModifiers,
-        updateProficiencyBonus
+        updateProficiencyBonus,
+        clearAllData,
+        exportAllData,
+        saveChatHistory,
+        loadChatHistory,
+        saveCombatState,
+        loadCombatState
     };
 }); 
