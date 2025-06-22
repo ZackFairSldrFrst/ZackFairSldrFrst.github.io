@@ -4,64 +4,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const DEEPSEEK_API_KEY = 'sk-10c5d42111244584b04ebd92e3104bfc';
     const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
     
-    // DOM Elements - Original
-    const diceContainer = document.getElementById('dice-container');
-    const currentRollDisplay = document.getElementById('current-roll');
-    const resultsDiv = document.getElementById('results');
-    const historyDiv = document.getElementById('history');
-    const statsDiv = document.getElementById('statistics');
-    const soundToggle = document.getElementById('sound-toggle');
-    const themeToggle = document.getElementById('theme-toggle');
-    const animationToggle = document.getElementById('animation-toggle');
-    const autoSaveToggle = document.getElementById('auto-save-toggle');
-    const soundVolume = document.getElementById('sound-volume');
-    const quickRollBtn = document.getElementById('quick-roll-btn');
-    const diceCount = document.getElementById('dice-count');
-    const diceType = document.getElementById('dice-type');
-    const modifier = document.getElementById('modifier');
-    const historyDiceFilter = document.getElementById('history-dice-filter');
-    const historySearch = document.getElementById('history-search');
-    
-    // DOM Elements - AI Features
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    const tabContents = document.querySelectorAll('.tab-content');
-    
-    // AI DM Chat
-    const dmChatMessages = document.getElementById('dm-chat-messages');
-    const dmChatInput = document.getElementById('dm-chat-input');
-    const dmSendBtn = document.getElementById('dm-send-btn');
-    const contextTags = document.querySelectorAll('.context-tag');
-    
-    // Character Generator
-    const generateCharacterBtn = document.getElementById('generate-character-btn');
-    const generateBackstoryBtn = document.getElementById('generate-backstory-btn');
-    const rollStatsBtn = document.getElementById('roll-stats-btn');
-    const generatedCharContent = document.getElementById('generated-char-content');
-    
-    // Story Generator
-    const generateStoryBtn = document.getElementById('generate-story-btn');
-    const generateNamesBtn = document.getElementById('generate-names-btn');
-    const generateLootBtn = document.getElementById('generate-loot-btn');
-    const generatedStoryContent = document.getElementById('generated-story-content');
-    
-    // Rule Assistant
-    const ruleButtons = document.querySelectorAll('.rule-btn');
-    const askRuleBtn = document.getElementById('ask-rule-btn');
-    const ruleQuestion = document.getElementById('rule-question');
-    const ruleAnswer = document.getElementById('rule-answer');
-    
-    // Combat Tracker
-    const startCombatBtn = document.getElementById('start-combat-btn');
-    const nextTurnBtn = document.getElementById('next-turn-btn');
-    const endCombatBtn = document.getElementById('end-combat-btn');
-    const addCombatantBtn = document.getElementById('add-combatant-btn');
-    const generateEnemyBtn = document.getElementById('generate-enemy-btn');
-    const combatantsList = document.getElementById('combatants-list');
-    const currentRoundSpan = document.getElementById('current-round');
-    const combatActionButtons = document.querySelectorAll('.action-btn');
-    
     // State management
     const state = {
+        chatHistory: [],
+        currentContext: null,
+        combatants: [],
+        currentTurn: 0,
+        currentRound: 0,
+        combatActive: false,
         rollHistory: [],
         statistics: {
             totalRolls: 0,
@@ -74,49 +24,18 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         currentTheme: localStorage.getItem('theme') || 'light',
         soundEnabled: localStorage.getItem('sound') === 'true' || false,
-        animationsEnabled: localStorage.getItem('animations') === 'true' || true,
-        autoSaveEnabled: localStorage.getItem('autoSave') === 'true' || true,
-        soundVolume: parseInt(localStorage.getItem('soundVolume')) || 50,
-        
-        // AI Chat state
-        chatHistory: [],
-        currentContext: null,
-        
-        // Combat state
-        combatants: [],
-        currentTurn: 0,
-        currentRound: 0,
-        combatActive: false,
-        
-        // Character state
-        character: {
-            info: { name: '', class: '', level: 1, race: '', background: '', alignment: '' },
-            abilityScores: {
-                str: { score: 10, modifier: 0, saveProficient: false },
-                dex: { score: 10, modifier: 0, saveProficient: false },
-                con: { score: 10, modifier: 0, saveProficient: false },
-                int: { score: 10, modifier: 0, saveProficient: false },
-                wis: { score: 10, modifier: 0, saveProficient: false },
-                cha: { score: 10, modifier: 0, saveProficient: false }
-            }
-        }
+        animationsEnabled: localStorage.getItem('animations') === 'true' || true
     };
 
     // Initialize
     init();
 
     function init() {
-        setTheme(state.currentTheme);
-        if (soundToggle) soundToggle.checked = state.soundEnabled;
-        if (animationToggle) animationToggle.checked = state.animationsEnabled;
-        if (autoSaveToggle) autoSaveToggle.checked = state.autoSaveEnabled;
-        if (soundVolume) soundVolume.value = state.soundVolume;
-        
-        [4, 6, 8, 10, 12, 20].forEach(createDice);
-        loadHistory();
         setupEventListeners();
         setupAIEventListeners();
-        updateDistributionChart();
+        [4, 6, 8, 10, 12, 20].forEach(createDice);
+        loadHistory();
+        setTheme(state.currentTheme);
         showToast('Welcome to your AI-powered D&D Assistant!', 'success');
     }
 
@@ -150,8 +69,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Tab Navigation
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        
+        document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+        document.getElementById(tabId).classList.add('active');
+    }
+
     // AI DM Chat Functions
     async function sendDMMessage() {
+        const dmChatInput = document.getElementById('dm-chat-input');
+        const dmChatMessages = document.getElementById('dm-chat-messages');
+        
         const message = dmChatInput.value.trim();
         if (!message) return;
 
@@ -166,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const messages = [
                 { role: 'system', content: systemPrompt },
-                ...state.chatHistory.slice(-10), // Keep last 10 messages for context
+                ...state.chatHistory.slice(-10),
                 { role: 'user', content: message }
             ];
 
@@ -200,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function addChatMessage(sender, content, isLoading = false) {
+        const dmChatMessages = document.getElementById('dm-chat-messages');
         const messageDiv = document.createElement('div');
         messageDiv.className = `chat-message ${sender}${isLoading ? ' loading' : ''}`;
         
@@ -218,6 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const genRace = document.getElementById('gen-race').value;
         const genLevel = document.getElementById('gen-level').value;
         const genTheme = document.getElementById('gen-theme').value;
+        const generatedCharContent = document.getElementById('generated-char-content');
 
         showLoading(generatedCharContent);
 
@@ -245,6 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function generateBackstory() {
+        const generatedCharContent = document.getElementById('generated-char-content');
         showLoading(generatedCharContent);
 
         try {
@@ -265,6 +199,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    async function rollStats() {
+        const generatedCharContent = document.getElementById('generated-char-content');
+        showLoading(generatedCharContent);
+        
+        const stats = [];
+        for (let i = 0; i < 6; i++) {
+            const rolls = Array.from({length: 4}, () => Math.floor(Math.random() * 6) + 1);
+            rolls.sort((a, b) => b - a);
+            stats.push(rolls.slice(0, 3).reduce((sum, roll) => sum + roll, 0));
+        }
+        
+        const content = `
+            <h3>Rolled Ability Scores</h3>
+            <div class="rolled-stats">
+                ${stats.map((stat, i) => `<div class="stat-roll">${['STR', 'DEX', 'CON', 'INT', 'WIS', 'CHA'][i]}: ${stat} (${Math.floor((stat - 10) / 2) >= 0 ? '+' : ''}${Math.floor((stat - 10) / 2)})</div>`).join('')}
+            </div>
+            <p><strong>Total modifier: ${stats.reduce((sum, stat) => sum + Math.floor((stat - 10) / 2), 0)}</strong></p>
+        `;
+        
+        displayGeneratedContent(generatedCharContent, content, 'rolled-stats');
+    }
+
     // Story Generator Functions
     async function generateStory() {
         const storyType = document.getElementById('story-type').value;
@@ -272,6 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const storyTone = document.getElementById('story-tone').value;
         const partyLevel = document.getElementById('party-level').value;
         const customPrompt = document.getElementById('custom-prompt').value;
+        const generatedStoryContent = document.getElementById('generated-story-content');
 
         showLoading(generatedStoryContent);
 
@@ -318,8 +275,50 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    async function generateNames() {
+        const generatedStoryContent = document.getElementById('generated-story-content');
+        showLoading(generatedStoryContent);
+        
+        try {
+            const prompt = `Generate 20 fantasy names suitable for D&D, including:
+            - 5 human names (mix of male/female)
+            - 5 elf names
+            - 5 dwarf names
+            - 5 place names (cities, taverns, etc.)
+            
+            Format as a neat list with categories.`;
+
+            const response = await callDeepSeekAPI([{ role: 'user', content: prompt }]);
+            displayGeneratedContent(generatedStoryContent, response, 'generated-names');
+        } catch (error) {
+            displayError(generatedStoryContent, error.message);
+        }
+    }
+
+    async function generateLoot() {
+        const generatedStoryContent = document.getElementById('generated-story-content');
+        const partyLevel = document.getElementById('party-level')?.value || 1;
+        showLoading(generatedStoryContent);
+        
+        try {
+            const prompt = `Generate appropriate treasure for a level ${partyLevel} D&D party including:
+            - Coins and gems
+            - 2-3 magic items (appropriate for level)
+            - Some mundane but valuable items
+            - Brief descriptions of notable items
+            
+            Make it balanced and interesting.`;
+
+            const response = await callDeepSeekAPI([{ role: 'user', content: prompt }]);
+            displayGeneratedContent(generatedStoryContent, response, 'generated-loot');
+        } catch (error) {
+            displayError(generatedStoryContent, error.message);
+        }
+    }
+
     // Rule Assistant Functions
     async function askRule(question) {
+        const ruleAnswer = document.getElementById('rule-answer');
         showLoading(ruleAnswer);
 
         try {
@@ -338,6 +337,20 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             displayError(ruleAnswer, error.message);
         }
+    }
+
+    function getQuickRuleQuestion(rule) {
+        const questions = {
+            combat: 'Explain the basic combat sequence and actions in D&D 5e',
+            spellcasting: 'How does spellcasting work in D&D 5e?',
+            conditions: 'List and explain the conditions in D&D 5e',
+            advantage: 'How do advantage and disadvantage work?',
+            grappling: 'Explain the grappling rules',
+            stealth: 'How do stealth and hiding work?',
+            'death-saves': 'Explain death saving throws',
+            multiattack: 'How does multiattack work?'
+        };
+        return questions[rule] || rule;
     }
 
     // Combat Tracker Functions
@@ -456,28 +469,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Utility Functions
-    function showLoading(element) {
-        element.innerHTML = '<div class="loading-spinner">Generating with AI...</div>';
-    }
-
-    function displayGeneratedContent(element, content, className) {
-        element.innerHTML = `<div class="${className}">${content.replace(/\n/g, '<br>')}</div>`;
-    }
-
-    function displayError(element, message) {
-        element.innerHTML = `<div class="error-message">Error: ${message}</div>`;
-    }
-
     function updateCombatUI() {
-        if (currentRoundSpan) currentRoundSpan.textContent = state.currentRound;
+        const currentRoundSpan = document.getElementById('current-round');
+        const startCombatBtn = document.getElementById('start-combat-btn');
+        const nextTurnBtn = document.getElementById('next-turn-btn');
+        const endCombatBtn = document.getElementById('end-combat-btn');
         
+        if (currentRoundSpan) currentRoundSpan.textContent = state.currentRound;
         if (startCombatBtn) startCombatBtn.disabled = state.combatActive;
         if (nextTurnBtn) nextTurnBtn.disabled = !state.combatActive;
         if (endCombatBtn) endCombatBtn.disabled = !state.combatActive;
     }
 
     function updateCombatantsList() {
+        const combatantsList = document.getElementById('combatants-list');
         if (!combatantsList) return;
         
         if (state.combatants.length === 0) {
@@ -508,7 +513,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }).join('');
     }
 
-    // Make combat functions global for onclick handlers
+    // Combat action functions (global for onclick handlers)
     window.damageCombatant = function(id) {
         const damage = prompt('Enter damage amount:');
         if (damage && !isNaN(damage)) {
@@ -539,273 +544,9 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast('Combatant removed', 'success');
     };
 
-    // Event Listeners Setup
-    function setupAIEventListeners() {
-        // Tab navigation
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const tab = button.dataset.tab;
-                switchTab(tab);
-            });
-        });
-
-        // AI DM Chat
-        if (dmSendBtn) dmSendBtn.addEventListener('click', sendDMMessage);
-        if (dmChatInput) {
-            dmChatInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    sendDMMessage();
-                }
-            });
-        }
-
-        // Context tags
-        contextTags.forEach(tag => {
-            tag.addEventListener('click', () => {
-                contextTags.forEach(t => t.classList.remove('active'));
-                tag.classList.add('active');
-                state.currentContext = tag.dataset.context;
-            });
-        });
-
-        // Character Generator
-        if (generateCharacterBtn) generateCharacterBtn.addEventListener('click', generateCharacter);
-        if (generateBackstoryBtn) generateBackstoryBtn.addEventListener('click', generateBackstory);
-        if (rollStatsBtn) rollStatsBtn.addEventListener('click', rollStats);
-
-        // Story Generator
-        if (generateStoryBtn) generateStoryBtn.addEventListener('click', generateStory);
-        if (generateNamesBtn) generateNamesBtn.addEventListener('click', generateNames);
-        if (generateLootBtn) generateLootBtn.addEventListener('click', generateLoot);
-
-        // Rule Assistant
-        ruleButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const rule = btn.dataset.rule;
-                askRule(getQuickRuleQuestion(rule));
-            });
-        });
-        
-        if (askRuleBtn) askRuleBtn.addEventListener('click', () => {
-            const question = ruleQuestion.value.trim();
-            if (question) askRule(question);
-        });
-
-        // Combat Tracker
-        if (startCombatBtn) startCombatBtn.addEventListener('click', startCombat);
-        if (nextTurnBtn) nextTurnBtn.addEventListener('click', nextTurn);
-        if (endCombatBtn) endCombatBtn.addEventListener('click', endCombat);
-        if (addCombatantBtn) addCombatantBtn.addEventListener('click', addCombatant);
-        if (generateEnemyBtn) generateEnemyBtn.addEventListener('click', generateEnemy);
-
-        // Combat Actions
-        combatActionButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const action = btn.dataset.action;
-                handleCombatAction(action);
-            });
-        });
-    }
-
-    function switchTab(tabId) {
-        tabButtons.forEach(btn => btn.classList.remove('active'));
-        tabContents.forEach(content => content.classList.remove('active'));
-        
-        document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
-        document.getElementById(tabId).classList.add('active');
-    }
-
-    function getQuickRuleQuestion(rule) {
-        const questions = {
-            combat: 'Explain the basic combat sequence and actions in D&D 5e',
-            spellcasting: 'How does spellcasting work in D&D 5e?',
-            conditions: 'List and explain the conditions in D&D 5e',
-            advantage: 'How do advantage and disadvantage work?',
-            grappling: 'Explain the grappling rules',
-            stealth: 'How do stealth and hiding work?',
-            'death-saves': 'Explain death saving throws',
-            multiattack: 'How does multiattack work?'
-        };
-        return questions[rule] || rule;
-    }
-
-    async function rollStats() {
-        showLoading(generatedCharContent);
-        
-        const stats = [];
-        for (let i = 0; i < 6; i++) {
-            const rolls = Array.from({length: 4}, () => Math.floor(Math.random() * 6) + 1);
-            rolls.sort((a, b) => b - a);
-            stats.push(rolls.slice(0, 3).reduce((sum, roll) => sum + roll, 0));
-        }
-        
-        const content = `
-            <h3>Rolled Ability Scores</h3>
-            <div class="rolled-stats">
-                ${stats.map((stat, i) => `<div class="stat-roll">${['STR', 'DEX', 'CON', 'INT', 'WIS', 'CHA'][i]}: ${stat}</div>`).join('')}
-            </div>
-            <p>Total modifier: ${stats.reduce((sum, stat) => sum + Math.floor((stat - 10) / 2), 0)}</p>
-        `;
-        
-        displayGeneratedContent(generatedCharContent, content, 'rolled-stats');
-    }
-
-    async function generateNames() {
-        showLoading(generatedStoryContent);
-        
-        try {
-            const prompt = `Generate 20 fantasy names suitable for D&D, including:
-            - 5 human names (mix of male/female)
-            - 5 elf names
-            - 5 dwarf names
-            - 5 place names (cities, taverns, etc.)
-            
-            Format as a neat list with categories.`;
-
-            const response = await callDeepSeekAPI([{ role: 'user', content: prompt }]);
-            displayGeneratedContent(generatedStoryContent, response, 'generated-names');
-        } catch (error) {
-            displayError(generatedStoryContent, error.message);
-        }
-    }
-
-    async function generateLoot() {
-        showLoading(generatedStoryContent);
-        
-        try {
-            const partyLevel = document.getElementById('party-level')?.value || 1;
-            const prompt = `Generate appropriate treasure for a level ${partyLevel} D&D party including:
-            - Coins and gems
-            - 2-3 magic items (appropriate for level)
-            - Some mundane but valuable items
-            - Brief descriptions of notable items
-            
-            Make it balanced and interesting.`;
-
-            const response = await callDeepSeekAPI([{ role: 'user', content: prompt }]);
-            displayGeneratedContent(generatedStoryContent, response, 'generated-loot');
-        } catch (error) {
-            displayError(generatedStoryContent, error.message);
-        }
-    }
-
-    function handleCombatAction(action) {
-        switch (action) {
-            case 'attack':
-                rollAttack();
-                break;
-            case 'damage':
-                rollDamage();
-                break;
-            case 'heal':
-                rollHealing();
-                break;
-            case 'condition':
-                addCondition();
-                break;
-            case 'save':
-                rollSave();
-                break;
-        }
-    }
-
-    function rollAttack() {
-        const d20Roll = Math.floor(Math.random() * 20) + 1;
-        const modifier = parseInt(prompt('Enter attack modifier:') || '0');
-        const total = d20Roll + modifier;
-        
-        showToast(`Attack Roll: ${d20Roll} + ${modifier} = ${total}${d20Roll === 20 ? ' (CRITICAL!)' : d20Roll === 1 ? ' (FUMBLE!)' : ''}`, 
-                 d20Roll === 20 ? 'success' : d20Roll === 1 ? 'error' : 'info');
-    }
-
-    function rollDamage() {
-        const diceInput = prompt('Enter damage dice (e.g., 2d6+3):');
-        if (diceInput) {
-            const result = parseDiceString(diceInput);
-            showToast(`Damage: ${result}`, 'warning');
-        }
-    }
-
-    function rollHealing() {
-        const diceInput = prompt('Enter healing dice (e.g., 2d4+2):');
-        if (diceInput) {
-            const result = parseDiceString(diceInput);
-            showToast(`Healing: ${result}`, 'success');
-        }
-    }
-
-    function rollSave() {
-        const d20Roll = Math.floor(Math.random() * 20) + 1;
-        const modifier = parseInt(prompt('Enter save modifier:') || '0');
-        const total = d20Roll + modifier;
-        
-        showToast(`Saving Throw: ${d20Roll} + ${modifier} = ${total}${d20Roll === 20 ? ' (NATURAL 20!)' : d20Roll === 1 ? ' (NATURAL 1!)' : ''}`, 
-                 d20Roll === 20 ? 'success' : d20Roll === 1 ? 'error' : 'info');
-    }
-
-    function addCondition() {
-        const condition = prompt('Enter condition name:');
-        if (condition) {
-            showToast(`Condition "${condition}" noted`, 'info');
-        }
-    }
-
-    function parseDiceString(diceString) {
-        // Simple dice parser for XdY+Z format
-        const match = diceString.match(/(\d+)d(\d+)(?:\+(\d+))?/i);
-        if (match) {
-            const [, count, sides, modifier] = match;
-            let total = parseInt(modifier) || 0;
-            const rolls = [];
-            
-            for (let i = 0; i < parseInt(count); i++) {
-                const roll = Math.floor(Math.random() * parseInt(sides)) + 1;
-                rolls.push(roll);
-                total += roll;
-            }
-            
-            return `${rolls.join(' + ')}${modifier ? ` + ${modifier}` : ''} = ${total}`;
-        }
-        return diceString;
-    }
-
-    // Original dice rolling functionality (preserved)
-    function setupEventListeners() {
-        if (quickRollBtn) {
-            quickRollBtn.addEventListener('click', () => {
-                const count = parseInt(diceCount.value);
-                const type = parseInt(diceType.value);
-                const mod = parseInt(modifier.value) || 0;
-                
-                if (count > 0 && count <= 100) {
-                    rollMultipleDice(count, type, mod);
-                } else {
-                    showToast('Please enter a valid number of dice (1-100)', 'error');
-                }
-            });
-        }
-
-        if (historyDiceFilter) historyDiceFilter.addEventListener('change', filterHistory);
-        if (historySearch) historySearch.addEventListener('input', filterHistory);
-
-        if (soundToggle) {
-            soundToggle.addEventListener('change', (e) => {
-                state.soundEnabled = e.target.checked;
-                localStorage.setItem('sound', state.soundEnabled);
-            });
-        }
-
-        if (themeToggle) {
-            themeToggle.addEventListener('change', (e) => {
-                const theme = e.target.checked ? 'dark' : 'light';
-                setTheme(theme);
-                localStorage.setItem('theme', theme);
-            });
-        }
-    }
-
+    // Dice Rolling Functions
     function createDice(sides) {
+        const diceContainer = document.getElementById('dice-container');
         if (!diceContainer) return;
         
         const diceElement = document.createElement('div');
@@ -824,22 +565,17 @@ document.addEventListener('DOMContentLoaded', () => {
         
         setTimeout(() => {
             diceElement.classList.remove('rolling');
-            updateState(result, sides);
             updateResultDisplay(result, sides);
-            updateHistoryDisplay(result, sides);
-            updateStatisticsDisplay();
+            updateRollHistory(result, sides);
+            updateStatistics(result, sides);
             
             if (state.soundEnabled) {
                 playRollSound(result, sides);
             }
-            
-            if (state.autoSaveEnabled) {
-                saveHistory();
-            }
         }, state.animationsEnabled ? 1000 : 0);
     }
 
-    async function rollMultipleDice(count, sides, modifier = 0) {
+    function rollMultipleDice(count, sides, modifier = 0) {
         const rolls = [];
         let total = modifier;
         
@@ -847,45 +583,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const roll = Math.floor(Math.random() * sides) + 1;
             rolls.push(roll);
             total += roll;
-            updateState(roll, sides);
         }
         
         updateRollBreakdown(rolls, modifier);
         updateRollTotal(total);
-        updateHistoryDisplay(`${count}d${sides}${modifier !== 0 ? (modifier > 0 ? '+' : '') + modifier : ''}`, sides, modifier, rolls, total);
-        updateStatisticsDisplay();
+        updateRollHistory(`${count}d${sides}${modifier !== 0 ? (modifier > 0 ? '+' : '') + modifier : ''}`, sides, modifier, rolls, total);
+        
+        rolls.forEach(roll => updateStatistics(roll, sides));
         
         if (state.soundEnabled) {
             playRollSound(total, sides);
         }
-        
-        if (state.autoSaveEnabled) {
-            saveHistory();
-        }
-    }
-
-    function updateState(roll, sides) {
-        state.statistics.totalRolls++;
-        state.statistics.diceCounts[`d${sides}`]++;
-        
-        if (roll > state.statistics.maxRoll) {
-            state.statistics.maxRoll = roll;
-        }
-        
-        if (roll < state.statistics.minRoll) {
-            state.statistics.minRoll = roll;
-        }
-        
-        if (sides === 20) {
-            if (roll === 20) state.statistics.critSuccesses++;
-            if (roll === 1) state.statistics.critFailures++;
-        }
-        
-        const total = state.rollHistory.reduce((sum, entry) => sum + (entry.total || entry.result), 0) + roll;
-        state.statistics.avgRoll = total / (state.rollHistory.length + 1);
     }
 
     function updateResultDisplay(result, sides, modifier = 0) {
+        const currentRollDisplay = document.getElementById('current-roll');
         if (currentRollDisplay) {
             currentRollDisplay.textContent = result + (modifier !== 0 ? ` (${modifier > 0 ? '+' : ''}${modifier}) = ${result + modifier}` : '');
         }
@@ -905,7 +617,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function updateHistoryDisplay(roll, sides, modifier = 0, rollsArray = null, total = null) {
+    function updateRollHistory(roll, sides, modifier = 0, rollsArray = null, total = null) {
         const entry = {
             timestamp: new Date(),
             roll: rollsArray ? `${rollsArray.length}d${sides}` : `d${sides}`,
@@ -925,6 +637,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderHistory() {
+        const historyDiv = document.getElementById('history');
         if (!historyDiv) return;
         
         historyDiv.innerHTML = state.rollHistory.map(entry => `
@@ -935,6 +648,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="history-time">${entry.timestamp.toLocaleTimeString()}</span>
             </div>
         `).join('');
+    }
+
+    function updateStatistics(roll, sides) {
+        state.statistics.totalRolls++;
+        state.statistics.diceCounts[`d${sides}`]++;
+        
+        if (roll > state.statistics.maxRoll) {
+            state.statistics.maxRoll = roll;
+        }
+        
+        if (roll < state.statistics.minRoll) {
+            state.statistics.minRoll = roll;
+        }
+        
+        if (sides === 20) {
+            if (roll === 20) state.statistics.critSuccesses++;
+            if (roll === 1) state.statistics.critFailures++;
+        }
+        
+        const total = state.rollHistory.reduce((sum, entry) => sum + (entry.total || entry.result), 0);
+        state.statistics.avgRoll = total / state.statistics.totalRolls;
+        
+        updateStatisticsDisplay();
     }
 
     function updateStatisticsDisplay() {
@@ -971,12 +707,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function updateDistributionChart() {
-        // Placeholder for distribution chart
+    // Utility Functions
+    function showLoading(element) {
+        element.innerHTML = '<div class="loading-spinner">🎲 Generating with AI...</div>';
     }
 
-    function filterHistory() {
-        // Placeholder for history filtering
+    function displayGeneratedContent(element, content, className) {
+        element.innerHTML = `<div class="${className}">${content.replace(/\n/g, '<br>')}</div>`;
+    }
+
+    function displayError(element, message) {
+        element.innerHTML = `<div class="error-message">❌ Error: ${message}</div>`;
     }
 
     function loadHistory() {
@@ -1004,16 +745,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const toast = document.createElement('div');
         toast.className = `toast ${type}`;
         toast.textContent = message;
+        toast.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--surface);
+            color: var(--text);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--${type === 'success' ? 'success' : type === 'error' ? 'error' : type === 'warning' ? 'warning' : 'primary'});
+            box-shadow: var(--shadow-md);
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+        `;
         
-        let container = document.getElementById('toast-container');
-        if (!container) {
-            container = document.createElement('div');
-            container.id = 'toast-container';
-            container.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 10000;';
-            document.body.appendChild(container);
-        }
-        
-        container.appendChild(toast);
+        document.body.appendChild(toast);
         
         setTimeout(() => {
             toast.style.opacity = '0';
@@ -1022,13 +768,131 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function playRollSound(result, sides) {
-        // Audio feedback for rolls
+        // Audio feedback for rolls - could play different sounds for crits
         if (sides === 20) {
             if (result === 20) {
-                console.log('Critical success sound!');
+                console.log('🎉 Critical success!');
             } else if (result === 1) {
-                console.log('Critical failure sound!');
+                console.log('💀 Critical failure!');
             }
         }
     }
-});
+
+    // Event Listeners Setup
+    function setupEventListeners() {
+        // Quick roll functionality
+        const quickRollBtn = document.getElementById('quick-roll-btn');
+        if (quickRollBtn) {
+            quickRollBtn.addEventListener('click', () => {
+                const count = parseInt(document.getElementById('dice-count').value);
+                const type = parseInt(document.getElementById('dice-type').value);
+                const mod = parseInt(document.getElementById('modifier').value) || 0;
+                
+                if (count > 0 && count <= 100) {
+                    rollMultipleDice(count, type, mod);
+                } else {
+                    showToast('Please enter a valid number of dice (1-100)', 'error');
+                }
+            });
+        }
+
+        // Theme and preferences
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('change', (e) => {
+                const theme = e.target.checked ? 'dark' : 'light';
+                setTheme(theme);
+                localStorage.setItem('theme', theme);
+            });
+        }
+
+        const soundToggle = document.getElementById('sound-toggle');
+        if (soundToggle) {
+            soundToggle.addEventListener('change', (e) => {
+                state.soundEnabled = e.target.checked;
+                localStorage.setItem('sound', state.soundEnabled);
+            });
+        }
+    }
+
+    function setupAIEventListeners() {
+        // Tab navigation
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const tab = button.dataset.tab;
+                switchTab(tab);
+            });
+        });
+
+        // AI DM Chat
+        const dmSendBtn = document.getElementById('dm-send-btn');
+        const dmChatInput = document.getElementById('dm-chat-input');
+        
+        if (dmSendBtn) dmSendBtn.addEventListener('click', sendDMMessage);
+        if (dmChatInput) {
+            dmChatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendDMMessage();
+                }
+            });
+        }
+
+        // Context tags
+        document.querySelectorAll('.context-tag').forEach(tag => {
+            tag.addEventListener('click', () => {
+                document.querySelectorAll('.context-tag').forEach(t => t.classList.remove('active'));
+                tag.classList.add('active');
+                state.currentContext = tag.dataset.context;
+            });
+        });
+
+        // Character Generator
+        const generateCharacterBtn = document.getElementById('generate-character-btn');
+        const generateBackstoryBtn = document.getElementById('generate-backstory-btn');
+        const rollStatsBtn = document.getElementById('roll-stats-btn');
+        
+        if (generateCharacterBtn) generateCharacterBtn.addEventListener('click', generateCharacter);
+        if (generateBackstoryBtn) generateBackstoryBtn.addEventListener('click', generateBackstory);
+        if (rollStatsBtn) rollStatsBtn.addEventListener('click', rollStats);
+
+        // Story Generator
+        const generateStoryBtn = document.getElementById('generate-story-btn');
+        const generateNamesBtn = document.getElementById('generate-names-btn');
+        const generateLootBtn = document.getElementById('generate-loot-btn');
+        
+        if (generateStoryBtn) generateStoryBtn.addEventListener('click', generateStory);
+        if (generateNamesBtn) generateNamesBtn.addEventListener('click', generateNames);
+        if (generateLootBtn) generateLootBtn.addEventListener('click', generateLoot);
+
+        // Rule Assistant
+        document.querySelectorAll('.rule-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const rule = btn.dataset.rule;
+                askRule(getQuickRuleQuestion(rule));
+            });
+        });
+        
+        const askRuleBtn = document.getElementById('ask-rule-btn');
+        const ruleQuestion = document.getElementById('rule-question');
+        if (askRuleBtn) {
+            askRuleBtn.addEventListener('click', () => {
+                const question = ruleQuestion.value.trim();
+                if (question) askRule(question);
+            });
+        }
+
+        // Combat Tracker
+        const startCombatBtn = document.getElementById('start-combat-btn');
+        const nextTurnBtn = document.getElementById('next-turn-btn');
+        const endCombatBtn = document.getElementById('end-combat-btn');
+        const addCombatantBtn = document.getElementById('add-combatant-btn');
+        const generateEnemyBtn = document.getElementById('generate-enemy-btn');
+        
+        if (startCombatBtn) startCombatBtn.addEventListener('click', startCombat);
+        if (nextTurnBtn) nextTurnBtn.addEventListener('click', nextTurn);
+        if (endCombatBtn) endCombatBtn.addEventListener('click', endCombat);
+        if (addCombatantBtn) addCombatantBtn.addEventListener('click', addCombatant);
+        if (generateEnemyBtn) generateEnemyBtn.addEventListener('click', generateEnemy);
+    }
+}); 

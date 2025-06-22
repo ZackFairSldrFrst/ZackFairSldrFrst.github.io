@@ -29,6 +29,11 @@
         <div class="tab-navigation">
             <button class="tab-btn active" data-tab="dice-roller">Dice Roller</button>
             <button class="tab-btn" data-tab="character-sheet">Character Sheet</button>
+            <button class="tab-btn" data-tab="ai-dm">AI DM</button>
+            <button class="tab-btn" data-tab="character-generator">Character Gen</button>
+            <button class="tab-btn" data-tab="story-generator">Story Gen</button>
+            <button class="tab-btn" data-tab="rule-assistant">Rules Help</button>
+            <button class="tab-btn" data-tab="combat-tracker">Combat</button>
         </div>
         
         <!-- Dice Roller Tab -->
@@ -485,6 +490,279 @@
                 </section>
             </main>
         </div>
+
+        <!-- AI DM Assistant Tab -->
+        <div class="tab-content" id="ai-dm">
+            <main>
+                <section class="section" id="ai-dm-chat">
+                    <h2>AI Dungeon Master</h2>
+                    <div class="ai-chat-container">
+                        <div class="chat-messages" id="dm-chat-messages">
+                            <div class="system-message">
+                                Welcome! I'm your AI Dungeon Master assistant. I can help with:
+                                <ul>
+                                    <li>Answering D&D rules questions</li>
+                                    <li>Creating NPCs and encounters</li>
+                                    <li>Generating plot hooks and story ideas</li>
+                                    <li>Helping with campaign management</li>
+                                    <li>Interpreting dice rolls in context</li>
+                                </ul>
+                                What would you like help with today?
+                            </div>
+                        </div>
+                        <div class="chat-input-container">
+                            <div class="context-tags" id="dm-context-tags">
+                                <button class="context-tag" data-context="rules">Rules Question</button>
+                                <button class="context-tag" data-context="npc">Create NPC</button>
+                                <button class="context-tag" data-context="encounter">Design Encounter</button>
+                                <button class="context-tag" data-context="story">Story Help</button>
+                                <button class="context-tag" data-context="roll">Interpret Roll</button>
+                            </div>
+                            <div class="chat-input-wrapper">
+                                <textarea id="dm-chat-input" placeholder="Ask your DM anything..." rows="3"></textarea>
+                                <button id="dm-send-btn" class="btn btn-primary">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Character Generator Tab -->
+        <div class="tab-content" id="character-generator">
+            <main>
+                <section class="section" id="char-gen-options">
+                    <h2>AI Character Generator</h2>
+                    <div class="char-gen-controls">
+                        <div class="gen-options-grid">
+                            <div class="gen-option">
+                                <label for="gen-class">Preferred Class:</label>
+                                <select id="gen-class">
+                                    <option value="">Any Class</option>
+                                    <option value="barbarian">Barbarian</option>
+                                    <option value="bard">Bard</option>
+                                    <option value="cleric">Cleric</option>
+                                    <option value="druid">Druid</option>
+                                    <option value="fighter">Fighter</option>
+                                    <option value="monk">Monk</option>
+                                    <option value="paladin">Paladin</option>
+                                    <option value="ranger">Ranger</option>
+                                    <option value="rogue">Rogue</option>
+                                    <option value="sorcerer">Sorcerer</option>
+                                    <option value="warlock">Warlock</option>
+                                    <option value="wizard">Wizard</option>
+                                </select>
+                            </div>
+                            <div class="gen-option">
+                                <label for="gen-race">Preferred Race:</label>
+                                <select id="gen-race">
+                                    <option value="">Any Race</option>
+                                    <option value="human">Human</option>
+                                    <option value="elf">Elf</option>
+                                    <option value="dwarf">Dwarf</option>
+                                    <option value="halfling">Halfling</option>
+                                    <option value="dragonborn">Dragonborn</option>
+                                    <option value="gnome">Gnome</option>
+                                    <option value="half-elf">Half-Elf</option>
+                                    <option value="half-orc">Half-Orc</option>
+                                    <option value="tiefling">Tiefling</option>
+                                </select>
+                            </div>
+                            <div class="gen-option">
+                                <label for="gen-level">Level:</label>
+                                <input type="number" id="gen-level" min="1" max="20" value="1">
+                            </div>
+                            <div class="gen-option">
+                                <label for="gen-theme">Character Theme:</label>
+                                <input type="text" id="gen-theme" placeholder="e.g., mysterious, heroic, comedic">
+                            </div>
+                        </div>
+                        <div class="gen-buttons">
+                            <button id="generate-character-btn" class="btn btn-primary">Generate Character</button>
+                            <button id="generate-backstory-btn" class="btn">Generate Backstory</button>
+                            <button id="roll-stats-btn" class="btn btn-secondary">Roll Stats</button>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="section" id="generated-character">
+                    <h2>Generated Character</h2>
+                    <div id="generated-char-content">
+                        <p class="placeholder-text">Click "Generate Character" to create a new character!</p>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Story Generator Tab -->
+        <div class="tab-content" id="story-generator">
+            <main>
+                <section class="section" id="story-gen-controls">
+                    <h2>AI Story Generator</h2>
+                    <div class="story-gen-options">
+                        <div class="story-options-grid">
+                            <div class="story-option">
+                                <label for="story-type">Story Type:</label>
+                                <select id="story-type">
+                                    <option value="adventure">Adventure Hook</option>
+                                    <option value="npc">NPC Generator</option>
+                                    <option value="location">Location Description</option>
+                                    <option value="encounter">Random Encounter</option>
+                                    <option value="quest">Quest Generator</option>
+                                    <option value="mystery">Mystery Plot</option>
+                                    <option value="dungeon">Dungeon Room</option>
+                                </select>
+                            </div>
+                            <div class="story-option">
+                                <label for="story-setting">Setting:</label>
+                                <select id="story-setting">
+                                    <option value="">Any Setting</option>
+                                    <option value="fantasy">High Fantasy</option>
+                                    <option value="urban">Urban Fantasy</option>
+                                    <option value="dark">Dark Fantasy</option>
+                                    <option value="steampunk">Steampunk</option>
+                                    <option value="post-apocalyptic">Post-Apocalyptic</option>
+                                    <option value="seafaring">Seafaring</option>
+                                    <option value="underdark">Underdark</option>
+                                </select>
+                            </div>
+                            <div class="story-option">
+                                <label for="story-tone">Tone:</label>
+                                <select id="story-tone">
+                                    <option value="">Any Tone</option>
+                                    <option value="serious">Serious</option>
+                                    <option value="lighthearted">Lighthearted</option>
+                                    <option value="dark">Dark & Gritty</option>
+                                    <option value="mysterious">Mysterious</option>
+                                    <option value="heroic">Heroic</option>
+                                    <option value="comedic">Comedic</option>
+                                </select>
+                            </div>
+                            <div class="story-option">
+                                <label for="party-level">Party Level:</label>
+                                <input type="number" id="party-level" min="1" max="20" value="1">
+                            </div>
+                        </div>
+                        <div class="story-custom-prompt">
+                            <label for="custom-prompt">Custom Prompt:</label>
+                            <textarea id="custom-prompt" placeholder="Describe what kind of story element you want..." rows="3"></textarea>
+                        </div>
+                        <div class="story-buttons">
+                            <button id="generate-story-btn" class="btn btn-primary">Generate Story</button>
+                            <button id="generate-names-btn" class="btn">Generate Names</button>
+                            <button id="generate-loot-btn" class="btn btn-secondary">Generate Loot</button>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="section" id="generated-story">
+                    <h2>Generated Content</h2>
+                    <div id="generated-story-content">
+                        <p class="placeholder-text">Select a story type and click "Generate Story" to begin!</p>
+                    </div>
+                    <div class="story-actions">
+                        <button id="save-story-btn" class="btn" style="display: none;">Save to Campaign</button>
+                        <button id="regenerate-btn" class="btn btn-secondary" style="display: none;">Regenerate</button>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Rule Assistant Tab -->
+        <div class="tab-content" id="rule-assistant">
+            <main>
+                <section class="section" id="rule-search">
+                    <h2>D&D Rules Assistant</h2>
+                    <div class="rule-search-container">
+                        <div class="quick-rules">
+                            <h3>Quick Rule Lookups</h3>
+                            <div class="rule-buttons">
+                                <button class="rule-btn" data-rule="combat">Combat Rules</button>
+                                <button class="rule-btn" data-rule="spellcasting">Spellcasting</button>
+                                <button class="rule-btn" data-rule="conditions">Conditions</button>
+                                <button class="rule-btn" data-rule="advantage">Advantage/Disadvantage</button>
+                                <button class="rule-btn" data-rule="grappling">Grappling</button>
+                                <button class="rule-btn" data-rule="stealth">Stealth & Hiding</button>
+                                <button class="rule-btn" data-rule="death-saves">Death Saves</button>
+                                <button class="rule-btn" data-rule="multiattack">Multiattack</button>
+                            </div>
+                        </div>
+                        <div class="rule-query">
+                            <h3>Ask About Any Rule</h3>
+                            <div class="rule-input-container">
+                                <textarea id="rule-question" placeholder="Ask any D&D rules question..." rows="3"></textarea>
+                                <button id="ask-rule-btn" class="btn btn-primary">Ask</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="section" id="rule-response">
+                    <h2>Rule Explanation</h2>
+                    <div id="rule-answer">
+                        <p class="placeholder-text">Click a quick rule button or ask a specific question!</p>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Combat Tracker Tab -->
+        <div class="tab-content" id="combat-tracker">
+            <main>
+                <section class="section" id="combat-setup">
+                    <h2>Combat Tracker</h2>
+                    <div class="combat-controls">
+                        <div class="combat-buttons">
+                            <button id="start-combat-btn" class="btn btn-primary">Start Combat</button>
+                            <button id="next-turn-btn" class="btn" disabled>Next Turn</button>
+                            <button id="end-combat-btn" class="btn btn-secondary" disabled>End Combat</button>
+                        </div>
+                        <div class="round-counter">
+                            <span>Round: <span id="current-round">0</span></span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="add-combatant">
+                    <h2>Add Combatant</h2>
+                    <div class="combatant-form">
+                        <div class="form-row">
+                            <input type="text" id="combatant-name" placeholder="Name">
+                            <input type="number" id="combatant-initiative" placeholder="Initiative" min="1" max="30">
+                            <input type="number" id="combatant-hp" placeholder="HP" min="1">
+                            <input type="number" id="combatant-ac" placeholder="AC" min="1">
+                        </div>
+                        <div class="form-row">
+                            <select id="combatant-type">
+                                <option value="player">Player</option>
+                                <option value="enemy">Enemy</option>
+                                <option value="ally">Ally</option>
+                            </select>
+                            <button id="add-combatant-btn" class="btn btn-primary">Add</button>
+                            <button id="generate-enemy-btn" class="btn btn-secondary">Generate Enemy</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="initiative-tracker">
+                    <h2>Initiative Order</h2>
+                    <div id="combatants-list">
+                        <p class="placeholder-text">Add combatants to begin tracking initiative!</p>
+                    </div>
+                </section>
+
+                <section class="section" id="combat-actions">
+                    <h2>Quick Combat Actions</h2>
+                    <div class="combat-action-buttons">
+                        <button class="action-btn" data-action="attack">Roll Attack</button>
+                        <button class="action-btn" data-action="damage">Roll Damage</button>
+                        <button class="action-btn" data-action="heal">Heal</button>
+                        <button class="action-btn" data-action="condition">Add Condition</button>
+                        <button class="action-btn" data-action="save">Saving Throw</button>
+                    </div>
+                </section>
+            </main>
+        </div>
         
         <!-- Theme Toggle Button -->
         <button id="theme-toggle-btn" class="theme-toggle" aria-label="Toggle theme">
@@ -503,6 +781,7 @@
         <div id="toast-container"></div>
         
         <script src="script.js"></script>
+        <script src="ai-enhanced.js"></script>
     </div>
 </body>
 </html>
