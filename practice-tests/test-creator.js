@@ -90,6 +90,11 @@ class TestCreator {
     createQuestionBuilder(questionId, questionNumber, questionType) {
         let typeSpecificHtml = '';
         
+        // Get the current question data to determine number of options
+        const questionIndex = this.questions.findIndex(q => q.id === questionId);
+        const currentOptions = questionIndex !== -1 ? this.questions[questionIndex].options : ['', '', '', ''];
+        const numOptions = currentOptions.length;
+        
         if (questionType === 'most-least') {
             typeSpecificHtml = `
                 <div class="most-least-controls">
@@ -97,20 +102,14 @@ class TestCreator {
                         <label>Most Likely Answer (Option Number)</label>
                         <select onchange="updateCorrectAnswer('${questionId}', 'most', this.value)">
                             <option value="">Select option...</option>
-                            <option value="0">Option 1</option>
-                            <option value="1">Option 2</option>
-                            <option value="2">Option 3</option>
-                            <option value="3">Option 4</option>
+                            ${Array.from({length: numOptions}, (_, i) => `<option value="${i}">Option ${i + 1}</option>`).join('')}
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Least Likely Answer (Option Number)</label>
                         <select onchange="updateCorrectAnswer('${questionId}', 'least', this.value)">
                             <option value="">Select option...</option>
-                            <option value="0">Option 1</option>
-                            <option value="1">Option 2</option>
-                            <option value="2">Option 3</option>
-                            <option value="3">Option 4</option>
+                            ${Array.from({length: numOptions}, (_, i) => `<option value="${i}">Option ${i + 1}</option>`).join('')}
                         </select>
                     </div>
                 </div>
@@ -118,7 +117,7 @@ class TestCreator {
         } else if (questionType === 'ranking') {
             typeSpecificHtml = `
                 <div class="ranking-info">
-                    <p><strong>Ranking Questions:</strong> Users will drag and drop options to rank them from 1 (most effective) to 4 (least effective). Enter the correct order as option numbers (0-3) separated by commas.</p>
+                    <p><strong>Ranking Questions:</strong> Users will drag and drop options to rank them from 1 (most effective) to ${numOptions} (least effective). Enter the correct order as option numbers (0-${numOptions - 1}) separated by commas.</p>
                     <div class="form-group">
                         <label>Correct Ranking Order (e.g., 2,1,0,3)</label>
                         <input type="text" placeholder="Enter correct order as option indices" onchange="updateCorrectAnswer('${questionId}', 'ranking', this.value)">
@@ -131,10 +130,7 @@ class TestCreator {
                     <label>Correct Answer</label>
                     <select onchange="updateCorrectAnswer('${questionId}', 'single', this.value)">
                         <option value="">Select correct answer...</option>
-                        <option value="0">Option 1</option>
-                        <option value="1">Option 2</option>
-                        <option value="2">Option 3</option>
-                        <option value="3">Option 4</option>
+                        ${Array.from({length: numOptions}, (_, i) => `<option value="${i}">Option ${i + 1}</option>`).join('')}
                     </select>
                 </div>
             `;
@@ -199,36 +195,23 @@ class TestCreator {
                             <button type="button" class="btn btn-sm btn-primary" onclick="addOption('${questionId}')">➕ Add Option</button>
                         </div>
                         <div class="options-container" id="${questionId}-options">
-                            <div class="option-input">
-                                <div class="option-number">A</div>
-                                <input type="text" placeholder="Enter first answer option..." onchange="updateOption('${questionId}', 0, this.value)">
-                                <button type="button" class="btn btn-icon btn-danger" onclick="removeOption('${questionId}', 0)" style="display: none;">×</button>
-                            </div>
-                            <div class="option-input">
-                                <div class="option-number">B</div>
-                                <input type="text" placeholder="Enter second answer option..." onchange="updateOption('${questionId}', 1, this.value)">
-                                <button type="button" class="btn btn-icon btn-danger" onclick="removeOption('${questionId}', 1)" style="display: none;">×</button>
-                            </div>
-                            <div class="option-input">
-                                <div class="option-number">C</div>
-                                <input type="text" placeholder="Enter third answer option..." onchange="updateOption('${questionId}', 2, this.value)">
-                                <button type="button" class="btn btn-icon btn-danger" onclick="removeOption('${questionId}', 2)">×</button>
-                            </div>
-                            <div class="option-input">
-                                <div class="option-number">D</div>
-                                <input type="text" placeholder="Enter fourth answer option..." onchange="updateOption('${questionId}', 3, this.value)">
-                                <button type="button" class="btn btn-icon btn-danger" onclick="removeOption('${questionId}', 3)">×</button>
-                            </div>
+                            ${currentOptions.map((option, index) => `
+                                <div class="option-input">
+                                    <div class="option-number">${String.fromCharCode(65 + index)}</div>
+                                    <input type="text" placeholder="Enter answer option..." value="${option}" onchange="updateOption('${questionId}', ${index}, this.value)">
+                                    <button type="button" class="btn btn-icon btn-danger" onclick="removeOption('${questionId}', ${index})">×</button>
+                                </div>
+                            `).join('')}
                         </div>
-                        <div class="help-text">Provide clear, distinct answer choices. Ensure incorrect options are plausible but clearly wrong.</div>
+                        <div class="help-text">Add at least 2 options. You can add up to 10 options for complex questions.</div>
                     </div>
                     
                     ${typeSpecificHtml}
                     
                     <div class="form-group">
-                        <label class="field-required">Explanation</label>
-                        <textarea placeholder="Explain why the correct answer is right and why other options are incorrect. This helps students learn from their mistakes..." onchange="updateQuestionData('${questionId}', 'explanation', this.value)"></textarea>
-                        <div class="help-text">Provide a detailed explanation that helps students understand the reasoning behind the correct answer</div>
+                        <label>Explanation <span class="label-help">(Optional)</span></label>
+                        <textarea placeholder="Explain why this is the correct answer..." onchange="updateQuestionData('${questionId}', 'explanation', this.value)"></textarea>
+                        <div class="help-text">Provide a clear explanation of the correct answer to help students understand the reasoning</div>
                     </div>
                 </div>
             </div>
@@ -245,6 +228,25 @@ class TestCreator {
             const questionElement = document.getElementById(questionId);
             const questionNumber = questionIndex + 1;
             questionElement.outerHTML = this.createQuestionBuilder(questionId, questionNumber, newType);
+            
+            // Restore any existing data for the question
+            const question = this.questions[questionIndex];
+            if (question.passage) {
+                const passageTextarea = document.querySelector(`#${questionId} textarea[onchange*="passage"]`);
+                if (passageTextarea) passageTextarea.value = question.passage;
+            }
+            if (question.question) {
+                const questionTextarea = document.querySelector(`#${questionId} textarea[onchange*="question"]`);
+                if (questionTextarea) questionTextarea.value = question.question;
+            }
+            if (question.image) {
+                const imageInput = document.querySelector(`#${questionId} input[onchange*="image"]`);
+                if (imageInput) imageInput.value = question.image;
+            }
+            if (question.explanation) {
+                const explanationTextarea = document.querySelector(`#${questionId} textarea[onchange*="explanation"]`);
+                if (explanationTextarea) explanationTextarea.value = question.explanation;
+            }
         }
     }
     
@@ -287,6 +289,9 @@ class TestCreator {
             
             optionsContainer.insertAdjacentHTML('beforeend', optionHtml);
             this.questions[questionIndex].options.push('');
+            
+            // Update the correct answer dropdown to reflect the new number of options
+            this.updateCorrectAnswerDropdown(questionId);
         }
     }
     
@@ -312,6 +317,53 @@ class TestCreator {
                     inputField.setAttribute('onchange', `updateOption('${questionId}', ${index}, this.value)`);
                     removeBtn.setAttribute('onclick', `removeOption('${questionId}', ${index})`);
                 });
+                
+                // Update the correct answer dropdown to reflect the new number of options
+                this.updateCorrectAnswerDropdown(questionId);
+            }
+        }
+    }
+    
+    updateCorrectAnswerDropdown(questionId) {
+        const questionIndex = this.questions.findIndex(q => q.id === questionId);
+        if (questionIndex === -1) return;
+        
+        const question = this.questions[questionIndex];
+        const numOptions = question.options.length;
+        
+        // Update the correct answer dropdown based on question type
+        if (question.type === 'multiple-choice') {
+            const correctAnswerSelector = document.querySelector(`#${questionId} .correct-answer-selector select`);
+            if (correctAnswerSelector) {
+                const currentValue = correctAnswerSelector.value;
+                correctAnswerSelector.innerHTML = `
+                    <option value="">Select correct answer...</option>
+                    ${Array.from({length: numOptions}, (_, i) => `<option value="${i}" ${currentValue === i.toString() ? 'selected' : ''}>Option ${i + 1}</option>`).join('')}
+                `;
+            }
+        } else if (question.type === 'most-least') {
+            const mostSelector = document.querySelector(`#${questionId} .most-least-controls select:first-child`);
+            const leastSelector = document.querySelector(`#${questionId} .most-least-controls select:last-child`);
+            
+            if (mostSelector) {
+                const currentMostValue = mostSelector.value;
+                mostSelector.innerHTML = `
+                    <option value="">Select option...</option>
+                    ${Array.from({length: numOptions}, (_, i) => `<option value="${i}" ${currentMostValue === i.toString() ? 'selected' : ''}>Option ${i + 1}</option>`).join('')}
+                `;
+            }
+            
+            if (leastSelector) {
+                const currentLeastValue = leastSelector.value;
+                leastSelector.innerHTML = `
+                    <option value="">Select option...</option>
+                    ${Array.from({length: numOptions}, (_, i) => `<option value="${i}" ${currentLeastValue === i.toString() ? 'selected' : ''}>Option ${i + 1}</option>`).join('')}
+                `;
+            }
+        } else if (question.type === 'ranking') {
+            const rankingInfo = document.querySelector(`#${questionId} .ranking-info p`);
+            if (rankingInfo) {
+                rankingInfo.innerHTML = `<strong>Ranking Questions:</strong> Users will drag and drop options to rank them from 1 (most effective) to ${numOptions} (least effective). Enter the correct order as option numbers (0-${numOptions - 1}) separated by commas.`;
             }
         }
     }
@@ -766,6 +818,9 @@ testCore.start();`;
                 }
             });
         }
+        
+        // Update the correct answer dropdown to match the number of options
+        this.updateCorrectAnswerDropdown(question.id);
         
         // Restore correct answer based on type
         if (question.correctAnswer !== null && question.correctAnswer !== undefined) {
