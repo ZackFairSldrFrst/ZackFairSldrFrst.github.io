@@ -1,7 +1,7 @@
 :root {
     --primary-color: #ff4d8d;
     --secondary-color: #ff3377;
-    --background-color: #1a1a1a;
+    --background-color: #1a1a2e;
     --text-color: #ffffff;
     --card-background: #2d2d2d;
     --message-background: #3a3a3a;
@@ -22,83 +22,15 @@ body {
     line-height: 1.6;
     color: var(--text-color);
     position: relative;
-    background: 
-        linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #0f0f23 100%);
-    background-size: 400% 400%;
+    background: linear-gradient(180deg, rgba(15, 15, 35, 1) 0%, rgba(26, 26, 46, 1) 100%);
     background-attachment: fixed;
-    animation: modernGradient 15s ease infinite;
     overflow-x: hidden;
+    min-height: 100vh;
 }
 
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-        radial-gradient(circle at 15% 20%, rgba(0, 210, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 85% 80%, rgba(64, 224, 255, 0.08) 0%, transparent 50%),
-        radial-gradient(circle at 45% 10%, rgba(30, 60, 114, 0.12) 0%, transparent 40%),
-        radial-gradient(circle at 90% 30%, rgba(42, 82, 152, 0.1) 0%, transparent 35%),
-        radial-gradient(circle at 10% 70%, rgba(0, 210, 255, 0.09) 0%, transparent 45%),
-        radial-gradient(circle at 70% 90%, rgba(64, 224, 255, 0.07) 0%, transparent 40%);
-    background-size: 
-        600px 600px, 500px 500px, 400px 400px, 
-        350px 350px, 450px 450px, 380px 380px;
-    background-position: 
-        0% 0%, 100% 100%, 50% 0%, 
-        100% 30%, 0% 70%, 70% 100%;
-    animation: floatingParticles 25s ease-in-out infinite;
-    pointer-events: none;
-    z-index: -1;
-}
+/* Removed complex background overlays for unified look */
 
-body::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-        linear-gradient(45deg, transparent 48%, rgba(64, 224, 255, 0.03) 49%, rgba(64, 224, 255, 0.03) 51%, transparent 52%),
-        linear-gradient(-45deg, transparent 48%, rgba(0, 210, 255, 0.02) 49%, rgba(0, 210, 255, 0.02) 51%, transparent 52%);
-    background-size: 80px 80px, 120px 120px;
-    animation: gridShift 20s linear infinite;
-    pointer-events: none;
-    z-index: -1;
-}
-
-@keyframes floatingParticles {
-    0%, 100% { 
-        background-position: 
-            0% 0%, 100% 100%, 50% 0%, 
-            100% 30%, 0% 70%, 70% 100%;
-    }
-    33% { 
-        background-position: 
-            -10% 10%, 110% 90%, 60% -5%, 
-            90% 40%, -5% 80%, 80% 110%;
-    }
-    66% { 
-        background-position: 
-            10% -10%, 90% 110%, 40% 5%, 
-            110% 20%, 5% 60%, 60% 90%;
-    }
-}
-
-@keyframes gridShift {
-    0% { transform: translate(0, 0); }
-    100% { transform: translate(80px, 80px); }
-}
-
-@keyframes modernGradient {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
+/* Removed unused background animation keyframes */
 
 /* Removed header styles - no longer needed */
 
@@ -117,7 +49,7 @@ body::after {
 /* Chat Window */
 .chat-window {
     flex: 1;
-    background: linear-gradient(180deg, rgba(15, 15, 35, 0.95) 0%, rgba(26, 26, 46, 0.95) 100%);
+    background: none;
     display: flex;
     flex-direction: column;
     min-height: 0;
@@ -180,8 +112,8 @@ body::after {
     transform: translateY(20px);
     animation: messageSlideIn 0.5s ease-out forwards;
     backdrop-filter: blur(10px);
-    background: rgba(58, 58, 58, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(26, 26, 46, 0.8);
+    border: 1px solid rgba(255, 77, 141, 0.2);
 }
 
 @keyframes messageSlideIn {
@@ -338,7 +270,7 @@ body::after {
 }
 
 .user-message {
-    background: linear-gradient(135deg, rgba(255, 77, 141, 0.2) 0%, rgba(255, 51, 119, 0.2) 100%);
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.9) 0%, rgba(35, 35, 55, 0.9) 100%);
     border: 1px solid rgba(255, 77, 141, 0.3);
     margin-left: auto;
     color: #ffffff;
@@ -359,7 +291,7 @@ body::after {
 }
 
 .bot-message {
-    background: linear-gradient(135deg, rgba(255, 51, 119, 0.2) 0%, rgba(255, 77, 141, 0.2) 100%);
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.9) 0%, rgba(35, 35, 55, 0.9) 100%);
     border: 1px solid rgba(255, 51, 119, 0.3);
     margin-right: auto;
     color: #ffffff;
@@ -1113,7 +1045,7 @@ body::after {
     margin-top: 70px;
     min-height: calc(100vh - 70px);
     padding: 2rem 1rem;
-    background: linear-gradient(180deg, rgba(15, 15, 35, 0.95) 0%, rgba(26, 26, 46, 0.95) 100%);
+    background: transparent;
 }
 
 .stories-container {
@@ -1392,7 +1324,7 @@ body::after {
     margin-top: 70px;
     min-height: calc(100vh - 70px);
     padding: 2rem 1rem;
-    background: linear-gradient(180deg, rgba(15, 15, 35, 0.95) 0%, rgba(26, 26, 46, 0.95) 100%);
+    background: transparent;
 }
 
 .prompts-container {
