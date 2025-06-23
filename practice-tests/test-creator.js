@@ -93,7 +93,7 @@ class TestCreator {
             scenario: '',
             question: '',
             options: ['', '', '', ''],
-            correctAnswer: null,
+            correctAnswer: 0,
             explanation: ''
         });
     }
@@ -233,7 +233,15 @@ class TestCreator {
         const questionIndex = this.questions.findIndex(q => q.id === questionId);
         if (questionIndex !== -1) {
             this.questions[questionIndex].type = newType;
-            this.questions[questionIndex].correctAnswer = null;
+            
+            // Initialize correctAnswer based on type
+            if (newType === 'most-least') {
+                this.questions[questionIndex].correctAnswer = { most: 0, least: 0 };
+            } else if (newType === 'ranking') {
+                this.questions[questionIndex].correctAnswer = [0];
+            } else {
+                this.questions[questionIndex].correctAnswer = 0;
+            }
             
             // Recreate the question builder with new type
             const questionElement = document.getElementById(questionId);
@@ -404,15 +412,21 @@ class TestCreator {
             const question = this.questions[questionIndex];
             
             if (type === 'single') {
-                question.correctAnswer = parseInt(value);
+                const parsedValue = parseInt(value);
+                question.correctAnswer = isNaN(parsedValue) ? 0 : parsedValue;
             } else if (type === 'most' || type === 'least') {
-                if (!question.correctAnswer) {
+                if (!question.correctAnswer || typeof question.correctAnswer !== 'object') {
                     question.correctAnswer = {};
                 }
-                question.correctAnswer[type] = parseInt(value);
+                const parsedValue = parseInt(value);
+                question.correctAnswer[type] = isNaN(parsedValue) ? 0 : parsedValue;
             } else if (type === 'ranking') {
                 // Parse comma-separated values
-                question.correctAnswer = value.split(',').map(v => parseInt(v.trim()));
+                const parsedValues = value.split(',').map(v => {
+                    const parsed = parseInt(v.trim());
+                    return isNaN(parsed) ? 0 : parsed;
+                });
+                question.correctAnswer = parsedValues.length > 0 ? parsedValues : [0];
             }
             
             this.markUnsaved();
@@ -436,14 +450,35 @@ class TestCreator {
     }
     
     collectTestData() {
+        const validQuestions = this.questions.filter(q => q.question.trim() !== '').map(q => {
+            // Ensure all question fields are properly set
+            const cleanQuestion = {
+                question: q.question || '',
+                options: (q.options || []).filter(opt => opt && opt.trim() !== ''),
+                correctAnswer: q.correctAnswer !== null && q.correctAnswer !== undefined ? q.correctAnswer : 0,
+                explanation: q.explanation || '',
+                type: q.type || 'multiple-choice'
+            };
+            
+            // Only add optional fields if they have values
+            if (q.passage && q.passage.trim() !== '') {
+                cleanQuestion.passage = q.passage;
+            }
+            if (q.image && q.image.trim() !== '') {
+                cleanQuestion.image = q.image;
+            }
+            
+            return cleanQuestion;
+        });
+        
         return {
-            title: document.getElementById('testTitle').value,
-            category: document.getElementById('testCategory').value,
-            difficulty: document.getElementById('difficulty').value,
-            timeLimit: parseInt(document.getElementById('timeLimit').value),
-            testCode: document.getElementById('testCode').value,
-            description: document.getElementById('testDescription').value,
-            questions: this.questions.filter(q => q.question.trim() !== '')
+            title: document.getElementById('testTitle').value || '',
+            category: document.getElementById('testCategory').value || 'other',
+            difficulty: document.getElementById('difficulty').value || 'intermediate',
+            timeLimit: parseInt(document.getElementById('timeLimit').value) || 20,
+            testCode: document.getElementById('testCode').value || '',
+            description: document.getElementById('testDescription').value || '',
+            questions: validQuestions
         };
     }
     
@@ -594,25 +629,35 @@ class TestCreator {
             
             // Prepare test data for Firebase
             const firebaseTestData = {
-                title: testData.title,
-                category: testData.category,
-                difficulty: testData.difficulty,
-                timeLimit: testData.timeLimit,
-                testCode: testData.testCode,
-                description: testData.description,
-                questions: testData.questions.map(q => ({
-                    question: q.question,
-                    options: q.options.filter(opt => opt.trim() !== ''),
-                    correctAnswer: q.correctAnswer,
-                    explanation: q.explanation,
-                    type: q.type !== 'multiple-choice' ? q.type : undefined,
-                    passage: q.passage && q.passage.trim() !== '' ? q.passage : undefined,
-                    image: q.image && q.image.trim() !== '' ? q.image : undefined
-                })),
+                title: testData.title || '',
+                category: testData.category || 'other',
+                difficulty: testData.difficulty || 'intermediate',
+                timeLimit: testData.timeLimit || 20,
+                testCode: testData.testCode || '',
+                description: testData.description || '',
+                questions: testData.questions.map(q => {
+                    const questionData = {
+                        question: q.question || '',
+                        options: (q.options || []).filter(opt => opt && opt.trim() !== ''),
+                        correctAnswer: q.correctAnswer !== undefined ? q.correctAnswer : 0,
+                        explanation: q.explanation || '',
+                        type: q.type || 'multiple-choice'
+                    };
+                    
+                    // Only add optional fields if they have values
+                    if (q.passage && q.passage.trim() !== '') {
+                        questionData.passage = q.passage;
+                    }
+                    if (q.image && q.image.trim() !== '') {
+                        questionData.image = q.image;
+                    }
+                    
+                    return questionData;
+                }),
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString(),
                 status: 'published',
-                author: 'Alfred', // You can make this dynamic later
+                author: 'Alfred',
                 version: '1.0'
             };
             
