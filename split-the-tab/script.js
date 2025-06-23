@@ -1,17 +1,4 @@
 // SplitTab - Splitwise Alternative with Firebase Firestore
-import { 
-    collection, 
-    addDoc, 
-    getDocs, 
-    onSnapshot, 
-    doc, 
-    updateDoc, 
-    deleteDoc,
-    query,
-    orderBy,
-    serverTimestamp 
-} from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
-
 class SplitTab {
     constructor() {
         this.groups = [];
@@ -36,14 +23,14 @@ class SplitTab {
     async loadData() {
         try {
             // Load groups
-            const groupsSnapshot = await getDocs(collection(this.db, 'groups'));
+            const groupsSnapshot = await this.db.collection('groups').get();
             this.groups = groupsSnapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data()
             }));
 
             // Load expenses
-            const expensesSnapshot = await getDocs(collection(this.db, 'expenses'));
+            const expensesSnapshot = await this.db.collection('expenses').get();
             this.expenses = expensesSnapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data()
@@ -55,7 +42,7 @@ class SplitTab {
 
     setupRealtimeListeners() {
         // Listen for real-time updates to groups
-        onSnapshot(collection(this.db, 'groups'), (snapshot) => {
+        this.db.collection('groups').onSnapshot((snapshot) => {
             this.groups = snapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data()
@@ -66,7 +53,7 @@ class SplitTab {
         });
 
         // Listen for real-time updates to expenses
-        onSnapshot(collection(this.db, 'expenses'), (snapshot) => {
+        this.db.collection('expenses').onSnapshot((snapshot) => {
             this.expenses = snapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data()
@@ -79,9 +66,9 @@ class SplitTab {
 
     async saveGroup(groupData) {
         try {
-            const docRef = await addDoc(collection(this.db, 'groups'), {
+            const docRef = await this.db.collection('groups').add({
                 ...groupData,
-                createdAt: serverTimestamp()
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
             return docRef.id;
         } catch (error) {
@@ -92,9 +79,9 @@ class SplitTab {
 
     async saveExpense(expenseData) {
         try {
-            const docRef = await addDoc(collection(this.db, 'expenses'), {
+            const docRef = await this.db.collection('expenses').add({
                 ...expenseData,
-                createdAt: serverTimestamp()
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
             return docRef.id;
         } catch (error) {
