@@ -7,6 +7,7 @@ class FirebaseTestReader {
         this.tests = [];
         this.categories = new Set();
         this.isInitialized = false;
+        this.lastError = null;
     }
 
     async initialize() {
@@ -41,14 +42,29 @@ class FirebaseTestReader {
 
     async loadAllTests() {
         if (!this.isInitialized) {
+            this.lastError = 'Firebase Test Reader not initialized';
             console.error('Firebase Test Reader not initialized');
             return [];
         }
 
         try {
+            // Clear any previous errors
+            this.lastError = null;
+            
             const { collection, getDocs, query, where, orderBy } = await import('https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js');
             
+            console.log('Attempting to load tests from Firestore...');
+            
             const testsRef = collection(this.db, 'tests');
+            console.log('Collection reference created:', testsRef);
+            
+            // First, try to get all documents without filters to see if basic access works
+            console.log('Testing basic collection access...');
+            const basicQuerySnapshot = await getDocs(testsRef);
+            console.log(`Basic query successful. Found ${basicQuerySnapshot.size} total documents`);
+            
+            // Now try the filtered query
+            console.log('Attempting filtered query for published tests...');
             const publishedTestsQuery = query(
                 testsRef, 
                 where('status', '==', 'published'),
@@ -64,12 +80,28 @@ class FirebaseTestReader {
                 testData.id = doc.id; // Add document ID
                 this.tests.push(testData);
                 this.categories.add(testData.category);
+                console.log(`Loaded test: ${testData.title} (${testData.testCode})`);
             });
             
-            console.log(`Loaded ${this.tests.length} published tests`);
+            console.log(`Successfully loaded ${this.tests.length} published tests`);
             return this.tests;
         } catch (error) {
+            this.lastError = error.message;
             console.error('Failed to load tests from Firebase:', error);
+            console.error('Error code:', error.code);
+            console.error('Error message:', error.message);
+            console.error('Full error object:', error);
+            
+            // Provide more specific error information
+            if (error.code === 'permission-denied') {
+                console.error('🔒 Permission denied. Check Firestore security rules.');
+                console.error('Make sure your security rules allow read access to the tests collection.');
+            } else if (error.code === 'unavailable') {
+                console.error('🌐 Service unavailable. Check your internet connection.');
+            } else if (error.code === 'not-found') {
+                console.error('📁 Collection not found. Make sure the tests collection exists.');
+            }
+            
             return [];
         }
     }

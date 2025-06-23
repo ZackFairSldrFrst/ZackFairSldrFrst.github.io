@@ -444,12 +444,30 @@
                     // Initialize Firebase reader
                     const initialized = await this.firebaseReader.initialize();
                     if (!initialized) {
-                        this.showError('Failed to initialize database connection');
+                        this.showFirebaseUnavailable();
                         return;
                     }
                     
                     // Load all tests
                     this.tests = await this.firebaseReader.loadAllTests();
+                    
+                    // Check if we got any tests or if there was an error
+                    if (this.tests.length === 0) {
+                        // Check if this is because of an error or just no tests
+                        const errorOccurred = this.firebaseReader.lastError;
+                        if (errorOccurred) {
+                            this.showError(`Failed to load tests: ${errorOccurred}`);
+                            return;
+                        } else {
+                            // No tests found, but no error - this is normal
+                            this.filteredTests = [];
+                            this.updateStats();
+                            this.setupFilters();
+                            this.displayTests();
+                            return;
+                        }
+                    }
+                    
                     this.filteredTests = [...this.tests];
                     
                     // Update stats
@@ -610,6 +628,34 @@
                     <div class="no-tests">
                         <h3>❌ Error</h3>
                         <p>${message}</p>
+                        <div style="margin-top: 1rem;">
+                            <a href="firebase-test.html" class="btn-sm btn-primary" target="_blank">
+                                🔧 Test Firebase Connection
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            showFirebaseUnavailable() {
+                document.getElementById('testsContainer').innerHTML = `
+                    <div class="no-tests">
+                        <h3>🌐 Firebase Unavailable</h3>
+                        <p>Unable to connect to Firebase. This could be due to:</p>
+                        <ul style="text-align: left; max-width: 400px; margin: 1rem auto;">
+                            <li>Internet connection issues</li>
+                            <li>Firebase project not set up</li>
+                            <li>Security rules blocking access</li>
+                            <li>Firebase configuration issues</li>
+                        </ul>
+                        <div style="margin-top: 1rem;">
+                            <a href="firebase-test.html" class="btn-sm btn-primary" target="_blank">
+                                🔧 Test Firebase Connection
+                            </a>
+                            <a href="test-creator.html" class="btn-sm btn-secondary" style="margin-left: 0.5rem;">
+                                🎯 Create Test (Export Mode)
+                            </a>
+                        </div>
                     </div>
                 `;
             }

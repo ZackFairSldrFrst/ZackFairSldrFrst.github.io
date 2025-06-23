@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Connection Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; }
+        .loading { background-color: #fff3cd; border-color: #ffeaa7; }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background: #007bff;
+            color: white;
+        }
+        button:hover { background: #0056b3; }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Firebase Connection Test</h1>
+    
+    <div class="test-section info">
+        <h3>Configuration</h3>
+        <p><strong>Project ID:</strong> alfred-practice-tests</p>
+        <p><strong>Database:</strong> Firestore</p>
+        <p><strong>Collection:</strong> tests</p>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test Actions</h3>
+        <button onclick="testConnection()">Test Connection</button>
+        <button onclick="testReadAccess()">Test Read Access</button>
+        <button onclick="testWriteAccess()">Test Write Access</button>
+        <button onclick="clearLog()">Clear Log</button>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test Results</h3>
+        <div id="log" class="log"></div>
+    </div>
+    
+    <div class="test-section info">
+        <h3>Troubleshooting Steps</h3>
+        <ol>
+            <li>Check if Firebase project exists and is accessible</li>
+            <li>Verify Firestore database is created</li>
+            <li>Check security rules allow read/write access</li>
+            <li>Ensure API key and configuration are correct</li>
+            <li>Check browser console for additional errors</li>
+        </ol>
+    </div>
+
+    <script type="module">
+        let db = null;
+        let app = null;
+        
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.style.color = type === 'error' ? 'red' : type === 'success' ? 'green' : 'black';
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            logDiv.appendChild(logEntry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(`[${timestamp}] ${message}`);
+        }
+        
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
+        
+        window.testConnection = async function() {
+            log('Testing Firebase connection...', 'info');
+            
+            try {
+                const { initializeApp } = await import('https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js');
+                const { getFirestore } = await import('https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js');
+                
+                const firebaseConfig = {
+                    apiKey: "AIzaSyBOK-IcRemZPwYoF5ig6NVFVM5XuWJ9X2k",
+                    authDomain: "alfred-practice-tests.firebaseapp.com",
+                    projectId: "alfred-practice-tests",
+                    storageBucket: "alfred-practice-tests.firebasestorage.app",
+                    messagingSenderId: "481648587020",
+                    appId: "1:481648587020:web:5e90ce4638989928415929",
+                    measurementId: "G-V7WDEW1QXK"
+                };
+                
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                
+                log('✅ Firebase app initialized successfully', 'success');
+                log('✅ Firestore database connected', 'success');
+                
+                return true;
+            } catch (error) {
+                log(`❌ Connection failed: ${error.message}`, 'error');
+                log(`Error details: ${error.stack}`, 'error');
+                return false;
+            }
+        };
+        
+        window.testReadAccess = async function() {
+            if (!db) {
+                log('❌ Please test connection first', 'error');
+                return;
+            }
+            
+            log('Testing read access to Firestore...', 'info');
+            
+            try {
+                const { collection, getDocs } = await import('https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js');
+                
+                const testsRef = collection(db, 'tests');
+                const querySnapshot = await getDocs(testsRef);
+                
+                log(`✅ Read access successful. Found ${querySnapshot.size} documents`, 'success');
+                
+                if (querySnapshot.size > 0) {
+                    querySnapshot.forEach((doc) => {
+                        const data = doc.data();
+                        log(`📄 Document: ${doc.id} - ${data.title || 'No title'}`, 'info');
+                    });
+                } else {
+                    log('📝 No documents found in tests collection', 'info');
+                }
+                
+            } catch (error) {
+                log(`❌ Read access failed: ${error.message}`, 'error');
+                log(`Error code: ${error.code}`, 'error');
+                
+                if (error.code === 'permission-denied') {
+                    log('🔒 This appears to be a permissions issue. Check Firestore security rules.', 'error');
+                }
+            }
+        };
+        
+        window.testWriteAccess = async function() {
+            if (!db) {
+                log('❌ Please test connection first', 'error');
+                return;
+            }
+            
+            log('Testing write access to Firestore...', 'info');
+            
+            try {
+                const { collection, addDoc, deleteDoc, doc } = await import('https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js');
+                
+                const testsRef = collection(db, 'tests');
+                
+                // Try to add a test document
+                const testData = {
+                    title: 'Test Document',
+                    testCode: 'test-' + Date.now(),
+                    status: 'test',
+                    createdAt: new Date().toISOString(),
+                    description: 'This is a test document to verify write access'
+                };
+                
+                const docRef = await addDoc(testsRef, testData);
+                log(`✅ Write access successful. Created document: ${docRef.id}`, 'success');
+                
+                // Clean up - delete the test document
+                await deleteDoc(doc(db, 'tests', docRef.id));
+                log('✅ Test document cleaned up successfully', 'success');
+                
+            } catch (error) {
+                log(`❌ Write access failed: ${error.message}`, 'error');
+                log(`Error code: ${error.code}`, 'error');
+                
+                if (error.code === 'permission-denied') {
+                    log('🔒 This appears to be a permissions issue. Check Firestore security rules.', 'error');
+                }
+            }
+        };
+        
+        // Auto-run connection test on page load
+        window.addEventListener('load', () => {
+            log('Page loaded. Starting Firebase connection test...', 'info');
+            testConnection();
+        });
+    </script>
+</body>
+</html> 
