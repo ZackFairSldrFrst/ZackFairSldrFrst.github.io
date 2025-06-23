@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SplitTab - Split Expenses Easily</title>
+    <title>SplitTab - Split Bills Like a Pro (Without the Drama)</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -17,6 +17,12 @@
                     <i class="fas fa-receipt"></i>
                     SplitTab
                 </h1>
+                <div class="user-selector">
+                    <label for="current-user">I am:</label>
+                    <select id="current-user" class="user-select">
+                        <option value="">Select your name</option>
+                    </select>
+                </div>
                 <nav class="nav">
                     <button class="nav-btn active" data-view="dashboard">
                         <i class="fas fa-chart-pie"></i>
@@ -44,6 +50,7 @@
             <div id="dashboard-view" class="view active">
                 <div class="dashboard-header">
                     <h2>Dashboard</h2>
+                    <p class="dashboard-subtitle">Track your shared expenses and balances</p>
                     <button class="btn btn-primary" id="quick-add-expense">
                         <i class="fas fa-plus"></i>
                         Quick Add Expense
@@ -53,17 +60,17 @@
                 <div class="dashboard-grid">
                     <div class="card summary-card">
                         <div class="card-header">
-                            <h3>Total Balance</h3>
+                            <h3>💰 Total Balance</h3>
                         </div>
                         <div class="card-content">
                             <div class="balance-display" id="total-balance">$0.00</div>
-                            <div class="balance-status" id="balance-status">All settled up!</div>
+                            <div class="balance-status" id="balance-status">All settled up! 🎉</div>
                         </div>
                     </div>
 
                     <div class="card summary-card">
                         <div class="card-header">
-                            <h3>Active Groups</h3>
+                            <h3>👥 Active Groups</h3>
                         </div>
                         <div class="card-content">
                             <div class="stat-number" id="active-groups">0</div>
@@ -73,26 +80,42 @@
 
                     <div class="card summary-card">
                         <div class="card-header">
-                            <h3>Total Expenses</h3>
+                            <h3>📝 Total Expenses</h3>
                         </div>
                         <div class="card-content">
                             <div class="stat-number" id="total-expenses">0</div>
-                            <div class="stat-label">expenses</div>
+                            <div class="stat-label">expenses tracked</div>
                         </div>
                     </div>
 
                     <div class="card summary-card">
                         <div class="card-header">
-                            <h3>Pending Settlements</h3>
+                            <h3>🤝 Pending Settlements</h3>
                         </div>
                         <div class="card-content">
                             <div class="stat-number" id="pending-settlements">0</div>
-                            <div class="stat-label">payments</div>
+                            <div class="stat-label">payments needed</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="dashboard-sections">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>My Balances</h3>
+                            <button class="btn btn-text" id="view-all-settlements">View All</button>
+                        </div>
+                        <div class="card-content">
+                            <div id="my-balances-list" class="balances-list">
+                                <div class="empty-state">
+                                    <i class="fas fa-handshake"></i>
+                                    <p>No balances yet - you're all settled up!</p>
+                                    <p class="text-muted">Start adding expenses to see your balances</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="card">
                         <div class="card-header">
                             <h3>Recent Expenses</h3>
@@ -102,7 +125,7 @@
                             <div id="recent-expenses-list" class="expenses-list">
                                 <div class="empty-state">
                                     <i class="fas fa-receipt"></i>
-                                    <p>No expenses yet</p>
+                                    <p>No expenses yet - your wallet is safe... for now</p>
                                     <button class="btn btn-primary" id="add-first-expense">Add Your First Expense</button>
                                 </div>
                             </div>
@@ -118,7 +141,7 @@
                             <div id="group-balances-list" class="group-list">
                                 <div class="empty-state">
                                     <i class="fas fa-users"></i>
-                                    <p>No groups yet</p>
+                                    <p>No groups yet - time to get started!</p>
                                     <button class="btn btn-primary" id="create-first-group">Create Your First Group</button>
                                 </div>
                             </div>
@@ -131,6 +154,7 @@
             <div id="groups-view" class="view">
                 <div class="view-header">
                     <h2>Groups</h2>
+                    <p class="view-subtitle">Organize your people, track their balances</p>
                     <button class="btn btn-primary" id="create-group-btn">
                         <i class="fas fa-plus"></i>
                         Create Group
@@ -140,7 +164,8 @@
                 <div id="groups-list" class="groups-grid">
                     <div class="empty-state">
                         <i class="fas fa-users"></i>
-                        <p>No groups yet</p>
+                        <p>No groups yet - time to get started!</p>
+                        <p class="text-muted">Create a group for roommates, trips, or any group that shares expenses</p>
                         <button class="btn btn-primary" id="create-group-empty">Create Your First Group</button>
                     </div>
                 </div>
@@ -150,6 +175,7 @@
             <div id="expenses-view" class="view">
                 <div class="view-header">
                     <h2>Expenses</h2>
+                    <p class="view-subtitle">Track every shared expense</p>
                     <div class="view-actions">
                         <select id="expense-filter" class="select">
                             <option value="all">All Groups</option>
@@ -164,7 +190,8 @@
                 <div id="expenses-list" class="expenses-container">
                     <div class="empty-state">
                         <i class="fas fa-receipt"></i>
-                        <p>No expenses yet</p>
+                        <p>No expenses yet - your wallet is safe... for now</p>
+                        <p class="text-muted">Start tracking shared expenses to keep everyone honest</p>
                         <button class="btn btn-primary" id="add-expense-empty">Add Your First Expense</button>
                     </div>
                 </div>
@@ -173,7 +200,8 @@
             <!-- Settlements View -->
             <div id="settlements-view" class="view">
                 <div class="view-header">
-                    <h2>Settlements</h2>
+                    <h2>Settle Up</h2>
+                    <p class="view-subtitle">Time to pay the piper (or get paid)</p>
                     <button class="btn btn-primary" id="optimize-settlements">
                         <i class="fas fa-magic"></i>
                         Optimize Payments
@@ -184,7 +212,7 @@
                     <div class="empty-state">
                         <i class="fas fa-handshake"></i>
                         <p>No settlements needed</p>
-                        <p class="text-muted">Everyone is settled up!</p>
+                        <p class="text-muted">Everyone is settled up! 🎉</p>
                     </div>
                 </div>
             </div>
@@ -196,7 +224,7 @@
     <div id="create-group-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Create New Group</h3>
+                <h3>🏗️ Create New Group</h3>
                 <button class="modal-close" data-modal="create-group-modal">
                     <i class="fas fa-times"></i>
                 </button>
@@ -205,22 +233,25 @@
                 <form id="create-group-form">
                     <div class="form-group">
                         <label for="group-name">Group Name</label>
-                        <input type="text" id="group-name" required placeholder="e.g., Roommates, Trip to Europe">
+                        <input type="text" id="group-name" required placeholder="e.g., Roommates, Trip to Vegas, Book Club">
+                        <small class="form-help">Give your group a memorable name - you'll be seeing it a lot!</small>
                     </div>
                     <div class="form-group">
                         <label for="group-description">Description (optional)</label>
-                        <textarea id="group-description" placeholder="What's this group for?"></textarea>
+                        <textarea id="group-description" placeholder="What's this group for? e.g., 'The people I live with and their spending habits'"></textarea>
+                        <small class="form-help">Optional: Add some context so you remember why you created this group</small>
                     </div>
                     <div class="form-group">
-                        <label>Add Members</label>
+                        <label>👥 Add Group Members</label>
                         <div class="members-input">
                             <div class="member-input-row">
-                                <input type="text" class="member-name" placeholder="Member name" required>
+                                <input type="text" class="member-name" placeholder="Member name (e.g., John, Sarah, Roommate)" required>
                                 <button type="button" class="btn btn-icon add-member">
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </div>
                         </div>
+                        <small class="form-help">Add everyone who will be sharing expenses. You can always add more later!</small>
                         <div id="members-list" class="members-list"></div>
                     </div>
                 </form>
@@ -236,7 +267,7 @@
     <div id="add-expense-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Add Expense</h3>
+                <h3>💸 Add Expense</h3>
                 <button class="modal-close" data-modal="add-expense-modal">
                     <i class="fas fa-times"></i>
                 </button>
@@ -248,38 +279,43 @@
                         <select id="expense-group" required>
                             <option value="">Select a group</option>
                         </select>
+                        <small class="form-help">Which group is this expense for?</small>
                     </div>
                     <div class="form-group">
-                        <label for="expense-description">Description</label>
-                        <input type="text" id="expense-description" required placeholder="e.g., Groceries, Dinner, Gas">
+                        <label for="expense-description">What was it?</label>
+                        <input type="text" id="expense-description" required placeholder="e.g., Pizza night, Gas for road trip, Groceries">
+                        <small class="form-help">Be descriptive - you'll thank yourself later when trying to remember what this was for</small>
                     </div>
                     <div class="form-group">
-                        <label for="expense-amount">Amount</label>
+                        <label for="expense-amount">How much did it cost?</label>
                         <div class="amount-input">
                             <span class="currency-symbol">$</span>
                             <input type="number" id="expense-amount" required min="0.01" step="0.01" placeholder="0.00">
                         </div>
+                        <small class="form-help">The total amount that was paid</small>
                     </div>
                     <div class="form-group">
-                        <label for="expense-paid-by">Paid by</label>
+                        <label for="expense-paid-by">Who paid for it?</label>
                         <select id="expense-paid-by" required>
                             <option value="">Select who paid</option>
                         </select>
+                        <small class="form-help">The person who actually swiped their card (or handed over the cash)</small>
                     </div>
                     <div class="form-group">
-                        <label>Split between</label>
+                        <label>How should we split it?</label>
                         <div id="expense-split-options" class="split-options">
                             <label class="checkbox-label">
                                 <input type="checkbox" id="split-equally" checked>
                                 <span class="checkmark"></span>
-                                Split equally
+                                Split equally (everyone pays the same)
                             </label>
                             <label class="checkbox-label">
                                 <input type="checkbox" id="split-custom">
                                 <span class="checkmark"></span>
-                                Custom amounts
+                                Custom amounts (someone ate more pizza)
                             </label>
                         </div>
+                        <small class="form-help">Choose how to divide the cost among group members</small>
                         <div id="custom-split-container" class="custom-split" style="display: none;">
                             <div id="custom-split-inputs"></div>
                         </div>
@@ -311,22 +347,22 @@
                     
                     <div class="group-stats">
                         <div class="stat-item">
-                            <span class="stat-label">Total Expenses</span>
+                            <span class="stat-label">Total Money Spent</span>
                             <span class="stat-value" id="group-total-expenses">$0.00</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-label">Members</span>
+                            <span class="stat-label">Group Size</span>
                             <span class="stat-value" id="group-member-count">0</span>
                         </div>
                     </div>
 
                     <div class="group-balances">
-                        <h4>Balances</h4>
+                        <h4>💰 Who owes what?</h4>
                         <div id="group-balances-list" class="balances-list"></div>
                     </div>
 
                     <div class="group-expenses">
-                        <h4>Recent Expenses</h4>
+                        <h4>📝 Recent Expenses</h4>
                         <div id="group-expenses-list" class="expenses-list"></div>
                     </div>
                 </div>
@@ -343,7 +379,7 @@
     <div id="edit-group-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Edit Group</h3>
+                <h3>✏️ Edit Group</h3>
                 <button class="modal-close" data-modal="edit-group-modal">
                     <i class="fas fa-times"></i>
                 </button>
@@ -352,22 +388,25 @@
                 <form id="edit-group-form">
                     <div class="form-group">
                         <label for="edit-group-name">Group Name</label>
-                        <input type="text" id="edit-group-name" required placeholder="e.g., Roommates, Trip to Europe">
+                        <input type="text" id="edit-group-name" required placeholder="e.g., Roommates, Trip to Vegas, Book Club">
+                        <small class="form-help">Update your group's name if needed</small>
                     </div>
                     <div class="form-group">
                         <label for="edit-group-description">Description (optional)</label>
-                        <textarea id="edit-group-description" placeholder="What's this group for?"></textarea>
+                        <textarea id="edit-group-description" placeholder="What's this group for? e.g., 'The people I live with and their spending habits'"></textarea>
+                        <small class="form-help">Optional: Update the description to keep it current</small>
                     </div>
                     <div class="form-group">
-                        <label>Edit Members</label>
+                        <label>👥 Manage Group Members</label>
                         <div class="members-input">
                             <div class="member-input-row">
-                                <input type="text" class="edit-member-name" placeholder="Member name">
+                                <input type="text" class="edit-member-name" placeholder="Add new member name">
                                 <button type="button" class="btn btn-icon add-edit-member">
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </div>
                         </div>
+                        <small class="form-help">Add new members or remove existing ones. Click the X next to a member to remove them.</small>
                         <div id="edit-members-list" class="members-list"></div>
                     </div>
                 </form>

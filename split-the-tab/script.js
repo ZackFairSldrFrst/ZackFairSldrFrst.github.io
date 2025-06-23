@@ -4,6 +4,7 @@ class SplitTab {
         this.groups = [];
         this.expenses = [];
         this.currentView = 'dashboard';
+        this.currentUser = '';
         this.db = window.db;
         this.editingGroupId = null;
         
@@ -17,6 +18,8 @@ class SplitTab {
         this.renderGroups();
         this.renderExpenses();
         this.updateSettlements();
+        this.updateUserSelector();
+        this.bindEvents();
     }
 
     // Firebase Data Management
@@ -50,6 +53,7 @@ class SplitTab {
             this.updateDashboard();
             this.renderGroups();
             this.updateExpenseFormGroups();
+            this.updateUserSelector();
         });
 
         // Listen for real-time updates to expenses
@@ -123,6 +127,15 @@ class SplitTab {
         if (closeEditModal) {
             closeEditModal.addEventListener('click', () => {
                 this.hideModal('edit-group-modal');
+            });
+        }
+        
+        // User selection
+        const userSelect = document.getElementById('current-user');
+        if (userSelect) {
+            userSelect.addEventListener('change', (e) => {
+                this.currentUser = e.target.value;
+                this.updateDashboard();
             });
         }
         
@@ -324,6 +337,15 @@ class SplitTab {
         if (target.id === 'add-expense-to-group' || target.closest('#add-expense-to-group')) {
             this.hideModal('group-details-modal');
             this.showAddExpenseModal();
+            return;
+        }
+
+        // Personal balance item
+        if (target.classList.contains('personal-balance-item')) {
+            const groupId = target.closest('.personal-balance-item').dataset.groupId;
+            if (groupId) {
+                this.showPersonalBalanceDetails(groupId);
+            }
             return;
         }
     }
@@ -529,6 +551,9 @@ class SplitTab {
             await this.saveGroup(groupData);
             this.hideModal('create-group-modal');
             this.resetCreateGroupForm();
+            
+            // Show success message
+            this.showNotification(`Group "${name}" created successfully!`, 'success');
         } catch (error) {
             alert('Error creating group. Please try again.');
             console.error('Error creating group:', error);
@@ -560,6 +585,9 @@ class SplitTab {
 
             await this.updateGroup(this.editingGroupId, groupData);
             this.hideModal('edit-group-modal');
+            
+            // Show success message
+            this.showNotification(`Group "${name}" updated successfully!`, 'success');
         } catch (error) {
             alert('Error updating group. Please try again.');
             console.error('Error updating group:', error);
@@ -659,25 +687,31 @@ class SplitTab {
         }
 
         const group = this.groups.find(g => g.id === groupId);
-        if (!group) return;
+        if (!group) {
+            alert('Error finding group. Please try again.');
+            return;
+        }
 
         let splits = {};
         if (splitEqually) {
-            const splitAmount = amount / group.members.length;
+            const amountPerPerson = amount / group.members.length;
             group.members.forEach(member => {
-                splits[member] = splitAmount;
+                splits[member] = amountPerPerson;
             });
         } else {
+            // Custom split
             const customInputs = document.querySelectorAll('.custom-amount');
-            let totalCustom = 0;
+            let totalCustomAmount = 0;
+            
             customInputs.forEach(input => {
-                const memberAmount = parseFloat(input.value) || 0;
-                splits[input.dataset.member] = memberAmount;
-                totalCustom += memberAmount;
+                const member = input.dataset.member;
+                const customAmount = parseFloat(input.value) || 0;
+                splits[member] = customAmount;
+                totalCustomAmount += customAmount;
             });
 
-            if (Math.abs(totalCustom - amount) > 0.01) {
-                alert('Custom split amounts must equal the total expense amount.');
+            if (Math.abs(totalCustomAmount - amount) > 0.01) {
+                alert(`The custom amounts add up to $${totalCustomAmount.toFixed(2)}, but the total is $${amount.toFixed(2)}. Please make sure they match.`);
                 return;
             }
         }
@@ -688,11 +722,16 @@ class SplitTab {
                 description,
                 amount,
                 paidBy,
-                splits
+                splits,
+                createdAt: new Date()
             };
 
             await this.saveExpense(expenseData);
             this.hideModal('add-expense-modal');
+            this.resetAddExpenseForm();
+            
+            // Show success message
+            this.showNotification(`Added "${description}" for ${this.formatCurrency(amount)}.`, 'success');
         } catch (error) {
             alert('Error adding expense. Please try again.');
             console.error('Error adding expense:', error);
@@ -701,23 +740,26 @@ class SplitTab {
 
     // Rendering Functions
     updateDashboard() {
+        // Update summary stats
+        document.getElementById('active-groups').textContent = this.groups.length;
+        document.getElementById('total-expenses').textContent = this.expenses.length;
+        
         const totalBalance = this.calculateTotalBalance();
-        const activeGroups = this.groups.length;
-        const totalExpenses = this.expenses.length;
+        document.getElementById('total-balance').textContent = this.formatCurrency(totalBalance);
+        
         const pendingSettlements = this.calculatePendingSettlements();
+        document.getElementById('pending-settlements').textContent = pendingSettlements;
+        
+        if (totalBalance === 0) {
+            document.getElementById('balance-status').textContent = 'All settled up! 🎉';
+        } else {
+            document.getElementById('balance-status').textContent = `${pendingSettlements} payments needed`;
+        }
 
-        const totalBalanceEl = document.getElementById('total-balance');
-        const balanceStatusEl = document.getElementById('balance-status');
-        const activeGroupsEl = document.getElementById('active-groups');
-        const totalExpensesEl = document.getElementById('total-expenses');
-        const pendingSettlementsEl = document.getElementById('pending-settlements');
-
-        if (totalBalanceEl) totalBalanceEl.textContent = this.formatCurrency(totalBalance);
-        if (balanceStatusEl) balanceStatusEl.textContent = totalBalance === 0 ? 'All settled up!' : 'Settlements pending';
-        if (activeGroupsEl) activeGroupsEl.textContent = activeGroups;
-        if (totalExpensesEl) totalExpensesEl.textContent = totalExpenses;
-        if (pendingSettlementsEl) pendingSettlementsEl.textContent = pendingSettlements;
-
+        // Update personal balances
+        this.renderPersonalBalances();
+        
+        // Update other sections
         this.renderRecentExpenses();
         this.renderGroupBalances();
     }
@@ -1106,6 +1148,361 @@ class SplitTab {
             style: 'currency',
             currency: 'USD'
         }).format(amount);
+    }
+
+    showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.innerHTML = `
+            <div class="notification-content">
+                <span class="notification-message">${message}</span>
+                <button class="notification-close">×</button>
+            </div>
+        `;
+
+        // Add styles
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 10000;
+            max-width: 400px;
+            animation: slideIn 0.3s ease-out;
+        `;
+
+        // Add to page
+        document.body.appendChild(notification);
+
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.style.animation = 'slideOut 0.3s ease-in';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }
+        }, 5000);
+
+        // Close button functionality
+        const closeBtn = notification.querySelector('.notification-close');
+        closeBtn.addEventListener('click', () => {
+            notification.style.animation = 'slideOut 0.3s ease-in';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        });
+    }
+
+    updateUserSelector() {
+        const userSelect = document.getElementById('current-user');
+        if (!userSelect) return;
+
+        // Get all unique member names from all groups
+        const allMembers = new Set();
+        this.groups.forEach(group => {
+            group.members.forEach(member => {
+                allMembers.add(member);
+            });
+        });
+
+        // Clear existing options
+        userSelect.innerHTML = '<option value="">Select your name</option>';
+
+        // Add member options
+        Array.from(allMembers).sort().forEach(member => {
+            const option = document.createElement('option');
+            option.value = member;
+            option.textContent = member;
+            userSelect.appendChild(option);
+        });
+
+        // Set current user if previously selected
+        if (this.currentUser && allMembers.has(this.currentUser)) {
+            userSelect.value = this.currentUser;
+        }
+    }
+
+    calculatePersonalBalances() {
+        if (!this.currentUser) return [];
+
+        console.log('Calculating personal balances for:', this.currentUser);
+        console.log('All expenses:', this.expenses);
+        console.log('All groups:', this.groups);
+
+        const personalBalances = [];
+
+        this.groups.forEach(group => {
+            const groupExpenses = this.expenses.filter(expense => expense.groupId === group.id);
+            console.log(`Group ${group.name} expenses:`, groupExpenses);
+            
+            if (groupExpenses.length === 0) return; // Skip groups with no expenses
+
+            let totalOwed = 0;
+            let totalPaid = 0;
+
+            groupExpenses.forEach(expense => {
+                console.log(`Processing expense:`, expense);
+                console.log(`Splits:`, expense.splits);
+                console.log(`Paid by:`, expense.paidBy);
+                
+                // Calculate user's share dynamically based on current group members
+                let userShare = 0;
+                if (expense.splits && expense.splits[this.currentUser]) {
+                    // If the user was already in the group when expense was created
+                    userShare = expense.splits[this.currentUser];
+                } else if (group.members.includes(this.currentUser)) {
+                    // User was added after expense was created, calculate their share
+                    if (expense.splitEqually !== false) {
+                        // Split equally among current members
+                        userShare = expense.amount / group.members.length;
+                    } else {
+                        // Custom split - if user wasn't in original split, they owe 0
+                        userShare = 0;
+                    }
+                }
+                
+                totalOwed += userShare;
+                console.log(`User owes: ${userShare}, total owed now: ${totalOwed}`);
+
+                // How much this user paid for this expense
+                if (expense.paidBy === this.currentUser) {
+                    totalPaid += expense.amount;
+                    console.log(`User paid: ${expense.amount}, total paid now: ${totalPaid}`);
+                }
+            });
+
+            const balance = totalPaid - totalOwed;
+            console.log(`Final balance for ${group.name}: ${balance} (paid: ${totalPaid}, owed: ${totalOwed})`);
+
+            // Show balance even if it's 0, but only if there are expenses
+            if (groupExpenses.length > 0) {
+                personalBalances.push({
+                    groupId: group.id,
+                    groupName: group.name,
+                    balance: balance,
+                    totalOwed: totalOwed,
+                    totalPaid: totalPaid
+                });
+            }
+        });
+
+        console.log('Final personal balances:', personalBalances);
+        return personalBalances;
+    }
+
+    renderPersonalBalances() {
+        const container = document.getElementById('my-balances-list');
+        if (!container) return;
+
+        if (!this.currentUser) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-user"></i>
+                    <p>Select your name above to see your balances</p>
+                    <p class="text-muted">Choose your name from the dropdown to view your personal financial situation</p>
+                </div>
+            `;
+            return;
+        }
+
+        const personalBalances = this.calculatePersonalBalances();
+
+        if (personalBalances.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-handshake"></i>
+                    <p>No expenses yet</p>
+                    <p class="text-muted">Start adding expenses to see your balances</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = personalBalances.map(balance => {
+            let balanceClass = 'neutral';
+            let balanceText = 'All settled up!';
+            
+            if (balance.balance > 0) {
+                balanceClass = 'positive';
+                balanceText = `You're owed ${this.formatCurrency(balance.balance)}`;
+            } else if (balance.balance < 0) {
+                balanceClass = 'negative';
+                balanceText = `You owe ${this.formatCurrency(Math.abs(balance.balance))}`;
+            }
+            
+            return `
+                <div class="personal-balance-item" data-group-id="${balance.groupId}">
+                    <div class="personal-balance-info">
+                        <div class="personal-balance-group">${balance.groupName}</div>
+                        <div class="personal-balance-details">
+                            Paid: ${this.formatCurrency(balance.totalPaid)} | 
+                            Owed: ${this.formatCurrency(balance.totalOwed)}
+                        </div>
+                    </div>
+                    <div class="personal-balance-amount ${balanceClass}">
+                        ${balanceText}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    showPersonalBalanceDetails(groupId) {
+        if (!this.currentUser) return;
+
+        const group = this.groups.find(g => g.id === groupId);
+        if (!group) return;
+
+        const groupExpenses = this.expenses.filter(expense => expense.groupId === groupId);
+        let totalOwed = 0;
+        let totalPaid = 0;
+        const expenseDetails = [];
+
+        groupExpenses.forEach(expense => {
+            // Calculate user's share dynamically based on current group members
+            let userShare = 0;
+            if (expense.splits && expense.splits[this.currentUser]) {
+                // If the user was already in the group when expense was created
+                userShare = expense.splits[this.currentUser];
+            } else if (group.members.includes(this.currentUser)) {
+                // User was added after expense was created, calculate their share
+                if (expense.splitEqually !== false) {
+                    // Split equally among current members
+                    userShare = expense.amount / group.members.length;
+                } else {
+                    // Custom split - if user wasn't in original split, they owe 0
+                    userShare = 0;
+                }
+            }
+            
+            const userPaid = expense.paidBy === this.currentUser ? expense.amount : 0;
+            
+            totalOwed += userShare;
+            totalPaid += userPaid;
+
+            if (userShare > 0 || userPaid > 0) {
+                expenseDetails.push({
+                    description: expense.description,
+                    amount: expense.amount,
+                    userShare: userShare,
+                    userPaid: userPaid,
+                    paidBy: expense.paidBy,
+                    date: expense.createdAt
+                });
+            }
+        });
+
+        const balance = totalPaid - totalOwed;
+        const balanceText = balance > 0 ? 
+            `You're owed ${this.formatCurrency(balance)}` : 
+            `You owe ${this.formatCurrency(Math.abs(balance))}`;
+
+        // Create modal content
+        const modalContent = `
+            <div class="modal-content large">
+                <div class="modal-header">
+                    <h3>Your Balance in ${group.name}</h3>
+                    <button class="modal-close" data-modal="personal-balance-modal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="balance-summary">
+                        <div class="balance-overview">
+                            <div class="balance-stat">
+                                <span class="stat-label">Total Paid</span>
+                                <span class="stat-value positive">${this.formatCurrency(totalPaid)}</span>
+                            </div>
+                            <div class="balance-stat">
+                                <span class="stat-label">Total Owed</span>
+                                <span class="stat-value negative">${this.formatCurrency(totalOwed)}</span>
+                            </div>
+                            <div class="balance-stat">
+                                <span class="stat-label">Net Balance</span>
+                                <span class="stat-value ${balance > 0 ? 'positive' : 'negative'}">${balanceText}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="expense-breakdown">
+                        <h4>Expense Breakdown</h4>
+                        <div class="expense-list">
+                            ${expenseDetails.map(expense => `
+                                <div class="expense-item">
+                                    <div class="expense-info">
+                                        <div class="expense-description">${expense.description}</div>
+                                        <div class="expense-details">
+                                            Total: ${this.formatCurrency(expense.amount)} | 
+                                            Paid by: ${expense.paidBy}
+                                        </div>
+                                    </div>
+                                    <div class="expense-user-amounts">
+                                        <div class="amount-item">
+                                            <span class="amount-label">Your share:</span>
+                                            <span class="amount-value">${this.formatCurrency(expense.userShare)}</span>
+                                        </div>
+                                        ${expense.userPaid > 0 ? `
+                                            <div class="amount-item">
+                                                <span class="amount-label">You paid:</span>
+                                                <span class="amount-value positive">${this.formatCurrency(expense.userPaid)}</span>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-modal="personal-balance-modal">Close</button>
+                </div>
+            </div>
+        `;
+
+        // Show modal
+        this.showCustomModal('personal-balance-modal', modalContent);
+    }
+
+    showCustomModal(modalId, content) {
+        // Remove existing modal if any
+        const existingModal = document.getElementById(modalId);
+        if (existingModal) {
+            existingModal.remove();
+        }
+
+        // Create new modal
+        const modal = document.createElement('div');
+        modal.id = modalId;
+        modal.className = 'modal active';
+        modal.innerHTML = content;
+
+        // Add to page
+        document.body.appendChild(modal);
+
+        // Add event listeners
+        const closeBtn = modal.querySelector('.modal-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                this.hideModal(modalId);
+            });
+        }
+
+        // Close on backdrop click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                this.hideModal(modalId);
+            }
+        });
     }
 }
 
