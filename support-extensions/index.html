@@ -61,21 +61,53 @@
             <p class="subheader">We're thrilled you've joined our community of productivity enthusiasts. This is just the beginning of how we can enhance your browsing experience together.</p>
         </header>
 
-        <!-- Pin Extension Section -->
+        <!-- Top Section: Pin Instructions + Newsletter + Communities -->
         <section class="donate-section compact-section">
-            <h2>Get Started in 3 Simple Steps</h2>
-            <div class="step-container">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <p>Click the extensions menu (puzzle piece icon)</p>
+            <div class="top-grid">
+                <!-- Pin Instructions -->
+                <div class="pin-section">
+                    <h2>Get Started in 3 Simple Steps</h2>
+                    <div class="step-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <p>Click the extensions menu (puzzle piece icon)</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <p>Locate your new extension</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <p>Click the pin icon 📌 to keep it accessible</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <p>Locate your new extension</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <p>Click the pin icon 📌 to keep it accessible</p>
+
+                <!-- Newsletter and Communities -->
+                <div class="side-section">
+                    <!-- Newsletter -->
+                    <div class="newsletter-box">
+                        <h3>📧 Stay Updated</h3>
+                        <p>Get notified about new extensions and updates!</p>
+                        <a href="https://forms.gle/YRzJjdXgeRXuboZk7" class="extension-button newsletter-button" target="_blank">
+                            Subscribe to Newsletter
+                        </a>
+                    </div>
+
+                    <!-- Communities -->
+                    <div class="communities-box">
+                        <h3>🤝 Join Our Communities</h3>
+                        <div class="community-links-compact">
+                            <a href="https://reddit.com/r/SnipIt" class="community-button-compact" target="_blank">
+                                <span class="reddit-icon">🔗</span>
+                                r/SnipIt
+                            </a>
+                            <a href="https://reddit.com/r/SmutWriter" class="community-button-compact" target="_blank">
+                                <span class="reddit-icon">✍️</span>
+                                r/SmutWriter
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -141,33 +173,6 @@
                         Visit SmutWriter
                     </a>
                 </div>
-            </div>
-        </section>
-
-        <!-- Newsletter Section -->
-        <section class="donate-section compact-section">
-            <h2>📧 Stay Updated with Our Newsletter</h2>
-            <p class="subheader">Be the first to know about new extensions, updates, and productivity tips!</p>
-            <div style="text-align: center; margin-top: 1.5rem;">
-                <a href="https://forms.gle/YRzJjdXgeRXuboZk7" class="extension-button newsletter-button" target="_blank">
-                    Subscribe to Newsletter
-                </a>
-            </div>
-        </section>
-
-        <!-- Community Section -->
-        <section class="donate-section compact-section">
-            <h2>🤝 Join Our Communities</h2>
-            <p class="subheader">Connect with fellow users, share tips, and get support from our vibrant communities:</p>
-            <div class="community-links">
-                <a href="https://reddit.com/r/SnipIt" class="community-button" target="_blank">
-                    <span class="reddit-icon">🔗</span>
-                    r/SnipIt Community
-                </a>
-                <a href="https://reddit.com/r/SmutWriter" class="community-button" target="_blank">
-                    <span class="reddit-icon">✍️</span>
-                    r/SmutWriter Community
-                </a>
             </div>
         </section>
 
@@ -299,14 +304,22 @@
 
         /* Newsletter and Community Styles */
         .newsletter-button {
-            font-size: 1rem; /* Reduced from 1.1rem */
-            padding: 0.85rem 1.75rem; /* Reduced from 1rem 2rem */
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            transform: scale(1.02); /* Reduced from 1.05 */
+            font-size: 0.95rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition-medium);
+            display: inline-block;
+            box-shadow: var(--shadow-sm);
         }
 
         .newsletter-button:hover {
-            transform: scale(1.06) translateY(-2px); /* Reduced from 1.1 */
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 191, 99, 0.2);
         }
 
         .community-links {
@@ -340,6 +353,123 @@
 
         .reddit-icon {
             font-size: 1.2rem; /* Reduced from 1.3rem */
+        }
+
+        /* Top Grid Layout */
+        .top-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .pin-section h2 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .side-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .newsletter-box, .communities-box {
+            background: var(--surface);
+            padding: 1.25rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--primary-light);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .newsletter-box h3, .communities-box h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .newsletter-box p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .community-links-compact {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .community-button-compact {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition-medium);
+            font-size: 0.9rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .community-button-compact:hover {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 191, 99, 0.2);
+        }
+
+        .reddit-icon {
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem 1rem;
+            }
+
+            .donate-section {
+                padding: 1.5rem;
+                margin: 1.5rem auto;
+            }
+
+            .donate-options {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .donate-button {
+                padding: 1.25rem 2rem;
+                font-size: 1rem;
+            }
+
+            /* Mobile Top Grid */
+            .top-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .side-section {
+                gap: 1rem;
+            }
+
+            .newsletter-box, .communities-box {
+                padding: 1rem;
+            }
+
+            .community-links-compact {
+                flex-direction: row;
+                gap: 0.5rem;
+            }
+
+            .community-button-compact {
+                flex: 1;
+                justify-content: center;
+                padding: 0.6rem 0.75rem;
+                font-size: 0.85rem;
+            }
         }
     </style>
 </body>
