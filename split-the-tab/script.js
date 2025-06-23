@@ -1,5 +1,5 @@
-// SplitTab - Splitwise Alternative with Firebase Firestore
-class SplitTab {
+// Split the Tab - Splitwise Alternative with Firebase Firestore
+class SplitTheTab {
     constructor() {
         this.groups = [];
         this.expenses = [];
@@ -1404,50 +1404,50 @@ class SplitTab {
 
 // Global functions for onclick handlers
 function showModal(modalId) {
-    if (window.splitTab) {
-        window.splitTab.showModal(modalId);
+    if (window.splitTheTab) {
+        window.splitTheTab.showModal(modalId);
     }
 }
 
 function closeModal(modalId) {
-    if (window.splitTab) {
-        window.splitTab.hideModal(modalId);
+    if (window.splitTheTab) {
+        window.splitTheTab.hideModal(modalId);
     }
 }
 
 function createGroup() {
-    if (window.splitTab) {
-        window.splitTab.createGroup();
+    if (window.splitTheTab) {
+        window.splitTheTab.createGroup();
     }
 }
 
 function createExpense() {
-    if (window.splitTab) {
-        window.splitTab.createExpense();
+    if (window.splitTheTab) {
+        window.splitTheTab.createExpense();
     }
 }
 
 function saveGroupEdit() {
-    if (window.splitTab) {
-        window.splitTab.saveGroupEdit();
+    if (window.splitTheTab) {
+        window.splitTheTab.saveGroupEdit();
     }
 }
 
 function addMember() {
-    if (window.splitTab) {
-        window.splitTab.addMember();
+    if (window.splitTheTab) {
+        window.splitTheTab.addMember();
     }
 }
 
 function addEditMember() {
-    if (window.splitTab) {
-        window.splitTab.addEditMember();
+    if (window.splitTheTab) {
+        window.splitTheTab.addEditMember();
     }
 }
 
 function saveExpenseEdit() {
-    if (window.splitTab) {
-        window.splitTab.saveExpenseEdit();
+    if (window.splitTheTab) {
+        window.splitTheTab.saveExpenseEdit();
     }
 }
 
@@ -1455,7 +1455,7 @@ function saveExpenseEdit() {
 document.addEventListener('DOMContentLoaded', () => {
     // Check if Firebase is available
     if (typeof firebase !== 'undefined') {
-        window.splitTab = new SplitTab();
+        window.splitTheTab = new SplitTheTab();
     } else {
         console.error('Firebase not loaded. Please check your Firebase configuration.');
         document.body.innerHTML = `
