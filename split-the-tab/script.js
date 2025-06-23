@@ -158,7 +158,7 @@ class SplitTab {
 
         // Split options toggle
         document.addEventListener('change', (e) => {
-            if (e.target.id === 'customSplit') {
+            if (e.target.name === 'splitOption') {
                 this.toggleSplitOptions();
             }
         });
@@ -215,7 +215,7 @@ class SplitTab {
 
         // Edit expense form events
         document.addEventListener('change', (e) => {
-            if (e.target.id === 'editCustomSplit') {
+            if (e.target.name === 'editSplitOption') {
                 this.toggleEditSplitOptions();
             }
             
@@ -585,16 +585,13 @@ class SplitTab {
     }
 
     toggleSplitOptions() {
-        const splitEqually = document.getElementById('splitEqually');
         const customSplit = document.getElementById('customSplit');
         const customSplitSection = document.getElementById('customSplitSection');
         
         if (customSplit.checked) {
-            splitEqually.checked = false;
             customSplitSection.style.display = 'block';
             this.updateExpenseFormMembers();
         } else {
-            splitEqually.checked = true;
             customSplitSection.style.display = 'none';
         }
     }
@@ -1622,17 +1619,14 @@ class SplitTab {
     }
 
     toggleEditSplitOptions() {
-        const splitEqually = document.getElementById('editSplitEqually');
         const customSplit = document.getElementById('editCustomSplit');
         const customSplitSection = document.getElementById('editCustomSplitSection');
         
         if (customSplit.checked) {
-            splitEqually.checked = false;
             customSplitSection.style.display = 'block';
             this.updateEditExpenseFormMembers();
             this.updateEditCustomSplitInputs();
         } else {
-            splitEqually.checked = true;
             customSplitSection.style.display = 'none';
         }
     }
