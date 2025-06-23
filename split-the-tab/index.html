@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SplitTab - Split Expenses Easily</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">
+                    <i class="fas fa-receipt"></i>
+                    SplitTab
+                </h1>
+                <nav class="nav">
+                    <button class="nav-btn active" data-view="dashboard">
+                        <i class="fas fa-chart-pie"></i>
+                        Dashboard
+                    </button>
+                    <button class="nav-btn" data-view="groups">
+                        <i class="fas fa-users"></i>
+                        Groups
+                    </button>
+                    <button class="nav-btn" data-view="expenses">
+                        <i class="fas fa-list"></i>
+                        Expenses
+                    </button>
+                    <button class="nav-btn" data-view="settlements">
+                        <i class="fas fa-handshake"></i>
+                        Settlements
+                    </button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard View -->
+            <div id="dashboard-view" class="view active">
+                <div class="dashboard-header">
+                    <h2>Dashboard</h2>
+                    <button class="btn btn-primary" id="quick-add-expense">
+                        <i class="fas fa-plus"></i>
+                        Quick Add Expense
+                    </button>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <div class="card summary-card">
+                        <div class="card-header">
+                            <h3>Total Balance</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="balance-display" id="total-balance">$0.00</div>
+                            <div class="balance-status" id="balance-status">All settled up!</div>
+                        </div>
+                    </div>
+
+                    <div class="card summary-card">
+                        <div class="card-header">
+                            <h3>Active Groups</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="stat-number" id="active-groups">0</div>
+                            <div class="stat-label">groups</div>
+                        </div>
+                    </div>
+
+                    <div class="card summary-card">
+                        <div class="card-header">
+                            <h3>Total Expenses</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="stat-number" id="total-expenses">0</div>
+                            <div class="stat-label">expenses</div>
+                        </div>
+                    </div>
+
+                    <div class="card summary-card">
+                        <div class="card-header">
+                            <h3>Pending Settlements</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="stat-number" id="pending-settlements">0</div>
+                            <div class="stat-label">payments</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-sections">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Recent Expenses</h3>
+                            <button class="btn btn-text" id="view-all-expenses">View All</button>
+                        </div>
+                        <div class="card-content">
+                            <div id="recent-expenses-list" class="expenses-list">
+                                <div class="empty-state">
+                                    <i class="fas fa-receipt"></i>
+                                    <p>No expenses yet</p>
+                                    <button class="btn btn-primary" id="add-first-expense">Add Your First Expense</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Group Balances</h3>
+                            <button class="btn btn-text" id="view-all-groups">View All</button>
+                        </div>
+                        <div class="card-content">
+                            <div id="group-balances-list" class="group-list">
+                                <div class="empty-state">
+                                    <i class="fas fa-users"></i>
+                                    <p>No groups yet</p>
+                                    <button class="btn btn-primary" id="create-first-group">Create Your First Group</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Groups View -->
+            <div id="groups-view" class="view">
+                <div class="view-header">
+                    <h2>Groups</h2>
+                    <button class="btn btn-primary" id="create-group-btn">
+                        <i class="fas fa-plus"></i>
+                        Create Group
+                    </button>
+                </div>
+                
+                <div id="groups-list" class="groups-grid">
+                    <div class="empty-state">
+                        <i class="fas fa-users"></i>
+                        <p>No groups yet</p>
+                        <button class="btn btn-primary" id="create-group-empty">Create Your First Group</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expenses View -->
+            <div id="expenses-view" class="view">
+                <div class="view-header">
+                    <h2>Expenses</h2>
+                    <div class="view-actions">
+                        <select id="expense-filter" class="select">
+                            <option value="all">All Groups</option>
+                        </select>
+                        <button class="btn btn-primary" id="add-expense-btn">
+                            <i class="fas fa-plus"></i>
+                            Add Expense
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="expenses-list" class="expenses-container">
+                    <div class="empty-state">
+                        <i class="fas fa-receipt"></i>
+                        <p>No expenses yet</p>
+                        <button class="btn btn-primary" id="add-expense-empty">Add Your First Expense</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settlements View -->
+            <div id="settlements-view" class="view">
+                <div class="view-header">
+                    <h2>Settlements</h2>
+                    <button class="btn btn-primary" id="optimize-settlements">
+                        <i class="fas fa-magic"></i>
+                        Optimize Payments
+                    </button>
+                </div>
+                
+                <div id="settlements-container" class="settlements-container">
+                    <div class="empty-state">
+                        <i class="fas fa-handshake"></i>
+                        <p>No settlements needed</p>
+                        <p class="text-muted">Everyone is settled up!</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Create Group Modal -->
+    <div id="create-group-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Group</h3>
+                <button class="modal-close" data-modal="create-group-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="create-group-form">
+                    <div class="form-group">
+                        <label for="group-name">Group Name</label>
+                        <input type="text" id="group-name" required placeholder="e.g., Roommates, Trip to Europe">
+                    </div>
+                    <div class="form-group">
+                        <label for="group-description">Description (optional)</label>
+                        <textarea id="group-description" placeholder="What's this group for?"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Add Members</label>
+                        <div class="members-input">
+                            <div class="member-input-row">
+                                <input type="text" class="member-name" placeholder="Member name" required>
+                                <button type="button" class="btn btn-icon add-member">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="members-list" class="members-list"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-modal="create-group-modal">Cancel</button>
+                <button class="btn btn-primary" type="submit" form="create-group-form">Create Group</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Expense Modal -->
+    <div id="add-expense-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Expense</h3>
+                <button class="modal-close" data-modal="add-expense-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="add-expense-form">
+                    <div class="form-group">
+                        <label for="expense-group">Group</label>
+                        <select id="expense-group" required>
+                            <option value="">Select a group</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="expense-description">Description</label>
+                        <input type="text" id="expense-description" required placeholder="e.g., Groceries, Dinner, Gas">
+                    </div>
+                    <div class="form-group">
+                        <label for="expense-amount">Amount</label>
+                        <div class="amount-input">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="expense-amount" required min="0.01" step="0.01" placeholder="0.00">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="expense-paid-by">Paid by</label>
+                        <select id="expense-paid-by" required>
+                            <option value="">Select who paid</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Split between</label>
+                        <div id="expense-split-options" class="split-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="split-equally" checked>
+                                <span class="checkmark"></span>
+                                Split equally
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="split-custom">
+                                <span class="checkmark"></span>
+                                Custom amounts
+                            </label>
+                        </div>
+                        <div id="custom-split-container" class="custom-split" style="display: none;">
+                            <div id="custom-split-inputs"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-modal="add-expense-modal">Cancel</button>
+                <button class="btn btn-primary" type="submit" form="add-expense-form">Add Expense</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Group Details Modal -->
+    <div id="group-details-modal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 id="group-details-title">Group Details</h3>
+                <button class="modal-close" data-modal="group-details-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="group-details-content">
+                    <div class="group-info">
+                        <h4 id="group-details-name"></h4>
+                        <p id="group-details-description" class="text-muted"></p>
+                    </div>
+                    
+                    <div class="group-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Total Expenses</span>
+                            <span class="stat-value" id="group-total-expenses">$0.00</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Members</span>
+                            <span class="stat-value" id="group-member-count">0</span>
+                        </div>
+                    </div>
+
+                    <div class="group-balances">
+                        <h4>Balances</h4>
+                        <div id="group-balances-list" class="balances-list"></div>
+                    </div>
+
+                    <div class="group-expenses">
+                        <h4>Recent Expenses</h4>
+                        <div id="group-expenses-list" class="expenses-list"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-modal="group-details-modal">Close</button>
+                <button class="btn btn-primary" id="add-expense-to-group">Add Expense</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDi9PeRLjWIfKmAVYC7vh1MJx9Ah8f79tw",
+            authDomain: "split-the-tab.firebaseapp.com",
+            projectId: "split-the-tab",
+            storageBucket: "split-the-tab.firebasestorage.app",
+            messagingSenderId: "65613542948",
+            appId: "1:65613542948:web:7fd0b47606b2b619ef8ab1",
+            measurementId: "G-E6SWPLWH01"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Make db available globally
+        window.db = db;
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html> 
