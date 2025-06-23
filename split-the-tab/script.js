@@ -261,7 +261,11 @@ class SplitTheTab {
 
             this.closeModal('signupModal');
             this.showNotification('Account created successfully!', 'success');
+            
+            // Load user data after successful signup
+            await this.loadUserData();
         } catch (error) {
+            console.error('Signup error:', error);
             this.showNotification(`Signup failed: ${error.message}`, 'error');
         }
     }
@@ -295,46 +299,87 @@ class SplitTheTab {
         }
     }
 
+    async ensureUserDocument() {
+        try {
+            const userDocRef = db.collection('users').doc(this.currentUser.uid);
+            const userDoc = await userDocRef.get();
+            
+            if (!userDoc.exists) {
+                await userDocRef.set({
+                    email: this.currentUser.email,
+                    groups: [],
+                    createdAt: new Date()
+                });
+                console.log('User document created');
+            }
+        } catch (error) {
+            console.error('Error ensuring user document:', error);
+            throw error;
+        }
+    }
+
     async loadUserData() {
         try {
-            // Load user's groups
-            const userDoc = await db.collection('users').doc(this.currentUser.uid).get();
-            if (userDoc.exists) {
-                const userData = userDoc.data();
-                
-                // Load groups where user is a member
-                const groupsSnapshot = await db.collection('groups')
-                    .where('members', 'array-contains', this.currentUser.uid)
-                    .get();
-                
-                this.userGroups = groupsSnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
+            // Ensure user document exists
+            await this.ensureUserDocument();
+            
+            // Load groups where user is a member
+            const groupsSnapshot = await db.collection('groups')
+                .where('members', 'array-contains', this.currentUser.uid)
+                .get();
+            
+            this.userGroups = groupsSnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
 
-                // Load expenses for user's groups
-                const groupIds = this.userGroups.map(g => g.id);
-                if (groupIds.length > 0) {
-                    const expensesSnapshot = await db.collection('expenses')
-                        .where('groupId', 'in', groupIds)
-                        .orderBy('createdAt', 'desc')
-                        .get();
-                    
-                    this.userExpenses = expensesSnapshot.docs.map(doc => ({
+            // Load expenses for user's groups
+            this.userExpenses = [];
+            const groupIds = this.userGroups.map(g => g.id);
+            if (groupIds.length > 0) {
+                // Firestore 'in' queries are limited to 10 items, so we need to batch them
+                // Note: Removed orderBy to avoid index requirements, will sort in JavaScript
+                const batches = [];
+                for (let i = 0; i < groupIds.length; i += 10) {
+                    const batch = groupIds.slice(i, i + 10);
+                    batches.push(
+                        db.collection('expenses')
+                            .where('groupId', 'in', batch)
+                            .get()
+                    );
+                }
+                
+                const expenseSnapshots = await Promise.all(batches);
+                expenseSnapshots.forEach(snapshot => {
+                    const expenses = snapshot.docs.map(doc => ({
                         id: doc.id,
                         ...doc.data()
                     }));
-                }
-
-                // Update UI
-                this.updateGroupsView();
-                this.updateExpensesView();
-                this.updateDashboard();
-                this.populateUserSelector();
+                    this.userExpenses.push(...expenses);
+                });
+                
+                // Sort all expenses by creation date (newest first)
+                this.userExpenses.sort((a, b) => {
+                    const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt);
+                    const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt);
+                    return dateB - dateA;
+                });
             }
+
+            // Update UI
+            this.updateGroupsView();
+            this.updateExpensesView();
+            this.updateDashboard();
+            this.populateUserSelector();
+            
+            console.log('User data loaded successfully:', {
+                groups: this.userGroups.length,
+                expenses: this.userExpenses.length
+            });
+            
         } catch (error) {
             console.error('Error loading user data:', error);
-            this.showNotification('Failed to load data', 'error');
+            this.showNotification(`Failed to load data: ${error.message}`, 'error');
         }
     }
 
@@ -342,10 +387,18 @@ class SplitTheTab {
         const name = document.getElementById('groupName').value;
         const description = document.getElementById('groupDescription').value;
 
+        if (!name.trim()) {
+            this.showNotification('Please enter a group name', 'error');
+            return;
+        }
+
         try {
+            // Ensure user document exists
+            await this.ensureUserDocument();
+
             const groupData = {
-                name: name,
-                description: description,
+                name: name.trim(),
+                description: description.trim(),
                 createdBy: this.currentUser.uid,
                 members: [this.currentUser.uid],
                 createdAt: new Date()
@@ -353,17 +406,18 @@ class SplitTheTab {
 
             const docRef = await db.collection('groups').add(groupData);
             
-            // Add group to user's groups
-            await db.collection('users').doc(this.currentUser.uid).update({
+            // Add group to user's groups using set with merge to avoid update errors
+            await db.collection('users').doc(this.currentUser.uid).set({
                 groups: firebase.firestore.FieldValue.arrayUnion(docRef.id)
-            });
+            }, { merge: true });
 
             this.closeModal('groupModal');
             this.showNotification('Group created successfully!', 'success');
             
             // Reload data
-            this.loadUserData();
+            await this.loadUserData();
         } catch (error) {
+            console.error('Error creating group:', error);
             this.showNotification(`Failed to create group: ${error.message}`, 'error');
         }
     }
@@ -374,20 +428,26 @@ class SplitTheTab {
         const paidBy = document.getElementById('expensePaidBy').value;
         const groupId = document.getElementById('expenseGroup').value;
 
-        if (!description || !amount || !paidBy || !groupId) {
-            this.showNotification('Please fill in all fields', 'error');
+        if (!description.trim() || !amount || amount <= 0 || !paidBy || !groupId) {
+            this.showNotification('Please fill in all fields with valid values', 'error');
+            return;
+        }
+
+        const selectedMembers = this.getSelectedMembers();
+        if (selectedMembers.length === 0) {
+            this.showNotification('Please select at least one member to split the expense with', 'error');
             return;
         }
 
         try {
             const expenseData = {
-                description: description,
+                description: description.trim(),
                 amount: amount,
                 paidBy: paidBy,
                 groupId: groupId,
                 createdBy: this.currentUser.uid,
                 createdAt: new Date(),
-                members: this.getSelectedMembers()
+                members: selectedMembers
             };
 
             await db.collection('expenses').add(expenseData);
@@ -395,9 +455,13 @@ class SplitTheTab {
             this.closeModal('expenseModal');
             this.showNotification('Expense added successfully!', 'success');
             
+            // Clear form
+            document.getElementById('expenseForm').reset();
+            
             // Reload data
-            this.loadUserData();
+            await this.loadUserData();
         } catch (error) {
+            console.error('Error creating expense:', error);
             this.showNotification(`Failed to add expense: ${error.message}`, 'error');
         }
     }
@@ -447,7 +511,14 @@ class SplitTheTab {
 
     getSelectedMembers(prefix = '') {
         const memberCheckboxes = document.querySelectorAll(`#${prefix}expenseMembers input[type="checkbox"]:checked`);
-        return Array.from(memberCheckboxes).map(cb => cb.value);
+        const selectedMembers = Array.from(memberCheckboxes).map(cb => cb.value);
+        
+        // If no members are selected but we have a current user, include them
+        if (selectedMembers.length === 0 && this.currentUser) {
+            return [this.currentUser.uid];
+        }
+        
+        return selectedMembers;
     }
 
     populateUserSelector() {
@@ -681,6 +752,24 @@ class SplitTheTab {
 
     showModal(modalId) {
         console.log('showModal called with:', modalId);
+        
+        // Check if user is logged in for modals that require authentication
+        if ((modalId === 'expenseModal' || modalId === 'editExpenseModal' || modalId === 'groupModal' || modalId === 'inviteModal') && !this.currentUser) {
+            this.showNotification('Please log in first', 'error');
+            return;
+        }
+        
+        // Check if user has groups for expense/invite modals
+        if ((modalId === 'expenseModal' || modalId === 'editExpenseModal') && this.userGroups.length === 0) {
+            this.showNotification('Please create a group first before adding expenses', 'error');
+            return;
+        }
+        
+        if (modalId === 'inviteModal' && this.userGroups.length === 0) {
+            this.showNotification('Please create a group first before inviting members', 'error');
+            return;
+        }
+        
         const modal = document.getElementById(modalId);
         if (modal) {
             modal.classList.add('active');
@@ -900,13 +989,23 @@ function closeModal(modalId) {
     }
 }
 
-// Initialize app when DOM is loaded
+// Initialize the application when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM loaded, initializing app...');
+    console.log('DOM loaded, initializing Split the Tab app...');
     try {
         window.splitTheTabApp = new SplitTheTab();
-        console.log('App initialized successfully');
+        console.log('Split the Tab app initialized successfully');
     } catch (error) {
-        console.error('Error initializing app:', error);
+        console.error('Error initializing Split the Tab app:', error);
+        
+        // Show error notification even if app fails to initialize
+        const notification = document.createElement('div');
+        notification.className = 'notification error';
+        notification.innerHTML = `
+            <i class="fas fa-exclamation-circle"></i>
+            <span>Application failed to initialize. Please refresh the page.</span>
+        `;
+        document.body.appendChild(notification);
+        setTimeout(() => notification.classList.add('show'), 100);
     }
 }); 
