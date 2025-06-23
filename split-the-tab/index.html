@@ -20,7 +20,34 @@
                     Split the Tab
                 </a>
                 
-                <div class="user-selector">
+                <!-- Authentication Section -->
+                <div id="authSection" class="auth-section">
+                    <!-- Not logged in -->
+                    <div id="notLoggedIn" class="auth-buttons">
+                        <button class="btn btn-secondary" onclick="showModal('loginModal')">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </button>
+                        <button class="btn btn-primary" onclick="showModal('signupModal')">
+                            <i class="fas fa-user-plus"></i>
+                            Sign Up
+                        </button>
+                    </div>
+                    
+                    <!-- Logged in -->
+                    <div id="loggedIn" class="user-profile" style="display: none;">
+                        <div class="user-info">
+                            <span id="userEmail" class="user-email"></span>
+                            <button class="btn btn-text" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Selector (only show when logged in) -->
+                <div id="userSelectorContainer" class="user-selector" style="display: none;">
                     <label for="userSelect">You are:</label>
                     <select id="userSelect" class="user-select">
                         <option value="">Select yourself...</option>
@@ -46,268 +73,266 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Dashboard View -->
-            <div id="dashboard" class="view active">
-                <div class="dashboard-header">
-                    <div>
-                        <h2>Dashboard</h2>
-                        <p class="dashboard-subtitle">Your financial overview at a glance</p>
+            <!-- Welcome Screen (shown when not logged in) -->
+            <div id="welcomeScreen" class="welcome-screen">
+                <div class="welcome-content">
+                    <div class="welcome-hero">
+                        <i class="fas fa-receipt welcome-icon"></i>
+                        <h1>Split the Tab</h1>
+                        <p class="welcome-subtitle">The smart way to split expenses with friends, roommates, and groups</p>
                     </div>
-                    <div class="view-actions">
-                        <button class="btn btn-primary" onclick="showModal('newGroupModal')">
-                            <i class="fas fa-plus"></i>
-                            New Group
+                    
+                    <div class="welcome-features">
+                        <div class="feature-card">
+                            <i class="fas fa-users"></i>
+                            <h3>Group Management</h3>
+                            <p>Create groups for different occasions - roommates, trips, events</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-calculator"></i>
+                            <h3>Smart Splitting</h3>
+                            <p>Split expenses equally or customize who pays what</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-chart-line"></i>
+                            <h3>Real-time Balances</h3>
+                            <p>See who owes what in real-time with automatic calculations</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-mobile-alt"></i>
+                            <h3>Mobile Friendly</h3>
+                            <p>Access your expenses anywhere, anytime</p>
+                        </div>
+                    </div>
+                    
+                    <div class="welcome-actions">
+                        <button class="btn btn-primary btn-large" onclick="showModal('signupModal')">
+                            <i class="fas fa-user-plus"></i>
+                            Get Started - It's Free!
                         </button>
-                        <button class="btn btn-secondary" onclick="showModal('newExpenseModal')">
-                            <i class="fas fa-plus"></i>
-                            New Expense
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Summary Cards -->
-                <div class="dashboard-grid">
-                    <div class="card summary-card">
-                        <div class="card-content">
-                            <div class="balance-display" id="totalBalance">$0.00</div>
-                            <div class="balance-status" id="balanceStatus">All settled up!</div>
-                        </div>
-                    </div>
-                    <div class="card summary-card">
-                        <div class="card-content">
-                            <div class="stat-number" id="totalGroups">0</div>
-                            <div class="stat-label">Active Groups</div>
-                        </div>
-                    </div>
-                    <div class="card summary-card">
-                        <div class="card-content">
-                            <div class="stat-number" id="totalExpenses">0</div>
-                            <div class="stat-label">Total Expenses</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Dashboard Sections -->
-                <div class="dashboard-sections">
-                    <!-- My Balances -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h3><i class="fas fa-wallet"></i> My Balances</h3>
-                        </div>
-                        <div class="card-content">
-                            <div id="personalBalances">
-                                <div class="empty-state">
-                                    <i class="fas fa-wallet"></i>
-                                    <p>No balances to show</p>
-                                    <div class="text-muted">Join a group and add some expenses to see your balances here</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Recent Activity -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h3><i class="fas fa-clock"></i> Recent Activity</h3>
-                        </div>
-                        <div class="card-content">
-                            <div id="recentActivity">
-                                <div class="empty-state">
-                                    <i class="fas fa-clock"></i>
-                                    <p>No recent activity</p>
-                                    <div class="text-muted">Your recent expenses and settlements will appear here</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Groups View -->
-            <div id="groups" class="view">
-                <div class="view-header">
-                    <h2>Groups</h2>
-                    <p class="view-subtitle">Manage your expense groups and see balances</p>
-                    <div class="view-actions">
-                        <button class="btn btn-primary" onclick="showModal('newGroupModal')">
-                            <i class="fas fa-plus"></i>
-                            New Group
-                        </button>
-                    </div>
-                </div>
-
-                <div id="groupsContainer">
-                    <div class="empty-state">
-                        <i class="fas fa-users"></i>
-                        <p>No groups yet</p>
-                        <div class="text-muted">Create your first group to start splitting expenses</div>
-                        <button class="btn btn-primary" onclick="showModal('newGroupModal')">
-                            <i class="fas fa-plus"></i>
-                            Create Group
+                        <button class="btn btn-secondary btn-large" onclick="showModal('loginModal')">
+                            <i class="fas fa-sign-in-alt"></i>
+                            I Already Have an Account
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Expenses View -->
-            <div id="expenses" class="view">
-                <div class="view-header">
-                    <h2>Expenses</h2>
-                    <p class="view-subtitle">Track all your expenses across groups</p>
-                    <div class="view-actions">
-                        <button class="btn btn-primary" onclick="showModal('newExpenseModal')">
-                            <i class="fas fa-plus"></i>
-                            New Expense
-                        </button>
+            <!-- App Content (shown when logged in) -->
+            <div id="appContent" class="app-content" style="display: none;">
+                <!-- Dashboard View -->
+                <div id="dashboard" class="view active">
+                    <div class="dashboard-header">
+                        <div>
+                            <h2>Dashboard</h2>
+                            <p class="dashboard-subtitle">Your financial overview at a glance</p>
+                        </div>
+                        <div class="view-actions">
+                            <button class="btn btn-primary" onclick="showModal('groupModal')">
+                                <i class="fas fa-plus"></i>
+                                New Group
+                            </button>
+                            <button class="btn btn-secondary" onclick="showModal('expenseModal')">
+                                <i class="fas fa-plus"></i>
+                                New Expense
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Summary Cards -->
+                    <div class="dashboard-grid">
+                        <div class="card summary-card">
+                            <div class="card-content">
+                                <div class="balance-display" id="totalBalance">$0.00</div>
+                                <div class="balance-status" id="balanceStatus">All settled up!</div>
+                            </div>
+                        </div>
+                        <div class="card summary-card">
+                            <div class="card-content">
+                                <div class="stat-number" id="totalGroups">0</div>
+                                <div class="stat-label">Active Groups</div>
+                            </div>
+                        </div>
+                        <div class="card summary-card">
+                            <div class="card-content">
+                                <div class="stat-number" id="totalExpenses">0</div>
+                                <div class="stat-label">Total Expenses</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Sections -->
+                    <div class="dashboard-sections">
+                        <!-- My Balances -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-wallet"></i> My Balances</h3>
+                            </div>
+                            <div class="card-content">
+                                <div id="personalBalances">
+                                    <div class="empty-state">
+                                        <i class="fas fa-wallet"></i>
+                                        <p>No balances to show</p>
+                                        <div class="text-muted">Join a group and add some expenses to see your balances here</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Activity -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-clock"></i> Recent Activity</h3>
+                            </div>
+                            <div class="card-content">
+                                <div id="recentActivity">
+                                    <div class="empty-state">
+                                        <i class="fas fa-clock"></i>
+                                        <p>No recent activity</p>
+                                        <div class="text-muted">Your recent expenses and settlements will appear here</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div id="expensesContainer">
-                    <div class="empty-state">
-                        <i class="fas fa-receipt"></i>
-                        <p>No expenses yet</p>
-                        <div class="text-muted">Add your first expense to start tracking</div>
-                        <button class="btn btn-primary" onclick="showModal('newExpenseModal')">
-                            <i class="fas fa-plus"></i>
-                            Add Expense
-                        </button>
+                <!-- Groups View -->
+                <div id="groups" class="view">
+                    <div class="view-header">
+                        <h2>Groups</h2>
+                        <p class="view-subtitle">Manage your expense groups and see balances</p>
+                        <div class="view-actions">
+                            <button class="btn btn-primary" onclick="showModal('groupModal')">
+                                <i class="fas fa-plus"></i>
+                                New Group
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="section-header">
+                        <h2><i class="fas fa-users"></i> Your Groups</h2>
+                        <div class="section-actions">
+                            <button class="btn btn-secondary" onclick="showModal('inviteModal')">
+                                <i class="fas fa-user-plus"></i>
+                                Invite Friends
+                            </button>
+                            <button class="btn btn-primary" onclick="showModal('groupModal')">
+                                <i class="fas fa-plus"></i>
+                                Create Group
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="groupsContainer">
+                        <div class="empty-state">
+                            <i class="fas fa-users"></i>
+                            <p>No groups yet</p>
+                            <div class="text-muted">Create your first group to start splitting expenses</div>
+                            <button class="btn btn-primary" onclick="showModal('groupModal')">
+                                <i class="fas fa-plus"></i>
+                                Create Group
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Expenses View -->
+                <div id="expenses" class="view">
+                    <div class="view-header">
+                        <h2>Expenses</h2>
+                        <p class="view-subtitle">Track all your expenses across groups</p>
+                        <div class="view-actions">
+                            <button class="btn btn-primary" onclick="showModal('expenseModal')">
+                                <i class="fas fa-plus"></i>
+                                New Expense
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="expensesContainer">
+                        <div class="empty-state">
+                            <i class="fas fa-receipt"></i>
+                            <p>No expenses yet</p>
+                            <div class="text-muted">Add your first expense to start tracking</div>
+                            <button class="btn btn-primary" onclick="showModal('expenseModal')">
+                                <i class="fas fa-plus"></i>
+                                Add Expense
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- New Group Modal -->
-    <div id="newGroupModal" class="modal">
+    <!-- Group Modal -->
+    <div id="groupModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3><i class="fas fa-users"></i> Create New Group</h3>
-                <button class="modal-close" onclick="closeModal('newGroupModal')">&times;</button>
+                <h2><i class="fas fa-users"></i> Create New Group</h2>
+                <button class="close-btn" onclick="closeModal('groupModal')">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-            <div class="modal-body">
-                <form id="newGroupForm">
-                    <div class="form-group">
-                        <label for="groupName">Group Name</label>
-                        <input type="text" id="groupName" placeholder="e.g., Roommates, Trip to Japan, Dinner Club" required>
-                        <div class="form-help">Give your group a memorable name</div>
-                    </div>
-                    <div class="form-group">
-                        <label for="groupDescription">Description (Optional)</label>
-                        <textarea id="groupDescription" placeholder="What's this group for?"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Group Members</label>
-                        <div class="members-input">
-                            <div class="member-input-row">
-                                <input type="text" id="memberInput" placeholder="Add member name...">
-                                <button type="button" class="btn btn-secondary" onclick="addMember()">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
-                            <div id="membersList" class="members-list"></div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal('newGroupModal')">Cancel</button>
-                <button class="btn btn-primary" onclick="createGroup()">Create Group</button>
-            </div>
+            <form id="groupForm" class="modal-form">
+                <div class="form-group">
+                    <label for="groupName">Group Name</label>
+                    <input type="text" id="groupName" required placeholder="e.g., Roommates, Trip to Japan, Dinner Club">
+                </div>
+                <div class="form-group">
+                    <label for="groupDescription">Description (Optional)</label>
+                    <textarea id="groupDescription" placeholder="What's this group for?"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('groupModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Group</button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <!-- New Expense Modal -->
-    <div id="newExpenseModal" class="modal">
+    <!-- Expense Modal -->
+    <div id="expenseModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3><i class="fas fa-receipt"></i> Add New Expense</h3>
-                <button class="modal-close" onclick="closeModal('newExpenseModal')">&times;</button>
+                <h2><i class="fas fa-receipt"></i> Add New Expense</h2>
+                <button class="close-btn" onclick="closeModal('expenseModal')">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-            <div class="modal-body">
-                <form id="newExpenseForm">
-                    <div class="form-group">
-                        <label for="expenseGroup">Group</label>
-                        <select id="expenseGroup" required>
-                            <option value="">Select a group...</option>
-                        </select>
+            <form id="expenseForm" class="modal-form">
+                <div class="form-group">
+                    <label for="expenseDescription">Description</label>
+                    <input type="text" id="expenseDescription" required placeholder="What was this expense for?">
+                </div>
+                <div class="form-group">
+                    <label for="expenseAmount">Amount</label>
+                    <input type="number" id="expenseAmount" step="0.01" min="0" required placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label for="expensePaidBy">Paid By</label>
+                    <select id="expensePaidBy" required>
+                        <option value="">Select who paid...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="expenseGroup">Group</label>
+                    <select id="expenseGroup" required>
+                        <option value="">Select group...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Split Between</label>
+                    <div id="expenseMembers" class="members-list">
+                        <!-- Members will be populated here -->
                     </div>
-                    <div class="form-group">
-                        <label for="expenseDescription">Description</label>
-                        <input type="text" id="expenseDescription" placeholder="What was this expense for?" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="expenseAmount">Amount</label>
-                        <div class="amount-input">
-                            <span class="currency-symbol">$</span>
-                            <input type="number" id="expenseAmount" step="0.01" min="0" placeholder="0.00" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="expensePaidBy">Paid By</label>
-                        <select id="expensePaidBy" required>
-                            <option value="">Who paid for this?</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Split Options</label>
-                        <div class="split-options">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="splitEqually" checked>
-                                <span>Split equally among all members</span>
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="customSplit">
-                                <span>Custom split amounts</span>
-                            </label>
-                        </div>
-                    </div>
-                    <div id="customSplitSection" style="display: none;">
-                        <div id="customSplitInputs"></div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal('newExpenseModal')">Cancel</button>
-                <button class="btn btn-primary" onclick="createExpense()">Add Expense</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Group Modal -->
-    <div id="editGroupModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-edit"></i> Edit Group</h3>
-                <button class="modal-close" onclick="closeModal('editGroupModal')">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="editGroupForm">
-                    <div class="form-group">
-                        <label for="editGroupName">Group Name</label>
-                        <input type="text" id="editGroupName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="editGroupDescription">Description</label>
-                        <textarea id="editGroupDescription"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Group Members</label>
-                        <div class="members-input">
-                            <div class="member-input-row">
-                                <input type="text" id="editMemberInput" placeholder="Add member name...">
-                                <button type="button" class="btn btn-secondary" onclick="addEditMember()">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
-                            <div id="editMembersList" class="members-list"></div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal('editGroupModal')">Cancel</button>
-                <button class="btn btn-primary" onclick="saveGroupEdit()">Save Changes</button>
-            </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('expenseModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Expense</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -355,7 +380,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeModal('groupDetailsModal')">Close</button>
-                <button class="btn btn-primary" onclick="showModal('newExpenseModal')">Add Expense</button>
+                <button class="btn btn-primary" onclick="showModal('expenseModal')">Add Expense</button>
             </div>
         </div>
     </div>
@@ -382,62 +407,148 @@
     <div id="editExpenseModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3><i class="fas fa-edit"></i> Edit Expense</h3>
-                <button class="modal-close" onclick="closeModal('editExpenseModal')">&times;</button>
+                <h2><i class="fas fa-edit"></i> Edit Expense</h2>
+                <button class="close-btn" onclick="closeModal('editExpenseModal')">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-            <div class="modal-body">
-                <form id="editExpenseForm">
-                    <div class="form-group">
-                        <label for="editExpenseGroup">Group</label>
-                        <select id="editExpenseGroup" required>
-                            <option value="">Select a group...</option>
-                        </select>
+            <form id="editExpenseForm" class="modal-form">
+                <div class="form-group">
+                    <label for="editExpenseDescription">Description</label>
+                    <input type="text" id="editExpenseDescription" required placeholder="What was this expense for?">
+                </div>
+                <div class="form-group">
+                    <label for="editExpenseAmount">Amount</label>
+                    <input type="number" id="editExpenseAmount" step="0.01" min="0" required placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label for="editExpensePaidBy">Paid By</label>
+                    <select id="editExpensePaidBy" required>
+                        <option value="">Select who paid...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editExpenseGroup">Group</label>
+                    <select id="editExpenseGroup" required>
+                        <option value="">Select group...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Split Between</label>
+                    <div id="editExpenseMembers" class="members-list">
+                        <!-- Members will be populated here -->
                     </div>
-                    <div class="form-group">
-                        <label for="editExpenseDescription">Description</label>
-                        <input type="text" id="editExpenseDescription" placeholder="What was this expense for?" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="editExpenseAmount">Amount</label>
-                        <div class="amount-input">
-                            <span class="currency-symbol">$</span>
-                            <input type="number" id="editExpenseAmount" step="0.01" min="0" placeholder="0.00" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="editExpensePaidBy">Paid By</label>
-                        <select id="editExpensePaidBy" required>
-                            <option value="">Who paid for this?</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Split Options</label>
-                        <div class="split-options">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="editSplitEqually" checked>
-                                <span>Split equally among all members</span>
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="editCustomSplit">
-                                <span>Custom split amounts</span>
-                            </label>
-                        </div>
-                    </div>
-                    <div id="editCustomSplitSection" style="display: none;">
-                        <div id="editCustomSplitInputs"></div>
-                    </div>
-                </form>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('editExpenseModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Expense</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-sign-in-alt"></i> Welcome Back!</h2>
+                <button class="close-btn" onclick="closeModal('loginModal')">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal('editExpenseModal')">Cancel</button>
-                <button class="btn btn-primary" onclick="saveExpenseEdit()">Save Changes</button>
+            <form id="loginForm" class="modal-form">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required placeholder="Enter your password">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('loginModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+                <div class="form-footer">
+                    <p>Don't have an account? <a href="#" onclick="switchToSignup()">Sign up here</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-user-plus"></i> Join Split the Tab</h2>
+                <button class="close-btn" onclick="closeModal('signupModal')">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
+            <form id="signupForm" class="modal-form">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" required placeholder="Your full name">
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" required placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" required placeholder="Create a password (min 6 characters)">
+                </div>
+                <div class="form-group">
+                    <label for="signupConfirmPassword">Confirm Password</label>
+                    <input type="password" id="signupConfirmPassword" required placeholder="Confirm your password">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('signupModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                </div>
+                <div class="form-footer">
+                    <p>Already have an account? <a href="#" onclick="switchToLogin()">Login here</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Invite Modal -->
+    <div id="inviteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-user-plus"></i> Invite to Group</h2>
+                <button class="close-btn" onclick="closeModal('inviteModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="inviteForm" class="modal-form">
+                <div class="form-group">
+                    <label for="inviteEmail">Email Address</label>
+                    <input type="email" id="inviteEmail" required placeholder="friend@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="inviteGroup">Group</label>
+                    <select id="inviteGroup" required>
+                        <option value="">Select group...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="inviteMessage">Message (optional)</label>
+                    <textarea id="inviteMessage" placeholder="Hey! I'd like to invite you to split expenses with us..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('inviteModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Send Invite</button>
+                </div>
+            </form>
         </div>
     </div>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
     <script>
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -453,7 +564,9 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        const auth = firebase.auth();
         window.db = db;
+        window.auth = auth;
     </script>
 
     <script src="script.js"></script>
