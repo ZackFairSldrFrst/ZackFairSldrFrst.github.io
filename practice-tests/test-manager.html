@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Manager | Practice Tests Hub</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="js/firebase-reader.js"></script>
+    
+    <style>
+        .manager-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .manager-header {
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .manager-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .manager-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            border: 1px solid var(--bg-tertiary);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .filters {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            border: 1px solid var(--bg-tertiary);
+        }
+        
+        .filter-row {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .filter-group label {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+        
+        .filter-group select,
+        .filter-group input {
+            padding: 0.5rem;
+            border: 1px solid var(--bg-tertiary);
+            border-radius: var(--border-radius);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        
+        .tests-grid {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .test-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--bg-tertiary);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            transition: var(--transition);
+        }
+        
+        .test-card:hover {
+            border-color: var(--accent-color);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .test-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .test-code {
+            background: var(--accent-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .test-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .test-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .test-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .test-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            border-radius: var(--border-radius);
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+        
+        .btn-primary {
+            background: var(--accent-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+        
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--bg-quaternary);
+        }
+        
+        .btn-danger {
+            background: var(--error-color);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+        
+        .loading-spinner {
+            width: 2rem;
+            height: 2rem;
+            border: 3px solid var(--bg-tertiary);
+            border-top: 3px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .no-tests {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+        
+        .no-tests h3 {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .difficulty-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .difficulty-badge.beginner {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .difficulty-badge.intermediate {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .difficulty-badge.advanced {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="manager-container">
+        <div class="manager-header">
+            <h1>📊 Test Manager</h1>
+            <p>Manage and monitor all published tests on the platform</p>
+        </div>
+        
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-number" id="totalTests">-</div>
+                <div class="stat-label">Total Tests</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalCategories">-</div>
+                <div class="stat-label">Categories</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="recentTests">-</div>
+                <div class="stat-label">This Week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalQuestions">-</div>
+                <div class="stat-label">Total Questions</div>
+            </div>
+        </div>
+        
+        <div class="filters">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="categoryFilter">Category</label>
+                    <select id="categoryFilter">
+                        <option value="">All Categories</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="difficultyFilter">Difficulty</label>
+                    <select id="difficultyFilter">
+                        <option value="">All Difficulties</option>
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="searchFilter">Search</label>
+                    <input type="text" id="searchFilter" placeholder="Search tests...">
+                </div>
+            </div>
+        </div>
+        
+        <div id="testsContainer">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Loading tests...</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        class TestManager {
+            constructor() {
+                this.firebaseReader = window.firebaseTestReader;
+                this.tests = [];
+                this.filteredTests = [];
+                this.init();
+            }
+            
+            async init() {
+                try {
+                    // Initialize Firebase reader
+                    const initialized = await this.firebaseReader.initialize();
+                    if (!initialized) {
+                        this.showError('Failed to initialize database connection');
+                        return;
+                    }
+                    
+                    // Load all tests
+                    this.tests = await this.firebaseReader.loadAllTests();
+                    this.filteredTests = [...this.tests];
+                    
+                    // Update stats
+                    this.updateStats();
+                    
+                    // Setup filters
+                    this.setupFilters();
+                    
+                    // Display tests
+                    this.displayTests();
+                    
+                } catch (error) {
+                    console.error('Error initializing test manager:', error);
+                    this.showError('Failed to load tests: ' + error.message);
+                }
+            }
+            
+            updateStats() {
+                const totalTests = this.tests.length;
+                const categories = this.firebaseReader.getCategories().length;
+                const totalQuestions = this.tests.reduce((sum, test) => sum + test.questions.length, 0);
+                
+                // Calculate recent tests (this week)
+                const oneWeekAgo = new Date();
+                oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+                const recentTests = this.tests.filter(test => 
+                    new Date(test.createdAt) > oneWeekAgo
+                ).length;
+                
+                document.getElementById('totalTests').textContent = totalTests;
+                document.getElementById('totalCategories').textContent = categories;
+                document.getElementById('recentTests').textContent = recentTests;
+                document.getElementById('totalQuestions').textContent = totalQuestions;
+            }
+            
+            setupFilters() {
+                // Populate category filter
+                const categoryFilter = document.getElementById('categoryFilter');
+                const categories = this.firebaseReader.getCategories();
+                
+                categories.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category;
+                    option.textContent = this.getCategoryDisplayName(category);
+                    categoryFilter.appendChild(option);
+                });
+                
+                // Add event listeners
+                document.getElementById('categoryFilter').addEventListener('change', () => this.applyFilters());
+                document.getElementById('difficultyFilter').addEventListener('change', () => this.applyFilters());
+                document.getElementById('searchFilter').addEventListener('input', () => this.applyFilters());
+            }
+            
+            applyFilters() {
+                const categoryFilter = document.getElementById('categoryFilter').value;
+                const difficultyFilter = document.getElementById('difficultyFilter').value;
+                const searchFilter = document.getElementById('searchFilter').value.toLowerCase();
+                
+                this.filteredTests = this.tests.filter(test => {
+                    const matchesCategory = !categoryFilter || test.category === categoryFilter;
+                    const matchesDifficulty = !difficultyFilter || test.difficulty === difficultyFilter;
+                    const matchesSearch = !searchFilter || 
+                        test.title.toLowerCase().includes(searchFilter) ||
+                        test.description.toLowerCase().includes(searchFilter) ||
+                        test.testCode.toLowerCase().includes(searchFilter);
+                    
+                    return matchesCategory && matchesDifficulty && matchesSearch;
+                });
+                
+                this.displayTests();
+            }
+            
+            displayTests() {
+                const container = document.getElementById('testsContainer');
+                
+                if (this.filteredTests.length === 0) {
+                    container.innerHTML = `
+                        <div class="no-tests">
+                            <h3>No tests found</h3>
+                            <p>No tests match your current filters. Try adjusting your search criteria.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const testsHtml = this.filteredTests.map(test => this.generateTestCard(test)).join('');
+                container.innerHTML = `<div class="tests-grid">${testsHtml}</div>`;
+            }
+            
+            generateTestCard(test) {
+                const categoryName = this.getCategoryDisplayName(test.category);
+                const difficultyClass = test.difficulty;
+                const difficultyName = test.difficulty.charAt(0).toUpperCase() + test.difficulty.slice(1);
+                const createdAt = new Date(test.createdAt).toLocaleDateString();
+                
+                return `
+                    <div class="test-card">
+                        <div class="test-header">
+                            <div>
+                                <div class="test-title">${test.title}</div>
+                                <div class="test-code">${test.testCode}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="test-meta">
+                            <div class="test-meta-item">
+                                <span>📁</span>
+                                <span>${categoryName}</span>
+                            </div>
+                            <div class="test-meta-item">
+                                <span>❓</span>
+                                <span>${test.questions.length} questions</span>
+                            </div>
+                            <div class="test-meta-item">
+                                <span>⏱️</span>
+                                <span>${test.timeLimit} min</span>
+                            </div>
+                            <div class="test-meta-item">
+                                <span>📅</span>
+                                <span>${createdAt}</span>
+                            </div>
+                            <div class="test-meta-item">
+                                <span class="difficulty-badge ${difficultyClass}">${difficultyName}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="test-description">${test.description}</div>
+                        
+                        <div class="test-actions">
+                            <a href="dynamic-test.html?test=${test.testCode}" class="btn-sm btn-primary" target="_blank">
+                                👁️ View Test
+                            </a>
+                            <a href="test-creator.html" class="btn-sm btn-secondary">
+                                ✏️ Edit
+                            </a>
+                            <button class="btn-sm btn-danger" onclick="deleteTest('${test.id}', '${test.title}')">
+                                🗑️ Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            getCategoryDisplayName(category) {
+                const categoryMap = {
+                    'verbal-reasoning': '🔤 Verbal Reasoning',
+                    'numerical-reasoning': '📊 Numerical Reasoning',
+                    'situational-judgment': '🧠 Situational Judgment',
+                    'logical-reasoning': '🧩 Logical Reasoning',
+                    'diagrammatic-reasoning': '🔶 Diagrammatic Reasoning',
+                    'other': '📝 Other'
+                };
+                return categoryMap[category] || category;
+            }
+            
+            showError(message) {
+                document.getElementById('testsContainer').innerHTML = `
+                    <div class="no-tests">
+                        <h3>❌ Error</h3>
+                        <p>${message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Global function for deleting tests
+        async function deleteTest(testId, testTitle) {
+            if (!confirm(`Are you sure you want to delete "${testTitle}"? This action cannot be undone.`)) {
+                return;
+            }
+            
+            try {
+                // Import Firebase functions
+                const { doc, deleteDoc } = await import('https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js');
+                
+                // Delete the test
+                await deleteDoc(doc(window.firebaseTestReader.db, 'tests', testId));
+                
+                // Reload the page to refresh the list
+                location.reload();
+                
+            } catch (error) {
+                console.error('Failed to delete test:', error);
+                alert('Failed to delete test: ' + error.message);
+            }
+        }
+        
+        // Initialize the test manager when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new TestManager();
+        });
+    </script>
+</body>
+</html> 

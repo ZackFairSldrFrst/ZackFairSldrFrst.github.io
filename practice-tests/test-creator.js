@@ -550,6 +550,109 @@ class TestCreator {
         }
     }
     
+    async publishToSite() {
+        const testData = this.collectTestData();
+        
+        if (!testData.title || !testData.testCode || testData.questions.length === 0) {
+            alert('Please fill in all required fields and add at least one question before publishing.');
+            return;
+        }
+        
+        // Check if Firebase is available
+        if (!window.firebaseDb) {
+            alert('Firebase is not initialized. Please refresh the page and try again.');
+            return;
+        }
+        
+        // Show loading state
+        this.showPublishStatus('loading', 'Publishing to Site...', 'Please wait while we publish your test to the site.');
+        
+        try {
+            // Import Firebase functions
+            const { collection, addDoc, getDocs, query, where } = await import('https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js');
+            
+            // Check if test with this code already exists
+            const testsRef = collection(window.firebaseDb, 'tests');
+            const existingTestQuery = query(testsRef, where('testCode', '==', testData.testCode));
+            const existingTestSnapshot = await getDocs(existingTestQuery);
+            
+            if (!existingTestSnapshot.empty) {
+                this.showPublishStatus('error', 'Test Already Exists', `A test with code "${testData.testCode}" already exists. Please use a different test code.`);
+                return;
+            }
+            
+            // Prepare test data for Firebase
+            const firebaseTestData = {
+                title: testData.title,
+                category: testData.category,
+                difficulty: testData.difficulty,
+                timeLimit: testData.timeLimit,
+                testCode: testData.testCode,
+                description: testData.description,
+                questions: testData.questions.map(q => ({
+                    question: q.question,
+                    options: q.options.filter(opt => opt.trim() !== ''),
+                    correctAnswer: q.correctAnswer,
+                    explanation: q.explanation,
+                    type: q.type !== 'multiple-choice' ? q.type : undefined,
+                    passage: q.passage && q.passage.trim() !== '' ? q.passage : undefined,
+                    image: q.image && q.image.trim() !== '' ? q.image : undefined
+                })),
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                status: 'published',
+                author: 'Alfred', // You can make this dynamic later
+                version: '1.0'
+            };
+            
+            // Add test to Firebase
+            const docRef = await addDoc(collection(window.firebaseDb, 'tests'), firebaseTestData);
+            
+            // Show success message
+            this.showPublishStatus('success', 'Test Published Successfully!', 
+                `Your test "${testData.title}" has been published to the site.\n\nTest Code: ${testData.testCode}\nCategory: ${testData.category}\nDocument ID: ${docRef.id}\n\nYou can now access this test on the main site.`);
+            
+            // Clear the form after successful publish
+            setTimeout(() => {
+                if (confirm('Test published successfully! Would you like to start a new test?')) {
+                    this.startOver();
+                }
+            }, 3000);
+            
+        } catch (error) {
+            console.error('Publish failed:', error);
+            this.showPublishStatus('error', 'Publish Failed', 
+                `Failed to publish test: ${error.message}\n\nPlease check your internet connection and try again.`);
+        }
+    }
+    
+    showPublishStatus(type, title, message) {
+        const statusElement = document.getElementById('publishStatus');
+        const titleElement = document.getElementById('publishStatusTitle');
+        const messageElement = document.getElementById('publishStatusMessage');
+        
+        // Remove all status classes
+        statusElement.classList.remove('success', 'error', 'loading');
+        
+        // Add appropriate class and show
+        statusElement.classList.add(type);
+        statusElement.style.display = 'block';
+        
+        // Update content
+        titleElement.textContent = title;
+        messageElement.textContent = message;
+        
+        // Scroll to status
+        statusElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        
+        // Auto-hide success messages after 5 seconds
+        if (type === 'success') {
+            setTimeout(() => {
+                statusElement.style.display = 'none';
+            }, 5000);
+        }
+    }
+    
     generateTestHtml(testData) {
         return `<!DOCTYPE html>
 <html lang="en">
@@ -966,6 +1069,10 @@ function previewTest() {
 
 function exportTest() {
     testCreator.exportTest();
+}
+
+function publishToSite() {
+    testCreator.publishToSite();
 }
 
 function manualSave() {

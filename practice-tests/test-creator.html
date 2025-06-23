@@ -8,6 +8,36 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
+        import { getFirestore, collection, addDoc, updateDoc, doc, getDocs, query, where, orderBy } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+        
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBOK-IcRemZPwYoF5ig6NVFVM5XuWJ9X2k",
+            authDomain: "alfred-practice-tests.firebaseapp.com",
+            projectId: "alfred-practice-tests",
+            storageBucket: "alfred-practice-tests.firebasestorage.app",
+            messagingSenderId: "481648587020",
+            appId: "1:481648587020:web:5e90ce4638989928415929",
+            measurementId: "G-V7WDEW1QXK"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+        
+        // Make Firebase available globally
+        window.firebaseApp = app;
+        window.firebaseDb = db;
+        window.firebaseAnalytics = analytics;
+    </script>
+    
     <style>
         /* Creator-specific overrides and enhancements */
         .creator-container {
@@ -887,6 +917,70 @@
             margin: 15px 0;
             display: block;
         }
+        
+        /* Publish status styling */
+        .publish-status {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--bg-tertiary);
+            background: var(--bg-secondary);
+        }
+        
+        .publish-status.success {
+            border-color: var(--success-color);
+            background: rgba(40, 167, 69, 0.1);
+        }
+        
+        .publish-status.error {
+            border-color: var(--error-color);
+            background: rgba(220, 53, 69, 0.1);
+        }
+        
+        .publish-status.loading {
+            border-color: var(--accent-color);
+            background: rgba(0, 123, 255, 0.1);
+        }
+        
+        .publish-status h4 {
+            margin: 0 0 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .publish-status p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .btn.loading {
+            position: relative;
+            color: transparent;
+        }
+        
+        .btn.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -1037,6 +1131,14 @@
                         <button type="button" class="btn btn-success" onclick="exportTest()">
                             📤 Export Test Files
                         </button>
+                        <button type="button" class="btn btn-primary" onclick="publishToSite()">
+                            🌐 Publish to Site
+                        </button>
+                    </div>
+                    
+                    <div class="publish-status" id="publishStatus" style="display: none;">
+                        <h4 id="publishStatusTitle">Publishing...</h4>
+                        <p id="publishStatusMessage">Please wait while we publish your test to the site.</p>
                     </div>
                     
                     <div class="preview-section" id="previewSection">

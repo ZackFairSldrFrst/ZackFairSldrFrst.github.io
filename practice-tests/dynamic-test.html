@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Test... | Practice Tests Hub</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/firebase-reader.js"></script>
+    <script src="js/test-core.js"></script>
+    
+    <style>
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            text-align: center;
+        }
+        
+        .loading-spinner {
+            width: 3rem;
+            height: 3rem;
+            border: 4px solid var(--bg-tertiary);
+            border-top: 4px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            text-align: center;
+            color: var(--error-color);
+        }
+        
+        .error-container h1 {
+            margin-bottom: 1rem;
+        }
+        
+        .error-container p {
+            margin-bottom: 2rem;
+            max-width: 500px;
+        }
+        
+        .back-button {
+            background: var(--accent-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .back-button:hover {
+            background: var(--accent-hover);
+        }
+    </style>
+</head>
+<body>
+    <div id="loadingContainer" class="loading-container">
+        <div class="loading-spinner"></div>
+        <h2>Loading Test...</h2>
+        <p>Please wait while we load your test from the database.</p>
+    </div>
+    
+    <div id="errorContainer" class="error-container" style="display: none;">
+        <h1>❌ Test Not Found</h1>
+        <p>The test you're looking for doesn't exist or may have been removed. Please check the URL and try again.</p>
+        <a href="../index.html" class="back-button">← Back to Home</a>
+    </div>
+    
+    <div id="testContainer" style="display: none;">
+        <!-- Test content will be loaded here -->
+    </div>
+    
+    <script>
+        class DynamicTestLoader {
+            constructor() {
+                this.testCode = this.getTestCodeFromUrl();
+                this.firebaseReader = window.firebaseTestReader;
+                this.init();
+            }
+            
+            getTestCodeFromUrl() {
+                // Get test code from URL parameters
+                const urlParams = new URLSearchParams(window.location.search);
+                const testCode = urlParams.get('test');
+                
+                if (!testCode) {
+                    // Try to get from path
+                    const pathParts = window.location.pathname.split('/');
+                    const lastPart = pathParts[pathParts.length - 1];
+                    if (lastPart && lastPart !== 'dynamic-test.html') {
+                        return lastPart.replace('.html', '');
+                    }
+                }
+                
+                return testCode;
+            }
+            
+            async init() {
+                if (!this.testCode) {
+                    this.showError('No test code provided');
+                    return;
+                }
+                
+                try {
+                    // Initialize Firebase reader
+                    const initialized = await this.firebaseReader.initialize();
+                    if (!initialized) {
+                        this.showError('Failed to initialize database connection');
+                        return;
+                    }
+                    
+                    // Load test from Firebase
+                    const testData = await this.firebaseReader.getTestByCode(this.testCode);
+                    if (!testData) {
+                        this.showError(`Test with code "${this.testCode}" not found`);
+                        return;
+                    }
+                    
+                    // Load and display the test
+                    this.loadTest(testData);
+                    
+                } catch (error) {
+                    console.error('Error loading test:', error);
+                    this.showError('Failed to load test: ' + error.message);
+                }
+            }
+            
+            loadTest(testData) {
+                // Update page title
+                document.title = `${testData.title} | Practice Tests Hub`;
+                
+                // Generate test HTML
+                const testHtml = this.firebaseReader.generateTestHtmlFromFirebase(testData);
+                
+                // Create a temporary container to parse the HTML
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = testHtml;
+                
+                // Extract the body content
+                const bodyContent = tempDiv.querySelector('body').innerHTML;
+                
+                // Hide loading and show test
+                document.getElementById('loadingContainer').style.display = 'none';
+                document.getElementById('testContainer').style.display = 'block';
+                document.getElementById('testContainer').innerHTML = bodyContent;
+                
+                // Initialize the test
+                const testConfig = this.firebaseReader.convertToTestCoreFormat(testData);
+                const testCore = new TestCore(testConfig);
+                testCore.start();
+                
+                // Update URL to reflect the test code
+                const newUrl = new URL(window.location);
+                newUrl.searchParams.set('test', this.testCode);
+                window.history.replaceState({}, '', newUrl);
+            }
+            
+            showError(message) {
+                document.getElementById('loadingContainer').style.display = 'none';
+                document.getElementById('errorContainer').style.display = 'flex';
+                
+                const errorTitle = document.querySelector('#errorContainer h1');
+                const errorMessage = document.querySelector('#errorContainer p');
+                
+                errorTitle.textContent = '❌ Test Not Found';
+                errorMessage.textContent = message;
+            }
+        }
+        
+        // Initialize the dynamic test loader when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new DynamicTestLoader();
+        });
+    </script>
+</body>
+</html> 
