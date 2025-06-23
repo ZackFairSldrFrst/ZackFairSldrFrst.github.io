@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 // Split the Tab - Main Application
 class SplitTheTab {
+=======
+// SplitTab - Splitwise Alternative with Firebase Firestore
+class SplitTab {
+>>>>>>> parent of 2b35c9a (fixed name)
     constructor() {
         this.currentUser = null;
         this.userGroups = [];
@@ -954,6 +959,7 @@ function deleteExpense(expenseId) {
 }
 
 function showModal(modalId) {
+<<<<<<< HEAD
     console.log('Global showModal called with:', modalId);
     // Check if app is initialized
     if (window.splitTheTabApp) {
@@ -968,14 +974,67 @@ function showModal(modalId) {
         } else {
             console.error('Modal not found:', modalId);
         }
+=======
+    if (window.splitTab) {
+        window.splitTab.showModal(modalId);
+>>>>>>> parent of 2b35c9a (fixed name)
     }
 }
 
 function closeModal(modalId) {
+<<<<<<< HEAD
     console.log('Global closeModal called with:', modalId);
     // Check if app is initialized
     if (window.splitTheTabApp) {
         window.splitTheTabApp.closeModal(modalId);
+=======
+    if (window.splitTab) {
+        window.splitTab.hideModal(modalId);
+    }
+}
+
+function createGroup() {
+    if (window.splitTab) {
+        window.splitTab.createGroup();
+    }
+}
+
+function createExpense() {
+    if (window.splitTab) {
+        window.splitTab.createExpense();
+    }
+}
+
+function saveGroupEdit() {
+    if (window.splitTab) {
+        window.splitTab.saveGroupEdit();
+    }
+}
+
+function addMember() {
+    if (window.splitTab) {
+        window.splitTab.addMember();
+    }
+}
+
+function addEditMember() {
+    if (window.splitTab) {
+        window.splitTab.addEditMember();
+    }
+}
+
+function saveExpenseEdit() {
+    if (window.splitTab) {
+        window.splitTab.saveExpenseEdit();
+    }
+}
+
+// Initialize the app when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Check if Firebase is available
+    if (typeof firebase !== 'undefined') {
+        window.splitTab = new SplitTab();
+>>>>>>> parent of 2b35c9a (fixed name)
     } else {
         // Fallback: directly hide modal
         const modal = document.getElementById(modalId);
