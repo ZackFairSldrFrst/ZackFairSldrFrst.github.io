@@ -1042,6 +1042,212 @@ body::before {
     }
 }
 
+/* Settlements Styles */
+.settlements-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.settlement-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.card-subtitle {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.settlement-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-small);
+    padding: 1.5rem;
+    backdrop-filter: var(--glass-blur);
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.settlement-item:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+.settlement-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.settlement-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.settlement-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.settlement-details h4 {
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.settlement-description {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.settlement-amount {
+    font-size: 1.25rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-small);
+    background: var(--bg-glass);
+}
+
+.settlement-amount.debt {
+    color: var(--error-color);
+    background: rgba(255, 107, 107, 0.1);
+}
+
+.settlement-amount.credit {
+    color: var(--success-color);
+    background: rgba(67, 233, 123, 0.1);
+}
+
+.settlement-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.settlement-actions .btn {
+    flex: 1;
+    justify-content: center;
+}
+
+.group-balance-section {
+    margin-bottom: 2rem;
+}
+
+.group-balance-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: var(--bg-glass);
+    border-radius: var(--border-radius-small);
+    border: 1px solid var(--border-color);
+}
+
+.group-balance-header h4 {
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.group-balance-total {
+    margin-left: auto;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-small);
+    background: var(--bg-card);
+}
+
+.group-balance-total.positive {
+    color: var(--success-color);
+}
+
+.group-balance-total.negative {
+    color: var(--error-color);
+}
+
+.group-balance-total.neutral {
+    color: var(--text-muted);
+}
+
+.balance-breakdown {
+    display: grid;
+    gap: 1rem;
+}
+
+.balance-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-small);
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.balance-item-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.balance-item-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--primary-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.balance-item-details span {
+    display: block;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.balance-item-amount {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.balance-item-amount.positive {
+    color: var(--success-color);
+}
+
+.balance-item-amount.negative {
+    color: var(--error-color);
+}
+
+.balance-item-amount.neutral {
+    color: var(--text-muted);
+}
+
 /* Expense Actions */
 .expense-actions {
     display: flex;

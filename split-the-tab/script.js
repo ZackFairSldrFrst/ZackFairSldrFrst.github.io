@@ -19,6 +19,7 @@ class SplitTab {
         this.renderGroups();
         this.renderExpenses();
         this.updateSettlements();
+        this.renderSettlements();
         this.updateUserSelector();
         this.bindEvents();
     }
@@ -53,6 +54,7 @@ class SplitTab {
             }));
             this.updateDashboard();
             this.renderGroups();
+            this.renderSettlements();
             this.updateExpenseFormGroups();
             this.updateUserSelector();
         });
@@ -66,6 +68,7 @@ class SplitTab {
             this.updateDashboard();
             this.renderExpenses();
             this.updateSettlements();
+            this.renderSettlements();
         });
     }
 
@@ -1140,8 +1143,319 @@ class SplitTab {
     }
 
     updateSettlements() {
-        // This method is kept for compatibility but simplified
-        // Settlements are now shown in personal balances
+        // Update settlement summary statistics
+        const settlements = this.calculateOptimalSettlements();
+        const totalOutstanding = settlements.reduce((sum, settlement) => sum + settlement.amount, 0);
+        
+        // Debug logging
+        console.log('=== SETTLEMENT CALCULATION DEBUG ===');
+        console.log('All user balances:', this.calculateAllUserBalances());
+        console.log('Calculated settlements:', settlements);
+        console.log('Total outstanding:', totalOutstanding);
+        console.log('=== END SETTLEMENT DEBUG ===');
+        
+        const totalDebtsEl = document.getElementById('totalDebts');
+        const activeDebtsEl = document.getElementById('activeDebts');
+        const settledDebtsEl = document.getElementById('settledDebts');
+        
+        if (totalDebtsEl) totalDebtsEl.textContent = this.formatCurrency(totalOutstanding);
+        if (activeDebtsEl) activeDebtsEl.textContent = settlements.length.toString();
+        if (settledDebtsEl) settledDebtsEl.textContent = '0'; // Can be enhanced later
+    }
+
+    calculateAllUserBalances() {
+        // Get all unique users across all groups
+        const allUsers = new Set();
+        this.groups.forEach(group => {
+            if (group.members) {
+                group.members.forEach(member => allUsers.add(member));
+            }
+        });
+
+        const userBalances = new Map();
+
+        // Calculate balance for each user across all groups
+        Array.from(allUsers).forEach(user => {
+            let totalPaid = 0;
+            let totalOwed = 0;
+
+            this.expenses.forEach(expense => {
+                // Find the group for this expense
+                const group = this.groups.find(g => g.id === expense.groupId);
+                if (!group || !group.members.includes(user)) {
+                    return; // User not in this group
+                }
+
+                // How much did this user pay for this expense?
+                if (expense.paidBy === user) {
+                    totalPaid += expense.amount;
+                }
+
+                // How much does this user owe for this expense?
+                let userShare = 0;
+                if (expense.splits && expense.splits[user] !== undefined) {
+                    // User was in the original split
+                    userShare = expense.splits[user];
+                } else if (expense.splitEqually !== false) {
+                    // Split equally among current group members
+                    userShare = expense.amount / group.members.length;
+                }
+
+                totalOwed += userShare;
+            });
+
+            const netBalance = totalPaid - totalOwed;
+            userBalances.set(user, netBalance);
+        });
+
+        return userBalances;
+    }
+
+    calculateOptimalSettlements() {
+        const allBalances = this.calculateAllUserBalances();
+
+        // Separate creditors and debtors
+        const creditors = []; // people who are owed money
+        const debtors = [];   // people who owe money
+        
+        allBalances.forEach((balance, person) => {
+            if (balance > 0.01) { // Small threshold to avoid floating point issues
+                creditors.push({ person, amount: balance });
+            } else if (balance < -0.01) {
+                debtors.push({ person, amount: Math.abs(balance) });
+            }
+        });
+
+        // Calculate optimal settlements
+        const settlements = [];
+        
+        // Sort by amount for better optimization
+        creditors.sort((a, b) => b.amount - a.amount);
+        debtors.sort((a, b) => b.amount - a.amount);
+        
+        let i = 0, j = 0;
+        while (i < creditors.length && j < debtors.length) {
+            const creditor = creditors[i];
+            const debtor = debtors[j];
+            
+            const settleAmount = Math.min(creditor.amount, debtor.amount);
+            
+            if (settleAmount > 0.01) { // Only create settlement if meaningful amount
+                settlements.push({
+                    from: debtor.person,
+                    to: creditor.person,
+                    amount: settleAmount
+                });
+            }
+            
+            creditor.amount -= settleAmount;
+            debtor.amount -= settleAmount;
+            
+            if (creditor.amount < 0.01) i++;
+            if (debtor.amount < 0.01) j++;
+        }
+        
+        return settlements;
+    }
+
+    renderSettlements() {
+        const settlements = this.calculateOptimalSettlements();
+        const optimizedSettlementsContainer = document.getElementById('optimizedSettlements');
+        const detailedBalancesContainer = document.getElementById('detailedBalances');
+        
+        if (!optimizedSettlementsContainer || !detailedBalancesContainer) return;
+        
+        // Render optimal settlements
+        if (settlements.length === 0) {
+            optimizedSettlementsContainer.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-handshake"></i>
+                    <p>All settled up!</p>
+                    <div class="text-muted">No outstanding debts between group members</div>
+                </div>
+            `;
+        } else {
+            const settlementsHTML = settlements.map(settlement => `
+                <div class="settlement-item">
+                    <div class="settlement-header">
+                        <div class="settlement-info">
+                            <div class="settlement-avatar">${settlement.from.charAt(0).toUpperCase()}</div>
+                            <div class="settlement-details">
+                                <h4>${settlement.from} → ${settlement.to}</h4>
+                                <div class="settlement-description">Optimal settlement</div>
+                            </div>
+                        </div>
+                        <div class="settlement-amount debt">
+                            ${this.formatCurrency(settlement.amount)}
+                        </div>
+                    </div>
+                    <div class="settlement-actions">
+                        <button class="btn btn-primary" onclick="window.splitTab.recordSettlement('${settlement.from}', '${settlement.to}', ${settlement.amount})">
+                            <i class="fas fa-check"></i>
+                            Mark as Settled
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            optimizedSettlementsContainer.innerHTML = settlementsHTML;
+        }
+        
+        // Render detailed balances by group
+        if (this.groups.length === 0) {
+            detailedBalancesContainer.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-chart-line"></i>
+                    <p>No group balances</p>
+                    <div class="text-muted">Join a group and add expenses to see balances</div>
+                </div>
+            `;
+        } else {
+            const groupBalancesHTML = this.groups.map(group => {
+                const groupExpenses = this.expenses.filter(expense => expense.groupId === group.id);
+                const groupTotal = groupExpenses.reduce((sum, expense) => sum + expense.amount, 0);
+                
+                const memberBalances = group.members.map(member => {
+                    // Calculate balance for this member in this specific group
+                    let totalPaid = 0;
+                    let totalOwed = 0;
+
+                    groupExpenses.forEach(expense => {
+                        // How much did this member pay?
+                        if (expense.paidBy === member) {
+                            totalPaid += expense.amount;
+                        }
+
+                        // How much does this member owe?
+                        let memberShare = 0;
+                        if (expense.splits && expense.splits[member] !== undefined) {
+                            memberShare = expense.splits[member];
+                        } else if (expense.splitEqually !== false) {
+                            memberShare = expense.amount / group.members.length;
+                        }
+                        totalOwed += memberShare;
+                    });
+
+                    return {
+                        member,
+                        balance: totalPaid - totalOwed
+                    };
+                });
+                
+                const balanceItemsHTML = memberBalances.map(item => {
+                    const balanceClass = item.balance > 0.01 ? 'positive' : 
+                                       item.balance < -0.01 ? 'negative' : 'neutral';
+                    const balanceText = item.balance > 0.01 ? `is owed ${this.formatCurrency(item.balance)}` :
+                                      item.balance < -0.01 ? `owes ${this.formatCurrency(Math.abs(item.balance))}` :
+                                      'is settled up';
+                    
+                    return `
+                        <div class="balance-item">
+                            <div class="balance-item-info">
+                                <div class="balance-item-avatar">${item.member.charAt(0).toUpperCase()}</div>
+                                <div class="balance-item-details">
+                                    <span>${item.member}</span>
+                                </div>
+                            </div>
+                            <div class="balance-item-amount ${balanceClass}">
+                                ${balanceText}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                return `
+                    <div class="group-balance-section">
+                        <div class="group-balance-header">
+                            <i class="fas fa-users"></i>
+                            <h4>${group.name}</h4>
+                            <div class="group-balance-total neutral">
+                                Total: ${this.formatCurrency(groupTotal)}
+                            </div>
+                        </div>
+                        <div class="balance-breakdown">
+                            ${balanceItemsHTML}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            detailedBalancesContainer.innerHTML = groupBalancesHTML;
+        }
+    }
+
+    calculatePersonalBalancesForGroup(user, groupId) {
+        console.log(`Calculating balances for ${user} in group ${groupId}`);
+        
+        // Filter expenses for this specific group
+        const groupExpenses = this.expenses.filter(expense => expense.groupId === groupId);
+        console.log(`Found ${groupExpenses.length} expenses for group ${groupId}`);
+        
+        let totalPaidByUser = 0;
+        let totalOwedByUser = 0;
+
+        groupExpenses.forEach(expense => {
+            console.log(`Processing expense: ${expense.description}, Amount: $${expense.amount}`);
+            
+            // 1. How much did this user pay for this expense?
+            if (expense.paidBy === user) {
+                totalPaidByUser += expense.amount;
+                console.log(`User paid for this expense: $${expense.amount}`);
+                console.log(`Total paid by user so far: $${totalPaidByUser}`);
+            }
+
+            // 2. How much does this user owe for this expense?
+            let userShare = 0;
+            if (expense.splitType === 'equal') {
+                // Equal split among all members
+                const group = this.groups.find(g => g.id === expense.groupId);
+                if (group && group.members.includes(user)) {
+                    userShare = expense.amount / group.members.length;
+                    console.log(`Equal split: $${expense.amount} / ${group.members.length} members = $${userShare}`);
+                }
+            } else if (expense.splitType === 'custom' && expense.splits) {
+                // Custom split - if user wasn't in original split, they owe 0
+                userShare = expense.splits[user] || 0;
+                console.log(`Custom split: User's share = $${userShare}`);
+            }
+
+            totalOwedByUser += userShare;
+            console.log(`User owes for this expense: $${userShare}`);
+            console.log(`Total owed by user so far: $${totalOwedByUser}`);
+        });
+
+        const netBalance = totalPaidByUser - totalOwedByUser;
+        
+        console.log(`Final calculation for ${user} in group ${groupId}:`);
+        console.log(`Total paid by user: $${totalPaidByUser}`);
+        console.log(`Total owed by user: $${totalOwedByUser}`);
+        console.log(`Net balance: $${totalPaidByUser} - $${totalOwedByUser} = $${netBalance}`);
+
+        return {
+            user: user,
+            groupId: groupId,
+            totalPaid: totalPaidByUser,
+            totalOwed: totalOwedByUser,
+            net: netBalance,
+            owed: netBalance > 0 ? netBalance : 0,    // How much they're owed
+            owes: netBalance < 0 ? Math.abs(netBalance) : 0,  // How much they owe
+        };
+    }
+
+    recordSettlement(from, to, amount) {
+        // This would typically record the settlement in the database
+        // For now, we'll just show a notification
+        this.showNotification(`Settlement recorded: ${from} paid ${this.formatCurrency(amount)} to ${to}`, 'success');
+        
+        // In a real implementation, you would:
+        // 1. Create a settlement record in the database
+        // 2. Update the balances
+        // 3. Refresh the settlements view
+        
+        // For now, we'll just refresh the settlements
+        setTimeout(() => {
+            this.renderSettlements();
+        }, 1000);
     }
 
     updateUserSelector() {
