@@ -123,24 +123,86 @@
                 try {
                     // Initialize Firebase reader
                     const initialized = await this.firebaseReader.initialize();
-                    if (!initialized) {
-                        this.showError('Failed to initialize database connection');
+                    
+                    // Try to load test from Firebase first
+                    if (initialized) {
+                        const testData = await this.firebaseReader.getTestByCode(this.testCode);
+                        if (testData) {
+                            this.loadTest(testData);
+                            return;
+                        }
+                    }
+                    
+                    // If not found in Firebase, try to load as static test
+                    console.log(`Test ${this.testCode} not found in Firebase, checking static tests...`);
+                    const staticTestData = await this.loadStaticTest(this.testCode);
+                    if (staticTestData) {
+                        this.loadTest(staticTestData);
                         return;
                     }
                     
-                    // Load test from Firebase
-                    const testData = await this.firebaseReader.getTestByCode(this.testCode);
-                    if (!testData) {
-                        this.showError(`Test with code "${this.testCode}" not found`);
-                        return;
-                    }
-                    
-                    // Load and display the test
-                    this.loadTest(testData);
+                    // If still not found, show error
+                    this.showError(`Test with code "${this.testCode}" not found in either Firebase or static tests`);
                     
                 } catch (error) {
                     console.error('Error loading test:', error);
                     this.showError('Failed to load test: ' + error.message);
+                }
+            }
+            
+            async loadStaticTest(testCode) {
+                try {
+                    // Determine category from test code
+                    const categoryMap = {
+                        'vc': { folder: 'verbal-comprehension', displayName: 'Verbal Comprehension' },
+                        'sj': { folder: 'situational-judgment', displayName: 'Situational Judgment' }
+                    };
+                    
+                    const prefix = testCode.split('-')[0];
+                    const category = categoryMap[prefix];
+                    
+                    if (!category) {
+                        console.warn(`Unknown test prefix: ${prefix}`);
+                        return null;
+                    }
+                    
+                    // Try to load the static test
+                    const scriptUrl = `./${category.folder}/${testCode}/script.js`;
+                    const response = await fetch(scriptUrl);
+                    
+                    if (!response.ok) {
+                        console.warn(`Static test not found: ${scriptUrl}`);
+                        return null;
+                    }
+                    
+                    const scriptContent = await response.text();
+                    const testConfig = this.firebaseReader.extractTestConfigFromScript(scriptContent);
+                    
+                    if (!testConfig) {
+                        console.warn(`Failed to extract test config from ${scriptUrl}`);
+                        return null;
+                    }
+                    
+                    // Create standardized test data
+                    const testData = {
+                        id: `static-${testCode}`,
+                        title: testConfig.title || `${testCode.toUpperCase()}: Practice Test`,
+                        category: category.folder,
+                        difficulty: 'intermediate',
+                        timeLimit: this.parseTimeLimit(testConfig.timeLimit),
+                        testCode: testCode,
+                        description: testConfig.description || `Static test from ${category.displayName}`,
+                        questions: testConfig.questions || [],
+                        source: 'static',
+                        url: `${category.folder}/${testCode}/index.html`
+                    };
+                    
+                    console.log(`Loaded static test: ${testData.title}`);
+                    return testData;
+                    
+                } catch (error) {
+                    console.warn(`Failed to load static test ${testCode}:`, error);
+                    return null;
                 }
             }
             
@@ -183,6 +245,20 @@
                 
                 errorTitle.textContent = '❌ Test Not Found';
                 errorMessage.textContent = message;
+            }
+            
+            parseTimeLimit(timeLimit) {
+                if (typeof timeLimit === 'number') {
+                    // If it's already a number, assume it's in minutes
+                    return timeLimit;
+                } else if (typeof timeLimit === 'string') {
+                    // If it's a string, try to parse it as minutes
+                    const minutes = parseInt(timeLimit, 10);
+                    return isNaN(minutes) ? 20 : minutes; // Default to 20 minutes if parsing fails
+                } else {
+                    // Default to 20 minutes if no valid time limit
+                    return 20;
+                }
             }
         }
         

@@ -8,6 +8,7 @@ class FirebaseTestReader {
         this.categories = new Set();
         this.isInitialized = false;
         this.lastError = null;
+        this.staticTests = [];
     }
 
     async initialize() {
@@ -40,7 +41,187 @@ class FirebaseTestReader {
         }
     }
 
+    // Scan for static tests in existing folders
+    async scanStaticTests() {
+        console.log('Scanning for static tests...');
+        this.staticTests = [];
+        
+        // Define the test categories and their folder structures
+        const testCategories = [
+            {
+                category: 'verbal-comprehension',
+                folder: 'verbal-comprehension',
+                prefix: 'vc',
+                displayName: '🔤 Verbal Comprehension'
+            },
+            {
+                category: 'situational-judgment',
+                folder: 'situational-judgment',
+                prefix: 'sj',
+                displayName: '🧠 Situational Judgment'
+            }
+        ];
+        
+        for (const category of testCategories) {
+            try {
+                const tests = await this.scanCategoryFolder(category);
+                this.staticTests.push(...tests);
+                console.log(`Found ${tests.length} static tests in ${category.category}`);
+            } catch (error) {
+                console.warn(`Failed to scan ${category.category}:`, error);
+            }
+        }
+        
+        console.log(`Total static tests found: ${this.staticTests.length}`);
+        return this.staticTests;
+    }
+    
+    async scanCategoryFolder(categoryInfo) {
+        const tests = [];
+        
+        // Try to fetch the folder structure by making a request to the category folder
+        try {
+            const response = await fetch(`./${categoryInfo.folder}/`);
+            if (response.ok) {
+                const html = await response.text();
+                
+                // Extract test folders from the HTML (this is a simplified approach)
+                // Look for patterns like vc-01, vc-02, sj-01, etc.
+                const testFolderPattern = new RegExp(`${categoryInfo.prefix}-\\d+`, 'g');
+                const matches = html.match(testFolderPattern);
+                
+                if (matches) {
+                    for (const testCode of matches) {
+                        try {
+                            const testData = await this.loadStaticTest(categoryInfo, testCode);
+                            if (testData) {
+                                tests.push(testData);
+                            }
+                        } catch (error) {
+                            console.warn(`Failed to load static test ${testCode}:`, error);
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.warn(`Failed to scan ${categoryInfo.folder}:`, error);
+        }
+        
+        return tests;
+    }
+    
+    async loadStaticTest(categoryInfo, testCode) {
+        try {
+            // Try to load the script.js file which contains the test configuration
+            const scriptUrl = `./${categoryInfo.folder}/${testCode}/script.js`;
+            const response = await fetch(scriptUrl);
+            
+            if (!response.ok) {
+                return null;
+            }
+            
+            const scriptContent = await response.text();
+            
+            // Extract test configuration from the script
+            const testConfig = this.extractTestConfigFromScript(scriptContent);
+            
+            if (!testConfig) {
+                return null;
+            }
+            
+            // Create a standardized test object
+            const testData = {
+                id: `static-${testCode}`,
+                title: testConfig.title || `${testCode.toUpperCase()}: Practice Test`,
+                category: categoryInfo.category,
+                categoryDisplayName: categoryInfo.displayName,
+                difficulty: 'intermediate', // Default for static tests
+                timeLimit: this.parseTimeLimit(testConfig.timeLimit),
+                testCode: testCode,
+                description: testConfig.description || `Static test from ${categoryInfo.displayName}`,
+                questions: testConfig.questions || [],
+                createdAt: new Date().toISOString(), // Use current date for static tests
+                updatedAt: new Date().toISOString(),
+                status: 'published',
+                author: 'System',
+                version: '1.0',
+                source: 'static',
+                url: `${categoryInfo.folder}/${testCode}/index.html`
+            };
+            
+            return testData;
+            
+        } catch (error) {
+            console.warn(`Failed to load static test ${testCode}:`, error);
+            return null;
+        }
+    }
+    
+    extractTestConfigFromScript(scriptContent) {
+        try {
+            // Look for testConfig or testData object in the script
+            const testConfigMatch = scriptContent.match(/const\s+(testConfig|testData)\s*=\s*({[\s\S]*?});/);
+            
+            if (testConfigMatch) {
+                const configString = testConfigMatch[2]; // Use the second group (the object content)
+                // Clean up the config string and evaluate it
+                const cleanConfig = configString
+                    .replace(/(\w+):/g, '"$1":') // Add quotes to property names
+                    .replace(/'/g, '"') // Replace single quotes with double quotes
+                    .replace(/,(\s*})/g, '$1'); // Remove trailing commas
+                
+                try {
+                    const testConfig = JSON.parse(cleanConfig);
+                    return testConfig;
+                } catch (parseError) {
+                    console.warn('Failed to parse test config:', parseError);
+                    console.warn('Config string:', cleanConfig);
+                    return null;
+                }
+            }
+            
+            return null;
+        } catch (error) {
+            console.warn('Failed to extract test config:', error);
+            return null;
+        }
+    }
+
     async loadAllTests() {
+        const allTests = [];
+        
+        // Load static tests first
+        console.log('Loading static tests...');
+        const staticTests = await this.scanStaticTests();
+        allTests.push(...staticTests);
+        
+        // Load Firebase tests if available
+        if (this.isInitialized) {
+            console.log('Loading Firebase tests...');
+            try {
+                const firebaseTests = await this.loadFirebaseTests();
+                allTests.push(...firebaseTests);
+            } catch (error) {
+                console.warn('Failed to load Firebase tests:', error);
+            }
+        }
+        
+        // Sort all tests by creation date (newest first)
+        allTests.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        
+        this.tests = allTests;
+        this.categories.clear();
+        
+        // Build categories set
+        this.tests.forEach(test => {
+            this.categories.add(test.category);
+        });
+        
+        console.log(`Total tests loaded: ${this.tests.length} (${staticTests.length} static, ${allTests.length - staticTests.length} Firebase)`);
+        return this.tests;
+    }
+    
+    async loadFirebaseTests() {
         if (!this.isInitialized) {
             this.lastError = 'Firebase Test Reader not initialized';
             console.error('Firebase Test Reader not initialized');
@@ -72,19 +253,18 @@ class FirebaseTestReader {
             );
             
             const querySnapshot = await getDocs(publishedTestsQuery);
-            this.tests = [];
-            this.categories.clear();
+            const firebaseTests = [];
             
             querySnapshot.forEach((doc) => {
                 const testData = doc.data();
                 testData.id = doc.id; // Add document ID
-                this.tests.push(testData);
-                this.categories.add(testData.category);
-                console.log(`Loaded test: ${testData.title} (${testData.testCode})`);
+                testData.source = 'firebase'; // Mark as Firebase test
+                firebaseTests.push(testData);
+                console.log(`Loaded Firebase test: ${testData.title} (${testData.testCode})`);
             });
             
-            console.log(`Successfully loaded ${this.tests.length} published tests`);
-            return this.tests;
+            console.log(`Successfully loaded ${firebaseTests.length} Firebase tests`);
+            return firebaseTests;
         } catch (error) {
             this.lastError = error.message;
             console.error('Failed to load tests from Firebase:', error);
@@ -253,6 +433,20 @@ class FirebaseTestReader {
     </script>
 </body>
 </html>`;
+    }
+
+    parseTimeLimit(timeLimit) {
+        if (typeof timeLimit === 'number') {
+            // If it's already a number, assume it's in minutes
+            return timeLimit;
+        } else if (typeof timeLimit === 'string') {
+            // If it's a string, try to parse it as minutes
+            const minutes = parseInt(timeLimit, 10);
+            return isNaN(minutes) ? 20 : minutes; // Default to 20 minutes if parsing fails
+        } else {
+            // Default to 20 minutes if no valid time limit
+            return 20;
+        }
     }
 }
 

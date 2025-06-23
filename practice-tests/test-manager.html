@@ -497,10 +497,30 @@
                     new Date(test.createdAt) > oneWeekAgo
                 ).length;
                 
+                // Count static vs Firebase tests
+                const staticTests = this.tests.filter(test => test.source === 'static').length;
+                const firebaseTests = this.tests.filter(test => test.source === 'firebase').length;
+                
                 document.getElementById('totalTests').textContent = totalTests;
                 document.getElementById('totalCategories').textContent = categories;
                 document.getElementById('recentTests').textContent = recentTests;
                 document.getElementById('totalQuestions').textContent = totalQuestions;
+                
+                // Add source breakdown to the stats
+                const statsGrid = document.getElementById('statsGrid');
+                const sourceStats = statsGrid.querySelector('.source-stats') || document.createElement('div');
+                sourceStats.className = 'stat-card source-stats';
+                sourceStats.innerHTML = `
+                    <div class="stat-number" style="font-size: 1.5rem;">
+                        <span style="color: #28a745;">${staticTests}</span> / <span style="color: #007bff;">${firebaseTests}</span>
+                    </div>
+                    <div class="stat-label">Static / Firebase</div>
+                `;
+                
+                // Add source stats if not already present
+                if (!statsGrid.querySelector('.source-stats')) {
+                    statsGrid.appendChild(sourceStats);
+                }
             }
             
             setupFilters() {
@@ -562,6 +582,8 @@
                 const difficultyClass = test.difficulty;
                 const difficultyName = test.difficulty.charAt(0).toUpperCase() + test.difficulty.slice(1);
                 const createdAt = new Date(test.createdAt).toLocaleDateString();
+                const sourceBadge = test.source === 'static' ? '📁 Static' : '☁️ Firebase';
+                const sourceColor = test.source === 'static' ? '#28a745' : '#007bff';
                 
                 return `
                     <div class="test-card">
@@ -569,6 +591,9 @@
                             <div>
                                 <div class="test-title">${test.title}</div>
                                 <div class="test-code">${test.testCode}</div>
+                            </div>
+                            <div class="source-badge" style="background: ${sourceColor}; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 500;">
+                                ${sourceBadge}
                             </div>
                         </div>
                         
@@ -597,15 +622,38 @@
                         <div class="test-description">${test.description}</div>
                         
                         <div class="test-actions">
-                            <a href="dynamic-test.html?test=${test.testCode}" class="btn-sm btn-primary" target="_blank">
-                                👁️ View Test
-                            </a>
-                            <a href="test-creator.html" class="btn-sm btn-secondary" onclick="editTest('${test.testCode}')">
-                                ✏️ Edit Test
-                            </a>
-                            <button class="btn-sm btn-danger" onclick="deleteTest('${test.id}', '${test.title}')">
-                                🗑️ Delete
-                            </button>
+                            ${test.source === 'static' ? 
+                                `<a href="${test.url}" class="btn-sm btn-primary" target="_blank">
+                                    👁️ View Test
+                                </a>` :
+                                `<a href="dynamic-test.html?test=${test.testCode}" class="btn-sm btn-primary" target="_blank">
+                                    👁️ View Test
+                                </a>`
+                            }
+                            ${test.source === 'firebase' ? 
+                                `<a href="test-creator.html" class="btn-sm btn-secondary" onclick="editTest('${test.testCode}')">
+                                    ✏️ Edit Test
+                                </a>` :
+                                `<span class="btn-sm btn-secondary" style="opacity: 0.5; cursor: not-allowed;">
+                                    ✏️ Edit (Static)
+                                </span>`
+                            }
+                            ${test.source === 'firebase' ? 
+                                `<button class="btn-sm btn-danger" onclick="deleteTest('${test.id}', '${test.title}')">
+                                    🗑️ Delete
+                                </button>` :
+                                `<span class="btn-sm btn-danger" style="opacity: 0.5; cursor: not-allowed;">
+                                    🗑️ Delete (Static)
+                                </span>`
+                            }
+                            ${test.source === 'firebase' ? 
+                                `<button class="btn-sm btn-info" onclick="exportToStatic('${test.id}', '${test.testCode}', '${test.title}')">
+                                    📄 Export JSON
+                                </button>` :
+                                `<span class="btn-sm btn-info" style="opacity: 0.5; cursor: not-allowed;">
+                                    📄 Export (Static)
+                                </span>`
+                            }
                         </div>
                     </div>
                 `;
@@ -659,27 +707,58 @@
                     </div>
                 `;
             }
-        }
-        
-        // Global function for deleting tests
-        async function deleteTest(testId, testTitle) {
-            if (!confirm(`Are you sure you want to delete "${testTitle}"? This action cannot be undone.`)) {
-                return;
+
+            async deleteTest(testId, testTitle) {
+                if (!confirm(`Are you sure you want to delete "${testTitle}"? This action cannot be undone.`)) {
+                    return;
+                }
+
+                try {
+                    await this.firebaseReader.deleteTest(testId);
+                    this.showNotification('Test deleted successfully', 'success');
+                    this.loadTests();
+                } catch (error) {
+                    console.error('Failed to delete test:', error);
+                    this.showNotification('Failed to delete test: ' + error.message, 'error');
+                }
             }
-            
-            try {
-                // Import Firebase functions
-                const { doc, deleteDoc } = await import('https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js');
-                
-                // Delete the test
-                await deleteDoc(doc(window.firebaseTestReader.db, 'tests', testId));
-                
-                // Reload the page to refresh the list
-                location.reload();
-                
-            } catch (error) {
-                console.error('Failed to delete test:', error);
-                alert('Failed to delete test: ' + error.message);
+
+            async exportToStatic(testId, testCode, testTitle) {
+                try {
+                    // Find the test data
+                    const test = this.tests.find(t => t.id === testId);
+                    if (!test) {
+                        this.showNotification('Test not found', 'error');
+                        return;
+                    }
+
+                    // For now, export as JSON data
+                    const testData = {
+                        title: test.title,
+                        description: test.description,
+                        timeLimit: test.timeLimit,
+                        questions: test.questions,
+                        testCode: test.testCode,
+                        category: test.category
+                    };
+                    
+                    // Create download for JSON data
+                    const jsonContent = JSON.stringify(testData, null, 2);
+                    const blob = new Blob([jsonContent], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${testCode}-data.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    
+                    this.showNotification(`Test data for "${testTitle}" exported as JSON!`, 'success');
+                } catch (error) {
+                    console.error('Failed to export test:', error);
+                    this.showNotification('Failed to export test: ' + error.message, 'error');
+                }
             }
         }
         
@@ -693,9 +772,17 @@
             window.location.href = 'test-creator.html';
         }
         
+        // Global function for exporting tests to static files
+        function exportToStatic(testId, testCode, testTitle) {
+            // Get the test manager instance and call the export method
+            if (window.testManager) {
+                window.testManager.exportToStatic(testId, testCode, testTitle);
+            }
+        }
+        
         // Initialize the test manager when the page loads
         document.addEventListener('DOMContentLoaded', () => {
-            new TestManager();
+            window.testManager = new TestManager();
         });
     </script>
 </body>
