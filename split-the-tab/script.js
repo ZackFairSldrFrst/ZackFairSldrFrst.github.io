@@ -11,6 +11,12 @@ class SplitTheTab {
     }
 
     async init() {
+        // Set Firebase persistence to LOCAL (persists across browser sessions)
+        await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+        
+        // Check if user was previously logged in
+        this.checkPreviousLoginState();
+        
         // Set up authentication state listener
         auth.onAuthStateChanged((user) => {
             if (user) {
@@ -22,12 +28,66 @@ class SplitTheTab {
             }
         });
 
+        // Check for automatic login
+        await this.checkAutoLogin();
+
         // Set up event listeners
         this.setupEventListeners();
     }
 
+    checkPreviousLoginState() {
+        // Check localStorage for previous login
+        const storedUser = localStorage.getItem('splitTheTab_user');
+        if (storedUser) {
+            try {
+                const userData = JSON.parse(storedUser);
+                console.log('Found previous login for:', userData.email);
+                
+                // Show loading state
+                this.showNotification('Restoring your session...', 'info');
+                
+                // The Firebase auth state listener will handle the actual login
+                // This is just for UI feedback
+            } catch (error) {
+                console.error('Error parsing stored user data:', error);
+                localStorage.removeItem('splitTheTab_user');
+            }
+        }
+    }
+
+    // Function to check if user should be automatically logged in
+    async checkAutoLogin() {
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+            console.log('User already authenticated:', currentUser.email);
+            return;
+        }
+
+        // Check if there's a stored session
+        const storedUser = localStorage.getItem('splitTheTab_user');
+        if (storedUser) {
+            try {
+                const userData = JSON.parse(storedUser);
+                console.log('Attempting to restore session for:', userData.email);
+                
+                // Firebase will automatically restore the session if it's still valid
+                // We just need to wait for the auth state to change
+            } catch (error) {
+                console.error('Error parsing stored user data:', error);
+                localStorage.removeItem('splitTheTab_user');
+            }
+        }
+    }
+
     onUserLogin() {
         console.log('User logged in:', this.currentUser.email);
+        
+        // Store user info in localStorage as backup
+        localStorage.setItem('splitTheTab_user', JSON.stringify({
+            uid: this.currentUser.uid,
+            email: this.currentUser.email,
+            lastLogin: new Date().toISOString()
+        }));
         
         // Update UI
         document.getElementById('notLoggedIn').style.display = 'none';
@@ -41,10 +101,25 @@ class SplitTheTab {
         
         // Load user data
         this.loadUserData();
+        
+        // Show welcome back message if returning user
+        const lastLogin = localStorage.getItem('splitTheTab_lastLogin');
+        if (lastLogin) {
+            this.showNotification('Welcome back!', 'success');
+        } else {
+            this.showNotification('Welcome to Split the Tab!', 'success');
+        }
+        
+        // Update last login time
+        localStorage.setItem('splitTheTab_lastLogin', new Date().toISOString());
     }
 
     onUserLogout() {
         console.log('User logged out');
+        
+        // Clear localStorage
+        localStorage.removeItem('splitTheTab_user');
+        localStorage.removeItem('splitTheTab_lastLogin');
         
         // Update UI
         document.getElementById('notLoggedIn').style.display = 'flex';
@@ -132,9 +207,17 @@ class SplitTheTab {
     async handleLogin() {
         const email = document.getElementById('loginEmail').value;
         const password = document.getElementById('loginPassword').value;
+        const rememberMe = document.getElementById('rememberMe').checked;
 
         try {
+            // Set persistence based on "Remember Me" setting
+            const persistence = rememberMe ? 
+                firebase.auth.Auth.Persistence.LOCAL : 
+                firebase.auth.Auth.Persistence.SESSION;
+            
+            await auth.setPersistence(persistence);
             await auth.signInWithEmailAndPassword(email, password);
+            
             this.closeModal('loginModal');
             this.showNotification('Welcome back!', 'success');
         } catch (error) {
@@ -147,6 +230,7 @@ class SplitTheTab {
         const email = document.getElementById('signupEmail').value;
         const password = document.getElementById('signupPassword').value;
         const confirmPassword = document.getElementById('signupConfirmPassword').value;
+        const rememberMe = document.getElementById('signupRememberMe').checked;
 
         if (password !== confirmPassword) {
             this.showNotification('Passwords do not match', 'error');
@@ -159,6 +243,12 @@ class SplitTheTab {
         }
 
         try {
+            // Set persistence based on "Remember Me" setting
+            const persistence = rememberMe ? 
+                firebase.auth.Auth.Persistence.LOCAL : 
+                firebase.auth.Auth.Persistence.SESSION;
+            
+            await auth.setPersistence(persistence);
             const userCredential = await auth.createUserWithEmailAndPassword(email, password);
             
             // Create user profile
