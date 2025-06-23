@@ -5,12 +5,12 @@ class SplitTab {
         this.expenses = [];
         this.currentView = 'dashboard';
         this.db = window.db;
+        this.editingGroupId = null;
         
         this.init();
     }
 
     async init() {
-        this.bindEvents();
         await this.loadData();
         this.setupRealtimeListeners();
         this.updateDashboard();
@@ -77,6 +77,18 @@ class SplitTab {
         }
     }
 
+    async updateGroup(groupId, groupData) {
+        try {
+            await this.db.collection('groups').doc(groupId).update({
+                ...groupData,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        } catch (error) {
+            console.error('Error updating group:', error);
+            throw error;
+        }
+    }
+
     async saveExpense(expenseData) {
         try {
             const docRef = await this.db.collection('expenses').add({
@@ -92,87 +104,265 @@ class SplitTab {
 
     // Event Binding
     bindEvents() {
-        // Navigation
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                this.switchView(e.target.dataset.view);
+        // Modal controls
+        const createGroupBtn = document.getElementById('create-group-btn');
+        if (createGroupBtn) {
+            createGroupBtn.addEventListener('click', () => {
+                this.showCreateGroupModal();
             });
+        }
+        
+        const closeCreateModal = document.getElementById('close-create-modal');
+        if (closeCreateModal) {
+            closeCreateModal.addEventListener('click', () => {
+                this.hideModal('create-group-modal');
+            });
+        }
+        
+        const closeEditModal = document.getElementById('close-edit-modal');
+        if (closeEditModal) {
+            closeEditModal.addEventListener('click', () => {
+                this.hideModal('edit-group-modal');
+            });
+        }
+        
+        // Member management
+        const addMemberBtn = document.querySelector('.add-member');
+        if (addMemberBtn) {
+            addMemberBtn.addEventListener('click', () => {
+                this.addMemberInput();
+            });
+        }
+        
+        const addEditMemberBtn = document.querySelector('.add-edit-member');
+        if (addEditMemberBtn) {
+            addEditMemberBtn.addEventListener('click', () => {
+                this.addEditMemberInput();
+            });
+        }
+        
+        // Remove member functionality
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.remove-member')) {
+                e.target.closest('.member-item').remove();
+            }
         });
+        
+        // Form submissions
+        const createGroupForm = document.getElementById('create-group-form');
+        if (createGroupForm) {
+            createGroupForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.createGroup();
+            });
+        }
+        
+        const editGroupForm = document.getElementById('edit-group-form');
+        if (editGroupForm) {
+            editGroupForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.updateGroupData();
+            });
+        }
+        
+        // Add expense form
+        const addExpenseForm = document.getElementById('add-expense-form');
+        if (addExpenseForm) {
+            addExpenseForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.addExpense();
+            });
+        }
+        
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                this.hideModal(e.target.id);
+            }
+        });
+        
+        // Modal close buttons with data-modal attribute
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.modal-close')) {
+                const modalId = e.target.closest('.modal-close').dataset.modal;
+                if (modalId) {
+                    this.hideModal(modalId);
+                }
+            }
+        });
+        
+        // Cancel buttons with data-modal attribute
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('btn-secondary') && e.target.dataset.modal) {
+                this.hideModal(e.target.dataset.modal);
+            }
+        });
+        
+        // Other event listeners...
+        document.addEventListener('click', (e) => this.handleClick(e));
+        document.addEventListener('submit', (e) => this.handleSubmit(e));
+        document.addEventListener('change', (e) => this.handleChange(e));
+    }
+
+    handleClick(e) {
+        const target = e.target;
+
+        // Navigation buttons
+        if (target.closest('.nav-btn')) {
+            const btn = target.closest('.nav-btn');
+            const view = btn.dataset.view;
+            if (view) {
+                this.switchView(view);
+            }
+            return;
+        }
 
         // Dashboard buttons
-        document.getElementById('quick-add-expense').addEventListener('click', () => this.showAddExpenseModal());
-        document.getElementById('view-all-expenses').addEventListener('click', () => this.switchView('expenses'));
-        document.getElementById('view-all-groups').addEventListener('click', () => this.switchView('groups'));
-        document.getElementById('add-first-expense').addEventListener('click', () => this.showAddExpenseModal());
-        document.getElementById('create-first-group').addEventListener('click', () => this.showCreateGroupModal());
+        if (target.id === 'quick-add-expense' || target.closest('#quick-add-expense')) {
+            this.showAddExpenseModal();
+            return;
+        }
 
-        // Groups view
-        document.getElementById('create-group-btn').addEventListener('click', () => this.showCreateGroupModal());
-        document.getElementById('create-group-empty').addEventListener('click', () => this.showCreateGroupModal());
+        if (target.id === 'view-all-expenses' || target.closest('#view-all-expenses')) {
+            this.switchView('expenses');
+            return;
+        }
 
-        // Expenses view
-        document.getElementById('add-expense-btn').addEventListener('click', () => this.showAddExpenseModal());
-        document.getElementById('add-expense-empty').addEventListener('click', () => this.showAddExpenseModal());
-        document.getElementById('expense-filter').addEventListener('change', (e) => this.filterExpenses(e.target.value));
+        if (target.id === 'view-all-groups' || target.closest('#view-all-groups')) {
+            this.switchView('groups');
+            return;
+        }
+
+        if (target.id === 'add-first-expense' || target.closest('#add-first-expense')) {
+            this.showAddExpenseModal();
+            return;
+        }
+
+        if (target.id === 'create-first-group' || target.closest('#create-first-group')) {
+            this.showCreateGroupModal();
+            return;
+        }
+
+        // Groups view buttons
+        if (target.id === 'create-group-btn' || target.closest('#create-group-btn')) {
+            this.showCreateGroupModal();
+            return;
+        }
+
+        if (target.id === 'create-group-empty' || target.closest('#create-group-empty')) {
+            this.showCreateGroupModal();
+            return;
+        }
+
+        // Expenses view buttons
+        if (target.id === 'add-expense-btn' || target.closest('#add-expense-btn')) {
+            this.showAddExpenseModal();
+            return;
+        }
+
+        if (target.id === 'add-expense-empty' || target.closest('#add-expense-empty')) {
+            this.showAddExpenseModal();
+            return;
+        }
 
         // Settlements view
-        document.getElementById('optimize-settlements').addEventListener('click', () => this.optimizeSettlements());
-
-        // Modal events
-        this.bindModalEvents();
-        this.bindFormEvents();
-    }
-
-    bindModalEvents() {
-        // Modal close buttons
-        document.querySelectorAll('.modal-close').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const modalId = e.target.dataset.modal;
-                this.hideModal(modalId);
-            });
-        });
-
-        // Modal backdrop clicks
-        document.querySelectorAll('.modal').forEach(modal => {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    this.hideModal(modal.id);
-                }
-            });
-        });
-
-        // ESC key to close modals
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                this.hideAllModals();
-            }
-        });
-    }
-
-    bindFormEvents() {
-        // Create group form
-        document.getElementById('create-group-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.createGroup();
-        });
-
-        // Add expense form
-        document.getElementById('add-expense-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.addExpense();
-        });
+        if (target.id === 'optimize-settlements' || target.closest('#optimize-settlements')) {
+            this.optimizeSettlements();
+            return;
+        }
 
         // Member management
-        document.querySelector('.add-member').addEventListener('click', () => this.addMemberInput());
-        document.getElementById('members-list').addEventListener('click', (e) => {
-            if (e.target.classList.contains('remove-member')) {
-                this.removeMember(e.target.parentElement);
-            }
-        });
+        if (target.classList.contains('add-member')) {
+            this.addMemberInput();
+            return;
+        }
 
-        // Split options
-        document.getElementById('split-equally').addEventListener('change', () => this.toggleSplitOptions());
-        document.getElementById('split-custom').addEventListener('change', () => this.toggleSplitOptions());
+        if (target.classList.contains('remove-member')) {
+            const memberTag = target.closest('.member-tag');
+            if (memberTag) {
+                this.removeMember(memberTag);
+            }
+            return;
+        }
+
+        // Group cards (for viewing details)
+        if (target.closest('.group-card')) {
+            // Don't trigger if clicking on interactive elements
+            if (target.closest('.group-actions') || target.closest('.edit-group-btn')) {
+                return;
+            }
+            
+            const groupCard = target.closest('.group-card');
+            const groupId = groupCard.dataset.groupId;
+            if (groupId) {
+                this.showGroupDetails(groupId);
+            }
+            return;
+        }
+
+        // Edit group button
+        if (target.classList.contains('edit-group-btn')) {
+            const groupId = target.dataset.groupId;
+            if (groupId) {
+                this.showEditGroupModal(groupId);
+            }
+            return;
+        }
+
+        // Edit group from details modal
+        if (target.id === 'edit-group-from-details' || target.closest('#edit-group-from-details')) {
+            const groupDetailsModal = document.getElementById('group-details-modal');
+            const groupId = groupDetailsModal.dataset.currentGroupId;
+            if (groupId) {
+                this.hideModal('group-details-modal');
+                this.showEditGroupModal(groupId);
+            }
+            return;
+        }
+
+        // Add expense to group button
+        if (target.id === 'add-expense-to-group' || target.closest('#add-expense-to-group')) {
+            this.hideModal('group-details-modal');
+            this.showAddExpenseModal();
+            return;
+        }
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+
+        if (e.target.id === 'create-group-form') {
+            this.createGroup();
+            return;
+        }
+
+        if (e.target.id === 'edit-group-form') {
+            this.updateGroupData();
+            return;
+        }
+
+        if (e.target.id === 'add-expense-form') {
+            this.addExpense();
+            return;
+        }
+    }
+
+    handleChange(e) {
+        if (e.target.id === 'expense-filter') {
+            this.filterExpenses(e.target.value);
+            return;
+        }
+
+        if (e.target.id === 'split-equally' || e.target.id === 'split-custom') {
+            this.toggleSplitOptions();
+            return;
+        }
+
+        if (e.target.id === 'expense-group') {
+            this.updateExpenseFormGroups();
+            this.updateCustomSplitInputs();
+            return;
+        }
     }
 
     // View Management
@@ -181,26 +371,38 @@ class SplitTab {
         document.querySelectorAll('.nav-btn').forEach(btn => {
             btn.classList.remove('active');
         });
-        document.querySelector(`[data-view="${viewName}"]`).classList.add('active');
+        const activeBtn = document.querySelector(`[data-view="${viewName}"]`);
+        if (activeBtn) {
+            activeBtn.classList.add('active');
+        }
 
         // Update views
         document.querySelectorAll('.view').forEach(view => {
             view.classList.remove('active');
         });
-        document.getElementById(`${viewName}-view`).classList.add('active');
+        const activeView = document.getElementById(`${viewName}-view`);
+        if (activeView) {
+            activeView.classList.add('active');
+        }
 
         this.currentView = viewName;
     }
 
     // Modal Management
     showModal(modalId) {
-        document.getElementById(modalId).classList.add('active');
-        document.body.style.overflow = 'hidden';
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
     }
 
     hideModal(modalId) {
-        document.getElementById(modalId).classList.remove('active');
-        document.body.style.overflow = '';
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
     }
 
     hideAllModals() {
@@ -212,44 +414,108 @@ class SplitTab {
 
     // Group Management
     showCreateGroupModal() {
+        this.editingGroupId = null;
         this.showModal('create-group-modal');
         this.resetCreateGroupForm();
     }
 
-    resetCreateGroupForm() {
-        document.getElementById('create-group-form').reset();
-        document.getElementById('members-list').innerHTML = '';
-        document.querySelector('.member-name').value = '';
+    showEditGroupModal(groupId) {
+        this.editingGroupId = groupId;
+        const group = this.groups.find(g => g.id === groupId);
+        if (!group) return;
+
+        this.showModal('edit-group-modal');
+        this.populateEditGroupForm(group);
+        
+        // Reset the member input field
+        const memberInput = document.querySelector('#edit-group-modal .member-name');
+        if (memberInput) {
+            memberInput.value = '';
+        }
     }
 
+    populateEditGroupForm(group) {
+        document.getElementById('edit-group-name').value = group.name;
+        document.getElementById('edit-group-description').value = group.description;
+        
+        const membersList = document.getElementById('edit-members-list');
+        membersList.innerHTML = '';
+        
+        group.members.forEach(member => {
+            const memberItem = document.createElement('div');
+            memberItem.className = 'member-item';
+            memberItem.innerHTML = `
+                <span>${member}</span>
+                <button type="button" class="btn btn-icon remove-member">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            membersList.appendChild(memberItem);
+        });
+    }
+
+    resetCreateGroupForm() {
+        document.getElementById('group-name').value = '';
+        document.getElementById('group-description').value = '';
+        document.querySelector('.member-name').value = '';
+        document.getElementById('members-list').innerHTML = '';
+    }
+
+    // Add member input functionality
     addMemberInput() {
         const memberName = document.querySelector('.member-name').value.trim();
-        if (!memberName) return;
+        if (memberName) {
+            const membersList = document.getElementById('members-list');
+            const memberItem = document.createElement('div');
+            memberItem.className = 'member-item';
+            memberItem.innerHTML = `
+                <span>${memberName}</span>
+                <button type="button" class="btn btn-icon remove-member">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            membersList.appendChild(memberItem);
+            document.querySelector('.member-name').value = '';
+        }
+    }
 
-        const membersList = document.getElementById('members-list');
-        const memberTag = document.createElement('div');
-        memberTag.className = 'member-tag';
-        memberTag.innerHTML = `
-            ${memberName}
-            <button type="button" class="remove-member">×</button>
-        `;
-        membersList.appendChild(memberTag);
-
-        document.querySelector('.member-name').value = '';
+    // Add edit member input functionality
+    addEditMemberInput() {
+        const memberName = document.querySelector('.edit-member-name').value.trim();
+        if (memberName) {
+            const membersList = document.getElementById('edit-members-list');
+            const memberItem = document.createElement('div');
+            memberItem.className = 'member-item';
+            memberItem.innerHTML = `
+                <span>${memberName}</span>
+                <button type="button" class="btn btn-icon remove-member">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            membersList.appendChild(memberItem);
+            document.querySelector('.edit-member-name').value = '';
+        }
     }
 
     removeMember(memberTag) {
-        memberTag.remove();
+        if (memberTag && memberTag.classList.contains('member-item')) {
+            memberTag.remove();
+        }
     }
 
     async createGroup() {
         const name = document.getElementById('group-name').value.trim();
         const description = document.getElementById('group-description').value.trim();
-        const memberTags = document.querySelectorAll('.member-tag');
-        const members = Array.from(memberTags).map(tag => tag.textContent.replace('×', '').trim());
+        const memberItems = document.querySelectorAll('#members-list .member-item');
+        const members = Array.from(memberItems).map(item => item.querySelector('span').textContent.trim());
 
-        if (!name || members.length === 0) {
-            alert('Please provide a group name and at least one member.');
+        if (!name) {
+            alert('Please provide a group name.');
+            return;
+        }
+
+        if (members.length === 0) {
+            alert('Please add at least one member to the group.');
             return;
         }
 
@@ -262,9 +528,41 @@ class SplitTab {
 
             await this.saveGroup(groupData);
             this.hideModal('create-group-modal');
+            this.resetCreateGroupForm();
         } catch (error) {
             alert('Error creating group. Please try again.');
             console.error('Error creating group:', error);
+        }
+    }
+
+    async updateGroupData() {
+        const name = document.getElementById('edit-group-name').value.trim();
+        const description = document.getElementById('edit-group-description').value.trim();
+        const memberItems = document.querySelectorAll('#edit-members-list .member-item');
+        const members = Array.from(memberItems).map(item => item.querySelector('span').textContent.trim());
+
+        if (!name) {
+            alert('Please provide a group name.');
+            return;
+        }
+
+        if (members.length === 0) {
+            alert('Please add at least one member to the group.');
+            return;
+        }
+
+        try {
+            const groupData = {
+                name,
+                description,
+                members
+            };
+
+            await this.updateGroup(this.editingGroupId, groupData);
+            this.hideModal('edit-group-modal');
+        } catch (error) {
+            alert('Error updating group. Please try again.');
+            console.error('Error updating group:', error);
         }
     }
 
@@ -316,7 +614,10 @@ class SplitTab {
         const group = this.groups.find(g => g.id === groupId);
         const container = document.getElementById('custom-split-inputs');
         
-        if (!group) return;
+        if (!group) {
+            container.innerHTML = '<p class="text-muted">Please select a group first</p>';
+            return;
+        }
 
         container.innerHTML = '';
         group.members.forEach(member => {
@@ -337,8 +638,23 @@ class SplitTab {
         const paidBy = document.getElementById('expense-paid-by').value;
         const splitEqually = document.getElementById('split-equally').checked;
 
-        if (!groupId || !description || !amount || !paidBy) {
-            alert('Please fill in all required fields.');
+        if (!groupId) {
+            alert('Please select a group.');
+            return;
+        }
+
+        if (!description) {
+            alert('Please enter a description for the expense.');
+            return;
+        }
+
+        if (!amount || amount <= 0) {
+            alert('Please enter a valid amount.');
+            return;
+        }
+
+        if (!paidBy) {
+            alert('Please select who paid for this expense.');
             return;
         }
 
@@ -390,11 +706,17 @@ class SplitTab {
         const totalExpenses = this.expenses.length;
         const pendingSettlements = this.calculatePendingSettlements();
 
-        document.getElementById('total-balance').textContent = this.formatCurrency(totalBalance);
-        document.getElementById('balance-status').textContent = totalBalance === 0 ? 'All settled up!' : 'Settlements pending';
-        document.getElementById('active-groups').textContent = activeGroups;
-        document.getElementById('total-expenses').textContent = totalExpenses;
-        document.getElementById('pending-settlements').textContent = pendingSettlements;
+        const totalBalanceEl = document.getElementById('total-balance');
+        const balanceStatusEl = document.getElementById('balance-status');
+        const activeGroupsEl = document.getElementById('active-groups');
+        const totalExpensesEl = document.getElementById('total-expenses');
+        const pendingSettlementsEl = document.getElementById('pending-settlements');
+
+        if (totalBalanceEl) totalBalanceEl.textContent = this.formatCurrency(totalBalance);
+        if (balanceStatusEl) balanceStatusEl.textContent = totalBalance === 0 ? 'All settled up!' : 'Settlements pending';
+        if (activeGroupsEl) activeGroupsEl.textContent = activeGroups;
+        if (totalExpensesEl) totalExpensesEl.textContent = totalExpenses;
+        if (pendingSettlementsEl) pendingSettlementsEl.textContent = pendingSettlements;
 
         this.renderRecentExpenses();
         this.renderGroupBalances();
@@ -402,6 +724,8 @@ class SplitTab {
 
     renderRecentExpenses() {
         const container = document.getElementById('recent-expenses-list');
+        if (!container) return;
+
         const recentExpenses = this.expenses.slice(-5).reverse();
 
         if (recentExpenses.length === 0) {
@@ -433,6 +757,7 @@ class SplitTab {
 
     renderGroupBalances() {
         const container = document.getElementById('group-balances-list');
+        if (!container) return;
         
         if (this.groups.length === 0) {
             container.innerHTML = `
@@ -450,7 +775,7 @@ class SplitTab {
             const totalAmount = groupExpenses.reduce((sum, e) => sum + e.amount, 0);
             
             return `
-                <div class="group-card" onclick="app.showGroupDetails('${group.id}')">
+                <div class="group-card" data-group-id="${group.id}">
                     <h3>${group.name}</h3>
                     <p>${group.description || 'No description'}</p>
                     <div class="group-stats">
@@ -470,6 +795,7 @@ class SplitTab {
 
     renderGroups() {
         const container = document.getElementById('groups-list');
+        if (!container) return;
         
         if (this.groups.length === 0) {
             container.innerHTML = `
@@ -487,7 +813,7 @@ class SplitTab {
             const totalAmount = groupExpenses.reduce((sum, e) => sum + e.amount, 0);
             
             return `
-                <div class="group-card" onclick="app.showGroupDetails('${group.id}')">
+                <div class="group-card" data-group-id="${group.id}">
                     <h3>${group.name}</h3>
                     <p>${group.description || 'No description'}</p>
                     <div class="group-stats">
@@ -500,6 +826,11 @@ class SplitTab {
                             <div class="group-stat-label">Members</div>
                         </div>
                     </div>
+                    <div class="group-actions">
+                        <button class="btn btn-text edit-group-btn" data-group-id="${group.id}">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </div>
                 </div>
             `;
         }).join('');
@@ -507,11 +838,14 @@ class SplitTab {
 
     renderExpenses() {
         const container = document.getElementById('expenses-list');
-        const filter = document.getElementById('expense-filter').value;
+        if (!container) return;
+
+        const filter = document.getElementById('expense-filter');
+        const filterValue = filter ? filter.value : 'all';
         
         let filteredExpenses = this.expenses;
-        if (filter && filter !== 'all') {
-            filteredExpenses = this.expenses.filter(e => e.groupId === filter);
+        if (filterValue && filterValue !== 'all') {
+            filteredExpenses = this.expenses.filter(e => e.groupId === filterValue);
         }
 
         if (filteredExpenses.length === 0) {
@@ -550,15 +884,23 @@ class SplitTab {
         const group = this.groups.find(g => g.id === groupId);
         if (!group) return;
 
-        document.getElementById('group-details-title').textContent = group.name;
-        document.getElementById('group-details-name').textContent = group.name;
-        document.getElementById('group-details-description').textContent = group.description || 'No description';
+        const titleEl = document.getElementById('group-details-title');
+        const nameEl = document.getElementById('group-details-name');
+        const descEl = document.getElementById('group-details-description');
+        const totalEl = document.getElementById('group-total-expenses');
+        const countEl = document.getElementById('group-member-count');
+        const modalEl = document.getElementById('group-details-modal');
+
+        if (titleEl) titleEl.textContent = group.name;
+        if (nameEl) nameEl.textContent = group.name;
+        if (descEl) descEl.textContent = group.description || 'No description';
+        if (modalEl) modalEl.dataset.currentGroupId = groupId;
 
         const groupExpenses = this.expenses.filter(e => e.groupId === groupId);
         const totalAmount = groupExpenses.reduce((sum, e) => sum + e.amount, 0);
 
-        document.getElementById('group-total-expenses').textContent = this.formatCurrency(totalAmount);
-        document.getElementById('group-member-count').textContent = group.members.length;
+        if (totalEl) totalEl.textContent = this.formatCurrency(totalAmount);
+        if (countEl) countEl.textContent = group.members.length;
 
         this.renderGroupBalancesDetails(groupId);
         this.renderGroupExpensesDetails(groupId);
@@ -570,6 +912,7 @@ class SplitTab {
         const group = this.groups.find(g => g.id === groupId);
         const balances = this.calculateGroupBalances(groupId);
         const container = document.getElementById('group-balances-list');
+        if (!container || !group) return;
 
         container.innerHTML = group.members.map(member => {
             const balance = balances[member] || 0;
@@ -586,6 +929,7 @@ class SplitTab {
     renderGroupExpensesDetails(groupId) {
         const groupExpenses = this.expenses.filter(e => e.groupId === groupId).slice(-10).reverse();
         const container = document.getElementById('group-expenses-list');
+        if (!container) return;
 
         if (groupExpenses.length === 0) {
             container.innerHTML = '<p class="text-muted">No expenses in this group yet.</p>';
@@ -607,6 +951,7 @@ class SplitTab {
     updateSettlements() {
         const settlements = this.calculateSettlements();
         const container = document.getElementById('settlements-container');
+        if (!container) return;
 
         if (settlements.length === 0) {
             container.innerHTML = `
@@ -639,6 +984,7 @@ class SplitTab {
 
         const optimized = this.optimizeSettlementPayments(settlements);
         const container = document.getElementById('settlements-container');
+        if (!container) return;
 
         container.innerHTML = `
             <div style="margin-bottom: 1rem;">
@@ -771,40 +1117,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     
     window.app = new SplitTab();
-});
-
-// Update expense filter options when groups change
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('expense-group').addEventListener('change', function() {
-        const groupId = this.value;
-        const group = window.app?.groups.find(g => g.id === groupId);
-        
-        if (group) {
-            const paidBySelect = document.getElementById('expense-paid-by');
-            paidBySelect.innerHTML = '<option value="">Select who paid</option>';
-            group.members.forEach(member => {
-                const option = document.createElement('option');
-                option.value = member;
-                option.textContent = member;
-                paidBySelect.appendChild(option);
-            });
-            
-            window.app?.updateCustomSplitInputs();
-        }
-    });
+    await window.app.init();
+    window.app.bindEvents();
 });
 
 // Update expense filter dropdown
 function updateExpenseFilter() {
     const filter = document.getElementById('expense-filter');
+    if (!filter) return;
+    
     filter.innerHTML = '<option value="all">All Groups</option>';
     
-    window.app?.groups.forEach(group => {
-        const option = document.createElement('option');
-        option.value = group.id;
-        option.textContent = group.name;
-        filter.appendChild(option);
-    });
+    if (window.app && window.app.groups) {
+        window.app.groups.forEach(group => {
+            const option = document.createElement('option');
+            option.value = group.id;
+            option.textContent = group.name;
+            filter.appendChild(option);
+        });
+    }
 }
 
 // Update the filter when groups change

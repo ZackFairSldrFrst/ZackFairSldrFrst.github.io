@@ -257,6 +257,7 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
+    position: relative;
 }
 
 .group-card:hover {
@@ -305,6 +306,34 @@ body {
     border-radius: 8px;
     font-size: 0.9rem;
     color: #333;
+}
+
+.group-actions {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.group-card:hover .group-actions {
+    opacity: 1;
+}
+
+.group-actions .btn {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+    background: rgba(102, 126, 234, 0.1);
+    color: #667eea;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.group-actions .btn:hover {
+    background: #667eea;
+    color: white;
 }
 
 /* Expenses List */

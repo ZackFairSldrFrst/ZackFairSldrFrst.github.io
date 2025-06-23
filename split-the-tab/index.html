@@ -333,7 +333,48 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" data-modal="group-details-modal">Close</button>
+                <button class="btn btn-primary" id="edit-group-from-details">Edit Group</button>
                 <button class="btn btn-primary" id="add-expense-to-group">Add Expense</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Group Modal -->
+    <div id="edit-group-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Group</h3>
+                <button class="modal-close" data-modal="edit-group-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-group-form">
+                    <div class="form-group">
+                        <label for="edit-group-name">Group Name</label>
+                        <input type="text" id="edit-group-name" required placeholder="e.g., Roommates, Trip to Europe">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-group-description">Description (optional)</label>
+                        <textarea id="edit-group-description" placeholder="What's this group for?"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Edit Members</label>
+                        <div class="members-input">
+                            <div class="member-input-row">
+                                <input type="text" class="edit-member-name" placeholder="Member name">
+                                <button type="button" class="btn btn-icon add-edit-member">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="edit-members-list" class="members-list"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-modal="edit-group-modal">Cancel</button>
+                <button class="btn btn-primary" type="submit" form="edit-group-form">Update Group</button>
             </div>
         </div>
     </div>
