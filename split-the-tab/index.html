@@ -475,15 +475,6 @@
                     <button type="button" class="btn btn-secondary" onclick="closeModal('loginModal')">Cancel</button>
                     <button type="submit" class="btn btn-primary">Login</button>
                 </div>
-                <div class="form-divider">
-                    <span>or</span>
-                </div>
-                <div class="social-auth">
-                    <button type="button" class="btn btn-google" onclick="signInWithGoogle()">
-                        <i class="fab fa-google"></i>
-                        Continue with Google
-                    </button>
-                </div>
                 <div class="form-footer">
                     <p>Don't have an account? <a href="#" onclick="switchToSignup()">Sign up here</a></p>
                 </div>
@@ -526,15 +517,6 @@
                 <div class="form-actions">
                     <button type="button" class="btn btn-secondary" onclick="closeModal('signupModal')">Cancel</button>
                     <button type="submit" class="btn btn-primary">Create Account</button>
-                </div>
-                <div class="form-divider">
-                    <span>or</span>
-                </div>
-                <div class="social-auth">
-                    <button type="button" class="btn btn-google" onclick="signInWithGoogle()">
-                        <i class="fab fa-google"></i>
-                        Continue with Google
-                    </button>
                 </div>
                 <div class="form-footer">
                     <p>Already have an account? <a href="#" onclick="switchToLogin()">Login here</a></p>
@@ -581,17 +563,14 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
     <script>
         // Your web app's Firebase configuration
-        // Replace this with your own Firebase project configuration
         const firebaseConfig = {
-            // TODO: Replace with your Firebase project configuration
-            // Get this from: Firebase Console > Project Settings > Your Apps > Web App
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID",
-            measurementId: "YOUR_MEASUREMENT_ID"
+            apiKey: "AIzaSyDi9PeRLjWIfKmAVYC7vh1MJx9Ah8f79tw",
+            authDomain: "split-the-tab.firebaseapp.com",
+            projectId: "split-the-tab",
+            storageBucket: "split-the-tab.firebasestorage.app",
+            messagingSenderId: "65613542948",
+            appId: "1:65613542948:web:7fd0b47606b2b619ef8ab1",
+            measurementId: "G-E6SWPLWH01"
         };
 
         // Initialize Firebase

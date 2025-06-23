@@ -11,40 +11,28 @@ class SplitTheTab {
     }
 
     async init() {
-        try {
-            // Check if Firebase is properly configured
-            if (!firebase.apps.length) {
-                throw new Error('Firebase is not initialized. Please check your configuration.');
+        // Set Firebase persistence to LOCAL (persists across browser sessions)
+        await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+        
+        // Check if user was previously logged in
+        this.checkPreviousLoginState();
+        
+        // Set up authentication state listener
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                this.currentUser = user;
+                this.onUserLogin();
+            } else {
+                this.currentUser = null;
+                this.onUserLogout();
             }
+        });
 
-            // Set Firebase persistence to LOCAL (persists across browser sessions)
-            await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-            
-            // Check if user was previously logged in
-            this.checkPreviousLoginState();
-            
-            // Set up authentication state listener
-            auth.onAuthStateChanged((user) => {
-                if (user) {
-                    this.currentUser = user;
-                    this.onUserLogin();
-                } else {
-                    this.currentUser = null;
-                    this.onUserLogout();
-                }
-            });
+        // Check for automatic login
+        await this.checkAutoLogin();
 
-            // Check for automatic login
-            await this.checkAutoLogin();
-
-            // Set up event listeners
-            this.setupEventListeners();
-            
-            console.log('Firebase initialized successfully');
-        } catch (error) {
-            console.error('Firebase initialization error:', error);
-            this.showNotification('Firebase configuration error. Please check your setup.', 'error');
-        }
+        // Set up event listeners
+        this.setupEventListeners();
     }
 
     checkPreviousLoginState() {
@@ -255,11 +243,6 @@ class SplitTheTab {
         }
 
         try {
-            // Check if Firebase is properly configured
-            if (!firebase.apps.length) {
-                throw new Error('Firebase is not configured. Please check your setup.');
-            }
-
             // Set persistence based on "Remember Me" setting
             const persistence = rememberMe ? 
                 firebase.auth.Auth.Persistence.LOCAL : 
@@ -273,102 +256,13 @@ class SplitTheTab {
                 name: name,
                 email: email,
                 createdAt: new Date(),
-                groups: [],
-                authProvider: 'email'
+                groups: []
             });
 
             this.closeModal('signupModal');
             this.showNotification('Account created successfully!', 'success');
         } catch (error) {
-            console.error('Signup error:', error);
-            
-            // Provide more specific error messages
-            let errorMessage = 'Signup failed';
-            switch (error.code) {
-                case 'auth/configuration-not-found':
-                    errorMessage = 'Firebase configuration error. Please check your project setup.';
-                    break;
-                case 'auth/email-already-in-use':
-                    errorMessage = 'An account with this email already exists.';
-                    break;
-                case 'auth/invalid-email':
-                    errorMessage = 'Please enter a valid email address.';
-                    break;
-                case 'auth/weak-password':
-                    errorMessage = 'Password is too weak. Please choose a stronger password.';
-                    break;
-                case 'auth/network-request-failed':
-                    errorMessage = 'Network error. Please check your internet connection.';
-                    break;
-                default:
-                    errorMessage = `Signup failed: ${error.message}`;
-            }
-            
-            this.showNotification(errorMessage, 'error');
-        }
-    }
-
-    async handleGoogleSignIn() {
-        try {
-            // Check if Firebase is properly configured
-            if (!firebase.apps.length) {
-                throw new Error('Firebase is not configured. Please check your setup.');
-            }
-
-            // Create Google provider
-            const provider = new firebase.auth.GoogleAuthProvider();
-            provider.addScope('email');
-            provider.addScope('profile');
-
-            // Sign in with Google
-            const result = await auth.signInWithPopup(provider);
-            
-            // Check if this is a new user
-            if (result.additionalUserInfo.isNewUser) {
-                // Create user profile for new Google users
-                await db.collection('users').doc(result.user.uid).set({
-                    name: result.user.displayName,
-                    email: result.user.email,
-                    photoURL: result.user.photoURL,
-                    createdAt: new Date(),
-                    groups: [],
-                    authProvider: 'google'
-                });
-                
-                this.showNotification('Welcome to Split the Tab!', 'success');
-            } else {
-                this.showNotification('Welcome back!', 'success');
-            }
-
-            // Close any open modals
-            this.closeModal('loginModal');
-            this.closeModal('signupModal');
-            
-        } catch (error) {
-            console.error('Google sign-in error:', error);
-            
-            let errorMessage = 'Google sign-in failed';
-            switch (error.code) {
-                case 'auth/popup-closed-by-user':
-                    errorMessage = 'Sign-in was cancelled.';
-                    break;
-                case 'auth/popup-blocked':
-                    errorMessage = 'Sign-in popup was blocked. Please allow popups for this site.';
-                    break;
-                case 'auth/cancelled-popup-request':
-                    errorMessage = 'Sign-in was cancelled.';
-                    break;
-                case 'auth/account-exists-with-different-credential':
-                    errorMessage = 'An account already exists with the same email address but different sign-in credentials.';
-                    break;
-                case 'auth/network-request-failed':
-                    errorMessage = 'Network error. Please check your internet connection.';
-                    break;
-                default:
-                    errorMessage = `Google sign-in failed: ${error.message}`;
-            }
-            
-            this.showNotification(errorMessage, 'error');
+            this.showNotification(`Signup failed: ${error.message}`, 'error');
         }
     }
 
@@ -967,14 +861,6 @@ function editExpense(expenseId) {
 function deleteExpense(expenseId) {
     if (window.splitTheTabApp) {
         window.splitTheTabApp.deleteExpense(expenseId);
-    }
-}
-
-function signInWithGoogle() {
-    if (window.splitTheTabApp) {
-        window.splitTheTabApp.handleGoogleSignIn();
-    } else {
-        console.error('App not initialized');
     }
 }
 
