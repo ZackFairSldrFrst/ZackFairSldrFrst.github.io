@@ -378,6 +378,63 @@
         </div>
     </div>
 
+    <!-- Edit Expense Modal -->
+    <div id="editExpenseModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-edit"></i> Edit Expense</h3>
+                <button class="modal-close" onclick="closeModal('editExpenseModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editExpenseForm">
+                    <div class="form-group">
+                        <label for="editExpenseGroup">Group</label>
+                        <select id="editExpenseGroup" required>
+                            <option value="">Select a group...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editExpenseDescription">Description</label>
+                        <input type="text" id="editExpenseDescription" placeholder="What was this expense for?" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editExpenseAmount">Amount</label>
+                        <div class="amount-input">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="editExpenseAmount" step="0.01" min="0" placeholder="0.00" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="editExpensePaidBy">Paid By</label>
+                        <select id="editExpensePaidBy" required>
+                            <option value="">Who paid for this?</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Split Options</label>
+                        <div class="split-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="editSplitEqually" checked>
+                                <span>Split equally among all members</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="editCustomSplit">
+                                <span>Custom split amounts</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div id="editCustomSplitSection" style="display: none;">
+                        <div id="editCustomSplitInputs"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('editExpenseModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveExpenseEdit()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>

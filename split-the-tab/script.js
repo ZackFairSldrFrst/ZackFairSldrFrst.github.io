@@ -7,6 +7,7 @@ class SplitTab {
         this.currentUser = '';
         this.db = window.db;
         this.editingGroupId = null;
+        this.editingExpenseId = null;
         
         this.init();
     }
@@ -120,8 +121,11 @@ class SplitTab {
         const userSelect = document.getElementById('userSelect');
         if (userSelect) {
             userSelect.addEventListener('change', (e) => {
+                console.log('User selection changed to:', e.target.value);
                 this.currentUser = e.target.value;
+                console.log('Current user set to:', this.currentUser);
                 this.updateDashboard();
+                console.log('Dashboard updated after user change');
             });
         }
 
@@ -188,6 +192,32 @@ class SplitTab {
             if (e.target.closest('.personal-balance-item')) {
                 const groupId = e.target.closest('.personal-balance-item').dataset.groupId;
                 this.showPersonalBalanceDetails(groupId);
+            }
+        });
+
+        // Expense actions (edit, delete)
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('[data-action="edit-expense"]')) {
+                const expenseId = e.target.closest('[data-action="edit-expense"]').dataset.expenseId;
+                this.showEditExpenseModal(expenseId);
+            }
+            
+            if (e.target.closest('[data-action="delete-expense"]')) {
+                const expenseId = e.target.closest('[data-action="delete-expense"]').dataset.expenseId;
+                if (confirm('Are you sure you want to delete this expense? This action cannot be undone.')) {
+                    this.deleteExpense(expenseId);
+                }
+            }
+        });
+
+        // Edit expense form events
+        document.addEventListener('change', (e) => {
+            if (e.target.id === 'editCustomSplit') {
+                this.toggleEditSplitOptions();
+            }
+            
+            if (e.target.id === 'editExpenseGroup') {
+                this.updateEditExpenseFormMembers();
             }
         });
     }
@@ -568,9 +598,12 @@ class SplitTab {
 
     // Dashboard Updates
     updateDashboard() {
+        console.log('Updating dashboard...');
+        console.log('Current user:', this.currentUser);
         this.updateSummaryCards();
         this.renderPersonalBalances();
         this.renderRecentActivity();
+        console.log('Dashboard update complete');
     }
 
     updateSummaryCards() {
@@ -583,22 +616,50 @@ class SplitTab {
         document.getElementById('totalExpenses').textContent = totalExpenses;
         
         const balanceStatus = document.getElementById('balanceStatus');
+        const balanceDisplay = document.getElementById('totalBalance');
+        
         if (totalBalance > 0) {
-            balanceStatus.textContent = 'You are owed money!';
+            balanceStatus.textContent = `You are owed ${this.formatCurrency(totalBalance)}!`;
+            balanceDisplay.style.color = 'var(--success-color)';
+            balanceStatus.style.color = 'var(--success-color)';
         } else if (totalBalance < 0) {
-            balanceStatus.textContent = 'You owe money';
+            balanceStatus.textContent = `You owe ${this.formatCurrency(Math.abs(totalBalance))}`;
+            balanceDisplay.style.color = 'var(--error-color)';
+            balanceStatus.style.color = 'var(--error-color)';
         } else {
             balanceStatus.textContent = 'All settled up!';
+            balanceDisplay.style.color = 'var(--text-secondary)';
+            balanceStatus.style.color = 'var(--text-secondary)';
         }
     }
 
     renderPersonalBalances() {
         const container = document.getElementById('personalBalances');
-        if (!container) return;
+        if (!container) {
+            console.error('Personal balances container not found!');
+            return;
+        }
+        
+        console.log('Rendering personal balances...');
+        console.log('Current user:', this.currentUser);
         
         const personalBalances = this.calculatePersonalBalances();
+        console.log('Personal balances calculated:', personalBalances);
+        
+        if (!this.currentUser) {
+            console.log('No current user selected, showing empty state');
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-user"></i>
+                    <p>Select your name above to see your balances</p>
+                    <div class="text-muted">Choose your name from the dropdown to view your personal financial situation</div>
+                </div>
+            `;
+            return;
+        }
         
         if (personalBalances.length === 0) {
+            console.log('No personal balances found, showing empty state');
             container.innerHTML = `
                 <div class="empty-state">
                     <i class="fas fa-wallet"></i>
@@ -609,21 +670,41 @@ class SplitTab {
             return;
         }
         
-        container.innerHTML = personalBalances.map(balance => `
-            <div class="personal-balance-item" data-group-id="${balance.groupId}">
-                <div class="personal-balance-info">
-                    <div class="personal-balance-group">${balance.groupName}</div>
-                    <div class="personal-balance-details">
-                        ${balance.owed > 0 ? `You are owed $${this.formatCurrency(balance.owed)}` : 
-                          balance.owes > 0 ? `You owe $${this.formatCurrency(balance.owes)}` : 
-                          'All settled up'}
+        console.log('Rendering personal balance items:', personalBalances);
+        
+        container.innerHTML = personalBalances.map(balance => {
+            let statusText = '';
+            if (balance.net > 0) {
+                statusText = `You are owed ${this.formatCurrency(balance.net)}`;
+            } else if (balance.net < 0) {
+                statusText = `You owe ${this.formatCurrency(Math.abs(balance.net))}`;
+            } else {
+                statusText = 'All settled up';
+            }
+            
+            console.log(`Rendering balance for ${balance.groupName}:`, {
+                net: balance.net,
+                statusText: statusText,
+                owed: balance.owed,
+                owes: balance.owes
+            });
+            
+            return `
+                <div class="personal-balance-item" data-group-id="${balance.groupId}">
+                    <div class="personal-balance-info">
+                        <div class="personal-balance-group">${balance.groupName}</div>
+                        <div class="personal-balance-details">
+                            ${statusText}
+                        </div>
+                    </div>
+                    <div class="personal-balance-amount ${balance.net > 0 ? 'positive' : balance.net < 0 ? 'negative' : 'neutral'}">
+                        ${balance.net > 0 ? '+' : ''}${this.formatCurrency(balance.net)}
                     </div>
                 </div>
-                <div class="personal-balance-amount ${balance.net > 0 ? 'positive' : balance.net < 0 ? 'negative' : 'neutral'}">
-                    ${balance.net > 0 ? '+' : ''}${this.formatCurrency(balance.net)}
-                </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
+        
+        console.log('Personal balances rendered successfully');
     }
 
     renderRecentActivity() {
@@ -755,7 +836,17 @@ class SplitTab {
                                     ${group ? group.name : 'Unknown Group'} • Paid by ${expense.paidBy}
                                 </div>
                             </div>
-                            <div class="expense-amount">${this.formatCurrency(expense.amount)}</div>
+                            <div class="expense-actions">
+                                <div class="expense-amount">${this.formatCurrency(expense.amount)}</div>
+                                <div class="expense-buttons">
+                                    <button class="btn btn-icon" data-action="edit-expense" data-expense-id="${expense.id}" title="Edit expense">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-icon" data-action="delete-expense" data-expense-id="${expense.id}" title="Delete expense">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     `;
                 }).join('')}
@@ -795,7 +886,17 @@ class SplitTab {
                                 <div class="expense-description">${expense.description}</div>
                                 <div class="expense-details">Paid by ${expense.paidBy}</div>
                             </div>
-                            <div class="expense-amount">${this.formatCurrency(expense.amount)}</div>
+                            <div class="expense-actions">
+                                <div class="expense-amount">${this.formatCurrency(expense.amount)}</div>
+                                <div class="expense-buttons">
+                                    <button class="btn btn-icon" data-action="edit-expense" data-expense-id="${expense.id}" title="Edit expense">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-icon" data-action="delete-expense" data-expense-id="${expense.id}" title="Delete expense">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     `).join('')}
                 </div>
@@ -902,60 +1003,140 @@ class SplitTab {
     calculatePersonalBalances() {
         if (!this.currentUser) return [];
         
+        console.log('=== CALCULATING PERSONAL BALANCES ===');
+        console.log('Current user:', this.currentUser);
+        console.log('All groups:', this.groups);
+        console.log('All expenses:', this.expenses);
+        
         const balances = [];
         
         this.groups.forEach(group => {
-            const groupExpenses = this.expenses.filter(expense => expense.groupId === group.id);
+            // Only process groups where the current user is a member
+            if (!group.members || !group.members.includes(this.currentUser)) {
+                console.log(`Skipping group ${group.name} - user not a member`);
+                return;
+            }
             
-            let totalOwed = 0;
-            let totalOwes = 0;
+            console.log(`\n--- Processing Group: ${group.name} ---`);
+            console.log(`Group members: ${group.members.join(', ')}`);
+            
+            const groupExpenses = this.expenses.filter(expense => expense.groupId === group.id);
+            console.log(`Found ${groupExpenses.length} expenses in this group`);
+            
+            let totalPaidByUser = 0;
+            let totalOwedByUser = 0;
             
             groupExpenses.forEach(expense => {
-                // Calculate user's share dynamically based on current group members
+                console.log(`\nExpense: ${expense.description} - $${expense.amount}`);
+                console.log(`Paid by: ${expense.paidBy}`);
+                console.log(`Splits:`, expense.splits);
+                console.log(`Split equally: ${expense.splitEqually}`);
+                
+                // 1. How much did this user pay for this expense?
+                const userPaid = (expense.paidBy === this.currentUser) ? expense.amount : 0;
+                totalPaidByUser += userPaid;
+                console.log(`User paid for this expense: $${userPaid}`);
+                console.log(`Total paid by user so far: $${totalPaidByUser}`);
+                
+                // 2. How much does this user owe for this expense?
                 let userShare = 0;
-                if (expense.splits && expense.splits[this.currentUser]) {
-                    // If the user was already in the group when expense was created
+                
+                if (expense.splits && expense.splits[this.currentUser] !== undefined) {
+                    // User was in the original split
                     userShare = expense.splits[this.currentUser];
+                    console.log(`User was in original split: $${userShare}`);
                 } else if (group.members.includes(this.currentUser)) {
-                    // User was added after expense was created, calculate their share
+                    // User was added after expense was created
                     if (expense.splitEqually !== false) {
                         // Split equally among current members
                         userShare = expense.amount / group.members.length;
+                        console.log(`User added later, split equally: $${userShare} (${expense.amount} / ${group.members.length})`);
                     } else {
                         // Custom split - if user wasn't in original split, they owe 0
                         userShare = 0;
+                        console.log(`User added later, custom split but not in original: $0`);
                     }
-                }
-                
-                const userPaid = expense.paidBy === this.currentUser ? expense.amount : 0;
-                const net = userPaid - userShare;
-                
-                if (net > 0) {
-                    totalOwed += net;
                 } else {
-                    totalOwes += Math.abs(net);
+                    // User is not in this group (shouldn't happen, but just in case)
+                    userShare = 0;
+                    console.log(`User not in group for this expense: $0`);
                 }
+                
+                totalOwedByUser += userShare;
+                console.log(`User owes for this expense: $${userShare}`);
+                console.log(`Total owed by user so far: $${totalOwedByUser}`);
             });
             
-            const netBalance = totalOwed - totalOwes;
+            // 3. Calculate net balance
+            const netBalance = totalPaidByUser - totalOwedByUser;
+            console.log(`\n--- Final Balance for ${group.name} ---`);
+            console.log(`Total paid by user: $${totalPaidByUser}`);
+            console.log(`Total owed by user: $${totalOwedByUser}`);
+            console.log(`Net balance: $${totalPaidByUser} - $${totalOwedByUser} = $${netBalance}`);
             
-            if (totalOwed > 0 || totalOwes > 0) {
-                balances.push({
+            // 4. Determine what to show
+            if (groupExpenses.length > 0) {
+                const balance = {
                     groupId: group.id,
                     groupName: group.name,
-                    owed: totalOwed,
-                    owes: totalOwes,
+                    owed: netBalance > 0 ? netBalance : 0,    // How much they're owed
+                    owes: netBalance < 0 ? Math.abs(netBalance) : 0,  // How much they owe
                     net: netBalance
-                });
+                };
+                
+                console.log(`Balance object:`, balance);
+                balances.push(balance);
             }
         });
+        
+        console.log('\n=== FINAL PERSONAL BALANCES ===');
+        console.log(balances);
+        console.log('=== END CALCULATION ===\n');
         
         return balances;
     }
 
+    // Test function to verify math logic
+    testMathLogic() {
+        console.log('=== TESTING MATH LOGIC ===');
+        
+        // Simple test case: Person 1 pays $100, split equally between 2 people
+        const testExpense = {
+            description: 'Test Dinner',
+            amount: 100,
+            paidBy: 'Person 1',
+            splits: { 'Person 1': 50, 'Person 2': 50 },
+            splitEqually: true
+        };
+        
+        const testGroup = {
+            name: 'Test Group',
+            members: ['Person 1', 'Person 2']
+        };
+        
+        console.log('Test expense:', testExpense);
+        console.log('Test group:', testGroup);
+        
+        // Calculate what Person 1 should have:
+        const person1Paid = testExpense.paidBy === 'Person 1' ? testExpense.amount : 0;
+        const person1Owed = testExpense.splits['Person 1'] || 0;
+        const person1Net = person1Paid - person1Owed;
+        
+        console.log('Person 1 paid:', person1Paid);
+        console.log('Person 1 owes:', person1Owed);
+        console.log('Person 1 net balance:', person1Net);
+        console.log('Expected: Person 1 should be owed $50');
+        console.log('=== END TEST ===\n');
+    }
+
     calculateTotalBalance() {
+        // Run test first
+        this.testMathLogic();
+        
         const personalBalances = this.calculatePersonalBalances();
-        return personalBalances.reduce((total, balance) => total + balance.net, 0);
+        const total = personalBalances.reduce((sum, balance) => sum + balance.net, 0);
+        console.log('Total balance calculation:', { personalBalances, total });
+        return total;
     }
 
     updateSettlements() {
@@ -1024,6 +1205,201 @@ class SplitTab {
             notification.remove();
         });
     }
+
+    // Expense Editing and Deletion
+    showEditExpenseModal(expenseId) {
+        const expense = this.expenses.find(e => e.id === expenseId);
+        if (!expense) {
+            this.showNotification('Expense not found', 'error');
+            return;
+        }
+
+        this.editingExpenseId = expenseId;
+        
+        // Populate the form
+        document.getElementById('editExpenseDescription').value = expense.description || '';
+        document.getElementById('editExpenseAmount').value = expense.amount || '';
+        
+        // Set group
+        const groupSelect = document.getElementById('editExpenseGroup');
+        groupSelect.innerHTML = '<option value="">Select a group...</option>';
+        this.groups.forEach(group => {
+            const option = document.createElement('option');
+            option.value = group.id;
+            option.textContent = group.name;
+            if (group.id === expense.groupId) {
+                option.selected = true;
+            }
+            groupSelect.appendChild(option);
+        });
+        
+        // Set paid by
+        this.updateEditExpenseFormMembers();
+        const paidBySelect = document.getElementById('editExpensePaidBy');
+        if (paidBySelect) {
+            paidBySelect.value = expense.paidBy || '';
+        }
+        
+        // Set split options
+        const splitEqually = document.getElementById('editSplitEqually');
+        const customSplit = document.getElementById('editCustomSplit');
+        const customSplitSection = document.getElementById('editCustomSplitSection');
+        
+        if (expense.splitEqually !== false) {
+            splitEqually.checked = true;
+            customSplit.checked = false;
+            customSplitSection.style.display = 'none';
+        } else {
+            splitEqually.checked = false;
+            customSplit.checked = true;
+            customSplitSection.style.display = 'block';
+            this.updateEditCustomSplitInputs();
+        }
+        
+        this.showModal('editExpenseModal');
+    }
+
+    updateEditExpenseFormMembers() {
+        const groupId = document.getElementById('editExpenseGroup').value;
+        const paidBySelect = document.getElementById('editExpensePaidBy');
+        const customSplitInputs = document.getElementById('editCustomSplitInputs');
+        
+        if (!groupId) {
+            paidBySelect.innerHTML = '<option value="">Who paid for this?</option>';
+            return;
+        }
+        
+        const group = this.groups.find(g => g.id === groupId);
+        if (!group) return;
+        
+        // Update paid by options
+        paidBySelect.innerHTML = '<option value="">Who paid for this?</option>';
+        group.members.forEach(member => {
+            const option = document.createElement('option');
+            option.value = member;
+            option.textContent = member;
+            paidBySelect.appendChild(option);
+        });
+        
+        // Update custom split inputs
+        customSplitInputs.innerHTML = '';
+        group.members.forEach(member => {
+            const inputGroup = document.createElement('div');
+            inputGroup.className = 'custom-split-input';
+            inputGroup.innerHTML = `
+                <label>${member}</label>
+                <input type="number" data-member="${member}" step="0.01" min="0" placeholder="0.00">
+            `;
+            customSplitInputs.appendChild(inputGroup);
+        });
+    }
+
+    updateEditCustomSplitInputs() {
+        const expense = this.expenses.find(e => e.id === this.editingExpenseId);
+        if (!expense || !expense.splits) return;
+        
+        const inputs = document.querySelectorAll('#editCustomSplitInputs input');
+        inputs.forEach(input => {
+            const member = input.dataset.member;
+            if (expense.splits[member] !== undefined) {
+                input.value = expense.splits[member];
+            }
+        });
+    }
+
+    toggleEditSplitOptions() {
+        const splitEqually = document.getElementById('editSplitEqually');
+        const customSplit = document.getElementById('editCustomSplit');
+        const customSplitSection = document.getElementById('editCustomSplitSection');
+        
+        if (customSplit.checked) {
+            splitEqually.checked = false;
+            customSplitSection.style.display = 'block';
+            this.updateEditExpenseFormMembers();
+            this.updateEditCustomSplitInputs();
+        } else {
+            splitEqually.checked = true;
+            customSplitSection.style.display = 'none';
+        }
+    }
+
+    async saveExpenseEdit() {
+        const expenseId = this.editingExpenseId;
+        const expense = this.expenses.find(e => e.id === expenseId);
+        if (!expense) {
+            this.showNotification('Expense not found', 'error');
+            return;
+        }
+
+        const groupId = document.getElementById('editExpenseGroup').value;
+        const description = document.getElementById('editExpenseDescription').value.trim();
+        const amount = parseFloat(document.getElementById('editExpenseAmount').value);
+        const paidBy = document.getElementById('editExpensePaidBy').value;
+        const splitEqually = document.getElementById('editSplitEqually').checked;
+        const customSplit = document.getElementById('editCustomSplit').checked;
+        
+        if (!groupId || !description || !amount || !paidBy) {
+            this.showNotification('Please fill in all required fields', 'error');
+            return;
+        }
+        
+        const group = this.groups.find(g => g.id === groupId);
+        if (!group) {
+            this.showNotification('Selected group not found', 'error');
+            return;
+        }
+        
+        let splits = {};
+        
+        if (splitEqually) {
+            const shareAmount = amount / group.members.length;
+            group.members.forEach(member => {
+                splits[member] = shareAmount;
+            });
+        } else if (customSplit) {
+            const customInputs = document.querySelectorAll('#editCustomSplitInputs input');
+            let totalSplit = 0;
+            
+            customInputs.forEach(input => {
+                const member = input.dataset.member;
+                const value = parseFloat(input.value) || 0;
+                splits[member] = value;
+                totalSplit += value;
+            });
+            
+            if (Math.abs(totalSplit - amount) > 0.01) {
+                this.showNotification('Custom split amounts must equal the total expense amount', 'error');
+                return;
+            }
+        }
+        
+        try {
+            const expenseData = {
+                groupId: groupId,
+                description: description,
+                amount: amount,
+                paidBy: paidBy,
+                splits: splits,
+                splitEqually: splitEqually,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            
+            await this.db.collection('expenses').doc(expenseId).update(expenseData);
+            this.hideModal('editExpenseModal');
+            this.showNotification('Expense updated successfully!', 'success');
+        } catch (error) {
+            this.showNotification('Error updating expense: ' + error.message, 'error');
+        }
+    }
+
+    async deleteExpense(expenseId) {
+        try {
+            await this.db.collection('expenses').doc(expenseId).delete();
+            this.showNotification('Expense deleted successfully!', 'success');
+        } catch (error) {
+            this.showNotification('Error deleting expense: ' + error.message, 'error');
+        }
+    }
 }
 
 // Global functions for onclick handlers
@@ -1066,6 +1442,12 @@ function addMember() {
 function addEditMember() {
     if (window.splitTab) {
         window.splitTab.addEditMember();
+    }
+}
+
+function saveExpenseEdit() {
+    if (window.splitTab) {
+        window.splitTab.saveExpenseEdit();
     }
 }
 

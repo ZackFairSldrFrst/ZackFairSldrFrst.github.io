@@ -1042,6 +1042,53 @@ body::before {
     }
 }
 
+/* Expense Actions */
+.expense-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.expense-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.expense-buttons .btn-icon {
+    background: var(--bg-glass);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.expense-buttons .btn-icon:hover {
+    background: var(--bg-card);
+    border-color: var(--border-hover);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+}
+
+.expense-buttons .btn-icon[data-action="edit-expense"]:hover {
+    color: var(--primary-color);
+}
+
+.expense-buttons .btn-icon[data-action="delete-expense"]:hover {
+    color: var(--error-color);
+}
+
+/* Responsive adjustments for expense actions */
+@media (max-width: 768px) {
+    .expense-actions {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+    
+    .expense-buttons {
+        align-self: flex-end;
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .header-content {
