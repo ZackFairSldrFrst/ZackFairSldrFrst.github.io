@@ -1,6 +1,11 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Split the Tab - Main Application
 class SplitTheTab {
+=======
+// SplitTab - Splitwise Alternative with Firebase Firestore
+class SplitTab {
+>>>>>>> parent of 2b35c9a (fixed name)
 =======
 // SplitTab - Splitwise Alternative with Firebase Firestore
 class SplitTab {
@@ -960,6 +965,7 @@ function deleteExpense(expenseId) {
 
 function showModal(modalId) {
 <<<<<<< HEAD
+<<<<<<< HEAD
     console.log('Global showModal called with:', modalId);
     // Check if app is initialized
     if (window.splitTheTabApp) {
@@ -978,16 +984,23 @@ function showModal(modalId) {
     if (window.splitTab) {
         window.splitTab.showModal(modalId);
 >>>>>>> parent of 2b35c9a (fixed name)
+=======
+    if (window.splitTab) {
+        window.splitTab.showModal(modalId);
+>>>>>>> parent of 2b35c9a (fixed name)
     }
 }
 
 function closeModal(modalId) {
+<<<<<<< HEAD
 <<<<<<< HEAD
     console.log('Global closeModal called with:', modalId);
     // Check if app is initialized
     if (window.splitTheTabApp) {
         window.splitTheTabApp.closeModal(modalId);
 =======
+=======
+>>>>>>> parent of 2b35c9a (fixed name)
     if (window.splitTab) {
         window.splitTab.hideModal(modalId);
     }
@@ -1034,6 +1047,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check if Firebase is available
     if (typeof firebase !== 'undefined') {
         window.splitTab = new SplitTab();
+<<<<<<< HEAD
+>>>>>>> parent of 2b35c9a (fixed name)
+=======
 >>>>>>> parent of 2b35c9a (fixed name)
     } else {
         // Fallback: directly hide modal
