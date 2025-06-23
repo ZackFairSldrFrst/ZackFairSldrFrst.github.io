@@ -67,7 +67,36 @@
             font-size: 1.2rem;
             opacity: 0.9;
             max-width: 600px;
-            margin: 0 auto;
+            margin: 0 auto 1.5rem;
+        }
+        
+        .header-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .header-actions .btn {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .header-actions .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .header-actions .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
         }
         
         /* Step-by-step wizard layout */
@@ -981,13 +1010,90 @@
         @keyframes spin {
             to { transform: translate(-50%, -50%) rotate(360deg); }
         }
+        
+        /* Navigation Header */
+        .nav-header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--bg-tertiary);
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+            border-radius: var(--border-radius);
+        }
+        
+        .nav-header .nav-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .nav-link {
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            color: var(--text-secondary);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .nav-link:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        
+        .nav-link.active {
+            background: var(--accent-color);
+            color: white;
+        }
+        
+        .nav-header .nav-title {
+            text-align: center;
+        }
+        
+        .nav-header .nav-title h2 {
+            margin: 0;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        /* Responsive navigation */
+        @media (max-width: 768px) {
+            .nav-header .nav-links {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            
+            .nav-link {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="creator-container">
+        <!-- Navigation Header -->
+        <div class="nav-header">
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">🏠 Home</a>
+                <a href="test-manager.html" class="nav-link">📊 Test Manager</a>
+                <a href="test-creator.html" class="nav-link active">🎯 Test Creator</a>
+            </div>
+            <div class="nav-title">
+                <h2>Practice Test Creator</h2>
+            </div>
+        </div>
+        
         <div class="creator-header">
             <h1>🎯 Practice Test Creator</h1>
             <p>Build professional practice tests with the same quality and formatting as our existing platform</p>
+            <div class="header-actions">
+                <a href="test-manager.html" class="btn btn-secondary">
+                    📊 View All Tests
+                </a>
+            </div>
         </div>
         
         <div class="wizard-container">

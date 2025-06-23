@@ -9,6 +9,17 @@ class TestCreator {
     }
     
     init() {
+        // Check if we're in edit mode
+        const editMode = localStorage.getItem('edit-mode');
+        const editTestCode = localStorage.getItem('edit-test-code');
+        
+        if (editMode === 'true' && editTestCode) {
+            this.showEditModeMessage(editTestCode);
+            // Clear the edit mode flags
+            localStorage.removeItem('edit-mode');
+            localStorage.removeItem('edit-test-code');
+        }
+        
         // Try to load saved data first
         this.loadSavedData();
         
@@ -1024,6 +1035,61 @@ testCore.start();`;
             this.updateSaveStatus('ready');
             
             alert('Started over! All previous work has been cleared.');
+        }
+    }
+    
+    showEditModeMessage(testCode) {
+        // Create a temporary notification
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--accent-color);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            max-width: 300px;
+            animation: slideInRight 0.3s ease-out;
+        `;
+        
+        notification.innerHTML = `
+            <h4 style="margin: 0 0 0.5rem 0;">✏️ Edit Mode</h4>
+            <p style="margin: 0; font-size: 0.9rem;">
+                You're editing test: <strong>${testCode}</strong><br>
+                Create a new version or modify the existing test.
+            </p>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Remove after 5 seconds
+        setTimeout(() => {
+            notification.style.animation = 'slideOutRight 0.3s ease-out';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, 5000);
+        
+        // Add CSS animations
+        if (!document.getElementById('edit-mode-animations')) {
+            const style = document.createElement('style');
+            style.id = 'edit-mode-animations';
+            style.textContent = `
+                @keyframes slideInRight {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOutRight {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
         }
     }
 }

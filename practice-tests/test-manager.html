@@ -37,7 +37,35 @@
             font-size: 1.2rem;
             opacity: 0.9;
             max-width: 600px;
-            margin: 0 auto;
+            margin: 0 auto 1.5rem;
+        }
+        
+        .header-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .header-actions .btn {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .header-actions .btn-primary {
+            background: var(--accent-color);
+            color: white;
+        }
+        
+        .header-actions .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
         }
         
         .stats-grid {
@@ -265,13 +293,90 @@
             background: #f8d7da;
             color: #721c24;
         }
+        
+        /* Navigation Header */
+        .nav-header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--bg-tertiary);
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+            border-radius: var(--border-radius);
+        }
+        
+        .nav-header .nav-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .nav-link {
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            color: var(--text-secondary);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .nav-link:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        
+        .nav-link.active {
+            background: var(--accent-color);
+            color: white;
+        }
+        
+        .nav-header .nav-title {
+            text-align: center;
+        }
+        
+        .nav-header .nav-title h2 {
+            margin: 0;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        /* Responsive navigation */
+        @media (max-width: 768px) {
+            .nav-header .nav-links {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            
+            .nav-link {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="manager-container">
+        <!-- Navigation Header -->
+        <div class="nav-header">
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">🏠 Home</a>
+                <a href="test-manager.html" class="nav-link active">📊 Test Manager</a>
+                <a href="test-creator.html" class="nav-link">🎯 Test Creator</a>
+            </div>
+            <div class="nav-title">
+                <h2>Test Manager Dashboard</h2>
+            </div>
+        </div>
+        
         <div class="manager-header">
             <h1>📊 Test Manager</h1>
             <p>Manage and monitor all published tests on the platform</p>
+            <div class="header-actions">
+                <a href="test-creator.html" class="btn btn-primary">
+                    ➕ Create New Test
+                </a>
+            </div>
         </div>
         
         <div class="stats-grid" id="statsGrid">
@@ -477,8 +582,8 @@
                             <a href="dynamic-test.html?test=${test.testCode}" class="btn-sm btn-primary" target="_blank">
                                 👁️ View Test
                             </a>
-                            <a href="test-creator.html" class="btn-sm btn-secondary">
-                                ✏️ Edit
+                            <a href="test-creator.html" class="btn-sm btn-secondary" onclick="editTest('${test.testCode}')">
+                                ✏️ Edit Test
                             </a>
                             <button class="btn-sm btn-danger" onclick="deleteTest('${test.id}', '${test.title}')">
                                 🗑️ Delete
@@ -530,6 +635,16 @@
                 console.error('Failed to delete test:', error);
                 alert('Failed to delete test: ' + error.message);
             }
+        }
+        
+        // Global function for editing tests
+        function editTest(testCode) {
+            // Store the test code for editing
+            localStorage.setItem('edit-test-code', testCode);
+            localStorage.setItem('edit-mode', 'true');
+            
+            // Navigate to test creator
+            window.location.href = 'test-creator.html';
         }
         
         // Initialize the test manager when the page loads
