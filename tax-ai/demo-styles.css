@@ -195,10 +195,13 @@
     flex: 1;
     padding: 20px 0;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .nav-section {
     margin-bottom: 32px;
+    flex-shrink: 0;
 }
 
 .nav-section-title {
