@@ -6,15 +6,24 @@ class MessageFlow {
     constructor() {
         this.contacts = [];
         this.messages = [];
+        this.notificationPages = [];
         this.currentTab = 'dashboard';
+        this.notificationsEnabled = false;
+        this.currentPageId = null;
+        this.storageKey = 'letterly_data';
         this.init();
     }
 
     init() {
         this.initEventListeners();
-        this.loadDemoData();
+        this.loadSavedData();
         this.updateDashboard();
         this.setMinDateTime();
+        this.checkForDirectPageAccess();
+        this.processAnalytics();
+        
+        // Set up periodic analytics processing
+        setInterval(() => this.processAnalytics(), 5000); // Check every 5 seconds
     }
 
     // Event Listeners
@@ -36,6 +45,11 @@ class MessageFlow {
         // Header compose button
         document.getElementById('compose-btn').addEventListener('click', () => this.openComposer());
         document.getElementById('new-message-header-btn').addEventListener('click', () => this.openComposer());
+        
+        // Notification system
+        document.getElementById('settings-btn').addEventListener('click', () => this.openNotificationSettings());
+        document.getElementById('enable-notifications-btn').addEventListener('click', () => this.enableNotifications());
+        document.getElementById('test-notification-btn').addEventListener('click', () => this.testNotification());
 
         // Modal controls
         this.initModalControls();
@@ -72,6 +86,18 @@ class MessageFlow {
             if (e.target === e.currentTarget) this.closeModal('contact-modal');
         });
         document.getElementById('cancel-contact').addEventListener('click', () => this.closeModal('contact-modal'));
+
+        // Page preview modal
+        document.getElementById('page-preview-close').addEventListener('click', () => this.closeModal('page-preview-modal'));
+        document.getElementById('page-preview-modal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) this.closeModal('page-preview-modal');
+        });
+
+        // Notification viewer modal
+        document.getElementById('notification-viewer-close').addEventListener('click', () => this.closeModal('notification-viewer-modal'));
+        document.getElementById('notification-viewer-modal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) this.closeModal('notification-viewer-modal');
+        });
     }
 
     initFormControls() {
@@ -86,6 +112,10 @@ class MessageFlow {
             e.preventDefault();
             this.addContact();
         });
+
+        // Page creation controls
+        document.getElementById('preview-page-btn').addEventListener('click', () => this.previewPage());
+        document.getElementById('copy-url-btn').addEventListener('click', () => this.copyPageUrl());
 
         // Schedule type radio buttons
         document.querySelectorAll('input[name="scheduleType"]').forEach(radio => {
@@ -278,6 +308,12 @@ class MessageFlow {
                     <div class="message-meta">
                         <span>📞 ${message.recipientPhone}</span>
                         <span>📅 ${this.formatDateTime(message.scheduledTime || message.createdAt)}</span>
+                        ${message.pageUrl ? `<span>🔗 <a href="${message.pageUrl}" target="_blank" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">View Page</a></span>` : ''}
+                        ${message.theme ? `<span class="theme-indicator ${message.theme}">
+                            <i class="fas fa-palette"></i>
+                            ${message.theme.charAt(0).toUpperCase() + message.theme.slice(1)}
+                        </span>` : ''}
+                        ${message.pageId ? `<span>📊 Views: ${this.getPageViews(message.pageId)} | Clicks: ${this.getPageClicks(message.pageId)}</span>` : ''}
                     </div>
                 </div>
                 <div class="message-status ${message.status}">${message.status}</div>
@@ -394,38 +430,52 @@ class MessageFlow {
         });
     }
 
-    sendMessage() {
-        const formData = new FormData(document.getElementById('message-form'));
-        const recipientId = document.getElementById('recipient-select').value;
-        const content = document.getElementById('message-content').value;
-        const scheduleType = formData.get('scheduleType');
+    async sendMessage() {
+        const pageData = this.getPageFormData();
+        if (!pageData) return;
+
+        const scheduleType = document.querySelector('input[name="scheduleType"]:checked').value;
         const scheduleDateTime = document.getElementById('schedule-datetime').value;
 
-        if (!recipientId || !content) {
-            alert('Please select a recipient and enter a message.');
-            return;
-        }
-
-        const recipient = this.contacts.find(c => c.id === recipientId);
+        const recipient = this.contacts.find(c => c.id === pageData.recipientId);
+        
+        // Create notification page
+        const page = this.createNotificationPage(pageData);
+        
         const message = {
             id: this.generateId(),
-            recipientId: recipientId,
+            recipientId: pageData.recipientId,
             recipientName: recipient.name,
             recipientPhone: recipient.phone,
-            content: content,
+            content: pageData.content,
+            title: pageData.title,
+            theme: pageData.theme,
+            pageUrl: page.url,
+            pageId: page.id,
             status: scheduleType === 'now' ? 'sent' : 'scheduled',
             createdAt: new Date().toISOString(),
             scheduledTime: scheduleType === 'scheduled' ? scheduleDateTime : null
         };
 
         this.messages.push(message);
+
+        // Send notification immediately if not scheduled
+        if (scheduleType === 'now') {
+            message.status = 'sent';
+            this.showNotification(
+                `Notification page created! Share this URL: ${page.url}`,
+                'success'
+            );
+        } else {
+            this.showNotification(
+                'Notification page created and scheduled successfully!',
+                'success'
+            );
+        }
+
+        // Save data after creating message
+        this.saveData();
         this.closeModal('composer-modal');
-        
-        // Show success message
-        this.showNotification(
-            scheduleType === 'now' ? 'Message sent successfully!' : 'Message scheduled successfully!',
-            'success'
-        );
 
         // Update displays
         this.updateDashboard();
@@ -456,6 +506,9 @@ class MessageFlow {
 
         this.contacts.push(contact);
         this.closeModal('contact-modal');
+        
+        // Save data after adding contact
+        this.saveData();
         
         this.showNotification('Contact added successfully!', 'success');
         
@@ -650,75 +703,531 @@ class MessageFlow {
         }, 3000);
     }
 
-    // Load demo data
-    loadDemoData() {
-        // Demo contacts
+    // Notification System Methods
+    openNotificationSettings() {
+        const settingsHtml = `
+            <div style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.2); margin: 1rem;">
+                <h3 style="color: rgba(255, 255, 255, 0.9); margin-bottom: 1.5rem;">Data Management</h3>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <button class="btn-secondary" onclick="letterly.exportData()">
+                        <i class="fas fa-download"></i> Export Data
+                    </button>
+                    <button class="btn-secondary" onclick="letterly.clearAllData()" style="background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.3);">
+                        <i class="fas fa-trash"></i> Clear All Data
+                    </button>
+                </div>
+                <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.875rem; margin-top: 1rem;">
+                    Export your data for backup or clear all data to start fresh.
+                </p>
+            </div>
+        `;
+        
+        // Create temporary modal
+        const modal = document.createElement('div');
+        modal.className = 'modal active';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-cog"></i> Settings</h2>
+                    <button class="modal-close" onclick="this.closest('.modal').remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ${settingsHtml}
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        
+        // Close on background click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.remove();
+            }
+        });
+    }
+
+    async enableNotifications() {
+        if (!('Notification' in window)) {
+            this.showNotification('Browser notifications not supported', 'error');
+            return;
+        }
+
+        try {
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                this.notificationsEnabled = true;
+                this.updateNotificationStatus('enabled');
+                this.showNotification('Browser notifications enabled!', 'success');
+            } else {
+                this.showNotification('Notification permission denied', 'error');
+            }
+        } catch (error) {
+            console.error('Notification permission error:', error);
+            this.showNotification('Error enabling notifications', 'error');
+        }
+    }
+
+    updateNotificationStatus(status) {
+        const statusDot = document.getElementById('notification-status-dot');
+        const statusText = document.getElementById('notification-status-text');
+
+        if (status === 'enabled') {
+            statusDot.className = 'status-dot connected';
+            statusText.textContent = 'Notifications Enabled';
+        } else {
+            statusDot.className = 'status-dot disconnected';
+            statusText.textContent = 'Notifications Disabled';
+        }
+    }
+
+    previewPage() {
+        const formData = this.getPageFormData();
+        if (!formData) return;
+
+        const pageHtml = this.generateNotificationPageHtml(formData);
+        document.getElementById('preview-frame').innerHTML = pageHtml;
+        
+        // Generate realistic URL
+        const pageId = this.generateId();
+        const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
+        const pageUrl = `${baseUrl}/notification-page.html?id=${pageId}&title=${encodeURIComponent(formData.title)}&message=${encodeURIComponent(formData.content)}&theme=${formData.theme}`;
+        document.getElementById('page-url').value = pageUrl;
+        
+        // Generate QR code (mock)
+        this.generateQrCode(pageUrl);
+        
+        this.openModal('page-preview-modal');
+    }
+
+    getPageFormData() {
+        const title = document.getElementById('page-title').value;
+        const content = document.getElementById('message-content').value;
+        const theme = document.querySelector('input[name="pageTheme"]:checked').value;
+        const recipientId = document.getElementById('recipient-select').value;
+
+        if (!title || !content || !recipientId) {
+            alert('Please fill in all required fields');
+            return null;
+        }
+
+        return {
+            title,
+            content,
+            theme,
+            recipientId,
+            includeButton: document.getElementById('include-button').checked,
+            buttonText: document.getElementById('button-text').value,
+            buttonUrl: document.getElementById('button-url').value,
+            includeImage: document.getElementById('include-image').checked,
+            imageUrl: document.getElementById('image-url').value,
+            includeCountdown: document.getElementById('include-countdown').checked,
+            countdownDate: document.getElementById('countdown-date').value
+        };
+    }
+
+    generateNotificationPageHtml(data) {
+        let elementsHtml = '';
+
+        if (data.includeImage && data.imageUrl) {
+            elementsHtml += `<img src="${data.imageUrl}" alt="Notification Image" class="notification-image">`;
+        }
+
+        if (data.includeButton) {
+            const buttonAction = data.buttonUrl ? `onclick="window.open('${data.buttonUrl}', '_blank')"` : 'onclick="this.style.opacity=0.5; this.textContent=\'✓ Acknowledged\'"';
+            elementsHtml += `<button class="notification-button" ${buttonAction}>${data.buttonText}</button>`;
+        }
+
+        if (data.includeCountdown && data.countdownDate) {
+            elementsHtml += `
+                <div class="countdown-timer" id="countdown-display">
+                    <div class="countdown-time">00:00:00:00</div>
+                    <div class="countdown-label">Days : Hours : Minutes : Seconds</div>
+                </div>
+            `;
+        }
+
+        return `
+            <div class="notification-page ${data.theme}">
+                <div class="notification-content">
+                    <h1 class="notification-title">${data.title}</h1>
+                    <p class="notification-message">${data.content}</p>
+                    ${elementsHtml}
+                </div>
+            </div>
+            ${data.includeCountdown ? `<script>
+                const countdownDate = new Date('${data.countdownDate}').getTime();
+                const countdownTimer = setInterval(function() {
+                    const now = new Date().getTime();
+                    const distance = countdownDate - now;
+                    
+                    if (distance < 0) {
+                        clearInterval(countdownTimer);
+                        document.querySelector('.countdown-time').innerHTML = 'EXPIRED';
+                        return;
+                    }
+                    
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                    
+                    document.querySelector('.countdown-time').innerHTML = 
+                        String(days).padStart(2, '0') + ':' +
+                        String(hours).padStart(2, '0') + ':' +
+                        String(minutes).padStart(2, '0') + ':' +
+                        String(seconds).padStart(2, '0');
+                }, 1000);
+            </script>` : ''}
+        `;
+    }
+
+    generateQrCode(url) {
+        // Simple QR code placeholder - in production, use a QR code library
+        const qrContainer = document.getElementById('qr-code');
+        qrContainer.innerHTML = `
+            <div style="width: 150px; height: 150px; background: #000; color: #fff; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 10px; line-height: 1.2; text-align: center; word-break: break-all; padding: 10px;">
+                QR CODE<br>${url.substring(0, 20)}...
+            </div>
+            <p style="margin-top: 0.5rem; font-size: 0.75rem; color: rgba(0,0,0,0.6);">Scan to open page</p>
+        `;
+    }
+
+    async copyPageUrl() {
+        const urlInput = document.getElementById('page-url');
+        const url = urlInput.value;
+        
+        try {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(url);
+                this.showNotification('Page URL copied to clipboard!', 'success');
+            } else {
+                // Fallback for older browsers
+                urlInput.select();
+                urlInput.setSelectionRange(0, 99999);
+                document.execCommand('copy');
+                this.showNotification('Page URL copied to clipboard!', 'success');
+            }
+        } catch (error) {
+            console.error('Failed to copy URL:', error);
+            this.showNotification('Failed to copy URL. Please copy manually.', 'error');
+        }
+    }
+
+    sendNotificationToUser(pageData, recipient) {
+        if (!this.notificationsEnabled) {
+            this.showNotification('Browser notifications not enabled', 'warning');
+            return;
+        }
+
+        // Send browser notification
+        new Notification(`New message from MessageFlow`, {
+            body: `${pageData.title}: ${pageData.content.substring(0, 100)}...`,
+            icon: '/favicon.ico',
+            tag: pageData.id,
+            requireInteraction: true,
+            actions: [
+                { action: 'view', title: 'View Page' },
+                { action: 'dismiss', title: 'Dismiss' }
+            ]
+        });
+
+        // In a real implementation, you might also:
+        // - Send push notifications via service worker
+        // - Send email notifications
+        // - Save to a notification queue for offline users
+    }
+
+    createNotificationPage(pageData) {
+        const pageId = this.generateId();
+        const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
+        const pageUrl = `${baseUrl}/notification-page.html?id=${pageId}`;
+        
+        const page = {
+            id: pageId,
+            url: pageUrl,
+            ...pageData,
+            createdAt: new Date().toISOString(),
+            views: 0,
+            clicks: 0,
+            status: 'active'
+        };
+
+        this.notificationPages.push(page);
+        this.updatePageStats();
+        
+        // Save data after creating page
+        this.saveData();
+        
+        return page;
+    }
+
+    updatePageStats() {
+        const activePages = this.notificationPages.filter(p => p.status === 'active').length;
+        const totalViews = this.notificationPages.reduce((sum, p) => sum + p.views, 0);
+        
+        document.getElementById('active-pages-count').textContent = activePages;
+        document.getElementById('total-views-count').textContent = totalViews;
+    }
+
+    getPageViews(pageId) {
+        const page = this.notificationPages.find(p => p.id === pageId);
+        return page ? page.views : 0;
+    }
+
+    getPageClicks(pageId) {
+        const page = this.notificationPages.find(p => p.id === pageId);
+        return page ? page.clicks : 0;
+    }
+
+    trackPageView(pageId) {
+        const page = this.notificationPages.find(p => p.id === pageId);
+        if (page) {
+            const wasFirstView = page.views === 0;
+            page.views++;
+            page.lastViewedAt = new Date().toISOString();
+            this.updatePageStats();
+            this.saveData();
+            
+            // Send browser notification to creator when someone first views their page
+            if (wasFirstView && this.notificationsEnabled) {
+                this.sendCreatorNotification(`Someone viewed your notification page: "${page.title}"`);
+            }
+        }
+    }
+
+    trackButtonClick(pageId) {
+        const page = this.notificationPages.find(p => p.id === pageId);
+        if (page) {
+            page.clicks++;
+            page.lastClickedAt = new Date().toISOString();
+            this.updatePageStats();
+            this.saveData();
+            
+            // Send browser notification to creator when someone clicks their button
+            if (this.notificationsEnabled) {
+                this.sendCreatorNotification(`Someone clicked the button on: "${page.title}"`);
+            }
+        }
+    }
+
+    sendCreatorNotification(message) {
+        if (!('Notification' in window) || Notification.permission !== 'granted') {
+            return;
+        }
+
+        try {
+            new Notification('Letterly Analytics', {
+                body: message,
+                icon: '/favicon.ico',
+                badge: '/favicon.ico',
+                tag: 'letterly-analytics',
+                requireInteraction: false,
+                silent: false
+            });
+        } catch (error) {
+            console.error('Failed to send notification:', error);
+        }
+    }
+
+    testNotification() {
+        if (!('Notification' in window)) {
+            this.showNotification('Your browser does not support notifications', 'error');
+            return;
+        }
+
+        if (Notification.permission === 'denied') {
+            this.showNotification('Notifications are blocked. Please enable them in your browser settings.', 'error');
+            return;
+        }
+
+        if (Notification.permission === 'default') {
+            this.showNotification('Please enable notifications first using the settings.', 'info');
+            return;
+        }
+
+        // Send test notification
+        try {
+            new Notification('Letterly Test', {
+                body: 'This is a test notification. Your notification system is working!',
+                icon: '/favicon.ico',
+                tag: 'letterly-test'
+            });
+            this.showNotification('Test notification sent!', 'success');
+        } catch (error) {
+            console.error('Failed to send test notification:', error);
+            this.showNotification('Failed to send test notification', 'error');
+        }
+    }
+
+    processAnalytics() {
+        try {
+            const analyticsData = JSON.parse(localStorage.getItem('letterly_analytics') || '[]');
+            
+            if (analyticsData.length > 0) {
+                analyticsData.forEach(event => {
+                    if (event.type === 'pageView') {
+                        this.trackPageView(event.pageId);
+                    } else if (event.type === 'buttonClick') {
+                        this.trackButtonClick(event.pageId);
+                    }
+                });
+                
+                // Clear processed analytics
+                localStorage.removeItem('letterly_analytics');
+                
+                // Update displays if needed
+                if (this.currentTab === 'messages') {
+                    this.loadMessages();
+                }
+            }
+        } catch (error) {
+            console.error('Failed to process analytics:', error);
+        }
+    }
+
+    // Data Persistence Methods
+    saveData() {
+        const data = {
+            contacts: this.contacts,
+            messages: this.messages,
+            notificationPages: this.notificationPages,
+            notificationsEnabled: this.notificationsEnabled,
+            lastUpdated: new Date().toISOString()
+        };
+        
+        try {
+            localStorage.setItem(this.storageKey, JSON.stringify(data));
+            console.log('Data saved successfully');
+        } catch (error) {
+            console.error('Failed to save data:', error);
+            this.showNotification('Failed to save data locally', 'error');
+        }
+    }
+
+    loadSavedData() {
+        try {
+            const savedData = localStorage.getItem(this.storageKey);
+            
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                this.contacts = data.contacts || [];
+                this.messages = data.messages || [];
+                this.notificationPages = data.notificationPages || [];
+                this.notificationsEnabled = data.notificationsEnabled || false;
+                
+                // Update UI based on saved state
+                if (this.notificationsEnabled) {
+                    this.updateNotificationStatus('enabled');
+                }
+                
+                this.updatePageStats();
+                console.log('Data loaded successfully', data);
+            } else {
+                console.log('No saved data found, starting fresh');
+                this.initializeWithSampleData();
+            }
+        } catch (error) {
+            console.error('Failed to load saved data:', error);
+            this.showNotification('Failed to load saved data', 'error');
+            this.initializeWithSampleData();
+        }
+    }
+
+    clearAllData() {
+        if (confirm('Are you sure you want to clear all data? This cannot be undone.')) {
+            localStorage.removeItem(this.storageKey);
+            this.contacts = [];
+            this.messages = [];
+            this.notificationPages = [];
+            this.updateDashboard();
+            this.loadTabContent(this.currentTab);
+            this.showNotification('All data cleared', 'info');
+        }
+    }
+
+    exportData() {
+        const data = {
+            contacts: this.contacts,
+            messages: this.messages,
+            notificationPages: this.notificationPages,
+            exportDate: new Date().toISOString()
+        };
+        
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `letterly-backup-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        this.showNotification('Data exported successfully', 'success');
+    }
+
+    checkForDirectPageAccess() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const pageId = urlParams.get('page');
+        
+        if (pageId) {
+            // User is accessing a direct notification page
+            this.displayNotificationPage(pageId);
+        }
+    }
+
+    displayNotificationPage(pageId) {
+        const page = this.notificationPages.find(p => p.id === pageId);
+        
+        if (page) {
+            // Redirect to the standalone notification page with the page data
+            const params = new URLSearchParams({
+                id: page.id,
+                title: page.title,
+                message: page.content,
+                theme: page.theme,
+                buttonText: page.buttonText || 'Got it!',
+                buttonUrl: page.buttonUrl || '',
+                imageUrl: page.imageUrl || '',
+                countdownDate: page.countdownDate || '',
+                includeButton: page.includeButton || false,
+                includeImage: page.includeImage || false,
+                includeCountdown: page.includeCountdown || false
+            });
+            
+            window.location.href = `notification-page.html?${params.toString()}`;
+        } else {
+            this.showNotification('Notification page not found', 'error');
+        }
+    }
+
+    // Initialize with minimal sample data for first-time users
+    initializeWithSampleData() {
+        // Add one sample contact to help users get started
         this.contacts = [
             {
-                id: 'c1',
-                name: 'Sarah Johnson',
-                phone: '+1 (555) 123-4567',
-                email: 'sarah@example.com',
-                tags: 'customer, premium',
-                createdAt: new Date(Date.now() - 86400000).toISOString()
-            },
-            {
-                id: 'c2',
-                name: 'Mike Chen',
-                phone: '+1 (555) 987-6543',
-                email: 'mike@example.com',
-                tags: 'lead, prospect',
-                createdAt: new Date(Date.now() - 172800000).toISOString()
-            },
-            {
-                id: 'c3',
-                name: 'Emily Davis',
-                phone: '+1 (555) 456-7890',
-                email: 'emily@example.com',
-                tags: 'customer, vip',
-                createdAt: new Date(Date.now() - 259200000).toISOString()
+                id: 'sample-contact',
+                name: 'Sample Contact',
+                phone: '+1 (555) 000-0000',
+                email: 'sample@example.com',
+                tags: 'example',
+                createdAt: new Date().toISOString()
             }
         ];
 
-        // Demo messages
-        this.messages = [
-            {
-                id: 'm1',
-                recipientId: 'c1',
-                recipientName: 'Sarah Johnson',
-                recipientPhone: '+1 (555) 123-4567',
-                content: 'Thanks for your recent purchase! We hope you love your new product.',
-                status: 'sent',
-                createdAt: new Date(Date.now() - 3600000).toISOString(),
-                scheduledTime: null
-            },
-            {
-                id: 'm2',
-                recipientId: 'c2',
-                recipientName: 'Mike Chen',
-                recipientPhone: '+1 (555) 987-6543',
-                content: 'Hi Mike! Just following up on your interest in our premium package.',
-                status: 'scheduled',
-                createdAt: new Date(Date.now() - 7200000).toISOString(),
-                scheduledTime: new Date(Date.now() + 86400000).toISOString()
-            },
-            {
-                id: 'm3',
-                recipientId: 'c3',
-                recipientName: 'Emily Davis',
-                recipientPhone: '+1 (555) 456-7890',
-                content: '🎉 Happy Birthday Emily! Enjoy your special day!',
-                status: 'scheduled',
-                createdAt: new Date(Date.now() - 10800000).toISOString(),
-                scheduledTime: new Date(Date.now() + 172800000).toISOString()
-            }
-        ];
+        // Start with no messages - users will create their own
+        this.messages = [];
+        this.notificationPages = [];
+        
+        this.showNotification('Welcome to Letterly! Start by creating your first notification page.', 'info');
     }
 }
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
-    window.messageFlow = new MessageFlow();
+    window.letterly = new MessageFlow();
 });
 
 // Add CSS for notifications
@@ -788,4 +1297,4 @@ notificationStyles.textContent = `
         100% { transform: rotate(360deg); }
     }
 `;
-document.head.appendChild(notificationStyles); 
+        document.head.appendChild(notificationStyles); 

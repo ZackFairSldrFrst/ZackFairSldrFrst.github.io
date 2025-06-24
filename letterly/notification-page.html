@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Notification</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Notification Page Themes */
+        .notification-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .notification-page.minimal {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+        }
+
+        .notification-page.gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .notification-page.dark {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+        }
+
+        .notification-page.colorful {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 25%, #fecfef 75%, #ff9a9e 100%);
+            color: #333;
+        }
+
+        .notification-content {
+            max-width: 600px;
+            width: 100%;
+            z-index: 2;
+            position: relative;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .notification-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .notification-message {
+            font-size: 1.25rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .notification-image {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease 0.3s both;
+        }
+
+        .notification-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            color: inherit;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 2rem;
+            animation: bounceIn 1s ease 0.5s both;
+        }
+
+        .notification-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .notification-button:active {
+            transform: translateY(0);
+        }
+
+        .countdown-timer {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            font-family: 'Courier New', monospace;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .countdown-label {
+            font-size: 0.875rem;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Animated Background Elements */
+        .notification-page::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 20s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .floating-element {
+            position: absolute;
+            opacity: 0.1;
+            animation: floatElement linear infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            left: 10%;
+            animation-duration: 15s;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            left: 20%;
+            animation-duration: 20s;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            left: 70%;
+            animation-duration: 18s;
+            animation-delay: 4s;
+        }
+
+        .floating-element:nth-child(4) {
+            left: 80%;
+            animation-duration: 25s;
+            animation-delay: 6s;
+        }
+
+        .branding {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            font-size: 0.75rem;
+            opacity: 0.6;
+            z-index: 10;
+        }
+
+        .branding a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0px) rotate(0deg); 
+            }
+            50% { 
+                transform: translateY(-20px) rotate(180deg); 
+            }
+        }
+
+        @keyframes floatElement {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .notification-title {
+                font-size: 2rem;
+            }
+            
+            .notification-message {
+                font-size: 1.1rem;
+            }
+            
+            .countdown-timer {
+                font-size: 1.5rem;
+            }
+
+            .notification-content {
+                padding: 1rem;
+            }
+        }
+
+        /* Sound Wave Animation for Audio Notifications */
+        .sound-wave {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            z-index: 10;
+        }
+
+        .wave-bar {
+            width: 3px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 2px;
+            animation: wave 1.5s ease-in-out infinite;
+        }
+
+        .wave-bar:nth-child(1) { animation-delay: 0s; }
+        .wave-bar:nth-child(2) { animation-delay: 0.1s; }
+        .wave-bar:nth-child(3) { animation-delay: 0.2s; }
+        .wave-bar:nth-child(4) { animation-delay: 0.3s; }
+        .wave-bar:nth-child(5) { animation-delay: 0.4s; }
+
+        @keyframes wave {
+            0%, 100% {
+                transform: scaleY(1);
+            }
+            50% {
+                transform: scaleY(0.3);
+            }
+        }
+
+        /* Loading state */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading state -->
+    <div id="loading" class="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Notification page content -->
+    <div id="notification-page" class="notification-page" style="display: none;">
+        <!-- Floating background elements -->
+        <div class="floating-elements">
+            <div class="floating-element">⭐</div>
+            <div class="floating-element">✨</div>
+            <div class="floating-element">💫</div>
+            <div class="floating-element">🌟</div>
+        </div>
+
+        <!-- Sound wave indicator -->
+        <div class="sound-wave" id="sound-wave" style="display: none;">
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+        </div>
+
+        <!-- Main content -->
+        <div class="notification-content">
+            <h1 class="notification-title" id="title">Welcome!</h1>
+            <p class="notification-message" id="message">You have a new notification.</p>
+            
+            <!-- Optional elements -->
+            <img id="hero-image" class="notification-image" style="display: none;" alt="Notification Image">
+            
+            <div id="countdown-container" style="display: none;">
+                <div class="countdown-timer">
+                    <div id="countdown-display">00:00:00:00</div>
+                    <div class="countdown-label">Days : Hours : Minutes : Seconds</div>
+                </div>
+            </div>
+            
+            <button id="action-button" class="notification-button" style="display: none;">
+                Got it!
+            </button>
+        </div>
+
+        <!-- Branding -->
+        <div class="branding">
+            <a href="../index.html">Powered by Letterly</a>
+        </div>
+    </div>
+
+    <script>
+        // Page configuration (normally passed from URL params or API)
+        let pageConfig = {
+            title: "Welcome!",
+            message: "You have a new notification.",
+            theme: "gradient",
+            includeButton: true,
+            buttonText: "Got it!",
+            buttonUrl: "",
+            includeImage: false,
+            imageUrl: "",
+            includeCountdown: false,
+            countdownDate: ""
+        };
+
+        // Initialize page
+        function initializePage() {
+            // Parse URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const pageId = urlParams.get('id');
+            
+            // In a real implementation, fetch page config from API using pageId
+            // For demo, use URL parameters or defaults
+            if (urlParams.get('title')) pageConfig.title = urlParams.get('title');
+            if (urlParams.get('message')) pageConfig.message = urlParams.get('message');
+            if (urlParams.get('theme')) pageConfig.theme = urlParams.get('theme');
+            if (urlParams.get('buttonText')) pageConfig.buttonText = urlParams.get('buttonText');
+            if (urlParams.get('buttonUrl')) pageConfig.buttonUrl = urlParams.get('buttonUrl');
+            if (urlParams.get('imageUrl')) pageConfig.imageUrl = urlParams.get('imageUrl');
+            if (urlParams.get('countdownDate')) pageConfig.countdownDate = urlParams.get('countdownDate');
+
+            // Apply configuration
+            setTimeout(() => {
+                applyPageConfig();
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('notification-page').style.display = 'flex';
+                
+                // Show sound wave briefly
+                showSoundWave();
+                
+                // Track page view
+                trackPageView();
+            }, 1500);
+        }
+
+        function applyPageConfig() {
+            // Set title and meta
+            document.title = pageConfig.title;
+            document.getElementById('page-title').textContent = pageConfig.title;
+            document.getElementById('title').textContent = pageConfig.title;
+            document.getElementById('message').textContent = pageConfig.message;
+
+            // Apply theme
+            const pageElement = document.getElementById('notification-page');
+            pageElement.className = `notification-page ${pageConfig.theme}`;
+
+            // Configure button
+            const button = document.getElementById('action-button');
+            if (pageConfig.includeButton) {
+                button.style.display = 'inline-block';
+                button.textContent = pageConfig.buttonText;
+                
+                if (pageConfig.buttonUrl) {
+                    button.addEventListener('click', () => {
+                        window.open(pageConfig.buttonUrl, '_blank');
+                        trackButtonClick();
+                    });
+                } else {
+                    button.addEventListener('click', () => {
+                        button.style.opacity = '0.5';
+                        button.textContent = '✓ Acknowledged';
+                        trackButtonClick();
+                    });
+                }
+            }
+
+            // Configure image
+            if (pageConfig.includeImage && pageConfig.imageUrl) {
+                const image = document.getElementById('hero-image');
+                image.src = pageConfig.imageUrl;
+                image.style.display = 'block';
+            }
+
+            // Configure countdown
+            if (pageConfig.includeCountdown && pageConfig.countdownDate) {
+                document.getElementById('countdown-container').style.display = 'block';
+                startCountdown(pageConfig.countdownDate);
+            }
+        }
+
+        function startCountdown(targetDate) {
+            const countdownDate = new Date(targetDate).getTime();
+            
+            const timer = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = countdownDate - now;
+                
+                if (distance < 0) {
+                    clearInterval(timer);
+                    document.getElementById('countdown-display').innerHTML = 'EXPIRED';
+                    return;
+                }
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                document.getElementById('countdown-display').innerHTML = 
+                    String(days).padStart(2, '0') + ':' +
+                    String(hours).padStart(2, '0') + ':' +
+                    String(minutes).padStart(2, '0') + ':' +
+                    String(seconds).padStart(2, '0');
+            }, 1000);
+        }
+
+        function showSoundWave() {
+            const soundWave = document.getElementById('sound-wave');
+            soundWave.style.display = 'flex';
+            
+            setTimeout(() => {
+                soundWave.style.display = 'none';
+            }, 3000);
+        }
+
+        function trackPageView() {
+            const pageId = getPageId();
+            console.log('Page view tracked for:', pageId);
+            
+            // Send analytics to localStorage for the main app to pick up
+            try {
+                const analyticsData = JSON.parse(localStorage.getItem('letterly_analytics') || '[]');
+                analyticsData.push({
+                    type: 'pageView',
+                    pageId: pageId,
+                    timestamp: new Date().toISOString(),
+                    userAgent: navigator.userAgent,
+                    referrer: document.referrer
+                });
+                localStorage.setItem('letterly_analytics', JSON.stringify(analyticsData));
+            } catch (error) {
+                console.error('Failed to save analytics:', error);
+            }
+            
+            // Send to parent window if in iframe
+            if (window.parent !== window) {
+                window.parent.postMessage({ type: 'pageView', pageId: pageId }, '*');
+            }
+        }
+
+        function trackButtonClick() {
+            const pageId = getPageId();
+            console.log('Button click tracked for:', pageId);
+            
+            // Send analytics to localStorage for the main app to pick up
+            try {
+                const analyticsData = JSON.parse(localStorage.getItem('letterly_analytics') || '[]');
+                analyticsData.push({
+                    type: 'buttonClick',
+                    pageId: pageId,
+                    timestamp: new Date().toISOString(),
+                    userAgent: navigator.userAgent
+                });
+                localStorage.setItem('letterly_analytics', JSON.stringify(analyticsData));
+            } catch (error) {
+                console.error('Failed to save analytics:', error);
+            }
+            
+            // Send to parent window if in iframe
+            if (window.parent !== window) {
+                window.parent.postMessage({ type: 'buttonClick', pageId: pageId }, '*');
+            }
+        }
+
+        function getPageId() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id') || 'demo';
+        }
+
+        // Request notification permission on load
+        function requestNotificationPermission() {
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initializePage();
+            requestNotificationPermission();
+        });
+
+        // Listen for messages from parent window
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'updateConfig') {
+                pageConfig = { ...pageConfig, ...event.data.config };
+                applyPageConfig();
+            }
+        });
+    </script>
+</body>
+</html> 
