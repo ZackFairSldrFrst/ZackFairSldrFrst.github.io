@@ -20,6 +20,7 @@ class MessageFlow {
         // DeepSeek AI configuration
         this.deepSeekApiKey = 'sk-73dc965fdfe84b098eef77575efe88c2';
         this.deepSeekApiUrl = 'https://api.deepseek.com/v1/chat/completions';
+        this.lastGeneratedMessage = '';
         
         // Live Messages properties
         this.liveMessages = [];
@@ -600,6 +601,81 @@ class MessageFlow {
         }
     }
 
+    async callDeepSeekAPI(template, customPrompt, tone) {
+        // Build the system prompt based on the template and tone
+        let systemPrompt = this.buildSystemPrompt(template, tone);
+        let userPrompt = this.buildUserPrompt(template, customPrompt);
+
+        const requestBody = {
+            model: 'deepseek-chat',
+            messages: [
+                {
+                    role: 'system',
+                    content: systemPrompt
+                },
+                {
+                    role: 'user',
+                    content: userPrompt
+                }
+            ],
+            max_tokens: 150,
+            temperature: 0.7,
+            stream: false
+        };
+
+        const response = await fetch(this.deepSeekApiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.deepSeekApiKey}`
+            },
+            body: JSON.stringify(requestBody)
+        });
+
+        if (!response.ok) {
+            throw new Error(`DeepSeek API error: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        
+        if (data.choices && data.choices.length > 0) {
+            return data.choices[0].message.content.trim();
+        } else {
+            throw new Error('No response from DeepSeek API');
+        }
+    }
+
+    buildSystemPrompt(template, tone) {
+        const basePrompt = `You are a helpful assistant that generates personalized messages for notifications. Always write in a ${tone} tone.`;
+        
+        const templateInstructions = {
+            birthday: 'Generate a warm birthday message. Include birthday emojis and make it celebratory.',
+            followup: 'Generate a professional follow-up message. Be polite and offer assistance.',
+            reminder: 'Generate a friendly reminder message. Include relevant emojis and be clear about the reminder.',
+            promotional: 'Generate an engaging promotional message. Make it exciting but not pushy.',
+            'thank-you': 'Generate a heartfelt thank you message. Express genuine gratitude.',
+            custom: 'Generate a message based on the user\'s specific request.'
+        };
+
+        return `${basePrompt} ${templateInstructions[template] || templateInstructions.custom} Keep the message concise (1-2 sentences) and appropriate for notifications.`;
+    }
+
+    buildUserPrompt(template, customPrompt) {
+        if (template === 'custom') {
+            return `Please write a message about: ${customPrompt}`;
+        }
+        
+        const templatePrompts = {
+            birthday: 'Write a birthday message',
+            followup: 'Write a follow-up message',
+            reminder: 'Write a reminder message',
+            promotional: 'Write a promotional message',
+            'thank-you': 'Write a thank you message'
+        };
+
+        return templatePrompts[template] || 'Write a general message';
+    }
+
     getTemplateMessage(template, customPrompt, tone) {
         const messages = {
             birthday: [
@@ -649,9 +725,10 @@ class MessageFlow {
     showAIGenerating() {
         const content = document.getElementById('ai-generated-content');
         content.innerHTML = `
-            <div style="text-align: center; padding: 2rem;">
-                <div class="spinner" style="margin: 0 auto 1rem;"></div>
-                <p>AI is generating your message...</p>
+            <div style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); padding: 2rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center;">
+                <div class="spinner" style="margin: 0 auto 1rem; width: 40px; height: 40px; border: 4px solid rgba(255, 255, 255, 0.3); border-top: 4px solid rgba(102, 126, 234, 1); border-radius: 50%; animation: liquidSpin 1s linear infinite;"></div>
+                <p style="color: rgba(255, 255, 255, 0.9); font-size: 1rem; margin: 0;">🤖 DeepSeek AI is generating your message...</p>
+                <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.875rem; margin-top: 0.5rem;">This may take a few seconds</p>
             </div>
         `;
         content.style.display = 'block';
@@ -659,19 +736,23 @@ class MessageFlow {
 
     showGeneratedMessage(message) {
         const content = document.getElementById('ai-generated-content');
-        document.getElementById('generated-message-content').textContent = message;
         content.innerHTML = `
-            <h4>Generated Message:</h4>
-            <div class="generated-message">${message}</div>
-            <div class="form-actions">
-                <button class="btn-secondary" id="regenerate-ai">
-                    <i class="fas fa-redo"></i> Regenerate
-                </button>
-                <button class="btn-primary" id="use-ai-message">
-                    Use This Message
-                </button>
+            <div style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 1rem;">
+                <h4 style="color: rgba(255, 255, 255, 0.9); margin-bottom: 1rem;">✨ Generated Message:</h4>
+                <div class="generated-message" style="background: rgba(255, 255, 255, 0.08); padding: 1rem; border-radius: 8px; font-size: 1rem; line-height: 1.5; color: rgba(255, 255, 255, 0.95); margin-bottom: 1rem;">${message}</div>
+                <div class="form-actions">
+                    <button class="btn-secondary" id="regenerate-ai">
+                        <i class="fas fa-redo"></i> Regenerate
+                    </button>
+                    <button class="btn-primary" id="use-ai-message">
+                        <i class="fas fa-check"></i> Use This Message
+                    </button>
+                </div>
             </div>
         `;
+        
+        // Store the message for use
+        this.lastGeneratedMessage = message;
         
         // Re-attach event listeners
         document.getElementById('regenerate-ai').addEventListener('click', () => this.generateAIMessage());
@@ -679,12 +760,16 @@ class MessageFlow {
     }
 
     useAIMessage() {
-        const generatedMessage = document.getElementById('generated-message-content').textContent;
-        document.getElementById('message-content').value = generatedMessage;
-        document.getElementById('char-count').textContent = generatedMessage.length;
-        this.closeModal('ai-modal');
-        
-        this.showNotification('AI message added to composer!', 'success');
+        const generatedMessage = this.lastGeneratedMessage || '';
+        if (generatedMessage) {
+            document.getElementById('message-content').value = generatedMessage;
+            document.getElementById('char-count').textContent = generatedMessage.length;
+            this.closeModal('ai-modal');
+            
+            this.showNotification('✨ AI message added to composer!', 'success');
+        } else {
+            this.showNotification('No message to use. Please generate a message first.', 'error');
+        }
     }
 
     // Filter Management
