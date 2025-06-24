@@ -1062,6 +1062,14 @@ nav {
     gap: 1rem;
 }
 
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
 .workflow-demo {
     background: var(--glass-bg);
     padding: 2rem;
@@ -1659,6 +1667,13 @@ nav {
     font-size: 1rem;
 }
 
+.pricing-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
 .pricing-footer {
     text-align: center;
     margin-top: 3rem;
@@ -2029,6 +2044,10 @@ footer::before {
         flex-direction: column;
         gap: 0.5rem;
     }
+    
+    .pricing-actions {
+        gap: 0.5rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -2122,5 +2141,4 @@ footer::before {
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--text-muted);
-} 
 } 
