@@ -11,6 +11,20 @@ class MessageFlow {
         this.notificationsEnabled = false;
         this.currentPageId = null;
         this.storageKey = 'letterly_data';
+        
+        // Live Messages properties
+        this.liveMessages = [];
+        this.autoRefreshInterval = null;
+        this.refreshIntervalTime = 5000; // 5 seconds default
+        
+        // Onboarding properties
+        this.onboardingStep = 1;
+        this.onboardingData = {
+            recipient: '',
+            sender: '',
+            message: ''
+        };
+        
         this.init();
     }
 
@@ -46,10 +60,8 @@ class MessageFlow {
         document.getElementById('compose-btn').addEventListener('click', () => this.openComposer());
         document.getElementById('new-message-header-btn').addEventListener('click', () => this.openComposer());
         
-        // Notification system
-        document.getElementById('settings-btn').addEventListener('click', () => this.openNotificationSettings());
-        document.getElementById('enable-notifications-btn').addEventListener('click', () => this.enableNotifications());
-        document.getElementById('test-notification-btn').addEventListener('click', () => this.testNotification());
+        // Settings
+        document.getElementById('settings-btn').addEventListener('click', () => this.openSettings());
 
         // Modal controls
         this.initModalControls();
@@ -65,6 +77,19 @@ class MessageFlow {
         document.getElementById('message-content').addEventListener('input', (e) => {
             document.getElementById('char-count').textContent = e.target.value.length;
         });
+
+        // Live Messages controls
+        document.getElementById('refresh-live-btn').addEventListener('click', () => this.refreshLiveMessages());
+        document.getElementById('export-live-btn').addEventListener('click', () => this.exportLiveData());
+        document.getElementById('auto-refresh-toggle').addEventListener('change', (e) => this.toggleAutoRefresh(e.target.checked));
+        document.getElementById('refresh-interval').addEventListener('change', (e) => this.updateRefreshInterval(e.target.value));
+        
+        // URL filters
+        document.getElementById('url-status-filter').addEventListener('change', () => this.filterUrls());
+        document.getElementById('url-sort').addEventListener('change', () => this.sortUrls());
+
+        // Onboarding controls
+        this.initOnboardingControls();
     }
 
     initModalControls() {
@@ -185,6 +210,9 @@ class MessageFlow {
                 break;
             case 'messages':
                 this.loadMessages();
+                break;
+            case 'live-messages':
+                this.loadLiveMessages();
                 break;
             case 'contacts':
                 this.loadContacts();
@@ -482,6 +510,9 @@ class MessageFlow {
         if (this.currentTab === 'messages') {
             this.loadMessages();
         }
+        if (this.currentTab === 'live-messages') {
+            this.loadLiveMessages();
+        }
     }
 
     addContact() {
@@ -703,8 +734,8 @@ class MessageFlow {
         }, 3000);
     }
 
-    // Notification System Methods
-    openNotificationSettings() {
+    // Settings Methods
+    openSettings() {
         const settingsHtml = `
             <div style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.2); margin: 1rem;">
                 <h3 style="color: rgba(255, 255, 255, 0.9); margin-bottom: 1.5rem;">Data Management</h3>
@@ -748,39 +779,7 @@ class MessageFlow {
         });
     }
 
-    async enableNotifications() {
-        if (!('Notification' in window)) {
-            this.showNotification('Browser notifications not supported', 'error');
-            return;
-        }
 
-        try {
-            const permission = await Notification.requestPermission();
-            if (permission === 'granted') {
-                this.notificationsEnabled = true;
-                this.updateNotificationStatus('enabled');
-                this.showNotification('Browser notifications enabled!', 'success');
-            } else {
-                this.showNotification('Notification permission denied', 'error');
-            }
-        } catch (error) {
-            console.error('Notification permission error:', error);
-            this.showNotification('Error enabling notifications', 'error');
-        }
-    }
-
-    updateNotificationStatus(status) {
-        const statusDot = document.getElementById('notification-status-dot');
-        const statusText = document.getElementById('notification-status-text');
-
-        if (status === 'enabled') {
-            statusDot.className = 'status-dot connected';
-            statusText.textContent = 'Notifications Enabled';
-        } else {
-            statusDot.className = 'status-dot disconnected';
-            statusText.textContent = 'Notifications Disabled';
-        }
-    }
 
     previewPage() {
         const formData = this.getPageFormData();
@@ -1031,35 +1030,7 @@ class MessageFlow {
         }
     }
 
-    testNotification() {
-        if (!('Notification' in window)) {
-            this.showNotification('Your browser does not support notifications', 'error');
-            return;
-        }
 
-        if (Notification.permission === 'denied') {
-            this.showNotification('Notifications are blocked. Please enable them in your browser settings.', 'error');
-            return;
-        }
-
-        if (Notification.permission === 'default') {
-            this.showNotification('Please enable notifications first using the settings.', 'info');
-            return;
-        }
-
-        // Send test notification
-        try {
-            new Notification('Letterly Test', {
-                body: 'This is a test notification. Your notification system is working!',
-                icon: '/favicon.ico',
-                tag: 'letterly-test'
-            });
-            this.showNotification('Test notification sent!', 'success');
-        } catch (error) {
-            console.error('Failed to send test notification:', error);
-            this.showNotification('Failed to send test notification', 'error');
-        }
-    }
 
     processAnalytics() {
         try {
@@ -1094,6 +1065,7 @@ class MessageFlow {
             messages: this.messages,
             notificationPages: this.notificationPages,
             notificationsEnabled: this.notificationsEnabled,
+            liveMessages: this.liveMessages,
             lastUpdated: new Date().toISOString()
         };
         
@@ -1116,11 +1088,10 @@ class MessageFlow {
                 this.messages = data.messages || [];
                 this.notificationPages = data.notificationPages || [];
                 this.notificationsEnabled = data.notificationsEnabled || false;
+                this.liveMessages = data.liveMessages || [];
                 
                 // Update UI based on saved state
-                if (this.notificationsEnabled) {
-                    this.updateNotificationStatus('enabled');
-                }
+                // Notification status removed from dashboard
                 
                 this.updatePageStats();
                 console.log('Data loaded successfully', data);
@@ -1200,6 +1171,326 @@ class MessageFlow {
             window.location.href = `notification-page.html?${params.toString()}`;
         } else {
             this.showNotification('Notification page not found', 'error');
+        }
+    }
+
+    // Live Messages functionality
+    loadLiveMessages() {
+        this.updateLiveStats();
+        this.loadLiveMessageStream();
+        this.loadActiveUrls();
+        
+        // Start auto-refresh if enabled
+        if (document.getElementById('auto-refresh-toggle').checked) {
+            this.startAutoRefresh();
+        }
+    }
+
+    updateLiveStats() {
+        const today = new Date().toDateString();
+        const todayMessages = this.messages.filter(msg => 
+            new Date(msg.createdAt).toDateString() === today
+        );
+        
+        const totalUrls = this.notificationPages.length;
+        const totalViews = this.notificationPages.reduce((sum, page) => 
+            sum + (page.views || 0), 0
+        );
+        const totalClicks = this.notificationPages.reduce((sum, page) => 
+            sum + (page.clicks || 0), 0
+        );
+
+        document.getElementById('live-total-sent').textContent = todayMessages.length;
+        document.getElementById('live-total-urls').textContent = totalUrls;
+        document.getElementById('live-total-views').textContent = totalViews;
+        document.getElementById('live-total-clicks').textContent = totalClicks;
+    }
+
+    loadLiveMessageStream() {
+        const liveList = document.getElementById('live-messages-list');
+        
+        if (this.messages.length === 0) {
+            liveList.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-stream"></i>
+                    <h3>No Messages Yet</h3>
+                    <p>Messages will appear here in real-time as they are sent</p>
+                </div>
+            `;
+            return;
+        }
+
+        // Sort messages by timestamp (newest first)
+        const sortedMessages = [...this.messages].sort((a, b) => 
+            new Date(b.createdAt) - new Date(a.createdAt)
+        );
+
+        liveList.innerHTML = sortedMessages.map(message => {
+            const recipient = this.contacts.find(c => c.id === message.recipientId);
+            const pageUrl = message.pageId ? `${window.location.origin}${window.location.pathname}?page=${message.pageId}` : '';
+            const isNew = Date.now() - new Date(message.createdAt).getTime() < 60000; // New if less than 1 minute old
+
+            return `
+                <div class="live-message-item ${isNew ? 'new' : ''}">
+                    <div class="message-status-dot ${message.status}"></div>
+                    <div class="live-message-content">
+                        <div class="live-message-recipient">${recipient ? recipient.name : 'Unknown Contact'}</div>
+                        <div class="live-message-preview">${message.content.substring(0, 100)}${message.content.length > 100 ? '...' : ''}</div>
+                        ${pageUrl ? `<a href="${pageUrl}" class="live-message-url" target="_blank">${pageUrl}</a>` : ''}
+                    </div>
+                    <div class="live-message-time">${this.formatDateTime(message.createdAt)}</div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    loadActiveUrls() {
+        const urlsGrid = document.getElementById('live-urls-grid');
+        
+        if (this.notificationPages.length === 0) {
+            urlsGrid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-link"></i>
+                    <h3>No Active URLs</h3>
+                    <p>Notification page URLs will appear here once created</p>
+                </div>
+            `;
+            return;
+        }
+
+        urlsGrid.innerHTML = this.notificationPages.map(page => {
+            const pageUrl = `${window.location.origin}${window.location.pathname}?page=${page.id}`;
+            const isExpired = page.countdownDate && new Date(page.countdownDate) < new Date();
+            
+            return `
+                <div class="url-card">
+                    <div class="url-card-header">
+                        <h4 class="url-card-title">${page.title}</h4>
+                        <span class="url-status-badge ${isExpired ? 'expired' : 'active'}">
+                            ${isExpired ? 'Expired' : 'Active'}
+                        </span>
+                    </div>
+                    <a href="${pageUrl}" class="url-card-url" target="_blank">${pageUrl}</a>
+                    <div class="url-card-stats">
+                        <span><i class="fas fa-eye"></i> ${page.views || 0} views</span>
+                        <span><i class="fas fa-mouse-pointer"></i> ${page.clicks || 0} clicks</span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    refreshLiveMessages() {
+        this.loadLiveMessages();
+        this.showNotification('Live messages refreshed', 'success');
+    }
+
+    exportLiveData() {
+        const data = {
+            messages: this.messages,
+            urls: this.notificationPages,
+            exportDate: new Date().toISOString(),
+            stats: {
+                totalMessages: this.messages.length,
+                totalUrls: this.notificationPages.length,
+                totalViews: this.notificationPages.reduce((sum, page) => sum + (page.views || 0), 0),
+                totalClicks: this.notificationPages.reduce((sum, page) => sum + (page.clicks || 0), 0)
+            }
+        };
+        
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `letterly-live-data-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        this.showNotification('Live data exported successfully', 'success');
+    }
+
+    toggleAutoRefresh(enabled) {
+        if (enabled) {
+            this.startAutoRefresh();
+        } else {
+            this.stopAutoRefresh();
+        }
+    }
+
+    startAutoRefresh() {
+        this.stopAutoRefresh(); // Clear any existing interval
+        this.autoRefreshInterval = setInterval(() => {
+            if (this.currentTab === 'live-messages') {
+                this.loadLiveMessages();
+            }
+        }, this.refreshIntervalTime);
+    }
+
+    stopAutoRefresh() {
+        if (this.autoRefreshInterval) {
+            clearInterval(this.autoRefreshInterval);
+            this.autoRefreshInterval = null;
+        }
+    }
+
+    updateRefreshInterval(value) {
+        this.refreshIntervalTime = parseInt(value);
+        if (document.getElementById('auto-refresh-toggle').checked) {
+            this.startAutoRefresh(); // Restart with new interval
+        }
+    }
+
+    filterUrls() {
+        // Implementation for URL filtering
+        this.loadActiveUrls();
+    }
+
+    sortUrls() {
+        // Implementation for URL sorting
+        this.loadActiveUrls();
+    }
+
+    // Onboarding functionality
+    initOnboardingControls() {
+        // Check if we need to show onboarding
+        const urlParams = new URLSearchParams(window.location.search);
+        const recipient = urlParams.get('recipient');
+        const sender = urlParams.get('sender');
+        const message = urlParams.get('message');
+
+        if (recipient && sender) {
+            this.onboardingData = { recipient, sender, message: message || '' };
+            this.showOnboarding();
+        }
+
+        // Onboarding navigation
+        document.getElementById('onboarding-next').addEventListener('click', () => this.nextOnboardingStep());
+        document.getElementById('onboarding-back').addEventListener('click', () => this.previousOnboardingStep());
+        document.getElementById('onboarding-skip').addEventListener('click', () => this.skipOnboarding());
+        document.getElementById('onboarding-enable-notifications').addEventListener('click', () => this.onboardingEnableNotifications());
+        document.getElementById('onboarding-finish').addEventListener('click', () => this.finishOnboarding());
+    }
+
+    showOnboarding() {
+        // Populate onboarding with data
+        document.querySelectorAll('.recipient-name').forEach(el => {
+            el.textContent = this.onboardingData.recipient;
+        });
+        document.querySelectorAll('.sender-name').forEach(el => {
+            el.textContent = this.onboardingData.sender;
+        });
+
+        // Update greeting
+        document.getElementById('onboarding-greeting').textContent = `Welcome, ${this.onboardingData.recipient}!`;
+        
+        // Show modal
+        this.openModal('onboarding-modal');
+        this.updateOnboardingProgress();
+    }
+
+    nextOnboardingStep() {
+        if (this.onboardingStep < 3) {
+            // Hide current step
+            document.getElementById(`onboarding-step-${this.onboardingStep}`).style.display = 'none';
+            
+            // Show next step
+            this.onboardingStep++;
+            document.getElementById(`onboarding-step-${this.onboardingStep}`).style.display = 'block';
+            
+            this.updateOnboardingProgress();
+            this.updateOnboardingButtons();
+        }
+    }
+
+    previousOnboardingStep() {
+        if (this.onboardingStep > 1) {
+            // Hide current step
+            document.getElementById(`onboarding-step-${this.onboardingStep}`).style.display = 'none';
+            
+            // Show previous step
+            this.onboardingStep--;
+            document.getElementById(`onboarding-step-${this.onboardingStep}`).style.display = 'block';
+            
+            this.updateOnboardingProgress();
+            this.updateOnboardingButtons();
+        }
+    }
+
+    updateOnboardingProgress() {
+        const progress = (this.onboardingStep / 3) * 100;
+        document.getElementById('onboarding-progress').style.width = `${progress}%`;
+        document.getElementById('current-step').textContent = this.onboardingStep;
+        document.getElementById('total-steps').textContent = 3;
+    }
+
+    updateOnboardingButtons() {
+        const nextBtn = document.getElementById('onboarding-next');
+        const backBtn = document.getElementById('onboarding-back');
+        const enableBtn = document.getElementById('onboarding-enable-notifications');
+        const finishBtn = document.getElementById('onboarding-finish');
+        const skipBtn = document.getElementById('onboarding-skip');
+
+        // Hide all buttons first
+        [nextBtn, backBtn, enableBtn, finishBtn, skipBtn].forEach(btn => {
+            btn.style.display = 'none';
+        });
+
+        // Show appropriate buttons based on step
+        switch (this.onboardingStep) {
+            case 1:
+                nextBtn.style.display = 'inline-flex';
+                skipBtn.style.display = 'inline-flex';
+                break;
+            case 2:
+                backBtn.style.display = 'inline-flex';
+                enableBtn.style.display = 'inline-flex';
+                skipBtn.style.display = 'inline-flex';
+                break;
+            case 3:
+                backBtn.style.display = 'inline-flex';
+                finishBtn.style.display = 'inline-flex';
+                break;
+        }
+    }
+
+    async onboardingEnableNotifications() {
+        try {
+            if ('Notification' in window) {
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    this.notificationsEnabled = true;
+                    this.updateNotificationStatus('enabled');
+                    this.showNotification('Notifications enabled successfully!', 'success');
+                    this.nextOnboardingStep();
+                } else {
+                    this.showNotification('Notifications permission denied', 'error');
+                }
+            } else {
+                this.showNotification('Notifications not supported in this browser', 'error');
+            }
+        } catch (error) {
+            console.error('Error enabling notifications:', error);
+            this.showNotification('Error enabling notifications', 'error');
+        }
+    }
+
+    skipOnboarding() {
+        this.finishOnboarding();
+    }
+
+    finishOnboarding() {
+        this.closeModal('onboarding-modal');
+        
+        // If there's a page ID in the URL, show the notification page
+        const urlParams = new URLSearchParams(window.location.search);
+        const pageId = urlParams.get('page');
+        
+        if (pageId) {
+            this.displayNotificationPage(pageId);
+        } else {
+            this.showNotification('Welcome to Letterly! Start exploring your messages.', 'success');
         }
     }
 

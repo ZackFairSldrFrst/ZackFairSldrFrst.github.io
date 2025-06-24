@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Onboarding - Letterly</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            padding: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .test-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .test-link {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            color: white;
+            text-decoration: none;
+            margin: 1rem;
+            transition: all 0.3s ease;
+        }
+        .test-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        h1 {
+            margin-bottom: 2rem;
+        }
+        p {
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Test Onboarding Feature</h1>
+        <p>Click the link below to test the onboarding process with sample data:</p>
+        
+        <a href="index.html?recipient=John%20Doe&sender=Sarah%20Smith&message=Welcome%20to%20our%20service!" class="test-link">
+            Test Onboarding: John receives message from Sarah
+        </a>
+        
+        <a href="index.html?recipient=Alice&sender=Bob&message=Don't%20forget%20about%20tomorrow's%20meeting!" class="test-link">
+            Test Onboarding: Alice receives message from Bob
+        </a>
+        
+        <h2>📱 Live Messages Features</h2>
+        <p>After testing onboarding, you can:</p>
+        <ul style="text-align: left; max-width: 400px; margin: 0 auto;">
+            <li>Go to the "Live Messages" tab to see real-time message monitoring</li>
+            <li>Create new messages and watch them appear instantly</li>
+            <li>View active notification URLs and their statistics</li>
+            <li>Enable auto-refresh to see updates automatically</li>
+            <li>Export live data for analysis</li>
+        </ul>
+        
+        <br><br>
+        <a href="index.html" class="test-link">
+            Go to Main App
+        </a>
+    </div>
+</body>
+</html> 

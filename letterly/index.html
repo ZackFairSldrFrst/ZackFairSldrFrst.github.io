@@ -19,6 +19,7 @@
             <div class="nav-menu">
                 <a href="#dashboard" class="nav-link active" data-tab="dashboard">Dashboard</a>
                 <a href="#messages" class="nav-link" data-tab="messages">Messages</a>
+                <a href="#live-messages" class="nav-link" data-tab="live-messages">Live Messages</a>
                 <a href="#contacts" class="nav-link" data-tab="contacts">Contacts</a>
                 <a href="#analytics" class="nav-link" data-tab="analytics">Analytics</a>
             </div>
@@ -54,20 +55,8 @@
             </div>
             
             <div class="sidebar-section">
-                <h3>Notification System</h3>
-                <div class="notification-status" id="notification-status">
-                    <div class="status-indicator">
-                        <span class="status-dot disconnected" id="notification-status-dot"></span>
-                        <span id="notification-status-text">Notifications Disabled</span>
-                    </div>
-                    <button class="sidebar-btn" id="enable-notifications-btn">
-                        <i class="fas fa-bell"></i>
-                        Enable Notifications
-                    </button>
-                </div>
-                
+                <h3>Page Statistics</h3>
                 <div class="page-stats" id="page-stats-section">
-                    <h4>Your Pages</h4>
                     <div class="stat-item">
                         <span>Active Pages: <span id="active-pages-count">0</span></span>
                     </div>
@@ -107,11 +96,6 @@
                 <button class="sidebar-btn" id="settings-btn">
                     <i class="fas fa-cog"></i>
                     Settings
-                </button>
-
-                <button class="sidebar-btn" id="test-notification-btn" style="background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.3);">
-                    <i class="fas fa-bell"></i>
-                    Test Notification
                 </button>
             </div>
         </aside>
@@ -216,6 +200,117 @@
 
                 <div class="messages-container" id="messages-container">
                     <!-- Dynamic message list -->
+                </div>
+            </div>
+
+            <!-- Live Messages Tab -->
+            <div id="live-messages-tab" class="tab-content">
+                <div class="page-header">
+                    <h1><i class="fas fa-broadcast-tower"></i> Live Messages</h1>
+                    <p>Monitor messages sent in real-time and track their URLs</p>
+                    <div class="header-actions">
+                        <button class="btn-secondary" id="refresh-live-btn">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                        <button class="btn-secondary" id="export-live-btn">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </div>
+                </div>
+
+                <div class="live-stats-grid">
+                    <div class="live-stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-paper-plane"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="live-total-sent">0</h3>
+                            <p>Messages Sent Today</p>
+                        </div>
+                        <div class="stat-trend">
+                            <span class="trend-up"><i class="fas fa-arrow-up"></i> 12%</span>
+                        </div>
+                    </div>
+                    <div class="live-stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-link"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="live-total-urls">0</h3>
+                            <p>Active URLs</p>
+                        </div>
+                        <div class="stat-trend">
+                            <span class="trend-up"><i class="fas fa-arrow-up"></i> 5%</span>
+                        </div>
+                    </div>
+                    <div class="live-stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="live-total-views">0</h3>
+                            <p>Total Views</p>
+                        </div>
+                        <div class="stat-trend">
+                            <span class="trend-up"><i class="fas fa-arrow-up"></i> 24%</span>
+                        </div>
+                    </div>
+                    <div class="live-stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-mouse-pointer"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="live-total-clicks">0</h3>
+                            <p>Button Clicks</p>
+                        </div>
+                        <div class="stat-trend">
+                            <span class="trend-up"><i class="fas fa-arrow-up"></i> 18%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="live-messages-container">
+                    <div class="live-messages-header">
+                        <h3><i class="fas fa-stream"></i> Live Message Stream</h3>
+                        <div class="stream-controls">
+                            <label class="stream-toggle">
+                                <input type="checkbox" id="auto-refresh-toggle" checked>
+                                <span>Auto-refresh</span>
+                            </label>
+                            <select id="refresh-interval">
+                                <option value="1000">1s</option>
+                                <option value="5000" selected>5s</option>
+                                <option value="10000">10s</option>
+                                <option value="30000">30s</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="live-messages-list" id="live-messages-list">
+                        <!-- Live messages will be populated here -->
+                    </div>
+                </div>
+
+                <div class="live-urls-container">
+                    <div class="live-urls-header">
+                        <h3><i class="fas fa-link"></i> Active Notification URLs</h3>
+                        <div class="url-filters">
+                            <select id="url-status-filter">
+                                <option value="">All URLs</option>
+                                <option value="active">Active</option>
+                                <option value="expired">Expired</option>
+                            </select>
+                            <select id="url-sort">
+                                <option value="newest">Newest First</option>
+                                <option value="oldest">Oldest First</option>
+                                <option value="most-viewed">Most Viewed</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="live-urls-grid" id="live-urls-grid">
+                        <!-- URL cards will be populated here -->
+                    </div>
                 </div>
             </div>
 
@@ -586,6 +681,86 @@
                         <button type="submit" class="btn-primary">Add Contact</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Onboarding Modal -->
+    <div id="onboarding-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-wave-square"></i> <span id="onboarding-greeting">Welcome!</span></h2>
+            </div>
+            <div class="modal-body">
+                <div class="onboarding-content">
+                    <div class="onboarding-step" id="onboarding-step-1">
+                        <div class="onboarding-icon">
+                            <i class="fas fa-envelope-open-text"></i>
+                        </div>
+                        <div class="onboarding-message">
+                            <h3 id="message-greeting">Hi <span class="recipient-name">there</span>!</h3>
+                            <p id="sender-message">
+                                <span class="sender-name">Someone</span> sent you a message.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="onboarding-step" id="onboarding-step-2" style="display: none;">
+                        <div class="onboarding-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="onboarding-message">
+                            <h3>Enable Notifications</h3>
+                            <p id="notification-message">
+                                First, let's enable notifications so you can be notified when 
+                                <span class="sender-name">the sender</span> sends you a message.
+                            </p>
+                            <div class="notification-demo">
+                                <div class="demo-notification">
+                                    <i class="fas fa-bell"></i>
+                                    <span>New message from <span class="sender-name">Sender</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="onboarding-step" id="onboarding-step-3" style="display: none;">
+                        <div class="onboarding-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="onboarding-message">
+                            <h3>You're All Set!</h3>
+                            <p>You'll now receive notifications for new messages. Click below to view your message.</p>
+                        </div>
+                    </div>
+
+                    <div class="onboarding-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="onboarding-progress"></div>
+                        </div>
+                        <span class="progress-text">
+                            Step <span id="current-step">1</span> of <span id="total-steps">3</span>
+                        </span>
+                    </div>
+
+                    <div class="onboarding-actions">
+                        <button class="btn-secondary" id="onboarding-skip" style="display: none;">
+                            Skip
+                        </button>
+                        <button class="btn-secondary" id="onboarding-back" style="display: none;">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button class="btn-primary" id="onboarding-next">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button class="btn-primary" id="onboarding-enable-notifications" style="display: none;">
+                            <i class="fas fa-bell"></i> Enable Notifications
+                        </button>
+                        <button class="btn-primary" id="onboarding-finish" style="display: none;">
+                            <i class="fas fa-check"></i> View Message
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
