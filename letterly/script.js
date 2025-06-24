@@ -474,7 +474,7 @@ class MessageFlow {
                             ${scheduledTime}
                         </div>
                         <div class="message-actions">
-                            <button class="btn-secondary" onclick="messageFlow.previewMessage('${message.pageId}')">
+                            <button class="btn-secondary" onclick="messageFlow.previewMessage('${message.pageId}', '${message.pageUrl}')">
                                 <i class="fas fa-eye"></i> View
                             </button>
                             <button class="btn-secondary" onclick="messageFlow.editMessage('${message.id}', '${message.pageId}')">
@@ -556,21 +556,25 @@ class MessageFlow {
 
     // Preview a message by opening its notification page
     previewMessage(pageId, pageUrl) {
+        console.log('previewMessage called with:', { pageId, pageUrl });
         let url = pageUrl;
         if (!url) {
             const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
             url = `${baseUrl}/notification-page.html?id=${pageId}`;
         }
+        console.log('Opening URL:', url);
         window.open(url, '_blank');
     }
 
     // Copy message URL to clipboard
     async copyMessageUrl(pageId, pageUrl) {
+        console.log('copyMessageUrl called with:', { pageId, pageUrl });
         let url = pageUrl;
         if (!url) {
             const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
             url = `${baseUrl}/notification-page.html?id=${pageId}`;
         }
+        console.log('Copying URL:', url);
         try {
             await navigator.clipboard.writeText(url);
             this.showNotification('URL copied to clipboard!', 'success');
@@ -1981,7 +1985,7 @@ class MessageFlow {
                             <span>${message.status}</span>
                         </div>
                         <div class="live-message-actions">
-                            <button class="btn-small" onclick="messageFlow.previewMessage('${message.pageId}')">
+                            <button class="btn-small" onclick="messageFlow.previewMessage('${message.pageId}', '${message.pageUrl}')">
                                 <i class="fas fa-eye"></i> View
                             </button>
                             <button class="btn-small" onclick="messageFlow.editMessage('${message.id}', '${message.pageId}')">
