@@ -116,46 +116,48 @@
             <div id="dashboard-tab" class="tab-content active">
                 <div class="page-header">
                     <h1><i class="fas fa-feather-alt"></i> Dashboard</h1>
-                                            <p>Welcome to your Letterly command center</p>
+                    <p>Welcome to your Letterly command center</p>
                 </div>
 
-                <div class="stats-grid">
+                <div class="dashboard-stats">
                     <div class="stat-card">
                         <div class="stat-icon">
                             <i class="fas fa-paper-plane"></i>
                         </div>
-                        <div class="stat-info">
+                        <div class="stat-content">
                             <h3 id="total-messages">0</h3>
-                            <p>Total Messages</p>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3 id="total-contacts">0</h3>
-                            <p>Contacts</p>
+                            <p>Messages Created</p>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon">
                             <i class="fas fa-clock"></i>
                         </div>
-                        <div class="stat-info">
-                            <h3 id="scheduled-messages">0</h3>
-                            <p>Scheduled</p>
+                        <div class="stat-content">
+                            <h3 id="scheduled-reminders">0</h3>
+                            <p>Pending Reminders</p>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon">
-                            <i class="fas fa-check-circle"></i>
+                            <i class="fas fa-users"></i>
                         </div>
-                        <div class="stat-info">
-                            <h3 id="delivery-rate">98%</h3>
-                            <p>Delivery Rate</p>
+                        <div class="stat-content">
+                            <h3 id="total-contacts">0</h3>
+                            <p>Contacts</p>
                         </div>
                     </div>
+                </div>
+
+                <div class="dashboard-actions">
+                    <button class="btn-primary" onclick="messageFlow.openComposer()">
+                        <i class="fas fa-plus"></i>
+                        Create New Message
+                    </button>
+                    <button class="btn-secondary" onclick="messageFlow.openContactModal()">
+                        <i class="fas fa-user-plus"></i>
+                        Add Contact
+                    </button>
                 </div>
 
                 <div class="dashboard-grid">
@@ -446,22 +448,25 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="schedule-type">Delivery</label>
+                        <label>Schedule Type</label>
                         <div class="radio-group">
                             <label class="radio-label">
                                 <input type="radio" name="scheduleType" value="now" checked>
-                                <span>Send Now</span>
+                                <i class="fas fa-paper-plane"></i>
+                                Send Now
                             </label>
                             <label class="radio-label">
                                 <input type="radio" name="scheduleType" value="scheduled">
-                                <span>Schedule</span>
+                                <i class="fas fa-clock"></i>
+                                Set Reminder
                             </label>
                         </div>
                     </div>
 
                     <div class="form-group" id="schedule-datetime-group" style="display: none;">
-                        <label for="schedule-datetime">Schedule Date & Time</label>
-                        <input type="datetime-local" id="schedule-datetime">
+                        <label for="schedule-datetime">Reminder Time</label>
+                        <input type="datetime-local" id="schedule-datetime" required>
+                        <small>You'll be reminded to send the link to your recipient at this time.</small>
                     </div>
 
                     <div class="form-actions">
@@ -752,67 +757,6 @@
         </div>
     </div>
 
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, serverTimestamp, getDocs } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
-        
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDv4MxNd7FThiUrkT0S2XVc9MACcPYc2Us",
-            authDomain: "letterly-3d795.firebaseapp.com",
-            projectId: "letterly-3d795",
-            storageBucket: "letterly-3d795.firebasestorage.app",
-            messagingSenderId: "535792229538",
-            appId: "1:535792229538:web:e672e39fda57f9f4958bfb",
-            measurementId: "G-0RR3KWJX11"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const db = getFirestore(app);
-
-        // Make Firebase services available globally
-        window.firebaseApp = app;
-        window.firebaseDb = db;
-        window.firebaseAnalytics = analytics;
-        
-        // Import Firestore functions globally
-        window.firestore = {
-            doc,
-            setDoc,
-            getDoc,
-            collection,
-            onSnapshot,
-            serverTimestamp,
-            getDocs
-        };
-
-        // Test Firebase connection
-        async function testFirebaseConnection() {
-            try {
-                console.log('Testing Firebase connection...');
-                const testDoc = doc(db, 'test', 'connection');
-                await setDoc(testDoc, { timestamp: serverTimestamp() });
-                console.log('Firebase connection successful');
-                return true;
-            } catch (error) {
-                console.error('Firebase connection failed:', error);
-                return false;
-            }
-        }
-
-        // Initialize and test
-        testFirebaseConnection().then(success => {
-            if (success) {
-                console.log('Firebase initialized successfully');
-            } else {
-                console.log('Firebase failed to initialize, will use local storage');
-            }
-        });
-    </script>
     <script src="script.js"></script>
 </body>
 </html> 

@@ -12,11 +12,6 @@ class MessageFlow {
         this.currentPageId = null;
         this.storageKey = 'letterly_data';
         
-        // Firebase properties
-        this.firebaseInitialized = false;
-        this.userId = this.generateUserId();
-        this.db = null;
-        
         // DeepSeek AI configuration
         this.deepSeekApiKey = 'sk-73dc965fdfe84b098eef77575efe88c2';
         this.deepSeekApiUrl = 'https://api.deepseek.com/v1/chat/completions';
@@ -43,14 +38,16 @@ class MessageFlow {
 
     init() {
         this.initEventListeners();
-        this.initFirebase();
+        this.loadSavedData();
         this.updateDashboard();
         this.setMinDateTime();
         this.checkForDirectPageAccess();
         this.processAnalytics();
+        this.checkScheduledReminders();
+        this.handleReplyParameters();
         
-        // Set up periodic analytics processing
-        setInterval(() => this.processAnalytics(), 5000); // Check every 5 seconds
+        // Set up periodic reminder checking
+        setInterval(() => this.checkScheduledReminders(), 60000); // Check every minute
     }
 
     // Event Listeners
@@ -279,63 +276,24 @@ class MessageFlow {
 
     // Dashboard
     updateDashboard() {
-        // Update stats
-        document.getElementById('total-contacts-count').textContent = this.contacts.length;
-        document.getElementById('active-pages-count').textContent = this.notificationPages.filter(p => p.status === 'active').length;
-        
-        // Get total messages from all notification pages
-        this.getTotalMessageCount().then(totalMessages => {
-            document.getElementById('total-messages-count').textContent = totalMessages;
-        });
-        
+        const totalContacts = this.contacts.length;
+        const totalMessages = this.messages.length;
+        const scheduledReminders = this.messages.filter(m => m.status === 'scheduled').length;
+
+        document.getElementById('total-contacts').textContent = totalContacts;
+        document.getElementById('total-messages').textContent = totalMessages;
+        document.getElementById('scheduled-reminders').textContent = scheduledReminders;
+
+        // Update connection status
+        this.updateConnectionStatus();
+
         // Update recent activity
-        this.loadRecentActivity();
-        
-        // Update upcoming messages
-        this.loadUpcomingMessages();
+        this.updateRecentActivity();
     }
 
-    // Get total message count from all notification pages
+    // Get total message count from localStorage
     async getTotalMessageCount() {
-        let totalCount = 0;
-        
-        // Count reference messages from main app
-        totalCount += this.messages.filter(m => m.isReference).length;
-        
-        // Count messages from notification pages
-        try {
-            if (this.firebaseInitialized) {
-                // Get all notification pages from Firebase
-                const pagesCollection = window.firestore.collection(this.db, 'notificationPages');
-                const querySnapshot = await window.firestore.getDocs(pagesCollection);
-                
-                querySnapshot.forEach(doc => {
-                    const pageData = doc.data();
-                    if (pageData.messages && Array.isArray(pageData.messages)) {
-                        totalCount += pageData.messages.length;
-                    }
-                });
-            } else {
-                // Get from localStorage
-                const keys = Object.keys(localStorage);
-                const pageKeys = keys.filter(key => key.startsWith('letterly_page_'));
-                
-                pageKeys.forEach(key => {
-                    try {
-                        const pageData = JSON.parse(localStorage.getItem(key));
-                        if (pageData.messages && Array.isArray(pageData.messages)) {
-                            totalCount += pageData.messages.length;
-                        }
-                    } catch (error) {
-                        console.error('Failed to parse page data:', error);
-                    }
-                });
-            }
-        } catch (error) {
-            console.error('Failed to get message count from notification pages:', error);
-        }
-        
-        return totalCount;
+        return this.messages.length;
     }
 
     loadRecentActivity() {
@@ -425,158 +383,90 @@ class MessageFlow {
 
     // Messages
     loadMessages() {
-        const messagesContainer = document.getElementById('messages-container');
-        if (!messagesContainer) return;
+        const container = document.getElementById('messages-container');
+        if (!container) return;
 
-        // Get all messages from notification pages and main app references
-        this.getAllMessages().then(allMessages => {
-            if (allMessages.length === 0) {
-                messagesContainer.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-envelope-open-text"></i>
-                        <h3>No Messages Yet</h3>
-                        <p>Create your first notification message to get started.</p>
-                        <button class="btn-primary" onclick="messageFlow.openComposer()">
-                            <i class="fas fa-plus"></i> Create Message
+        if (this.messages.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-envelope"></i>
+                    <h3>No Messages Yet</h3>
+                    <p>Create your first message to get started.</p>
+                    <button class="btn-primary" onclick="messageFlow.openComposer()">
+                        <i class="fas fa-plus"></i>
+                        Create Message
+                    </button>
+                </div>
+            `;
+            return;
+        }
+
+        // Sort messages by creation time (newest first)
+        const sortedMessages = [...this.messages].sort((a, b) => 
+            new Date(b.createdAt) - new Date(a.createdAt)
+        );
+
+        const messagesHTML = sortedMessages.map(message => {
+            const createdAt = new Date(message.createdAt);
+            const formattedDate = createdAt.toLocaleDateString() + ' ' + createdAt.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            const statusClass = message.status === 'sent' ? 'sent' : 'scheduled';
+            const statusIcon = message.status === 'sent' ? 'fas fa-check-circle' : 'fas fa-clock';
+
+            return `
+                <div class="message-card ${statusClass}">
+                    <div class="message-header">
+                        <div class="message-info">
+                            <h4>${message.title}</h4>
+                            <p class="message-recipient">
+                                <i class="fas fa-user"></i> ${message.recipientName}
+                            </p>
+                            <p class="message-date">
+                                <i class="fas fa-calendar"></i> ${formattedDate}
+                            </p>
+                        </div>
+                        <div class="message-status">
+                            <i class="${statusIcon}"></i>
+                            <span>${message.status}</span>
+                        </div>
+                    </div>
+                    <div class="message-content">
+                        <p>${message.content}</p>
+                    </div>
+                    <div class="message-actions">
+                        <button class="btn-small" onclick="messageFlow.copyMessageUrl('${message.pageUrl}')">
+                            <i class="fas fa-link"></i> Copy URL
+                        </button>
+                        <button class="btn-small" onclick="messageFlow.previewMessage('${message.pageUrl}')">
+                            <i class="fas fa-eye"></i> Preview
+                        </button>
+                        <button class="btn-small" onclick="messageFlow.editMessage('${message.id}')">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn-small danger" onclick="messageFlow.deleteMessage('${message.id}')">
+                            <i class="fas fa-trash"></i> Delete
                         </button>
                     </div>
-                `;
-                return;
-            }
+                </div>
+            `;
+        }).join('');
 
-            // Sort messages by creation date (newest first)
-            allMessages.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-            const messagesHTML = allMessages.map(message => {
-                const statusClass = message.status === 'sent' ? 'sent' : 'scheduled';
-                const statusIcon = message.status === 'sent' ? 'fas fa-check-circle' : 'fas fa-clock';
-                const statusText = message.status === 'sent' ? 'Sent' : 'Scheduled';
-                
-                const scheduledTime = message.scheduledTime ? 
-                    `<div class="message-scheduled">Scheduled for: ${this.formatDateTime(message.scheduledTime)}</div>` : '';
-
-                return `
-                    <div class="message-card ${statusClass}">
-                        <div class="message-header">
-                            <div class="message-info">
-                                <h4>${message.title || 'Untitled Message'}</h4>
-                                <p class="message-recipient">
-                                    <i class="fas fa-user"></i> ${message.recipientName || 'Unknown Recipient'}
-                                </p>
-                            </div>
-                            <div class="message-status">
-                                <i class="${statusIcon}"></i>
-                                <span>${statusText}</span>
-                            </div>
-                        </div>
-                        <div class="message-content">
-                            <p>${message.content || message.title || 'No content'}</p>
-                            ${scheduledTime}
-                        </div>
-                        <div class="message-actions">
-                            <button class="btn-secondary" onclick="messageFlow.previewMessage('${message.pageId}', '${message.pageUrl}')">
-                                <i class="fas fa-eye"></i> View
-                            </button>
-                            <button class="btn-secondary" onclick="messageFlow.editMessage('${message.id}', '${message.pageId}')">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                            <button class="btn-secondary" onclick="messageFlow.copyMessageUrl('${message.pageId}', '${message.pageUrl}')">
-                                <i class="fas fa-link"></i> Copy URL
-                            </button>
-                            <button class="btn-secondary" onclick="messageFlow.deleteMessage('${message.id}', '${message.pageId}')">
-                                <i class="fas fa-trash"></i> Delete
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            messagesContainer.innerHTML = messagesHTML;
-        });
+        container.innerHTML = messagesHTML;
     }
 
-    // Get all messages from notification pages and main app
+    // Get all messages from localStorage
     async getAllMessages() {
-        const allMessages = [];
-        
-        // Add reference messages from main app
-        allMessages.push(...this.messages.filter(m => m.isReference));
-        
-        // Get messages from all notification pages
-        try {
-            if (this.firebaseInitialized) {
-                // Get all notification pages from Firebase
-                const pagesCollection = window.firestore.collection(this.db, 'notificationPages');
-                const querySnapshot = await window.firestore.getDocs(pagesCollection);
-                
-                querySnapshot.forEach(doc => {
-                    const pageData = doc.data();
-                    if (pageData.messages && Array.isArray(pageData.messages)) {
-                        const pageId = pageData.pageId || doc.id;
-                        const pageUrl = pageData.url || `${window.location.origin}${window.location.pathname.replace(/\/[^\/]*$/, '')}/notification-page.html?id=${pageId}`;
-                        pageData.messages.forEach(msg => {
-                            allMessages.push({
-                                ...msg,
-                                pageId: msg.pageId || pageId,
-                                pageUrl: msg.pageUrl || pageUrl
-                            });
-                        });
-                    }
-                });
-            } else {
-                // Get from localStorage
-                const keys = Object.keys(localStorage);
-                const pageKeys = keys.filter(key => key.startsWith('letterly_page_'));
-                
-                pageKeys.forEach(key => {
-                    try {
-                        const pageData = JSON.parse(localStorage.getItem(key));
-                        if (pageData.messages && Array.isArray(pageData.messages)) {
-                            const pageId = pageData.pageId || key.replace('letterly_page_', '');
-                            const pageUrl = pageData.url || `${window.location.origin}${window.location.pathname.replace(/\/[^\/]*$/, '')}/notification-page.html?id=${pageId}`;
-                            pageData.messages.forEach(msg => {
-                                allMessages.push({
-                                    ...msg,
-                                    pageId: msg.pageId || pageId,
-                                    pageUrl: msg.pageUrl || pageUrl
-                                });
-                            });
-                        }
-                    } catch (error) {
-                        console.error('Failed to parse page data:', error);
-                    }
-                });
-            }
-        } catch (error) {
-            console.error('Failed to get messages from notification pages:', error);
-        }
-        
-        return allMessages;
+        return this.messages;
     }
 
     // Preview a message by opening its notification page
-    previewMessage(pageId, pageUrl) {
-        console.log('previewMessage called with:', { pageId, pageUrl });
-        let url = pageUrl;
-        if (!url) {
-            const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
-            url = `${baseUrl}/notification-page.html?id=${pageId}`;
-        }
-        console.log('Opening URL:', url);
-        window.open(url, '_blank');
+    previewMessage(pageUrl) {
+        window.open(pageUrl, '_blank');
     }
 
     // Copy message URL to clipboard
-    async copyMessageUrl(pageId, pageUrl) {
-        console.log('copyMessageUrl called with:', { pageId, pageUrl });
-        let url = pageUrl;
-        if (!url) {
-            const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
-            url = `${baseUrl}/notification-page.html?id=${pageId}`;
-        }
-        console.log('Copying URL:', url);
+    async copyMessageUrl(pageUrl) {
         try {
-            await navigator.clipboard.writeText(url);
+            await navigator.clipboard.writeText(pageUrl);
             this.showNotification('URL copied to clipboard!', 'success');
         } catch (error) {
             console.error('Failed to copy URL:', error);
@@ -585,18 +475,16 @@ class MessageFlow {
     }
 
     // Delete a message
-    async deleteMessage(messageId, pageId) {
+    async deleteMessage(messageId) {
         if (!confirm('Are you sure you want to delete this message?')) {
             return;
         }
 
         try {
-            // Remove from main app references
+            // Remove from messages array
             this.messages = this.messages.filter(m => m.id !== messageId);
             
-            // Remove from notification page
-            await this.deleteMessageFromNotificationPage(pageId, messageId);
-            
+            // Save data
             this.saveData();
             this.loadMessages();
             this.updateDashboard();
@@ -605,45 +493,6 @@ class MessageFlow {
         } catch (error) {
             console.error('Failed to delete message:', error);
             this.showNotification('Failed to delete message', 'error');
-        }
-    }
-
-    // Delete message from notification page
-    async deleteMessageFromNotificationPage(pageId, messageId) {
-        try {
-            if (this.firebaseInitialized) {
-                // Remove from Firebase
-                const pageDocRef = window.firestore.doc(this.db, 'notificationPages', pageId);
-                const docSnap = await window.firestore.getDoc(pageDocRef);
-                
-                if (docSnap.exists()) {
-                    const pageData = docSnap.data();
-                    const messages = pageData.messages.filter(m => m.id !== messageId);
-                    
-                    await window.firestore.setDoc(pageDocRef, {
-                        ...pageData,
-                        messages: messages,
-                        lastUpdated: window.firestore.serverTimestamp()
-                    });
-                }
-            } else {
-                // Remove from localStorage
-                const pageKey = `letterly_page_${pageId}`;
-                const existingData = localStorage.getItem(pageKey);
-                
-                if (existingData) {
-                    const pageData = JSON.parse(existingData);
-                    const messages = pageData.messages.filter(m => m.id !== messageId);
-                    
-                    pageData.messages = messages;
-                    pageData.lastUpdated = new Date().toISOString();
-                    
-                    localStorage.setItem(pageKey, JSON.stringify(pageData));
-                }
-            }
-        } catch (error) {
-            console.error('Failed to delete message from notification page:', error);
-            throw error;
         }
     }
 
@@ -759,62 +608,40 @@ class MessageFlow {
         const scheduleType = document.querySelector('input[name="scheduleType"]:checked').value;
         const scheduleDateTime = document.getElementById('schedule-datetime').value;
 
-        // Check if we're editing an existing message
-        if (this.editingMessage) {
-            await this.updateExistingMessage(pageData, scheduleType, scheduleDateTime);
-            return;
-        }
-
-        // Original message creation logic
         const recipient = this.contacts.find(c => c.id === pageData.recipientId);
         
-        // Create notification page
-        const page = this.createNotificationPage(pageData);
+        // Create notification page URL with parameters
+        const pageUrl = this.createNotificationPageUrl(pageData);
         
-        // Create message data that will be stored on the notification page
+        // Create message data
         const messageData = {
+            id: this.generateId(),
             recipientId: pageData.recipientId,
             recipientName: recipient.name,
             recipientPhone: recipient.phone,
             content: pageData.content,
             title: pageData.title,
             theme: pageData.theme,
-            pageUrl: page.url,
-            pageId: page.id,
-            status: scheduleType === 'now' ? 'sent' : 'scheduled',
-            scheduledTime: scheduleType === 'scheduled' ? scheduleDateTime : null,
-            senderId: this.userId,
-            senderName: 'You' // Could be made configurable
-        };
-
-        // Store message on the notification page instead of main app
-        await this.storeMessageOnNotificationPage(page.id, messageData);
-
-        // Create a reference message in the main app for tracking
-        const messageReference = {
-            id: this.generateId(),
-            pageId: page.id,
-            pageUrl: page.url,
-            title: pageData.title,
-            recipientName: recipient.name,
+            pageUrl: pageUrl,
             status: scheduleType === 'now' ? 'sent' : 'scheduled',
             createdAt: new Date().toISOString(),
             scheduledTime: scheduleType === 'scheduled' ? scheduleDateTime : null,
-            isReference: true // Flag to indicate this is just a reference
+            senderName: 'You'
         };
 
-        this.messages.push(messageReference);
+        // Store message in localStorage
+        this.messages.push(messageData);
 
-        // Send notification immediately if not scheduled
+        // Handle immediate send or scheduling
         if (scheduleType === 'now') {
-            messageReference.status = 'sent';
+            messageData.status = 'sent';
             this.showNotification(
-                `Notification page created! Share this URL: ${page.url}`,
+                `Message created! Share this URL: ${pageUrl}`,
                 'success'
             );
         } else {
             this.showNotification(
-                'Notification page created and scheduled successfully!',
+                `Message scheduled! You'll be reminded to send the link at ${this.formatDateTime(scheduleDateTime)}`,
                 'success'
             );
         }
@@ -828,123 +655,20 @@ class MessageFlow {
         if (this.currentTab === 'messages') {
             this.loadMessages();
         }
-        if (this.currentTab === 'live-messages') {
-            this.loadLiveMessages();
-        }
     }
 
-    // Store message on the notification page
-    async storeMessageOnNotificationPage(pageId, messageData) {
-        try {
-            if (this.firebaseInitialized) {
-                // Store in Firebase under the notification page's document
-                const pageDocRef = window.firestore.doc(this.db, 'notificationPages', pageId);
-                
-                // Get existing page data
-                const docSnap = await window.firestore.getDoc(pageDocRef);
-                let pageData = {};
-                
-                if (docSnap.exists()) {
-                    pageData = docSnap.data();
-                }
-                
-                // Add message to page's messages array
-                const messages = pageData.messages || [];
-                messages.push({
-                    ...messageData,
-                    id: this.generateId(),
-                    createdAt: new Date().toISOString()
-                });
-                
-                // Update the page document
-                await window.firestore.setDoc(pageDocRef, {
-                    ...pageData,
-                    messages: messages,
-                    lastUpdated: window.firestore.serverTimestamp()
-                });
-                
-                console.log('Message stored on notification page in Firebase');
-            } else {
-                // Store in localStorage
-                const pageKey = `letterly_page_${pageId}`;
-                const existingData = localStorage.getItem(pageKey);
-                let pageData = {};
-                
-                if (existingData) {
-                    pageData = JSON.parse(existingData);
-                }
-                
-                const messages = pageData.messages || [];
-                messages.push({
-                    ...messageData,
-                    id: this.generateId(),
-                    createdAt: new Date().toISOString()
-                });
-                
-                pageData.messages = messages;
-                pageData.lastUpdated = new Date().toISOString();
-                
-                localStorage.setItem(pageKey, JSON.stringify(pageData));
-                console.log('Message stored on notification page in localStorage');
-            }
-        } catch (error) {
-            console.error('Failed to store message on notification page:', error);
-            // Fallback to localStorage
-            const pageKey = `letterly_page_${pageId}`;
-            const existingData = localStorage.getItem(pageKey);
-            let pageData = {};
-            
-            if (existingData) {
-                pageData = JSON.parse(existingData);
-            }
-            
-            const messages = pageData.messages || [];
-            messages.push({
-                ...messageData,
-                id: this.generateId(),
-                createdAt: new Date().toISOString()
-            });
-            
-            pageData.messages = messages;
-            pageData.lastUpdated = new Date().toISOString();
-            
-            localStorage.setItem(pageKey, JSON.stringify(pageData));
-        }
-    }
-
-    addContact() {
-        const name = document.getElementById('contact-name').value;
-        const phone = document.getElementById('contact-phone').value;
-        const email = document.getElementById('contact-email').value;
-        const tags = document.getElementById('contact-tags').value;
-
-        if (!name || !phone) {
-            alert('Please enter a name and phone number.');
-            return;
-        }
-
-        const contact = {
-            id: this.generateId(),
-            name: name,
-            phone: phone,
-            email: email,
-            tags: tags,
-            createdAt: new Date().toISOString()
-        };
-
-        this.contacts.push(contact);
-        this.closeModal('contact-modal');
+    // Create notification page URL with parameters
+    createNotificationPageUrl(pageData) {
+        const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '') + '/notification-page.html';
+        const params = new URLSearchParams({
+            title: pageData.title,
+            message: pageData.content,
+            theme: pageData.theme,
+            recipient: pageData.recipientName || '',
+            sender: 'You'
+        });
         
-        // Save data after adding contact
-        this.saveData();
-        
-        this.showNotification('Contact added successfully!', 'success');
-        
-        // Update displays
-        this.updateDashboard();
-        if (this.currentTab === 'contacts') {
-            this.loadContacts();
-        }
+        return `${baseUrl}?${params.toString()}`;
     }
 
     saveDraft() {
@@ -1195,30 +919,28 @@ class MessageFlow {
     }
 
     showNotification(message, type = 'info') {
-        // Create notification element
         const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#4f46e5'};
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            z-index: 3000;
-            animation: slideInRight 0.3s ease;
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <div class="notification-content">
+                <div class="notification-icon">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                </div>
+                <div class="notification-message">${message}</div>
+                <button class="notification-close" onclick="this.parentElement.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
         `;
-        notification.textContent = message;
         
         document.body.appendChild(notification);
         
-        // Remove notification after 3 seconds
+        // Auto-remove after 5 seconds
         setTimeout(() => {
-            notification.style.animation = 'slideOutRight 0.3s ease';
-            setTimeout(() => notification.remove(), 300);
-        }, 3000);
+            if (notification.parentElement) {
+                notification.remove();
+            }
+        }, 5000);
     }
 
     // Settings Methods
@@ -1561,9 +1283,8 @@ class MessageFlow {
         }
     }
 
-    // Firebase Methods
+    // Generate user ID for localStorage
     generateUserId() {
-        // Generate a unique user ID for this browser session
         let userId = localStorage.getItem('letterly_user_id');
         if (!userId) {
             userId = 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
@@ -1572,148 +1293,21 @@ class MessageFlow {
         return userId;
     }
 
-    async initFirebase() {
-        try {
-            this.updateCloudStatus('connecting', 'Connecting to cloud...');
-            
-            // Wait for Firebase to be available
-            await this.waitForFirebase();
-            
-            this.db = window.firebaseDb;
-            
-            // Test the connection by trying to read/write
-            await this.testFirebaseConnection();
-            
-            this.firebaseInitialized = true;
-            
-            console.log('Firebase initialized in MessageFlow');
-            this.updateCloudStatus('connected', 'Connected to cloud');
-            
-            // Update user ID display
-            this.updateUserIdDisplay();
-            
-            // Load data from Firebase
-            await this.loadSavedData();
-            
-            // Set up real-time listeners
-            this.setupRealtimeListeners();
-            
-        } catch (error) {
-            console.error('Failed to initialize Firebase:', error);
-            this.updateCloudStatus('disconnected', 'Using local storage');
-            
-            // Provide more specific error message
-            let errorMessage = 'Failed to connect to cloud storage, using local storage';
-            if (error.message.includes('permission-denied')) {
-                errorMessage = 'Firebase security rules prevent access. Using local storage.';
-            } else if (error.message.includes('unavailable')) {
-                errorMessage = 'Firebase service unavailable. Using local storage.';
-            } else if (error.message.includes('timeout')) {
-                errorMessage = 'Firebase connection timeout. Using local storage.';
-            }
-            
-            this.showNotification(errorMessage, 'warning');
-            // Fallback to localStorage
-            this.loadSavedDataFromLocalStorage();
-        }
-    }
-
-    async testFirebaseConnection() {
-        try {
-            // Try to write a test document
-            const testDocRef = window.firestore.doc(this.db, 'test', 'connection');
-            await window.firestore.setDoc(testDocRef, { 
-                timestamp: window.firestore.serverTimestamp(),
-                test: true 
-            });
-            
-            // Try to read it back
-            const docSnap = await window.firestore.getDoc(testDocRef);
-            if (!docSnap.exists()) {
-                throw new Error('Test document not found');
-            }
-            
-            console.log('Firebase connection test successful');
-            return true;
-        } catch (error) {
-            console.error('Firebase connection test failed:', error);
-            throw error;
-        }
-    }
-
-    waitForFirebase() {
-        return new Promise((resolve, reject) => {
-            const checkFirebase = () => {
-                if (window.firebaseDb && window.firestore) {
-                    resolve();
-                } else {
-                    setTimeout(checkFirebase, 100);
-                }
-            };
-            checkFirebase();
-            
-            // Timeout after 10 seconds
-            setTimeout(() => reject(new Error('Firebase initialization timeout')), 10000);
-        });
-    }
-
-    setupRealtimeListeners() {
-        if (!this.firebaseInitialized) return;
-
-        try {
-            const userDocRef = window.firestore.doc(this.db, 'users', this.userId);
-            
-            // Listen for real-time updates
-            window.firestore.onSnapshot(userDocRef, (doc) => {
-                if (doc.exists()) {
-                    const data = doc.data();
-                    this.updateFromFirebaseData(data);
-                }
-            });
-        } catch (error) {
-            console.error('Failed to set up real-time listeners:', error);
-        }
-    }
-
-    updateFromFirebaseData(data) {
-        // Update local data with Firebase data
-        this.contacts = data.contacts || [];
-        this.messages = data.messages || [];
-        this.notificationPages = data.notificationPages || [];
-        this.notificationsEnabled = data.notificationsEnabled || false;
-        this.liveMessages = data.liveMessages || [];
-        
-        // Update UI
-        this.updateDashboard();
-        if (this.currentTab !== 'dashboard') {
-            this.loadTabContent(this.currentTab);
-        }
-        this.updatePageStats();
-        
-        console.log('Data updated from Firebase');
-    }
-
+    // Update cloud status to show localStorage
     updateCloudStatus(status, message) {
         const statusDot = document.getElementById('cloud-status-dot');
         const statusText = document.getElementById('cloud-status-text');
 
         if (statusDot && statusText) {
-            statusText.textContent = message;
-            statusDot.className = `status-dot ${status}`;
-            
-            // Add click handler for disconnected status to show help
-            if (status === 'disconnected') {
-                statusText.style.cursor = 'pointer';
-                statusText.title = 'Click for help with Firebase setup';
-                statusText.onclick = () => this.showFirebaseHelp();
-            } else {
-                statusText.style.cursor = 'default';
-                statusText.title = '';
-                statusText.onclick = null;
-            }
+            statusText.textContent = 'Local Storage';
+            statusDot.className = 'status-dot connected';
+            statusText.style.cursor = 'default';
+            statusText.title = '';
+            statusText.onclick = null;
         }
     }
 
+    // Update user ID display
     updateUserIdDisplay() {
         const userIdDisplay = document.getElementById('user-id-display');
         if (userIdDisplay) {
@@ -1724,46 +1318,7 @@ class MessageFlow {
 
     // Data Persistence Methods
     async saveData() {
-        if (this.firebaseInitialized) {
-            await this.saveDataToFirebase();
-        } else {
-            this.saveDataToLocalStorage();
-        }
-    }
-
-    async saveDataToFirebase() {
-        const data = {
-            contacts: this.contacts,
-            messages: this.messages,
-            notificationPages: this.notificationPages,
-            notificationsEnabled: this.notificationsEnabled,
-            liveMessages: this.liveMessages,
-            lastUpdated: window.firestore.serverTimestamp(),
-            userId: this.userId
-        };
-        
-        try {
-            const userDocRef = window.firestore.doc(this.db, 'users', this.userId);
-            await window.firestore.setDoc(userDocRef, data);
-            console.log('Data saved to Firebase successfully');
-            
-            // Also save to localStorage as backup
-            this.saveDataToLocalStorage();
-        } catch (error) {
-            console.error('Failed to save data to Firebase:', error);
-            
-            // Check if it's a permissions issue
-            if (error.code === 'permission-denied') {
-                this.showNotification('Firebase security rules prevent saving. Using local storage only.', 'warning');
-                this.firebaseInitialized = false;
-                this.updateCloudStatus('disconnected', 'Security rules prevent access');
-            } else {
-                this.showNotification('Failed to save to cloud, saved locally', 'warning');
-            }
-            
-            // Always save to localStorage as backup
-            this.saveDataToLocalStorage();
-        }
+        this.saveDataToLocalStorage();
     }
 
     saveDataToLocalStorage() {
@@ -1786,62 +1341,12 @@ class MessageFlow {
     }
 
     async loadSavedData() {
-        if (this.firebaseInitialized) {
-            await this.loadSavedDataFromFirebase();
-        } else {
-            this.loadSavedDataFromLocalStorage();
-        }
-    }
-
-    async loadSavedDataFromFirebase() {
-        try {
-            const userDocRef = window.firestore.doc(this.db, 'users', this.userId);
-            const docSnap = await window.firestore.getDoc(userDocRef);
-            
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                this.contacts = data.contacts || [];
-                this.messages = data.messages || [];
-                this.notificationPages = data.notificationPages || [];
-                this.notificationsEnabled = data.notificationsEnabled || false;
-                this.liveMessages = data.liveMessages || [];
-                
-                this.updatePageStats();
-                console.log('Data loaded from Firebase successfully', data);
-                this.showNotification('Data synced from cloud', 'success');
-            } else {
-                console.log('No Firebase data found, checking localStorage');
-                // Try to load from localStorage as fallback
-                this.loadSavedDataFromLocalStorage();
-                
-                // If localStorage has data, save it to Firebase
-                if (this.contacts.length > 0 || this.messages.length > 0) {
-                    await this.saveDataToFirebase();
-                } else {
-                    this.initializeWithSampleData();
-                }
-            }
-        } catch (error) {
-            console.error('Failed to load data from Firebase:', error);
-            
-            // Check if it's a permissions issue
-            if (error.code === 'permission-denied') {
-                this.showNotification('Firebase security rules prevent access. Using local storage.', 'warning');
-                this.firebaseInitialized = false;
-                this.updateCloudStatus('disconnected', 'Security rules prevent access');
-            } else {
-                this.showNotification('Failed to load from cloud, using local data', 'warning');
-            }
-            
-            // Fallback to localStorage
-            this.loadSavedDataFromLocalStorage();
-        }
+        this.loadSavedDataFromLocalStorage();
     }
 
     loadSavedDataFromLocalStorage() {
         try {
             const savedData = localStorage.getItem(this.storageKey);
-            
             if (savedData) {
                 const data = JSON.parse(savedData);
                 this.contacts = data.contacts || [];
@@ -2229,79 +1734,20 @@ class MessageFlow {
         this.showNotification('Welcome to Letterly! Start by creating your first notification page.', 'info');
     }
 
-    showFirebaseHelp() {
-        const helpMessage = `
-            <div style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.2); margin: 1rem;">
-                <h3 style="color: rgba(255, 255, 255, 0.9); margin-bottom: 1.5rem;">🔧 Firebase Setup Help</h3>
-                <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 1rem;">
-                    To enable cloud storage, you need to configure Firebase security rules:
-                </p>
-                <ol style="color: rgba(255, 255, 255, 0.8); margin-bottom: 1.5rem; padding-left: 1.5rem;">
-                    <li>Go to <a href="https://console.firebase.google.com/project/letterly-3d795/firestore/rules" target="_blank" style="color: #667eea;">Firebase Console</a></li>
-                    <li>Navigate to Firestore Database → Rules</li>
-                    <li>Replace the rules with:</li>
-                </ol>
-                <pre style="background: rgba(0, 0, 0, 0.3); padding: 1rem; border-radius: 8px; font-size: 0.8rem; color: #10b981; overflow-x: auto;">
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /users/{userId} {
-      allow read, write: if true;
-    }
-    match /test/{document} {
-      allow read, write: if true;
-    }
-  }
-}</pre>
-                <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.875rem; margin-top: 1rem;">
-                    <strong>Note:</strong> These rules allow public access. For production, implement proper authentication.
-                </p>
-            </div>
-        `;
-        
-        // Create temporary modal
-        const modal = document.createElement('div');
-        modal.className = 'modal active';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2><i class="fas fa-question-circle"></i> Firebase Setup</h2>
-                    <button class="modal-close" onclick="this.closest('.modal').remove()">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    ${helpMessage}
-                </div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        
-        // Close on background click
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.remove();
-            }
-        });
-    }
-
     // Edit a message
-    editMessage(messageId, pageId) {
-        // Find the message from all notification pages
-        this.getAllMessages().then(allMessages => {
-            const message = allMessages.find(m => m.id === messageId);
-            if (!message) {
-                this.showNotification('Message not found', 'error');
-                return;
-            }
+    editMessage(messageId) {
+        const message = this.messages.find(m => m.id === messageId);
+        if (!message) {
+            this.showNotification('Message not found', 'error');
+            return;
+        }
 
-            // Open the composer modal with the message data
-            this.openComposerForEdit(message, pageId);
-        });
+        // Open the composer modal with the message data
+        this.openComposerForEdit(message);
     }
 
     // Open composer modal for editing
-    openComposerForEdit(message, pageId) {
+    openComposerForEdit(message) {
         // Populate the form with existing message data
         document.getElementById('message-title').value = message.title || '';
         document.getElementById('message-content').value = message.content || '';
@@ -2345,7 +1791,6 @@ service cloud.firestore {
         // Store editing context
         this.editingMessage = {
             originalMessageId: message.id,
-            pageId: pageId,
             originalMessage: message
         };
 
@@ -2364,12 +1809,11 @@ service cloud.firestore {
         this.openModal('composer-modal');
     }
 
-    // Update existing message
+    // Update existing message (simplified for localStorage)
     async updateExistingMessage(pageData, scheduleType, scheduleDateTime) {
         try {
             const recipient = this.contacts.find(c => c.id === pageData.recipientId);
             const originalMessage = this.editingMessage.originalMessage;
-            const pageId = this.editingMessage.pageId;
 
             // Create updated message data
             const updatedMessageData = {
@@ -2386,31 +1830,16 @@ service cloud.firestore {
                 isUpdated: true
             };
 
-            // Update the message on the notification page
-            await this.updateMessageOnNotificationPage(pageId, originalMessage.id, updatedMessageData);
-
-            // Update the reference in main app
-            const referenceIndex = this.messages.findIndex(m => m.id === this.editingMessage.originalMessageId);
-            if (referenceIndex !== -1) {
-                this.messages[referenceIndex] = {
-                    ...this.messages[referenceIndex],
-                    title: pageData.title,
-                    status: scheduleType === 'now' ? 'sent' : 'scheduled',
-                    scheduledTime: scheduleType === 'scheduled' ? scheduleDateTime : null,
-                    updatedAt: new Date().toISOString()
-                };
+            // Update the message in the main messages array
+            const messageIndex = this.messages.findIndex(m => m.id === this.editingMessage.originalMessageId);
+            if (messageIndex !== -1) {
+                this.messages[messageIndex] = updatedMessageData;
             }
 
             // Handle immediate send or scheduling
             if (scheduleType === 'now') {
-                // Update notification page immediately
-                await this.updateNotificationPageContent(pageId, updatedMessageData);
-                
-                // Send notification to recipient
-                await this.notifyRecipientOfUpdate(updatedMessageData);
-                
                 this.showNotification(
-                    `Message updated and sent! Recipient has been notified.`,
+                    `Message updated and sent! Share this URL: ${updatedMessageData.pageUrl}`,
                     'success'
                 );
             } else {
@@ -2445,100 +1874,11 @@ service cloud.firestore {
         }
     }
 
-    // Update message on notification page
-    async updateMessageOnNotificationPage(pageId, messageId, updatedMessageData) {
-        try {
-            if (this.firebaseInitialized) {
-                // Update in Firebase
-                const pageDocRef = window.firestore.doc(this.db, 'notificationPages', pageId);
-                const docSnap = await window.firestore.getDoc(pageDocRef);
-                
-                if (docSnap.exists()) {
-                    const pageData = docSnap.data();
-                    const messages = pageData.messages.map(m => 
-                        m.id === messageId ? updatedMessageData : m
-                    );
-                    
-                    await window.firestore.setDoc(pageDocRef, {
-                        ...pageData,
-                        messages: messages,
-                        lastUpdated: window.firestore.serverTimestamp()
-                    });
-                }
-            } else {
-                // Update in localStorage
-                const pageKey = `letterly_page_${pageId}`;
-                const existingData = localStorage.getItem(pageKey);
-                
-                if (existingData) {
-                    const pageData = JSON.parse(existingData);
-                    const messages = pageData.messages.map(m => 
-                        m.id === messageId ? updatedMessageData : m
-                    );
-                    
-                    pageData.messages = messages;
-                    pageData.lastUpdated = new Date().toISOString();
-                    
-                    localStorage.setItem(pageKey, JSON.stringify(pageData));
-                }
-            }
-        } catch (error) {
-            console.error('Failed to update message on notification page:', error);
-            throw error;
-        }
-    }
-
-    // Update notification page content
-    async updateNotificationPageContent(pageId, messageData) {
-        try {
-            if (this.firebaseInitialized) {
-                // Update the page configuration in Firebase
-                const pageDocRef = window.firestore.doc(this.db, 'notificationPages', pageId);
-                await window.firestore.setDoc(pageDocRef, {
-                    title: messageData.title,
-                    message: messageData.content,
-                    theme: messageData.theme,
-                    lastUpdated: window.firestore.serverTimestamp()
-                }, { merge: true });
-            } else {
-                // Update in localStorage
-                const pageKey = `letterly_page_${pageId}`;
-                const existingData = localStorage.getItem(pageKey);
-                
-                if (existingData) {
-                    const pageData = JSON.parse(existingData);
-                    pageData.title = messageData.title;
-                    pageData.message = messageData.content;
-                    pageData.theme = messageData.theme;
-                    pageData.lastUpdated = new Date().toISOString();
-                    
-                    localStorage.setItem(pageKey, JSON.stringify(pageData));
-                }
-            }
-        } catch (error) {
-            console.error('Failed to update notification page content:', error);
-            throw error;
-        }
-    }
-
-    // Notify recipient of message update
+    // Simplified notification function
     async notifyRecipientOfUpdate(messageData) {
-        try {
-            // Send browser notification if enabled
-            if (this.notificationsEnabled && 'Notification' in window && Notification.permission === 'granted') {
-                new Notification('Message Updated', {
-                    body: `Your message to ${messageData.recipientName} has been updated and sent.`,
-                    icon: '/favicon.ico',
-                    tag: 'message-updated'
-                });
-            }
-
-            // In a real app, you would send SMS/email notification here
-            console.log(`Notification sent to ${messageData.recipientName} about updated message`);
-            
-        } catch (error) {
-            console.error('Failed to notify recipient:', error);
-        }
+        // In a real app, this would send a notification to the recipient
+        // For now, we'll just log it
+        console.log('Recipient would be notified of message update:', messageData.recipientName);
     }
 
     // Reset composer modal to original state
@@ -2565,6 +1905,238 @@ service cloud.firestore {
 
         // Clear editing context
         this.editingMessage = null;
+    }
+
+    addContact() {
+        const name = document.getElementById('contact-name').value;
+        const phone = document.getElementById('contact-phone').value;
+        const email = document.getElementById('contact-email').value;
+        const tags = document.getElementById('contact-tags').value;
+
+        if (!name || !phone) {
+            alert('Please enter a name and phone number.');
+            return;
+        }
+
+        const contact = {
+            id: this.generateId(),
+            name: name,
+            phone: phone,
+            email: email,
+            tags: tags,
+            createdAt: new Date().toISOString()
+        };
+
+        this.contacts.push(contact);
+        this.closeModal('contact-modal');
+        
+        // Save data after adding contact
+        this.saveData();
+        
+        this.showNotification('Contact added successfully!', 'success');
+        
+        // Update displays
+        this.updateDashboard();
+        if (this.currentTab === 'contacts') {
+            this.loadContacts();
+        }
+    }
+
+    // Data Persistence Methods - localStorage only
+    saveData() {
+        this.saveDataToLocalStorage();
+    }
+
+    saveDataToLocalStorage() {
+        const data = {
+            contacts: this.contacts,
+            messages: this.messages,
+            notificationPages: this.notificationPages,
+            notificationsEnabled: this.notificationsEnabled,
+            liveMessages: this.liveMessages,
+            lastUpdated: new Date().toISOString()
+        };
+        
+        localStorage.setItem(this.storageKey, JSON.stringify(data));
+        console.log('Data saved to localStorage');
+    }
+
+    loadSavedData() {
+        this.loadSavedDataFromLocalStorage();
+    }
+
+    loadSavedDataFromLocalStorage() {
+        try {
+            const savedData = localStorage.getItem(this.storageKey);
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                this.contacts = data.contacts || [];
+                this.messages = data.messages || [];
+                this.notificationPages = data.notificationPages || [];
+                this.notificationsEnabled = data.notificationsEnabled || false;
+                this.liveMessages = data.liveMessages || [];
+                console.log('Data loaded from localStorage');
+            } else {
+                // Initialize with sample data if no saved data exists
+                this.initializeWithSampleData();
+            }
+        } catch (error) {
+            console.error('Failed to load data from localStorage:', error);
+            this.initializeWithSampleData();
+        }
+    }
+
+    // Check for scheduled reminders
+    checkScheduledReminders() {
+        const now = new Date();
+        const scheduledMessages = this.messages.filter(m => 
+            m.status === 'scheduled' && 
+            m.scheduledTime && 
+            new Date(m.scheduledTime) <= now
+        );
+
+        scheduledMessages.forEach(message => {
+            this.showScheduledReminder(message);
+            // Mark as sent after showing reminder
+            message.status = 'sent';
+        });
+
+        if (scheduledMessages.length > 0) {
+            this.saveData();
+            this.updateDashboard();
+            if (this.currentTab === 'messages') {
+                this.loadMessages();
+            }
+        }
+    }
+
+    // Show scheduled reminder
+    showScheduledReminder(message) {
+        const reminderMessage = `Time to send your message to ${message.recipientName}! 
+        
+Message: ${message.title}
+URL: ${message.pageUrl}
+
+Click "Copy URL" to copy the link and send it to your recipient.`;
+
+        // Show browser notification if enabled
+        if (this.notificationsEnabled && 'Notification' in window && Notification.permission === 'granted') {
+            new Notification('Message Reminder', {
+                body: `Time to send your message to ${message.recipientName}!`,
+                icon: '/favicon.ico',
+                tag: 'message-reminder'
+            });
+        }
+
+        // Show in-app notification
+        this.showNotification(reminderMessage, 'info');
+    }
+
+    // Update connection status display
+    updateConnectionStatus() {
+        const statusElement = document.getElementById('connection-status');
+        if (statusElement) {
+            statusElement.innerHTML = '<i class="fas fa-check-circle"></i> Local Storage';
+            statusElement.className = 'status-indicator connected';
+        }
+    }
+
+    // Show help modal (simplified without Firebase)
+    showHelp() {
+        const helpContent = `
+            <div style="max-width: 600px; margin: 0 auto;">
+                <h3 style="color: rgba(255, 255, 255, 0.9); margin-bottom: 1.5rem;">📱 Letterly Help</h3>
+                
+                <div style="background: rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <h4 style="color: rgba(255, 255, 255, 0.8); margin-bottom: 0.5rem;">How to Use Letterly</h4>
+                    <ol style="color: rgba(255, 255, 255, 0.7); line-height: 1.6;">
+                        <li><strong>Add Contacts:</strong> Go to Contacts tab and add recipient information</li>
+                        <li><strong>Create Messages:</strong> Use the composer to create notification pages</li>
+                        <li><strong>Set Reminders:</strong> Schedule when you want to be reminded to send the link</li>
+                        <li><strong>Share Links:</strong> Copy the generated URL and send it to your recipient</li>
+                        <li><strong>Track Activity:</strong> Monitor message status and recipient engagement</li>
+                    </ol>
+                </div>
+                
+                <div style="background: rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 8px;">
+                    <h4 style="color: rgba(255, 255, 255, 0.8); margin-bottom: 0.5rem;">Data Storage</h4>
+                    <p style="color: rgba(255, 255, 255, 0.7); line-height: 1.6;">
+                        All your data is stored locally in your browser using localStorage. 
+                        This means your data stays private and works offline, but it won't sync across devices.
+                    </p>
+                </div>
+            </div>
+        `;
+        
+        this.showModal('help-modal', 'Help', helpContent);
+    }
+
+    // Handle reply parameters from notification page
+    handleReplyParameters() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const replyRecipient = urlParams.get('recipient');
+        const isReply = urlParams.get('reply');
+        
+        if (isReply === 'true' && replyRecipient) {
+            // Clear URL parameters
+            window.history.replaceState({}, document.title, window.location.pathname);
+            
+            // Open composer with recipient pre-filled
+            this.openComposerForReply(replyRecipient);
+        }
+    }
+
+    // Open composer for reply
+    openComposerForReply(recipientName) {
+        // Find or create contact for the recipient
+        let contact = this.contacts.find(c => c.name === recipientName);
+        
+        if (!contact) {
+            // Create a temporary contact
+            contact = {
+                id: this.generateId(),
+                name: recipientName,
+                phone: '',
+                email: '',
+                tags: 'reply',
+                createdAt: new Date().toISOString()
+            };
+            this.contacts.push(contact);
+            this.saveData();
+        }
+        
+        // Open composer
+        this.openComposer();
+        
+        // Pre-fill recipient
+        setTimeout(() => {
+            const recipientSelect = document.getElementById('recipient-select');
+            if (recipientSelect) {
+                recipientSelect.value = contact.id;
+            }
+            
+            // Update modal title
+            const modalTitle = document.querySelector('#composer-modal .modal-header h2');
+            if (modalTitle) {
+                modalTitle.innerHTML = '<i class="fas fa-reply"></i> Send Reply';
+            }
+        }, 100);
+    }
+
+    // Copy message URL to clipboard
+    async copyMessageUrl(pageUrl) {
+        try {
+            await navigator.clipboard.writeText(pageUrl);
+            this.showNotification('URL copied to clipboard!', 'success');
+        } catch (error) {
+            console.error('Failed to copy URL:', error);
+            this.showNotification('Failed to copy URL', 'error');
+        }
+    }
+
+    // Preview message in new tab
+    previewMessage(pageUrl) {
+        window.open(pageUrl, '_blank');
     }
 }
 
