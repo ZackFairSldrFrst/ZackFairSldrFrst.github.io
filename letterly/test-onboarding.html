@@ -45,15 +45,39 @@
 <body>
     <div class="test-container">
         <h1>🧪 Test Onboarding Feature</h1>
-        <p>Click the link below to test the onboarding process with sample data:</p>
+        <p>Click the links below to test the onboarding process with different scenarios:</p>
         
-        <a href="index.html?recipient=John%20Doe&sender=Sarah%20Smith&message=Welcome%20to%20our%20service!" class="test-link">
-            Test Onboarding: John receives message from Sarah
-        </a>
+        <div style="margin: 2rem 0;">
+            <h3>🔔 Notification Page Onboarding</h3>
+            <p style="font-size: 0.9rem; margin-bottom: 1.5rem;">Test the 3-step onboarding directly on notification pages:</p>
+            
+            <a href="notification-page.html?recipient=John&sender=Alice&title=Important%20Update&message=Please%20check%20your%20email%20for%20important%20information&theme=gradient&onboarding=true" class="test-link">
+                📱 John receives message from Alice
+            </a>
+            
+            <a href="notification-page.html?recipient=Sarah&sender=TeamLead&title=Meeting%20Reminder&message=Don't%20forget%20about%20our%20team%20meeting%20at%203%20PM&theme=dark&onboarding=true" class="test-link">
+                👥 Sarah receives message from TeamLead
+            </a>
+            
+            <a href="notification-page.html?recipient=Mike&sender=System&title=Security%20Alert&message=Please%20verify%20your%20account%20security%20settings&theme=colorful&onboarding=true" class="test-link">
+                🔒 Mike receives message from System
+            </a>
+            
+            <a href="notification-page.html?recipient=Emma&sender=Mom&title=Family%20Dinner&message=Don't%20forget%20about%20dinner%20tonight%20at%207%20PM&theme=minimal&onboarding=true" class="test-link">
+                👨‍👩‍👧‍👦 Emma receives message from Mom
+            </a>
+        </div>
         
-        <a href="index.html?recipient=Alice&sender=Bob&message=Don't%20forget%20about%20tomorrow's%20meeting!" class="test-link">
-            Test Onboarding: Alice receives message from Bob
-        </a>
+        <div style="margin: 2rem 0;">
+            <h3>⚡ Quick Test Links</h3>
+            <a href="notification-page.html?title=Direct%20Message&message=This%20message%20shows%20without%20onboarding&theme=gradient" class="test-link">
+                🚀 Skip Onboarding (No recipient/sender)
+            </a>
+            
+            <a href="index.html?recipient=John%20Doe&sender=Sarah%20Smith&message=Welcome%20to%20our%20service!" class="test-link">
+                📊 Dashboard Onboarding Test
+            </a>
+        </div>
         
         <h2>📱 Live Messages Features</h2>
         <p>After testing onboarding, you can:</p>

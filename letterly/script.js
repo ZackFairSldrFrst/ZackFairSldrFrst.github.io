@@ -17,6 +17,10 @@ class MessageFlow {
         this.userId = this.generateUserId();
         this.db = null;
         
+        // DeepSeek AI configuration
+        this.deepSeekApiKey = 'sk-73dc965fdfe84b098eef77575efe88c2';
+        this.deepSeekApiUrl = 'https://api.deepseek.com/v1/chat/completions';
+        
         // Live Messages properties
         this.liveMessages = [];
         this.autoRefreshInterval = null;
@@ -57,7 +61,6 @@ class MessageFlow {
         });
 
         // Sidebar buttons
-        document.getElementById('new-message-btn').addEventListener('click', () => this.openComposer());
         document.getElementById('ai-generate-btn').addEventListener('click', () => this.openAIModal());
         document.getElementById('add-contact-btn').addEventListener('click', () => this.openContactModal());
 
@@ -222,9 +225,7 @@ class MessageFlow {
             case 'contacts':
                 this.loadContacts();
                 break;
-            case 'analytics':
-                this.loadAnalytics();
-                break;
+
         }
     }
 
@@ -394,11 +395,7 @@ class MessageFlow {
         `).join('');
     }
 
-    // Analytics
-    loadAnalytics() {
-        // This would typically connect to real analytics data
-        console.log('Loading analytics...');
-    }
+
 
     // Modal Management
     openModal(modalId) {
@@ -567,7 +564,7 @@ class MessageFlow {
     }
 
     // AI Message Generation
-    generateAIMessage() {
+    async generateAIMessage() {
         const selectedTemplate = document.querySelector('.template-btn.selected');
         if (!selectedTemplate) {
             alert('Please select a message template.');
@@ -588,13 +585,19 @@ class MessageFlow {
             }
         }
 
-        // Simulate AI generation with realistic delays and responses
+        // Show generating state
         this.showAIGenerating();
         
-        setTimeout(() => {
-            const generatedMessage = this.getTemplateMessage(template, prompt, tone);
+        try {
+            const generatedMessage = await this.callDeepSeekAPI(template, prompt, tone);
             this.showGeneratedMessage(generatedMessage);
-        }, 1500);
+        } catch (error) {
+            console.error('AI generation failed:', error);
+            // Fallback to template messages if API fails
+            const fallbackMessage = this.getTemplateMessage(template, prompt, tone);
+            this.showGeneratedMessage(fallbackMessage);
+            this.showNotification('Using fallback message - AI service temporarily unavailable', 'warning');
+        }
     }
 
     getTemplateMessage(template, customPrompt, tone) {

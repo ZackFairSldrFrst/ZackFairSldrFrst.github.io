@@ -259,13 +259,131 @@
             }
         }
 
+        /* Onboarding Styles */
+        .onboarding-content {
+            max-width: 600px;
+            width: 100%;
+            z-index: 2;
+            position: relative;
+            animation: fadeInUp 0.8s ease;
+            text-align: center;
+        }
+
+        .onboarding-step {
+            display: none;
+        }
+
+        .onboarding-step.active {
+            display: block;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .onboarding-greeting {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .onboarding-message {
+            font-size: 1.25rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .onboarding-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            color: inherit;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin: 0.5rem;
+            animation: bounceIn 1s ease 0.5s both;
+        }
+
+        .onboarding-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .onboarding-button.primary {
+            background: rgba(102, 126, 234, 0.3);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .onboarding-button.primary:hover {
+            background: rgba(102, 126, 234, 0.5);
+        }
+
+        .recipient-name, .sender-name {
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 600;
+        }
+
+        .notification-demo {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .demo-notification {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+        }
+
+        .demo-notification i {
+            color: #4CAF50;
+            font-size: 1.2rem;
+        }
+
+        .progress-container {
+            margin: 2rem 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            opacity: 0.7;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
-            .notification-title {
+            .notification-title, .onboarding-greeting {
                 font-size: 2rem;
             }
             
-            .notification-message {
+            .notification-message, .onboarding-message {
                 font-size: 1.1rem;
             }
             
@@ -273,7 +391,7 @@
                 font-size: 1.5rem;
             }
 
-            .notification-content {
+            .notification-content, .onboarding-content {
                 padding: 1rem;
             }
         }
@@ -362,8 +480,65 @@
             <div class="wave-bar"></div>
         </div>
 
+        <!-- Onboarding content -->
+        <div id="onboarding-container" class="onboarding-content" style="display: none;">
+            <!-- Step 1: Greeting -->
+            <div id="onboarding-step-1" class="onboarding-step active">
+                <h1 class="onboarding-greeting">
+                    Hi <span class="recipient-name" id="onboarding-recipient">there</span>!
+                </h1>
+                <p class="onboarding-message">
+                    <span class="sender-name" id="onboarding-sender">Someone</span> sent you a message.
+                </p>
+                <button class="onboarding-button primary" onclick="nextOnboardingStep()">
+                    Continue
+                </button>
+            </div>
+
+            <!-- Step 2: Notification Permission -->
+            <div id="onboarding-step-2" class="onboarding-step">
+                <h1 class="onboarding-greeting">Enable Notifications</h1>
+                <p class="onboarding-message">
+                    Let's enable notifications so you can be notified when <span class="sender-name" id="onboarding-sender-2">the sender</span> sends you a message.
+                </p>
+                <div class="notification-demo">
+                    <div class="demo-notification">
+                        <i class="fas fa-bell"></i>
+                        <span>New message from <span id="onboarding-sender-3">sender</span></span>
+                    </div>
+                </div>
+                <button class="onboarding-button primary" onclick="enableNotificationsOnboarding()">
+                    Enable Notifications
+                </button>
+                <button class="onboarding-button" onclick="skipNotifications()">
+                    Skip for now
+                </button>
+            </div>
+
+            <!-- Step 3: Completion -->
+            <div id="onboarding-step-3" class="onboarding-step">
+                <h1 class="onboarding-greeting">All set!</h1>
+                <p class="onboarding-message">
+                    You're ready to view your message.
+                </p>
+                <button class="onboarding-button primary" onclick="finishOnboarding()">
+                    View Message
+                </button>
+            </div>
+
+            <!-- Progress indicator -->
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="onboarding-progress" style="width: 33.33%;"></div>
+                </div>
+                <div class="progress-text">
+                    Step <span id="current-step">1</span> of 3
+                </div>
+            </div>
+        </div>
+
         <!-- Main content -->
-        <div class="notification-content">
+        <div id="notification-content" class="notification-content" style="display: none;">
             <h1 class="notification-title" id="title">Welcome!</h1>
             <p class="notification-message" id="message">You have a new notification.</p>
             
@@ -388,6 +563,76 @@
         </div>
     </div>
 
+    <!-- Onboarding Modal -->
+    <div id="onboarding-modal" class="onboarding-modal">
+        <div class="onboarding-content">
+            <!-- Step 1: Greeting -->
+            <div id="onboarding-step-1" class="onboarding-step active">
+                <div class="onboarding-icon">
+                    <i class="fas fa-hand-wave"></i>
+                </div>
+                <div class="onboarding-message">
+                    <h3>Hi <span class="recipient-name" id="recipient-name">Friend</span>!</h3>
+                    <p><span class="sender-name" id="sender-name">Someone</span> sent you a message.</p>
+                </div>
+            </div>
+
+            <!-- Step 2: Notification Permission -->
+            <div id="onboarding-step-2" class="onboarding-step">
+                <div class="onboarding-icon">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div class="onboarding-message">
+                    <h3>Stay Updated!</h3>
+                    <p>First, let's enable notifications so you can be notified when <span class="sender-name-repeat" id="sender-name-repeat">the sender</span> sends you a message.</p>
+                    <div class="notification-demo">
+                        <div class="demo-notification">
+                            <i class="fas fa-envelope"></i>
+                            <span>New message from <span class="sender-name-demo" id="sender-name-demo">Sender</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Completion -->
+            <div id="onboarding-step-3" class="onboarding-step">
+                <div class="onboarding-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="onboarding-message">
+                    <h3>All Set!</h3>
+                    <p>You're ready to view your message. You'll now receive notifications for future messages.</p>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="onboarding-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="progress-text">
+                    <span id="progress-step">1</span> of 3
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="onboarding-actions">
+                <button class="btn-secondary" id="onboarding-back" style="display: none;">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <button class="btn-primary" id="onboarding-next">
+                    Next <i class="fas fa-arrow-right"></i>
+                </button>
+                <button class="btn-primary" id="onboarding-enable-notifications" style="display: none;">
+                    <i class="fas fa-bell"></i> Enable Notifications
+                </button>
+                <button class="btn-primary" id="onboarding-finish" style="display: none;">
+                    <i class="fas fa-check"></i> View Message
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Page configuration (normally passed from URL params or API)
         let pageConfig = {
@@ -400,7 +645,18 @@
             includeImage: false,
             imageUrl: "",
             includeCountdown: false,
-            countdownDate: ""
+            countdownDate: "",
+            // Onboarding data
+            recipient: "",
+            sender: "",
+            showOnboarding: true
+        };
+
+        // Onboarding state
+        let onboardingState = {
+            currentStep: 1,
+            totalSteps: 3,
+            notificationsEnabled: false
         };
 
         // Initialize page
@@ -409,8 +665,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             const pageId = urlParams.get('id');
             
-            // In a real implementation, fetch page config from API using pageId
-            // For demo, use URL parameters or defaults
+            // Parse page configuration
             if (urlParams.get('title')) pageConfig.title = urlParams.get('title');
             if (urlParams.get('message')) pageConfig.message = urlParams.get('message');
             if (urlParams.get('theme')) pageConfig.theme = urlParams.get('theme');
@@ -418,12 +673,28 @@
             if (urlParams.get('buttonUrl')) pageConfig.buttonUrl = urlParams.get('buttonUrl');
             if (urlParams.get('imageUrl')) pageConfig.imageUrl = urlParams.get('imageUrl');
             if (urlParams.get('countdownDate')) pageConfig.countdownDate = urlParams.get('countdownDate');
+            
+            // Parse onboarding parameters
+            if (urlParams.get('recipient')) pageConfig.recipient = urlParams.get('recipient');
+            if (urlParams.get('sender')) pageConfig.sender = urlParams.get('sender');
+            if (urlParams.get('onboarding')) pageConfig.showOnboarding = urlParams.get('onboarding') === 'true';
+
+            // Check if this is a returning visitor
+            const hasVisited = localStorage.getItem(`letterly_visited_${pageId}`);
+            if (hasVisited) {
+                pageConfig.showOnboarding = false;
+            }
 
             // Apply configuration
             setTimeout(() => {
-                applyPageConfig();
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('notification-page').style.display = 'flex';
+                
+                if (pageConfig.showOnboarding && (pageConfig.recipient || pageConfig.sender)) {
+                    showOnboarding();
+                } else {
+                    showNotificationContent();
+                }
                 
                 // Show sound wave briefly
                 showSoundWave();
@@ -431,6 +702,119 @@
                 // Track page view
                 trackPageView();
             }, 1500);
+        }
+
+        // Onboarding Functions
+        function showOnboarding() {
+            // Apply theme to page
+            const pageElement = document.getElementById('notification-page');
+            pageElement.className = `notification-page ${pageConfig.theme}`;
+            
+            // Show onboarding container
+            document.getElementById('onboarding-container').style.display = 'block';
+            document.getElementById('notification-content').style.display = 'none';
+            
+            // Populate onboarding data
+            const recipient = pageConfig.recipient || 'there';
+            const sender = pageConfig.sender || 'Someone';
+            
+            document.getElementById('onboarding-recipient').textContent = recipient;
+            document.getElementById('onboarding-sender').textContent = sender;
+            document.getElementById('onboarding-sender-2').textContent = sender;
+            document.getElementById('onboarding-sender-3').textContent = sender;
+        }
+
+        function nextOnboardingStep() {
+            if (onboardingState.currentStep < onboardingState.totalSteps) {
+                // Hide current step
+                document.getElementById(`onboarding-step-${onboardingState.currentStep}`).classList.remove('active');
+                
+                // Show next step
+                onboardingState.currentStep++;
+                document.getElementById(`onboarding-step-${onboardingState.currentStep}`).classList.add('active');
+                
+                // Update progress
+                updateOnboardingProgress();
+            }
+        }
+
+        function previousOnboardingStep() {
+            if (onboardingState.currentStep > 1) {
+                // Hide current step
+                document.getElementById(`onboarding-step-${onboardingState.currentStep}`).classList.remove('active');
+                
+                // Show previous step
+                onboardingState.currentStep--;
+                document.getElementById(`onboarding-step-${onboardingState.currentStep}`).classList.add('active');
+                
+                // Update progress
+                updateOnboardingProgress();
+            }
+        }
+
+        function updateOnboardingProgress() {
+            const progressFill = document.getElementById('onboarding-progress');
+            const currentStepText = document.getElementById('current-step');
+            
+            const progressPercentage = (onboardingState.currentStep / onboardingState.totalSteps) * 100;
+            progressFill.style.width = `${progressPercentage}%`;
+            currentStepText.textContent = onboardingState.currentStep;
+        }
+
+        async function enableNotificationsOnboarding() {
+            try {
+                if ('Notification' in window) {
+                    const permission = await Notification.requestPermission();
+                    
+                    if (permission === 'granted') {
+                        onboardingState.notificationsEnabled = true;
+                        showNotificationDemo();
+                        setTimeout(() => {
+                            nextOnboardingStep();
+                        }, 2000);
+                    } else {
+                        nextOnboardingStep();
+                    }
+                } else {
+                    nextOnboardingStep();
+                }
+            } catch (error) {
+                console.error('Failed to request notification permission:', error);
+                nextOnboardingStep();
+            }
+        }
+
+        function showNotificationDemo() {
+            if (onboardingState.notificationsEnabled) {
+                new Notification(`New message from ${pageConfig.sender}`, {
+                    body: pageConfig.title,
+                    icon: '/favicon.ico',
+                    tag: 'onboarding-demo'
+                });
+            }
+        }
+
+        function skipNotifications() {
+            nextOnboardingStep();
+        }
+
+        function finishOnboarding() {
+            // Mark as visited
+            const urlParams = new URLSearchParams(window.location.search);
+            const pageId = urlParams.get('id') || 'demo';
+            localStorage.setItem(`letterly_visited_${pageId}`, 'true');
+            
+            // Hide onboarding and show notification content
+            document.getElementById('onboarding-container').style.display = 'none';
+            showNotificationContent();
+        }
+
+        function showNotificationContent() {
+            // Apply page configuration
+            applyPageConfig();
+            
+            // Show notification content
+            document.getElementById('notification-content').style.display = 'block';
         }
 
         function applyPageConfig() {

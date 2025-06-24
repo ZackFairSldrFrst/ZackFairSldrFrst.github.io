@@ -21,14 +21,13 @@
                 <a href="#messages" class="nav-link" data-tab="messages">Messages</a>
                 <a href="#live-messages" class="nav-link" data-tab="live-messages">Live Messages</a>
                 <a href="#contacts" class="nav-link" data-tab="contacts">Contacts</a>
-                <a href="#analytics" class="nav-link" data-tab="analytics">Analytics</a>
             </div>
             <div class="nav-actions">
                 <button class="btn-secondary" id="settings-btn">
-                    <i class="fas fa-cog"></i> Settings
+                    <i class="fas fa-cog"></i>
                 </button>
                 <button class="btn-primary" id="compose-btn">
-                    <i class="fas fa-plus"></i> Compose
+                    <i class="fas fa-plus"></i> New Message
                 </button>
             </div>
         </div>
@@ -40,17 +39,13 @@
         <aside class="sidebar">
             <div class="sidebar-section">
                 <h3>Quick Actions</h3>
-                <button class="sidebar-btn" id="new-message-btn">
-                    <i class="fas fa-plus"></i>
-                    New Message
-                </button>
                 <button class="sidebar-btn" id="ai-generate-btn">
                     <i class="fas fa-robot"></i>
                     AI Generate
                 </button>
-                <button class="sidebar-btn" id="bulk-schedule-btn">
-                    <i class="fas fa-calendar-alt"></i>
-                    Bulk Schedule
+                <button class="sidebar-btn" id="add-contact-btn">
+                    <i class="fas fa-user-plus"></i>
+                    Add Contact
                 </button>
             </div>
             
@@ -68,48 +63,21 @@
             </div>
 
             <div class="sidebar-section">
-                <h3>Page Statistics</h3>
-                <div class="page-stats" id="page-stats-section">
-                    <div class="stat-item">
-                        <span>Active Pages: <span id="active-pages-count">0</span></span>
-                    </div>
-                    <div class="stat-item">
-                        <span>Total Views: <span id="total-views-count">0</span></span>
-                    </div>
+                <h3>Overview</h3>
+                <div class="stat-item">
+                    <span>Active Pages: <span id="active-pages-count">0</span></span>
                 </div>
-            </div>
-            
-            <div class="sidebar-section">
-                <h3>Message Status</h3>
-                <div class="status-item">
+                <div class="stat-item">
+                    <span>Total Views: <span id="total-views-count">0</span></span>
+                </div>
+                <div class="stat-item">
                     <span class="status-dot scheduled"></span>
-                    <span>Scheduled (<span id="scheduled-count">0</span>)</span>
+                    <span>Scheduled: <span id="scheduled-count">0</span></span>
                 </div>
-                <div class="status-item">
-                    <span class="status-dot sent"></span>
-                    <span>Sent (<span id="sent-count">0</span>)</span>
-                </div>
-                <div class="status-item">
+                <div class="stat-item">
                     <span class="status-dot failed"></span>
-                    <span>Failed (<span id="failed-count">0</span>)</span>
+                    <span>Failed: <span id="failed-count">0</span></span>
                 </div>
-                <div class="status-item">
-                    <span class="status-dot delivered"></span>
-                    <span>Delivered (<span id="delivered-count">0</span>)</span>
-                </div>
-            </div>
-
-            <div class="sidebar-section">
-                <h3>Contact System</h3>
-                <button class="sidebar-btn" id="add-contact-btn">
-                    <i class="fas fa-user-plus"></i>
-                    Add Contact
-                </button>
-
-                <button class="sidebar-btn" id="settings-btn">
-                    <i class="fas fa-cog"></i>
-                    Settings
-                </button>
             </div>
         </aside>
 
@@ -346,30 +314,7 @@
                 </div>
             </div>
 
-            <!-- Analytics Tab -->
-            <div id="analytics-tab" class="tab-content">
-                <div class="page-header">
-                    <h1><i class="fas fa-chart-bar"></i> Analytics</h1>
-                    <p>Track your messaging performance and engagement</p>
-                </div>
 
-                <div class="analytics-grid">
-                    <div class="analytics-card">
-                        <h3>Message Volume</h3>
-                        <div class="chart-placeholder">
-                            <i class="fas fa-chart-line"></i>
-                            <p>Interactive chart showing message volume over time</p>
-                        </div>
-                    </div>
-                    <div class="analytics-card">
-                        <h3>Delivery Success Rate</h3>
-                        <div class="chart-placeholder">
-                            <i class="fas fa-chart-pie"></i>
-                            <p>Pie chart showing delivery success rates</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </main>
     </div>
 
