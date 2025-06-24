@@ -512,7 +512,15 @@ class MessageFlow {
                 querySnapshot.forEach(doc => {
                     const pageData = doc.data();
                     if (pageData.messages && Array.isArray(pageData.messages)) {
-                        allMessages.push(...pageData.messages);
+                        const pageId = pageData.pageId || doc.id;
+                        const pageUrl = pageData.url || `${window.location.origin}${window.location.pathname.replace(/\/[^\/]*$/, '')}/notification-page.html?id=${pageId}`;
+                        pageData.messages.forEach(msg => {
+                            allMessages.push({
+                                ...msg,
+                                pageId: msg.pageId || pageId,
+                                pageUrl: msg.pageUrl || pageUrl
+                            });
+                        });
                     }
                 });
             } else {
@@ -524,7 +532,15 @@ class MessageFlow {
                     try {
                         const pageData = JSON.parse(localStorage.getItem(key));
                         if (pageData.messages && Array.isArray(pageData.messages)) {
-                            allMessages.push(...pageData.messages);
+                            const pageId = pageData.pageId || key.replace('letterly_page_', '');
+                            const pageUrl = pageData.url || `${window.location.origin}${window.location.pathname.replace(/\/[^\/]*$/, '')}/notification-page.html?id=${pageId}`;
+                            pageData.messages.forEach(msg => {
+                                allMessages.push({
+                                    ...msg,
+                                    pageId: msg.pageId || pageId,
+                                    pageUrl: msg.pageUrl || pageUrl
+                                });
+                            });
                         }
                     } catch (error) {
                         console.error('Failed to parse page data:', error);
