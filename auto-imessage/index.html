@@ -3,100 +3,401 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Message Scheduler - iOS Shortcuts</title>
+    <title>MessageFlow - Smart Text Message CRM</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1>🤖 AI Message Scheduler</h1>
-            <p>Create personalized iOS shortcuts to schedule messages using AI</p>
-        </header>
-
-        <main class="main">
-            <div class="form-section">
-                <div class="input-group">
-                    <label for="recipient">Recipient Name</label>
-                    <input type="text" id="recipient" placeholder="Enter recipient's name" required>
-                </div>
-
-                <div class="input-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" placeholder="+1 (555) 123-4567" required>
-                </div>
-
-                <div class="input-group">
-                    <label for="occasion">Message Occasion</label>
-                    <select id="occasion">
-                        <option value="">Select an occasion</option>
-                        <option value="birthday">Birthday</option>
-                        <option value="anniversary">Anniversary</option>
-                        <option value="holiday">Holiday</option>
-                        <option value="reminder">Reminder</option>
-                        <option value="good_morning">Good Morning</option>
-                        <option value="good_night">Good Night</option>
-                        <option value="check_in">Check In</option>
-                        <option value="custom">Custom</option>
-                    </select>
-                </div>
-
-                <div class="input-group" id="custom-prompt-group" style="display: none;">
-                    <label for="custom-prompt">Custom Message Description</label>
-                    <textarea id="custom-prompt" placeholder="Describe what kind of message you want to send..." rows="3"></textarea>
-                </div>
-
-                <div class="input-group">
-                    <label for="tone">Message Tone</label>
-                    <select id="tone">
-                        <option value="friendly">Friendly</option>
-                        <option value="formal">Formal</option>
-                        <option value="casual">Casual</option>
-                        <option value="romantic">Romantic</option>
-                        <option value="professional">Professional</option>
-                        <option value="funny">Funny</option>
-                    </select>
-                </div>
-
-                <div class="input-group">
-                    <label for="schedule-time">Schedule Time</label>
-                    <input type="datetime-local" id="schedule-time" required>
-                </div>
-
-                <button id="generate-btn" class="generate-btn">
-                    <span id="btn-text">🚀 Generate AI Message & Shortcut</span>
-                    <div id="loading-spinner" class="spinner" style="display: none;"></div>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-paper-plane"></i>
+                <span>MessageFlow</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#dashboard" class="nav-link active" data-tab="dashboard">Dashboard</a>
+                <a href="#messages" class="nav-link" data-tab="messages">Messages</a>
+                <a href="#contacts" class="nav-link" data-tab="contacts">Contacts</a>
+                <a href="#analytics" class="nav-link" data-tab="analytics">Analytics</a>
+            </div>
+            <div class="nav-actions">
+                <button class="btn-primary" id="compose-btn">
+                    <i class="fas fa-plus"></i> Compose
                 </button>
             </div>
+        </div>
+    </nav>
 
-            <div class="results-section" id="results-section" style="display: none;">
-                <div class="message-preview">
-                    <h3>📱 AI Generated Message</h3>
-                    <div id="generated-message" class="message-content"></div>
-                    <button id="regenerate-btn" class="secondary-btn">🔄 Regenerate Message</button>
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3>Quick Actions</h3>
+                <button class="sidebar-btn" id="new-message-btn">
+                    <i class="fas fa-plus"></i>
+                    New Message
+                </button>
+                <button class="sidebar-btn" id="ai-generate-btn">
+                    <i class="fas fa-robot"></i>
+                    AI Generate
+                </button>
+                <button class="sidebar-btn" id="bulk-schedule-btn">
+                    <i class="fas fa-calendar-alt"></i>
+                    Bulk Schedule
+                </button>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3>Message Status</h3>
+                <div class="status-item">
+                    <span class="status-dot scheduled"></span>
+                    <span>Scheduled (<span id="scheduled-count">0</span>)</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-dot sent"></span>
+                    <span>Sent (<span id="sent-count">0</span>)</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-dot failed"></span>
+                    <span>Failed (<span id="failed-count">0</span>)</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="content">
+            <!-- Dashboard Tab -->
+            <div id="dashboard-tab" class="tab-content active">
+                <div class="page-header">
+                    <h1><i class="fas fa-chart-line"></i> Dashboard</h1>
+                    <p>Welcome to your MessageFlow command center</p>
                 </div>
 
-                <div class="shortcut-section">
-                    <h3>⚡ iOS Shortcut</h3>
-                    <p class="shortcut-instructions">
-                        Your iOS shortcut has been generated! Click the button below to add it to your iPhone:
-                    </p>
-                    <button id="download-shortcut" class="download-btn">📲 Add to iPhone</button>
-                    <div class="qr-section">
-                        <p>Or scan this QR code with your iPhone:</p>
-                        <div id="qr-code"></div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-paper-plane"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-messages">0</h3>
+                            <p>Total Messages</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-contacts">0</h3>
+                            <p>Contacts</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="scheduled-messages">0</h3>
+                            <p>Scheduled</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="delivery-rate">98%</h3>
+                            <p>Delivery Rate</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-calendar-week"></i> Upcoming Messages</h3>
+                        <div id="upcoming-messages" class="upcoming-list">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-history"></i> Recent Activity</h3>
+                        <div id="recent-activity" class="activity-list">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages Tab -->
+            <div id="messages-tab" class="tab-content">
+                <div class="page-header">
+                    <h1><i class="fas fa-envelope"></i> Messages</h1>
+                    <div class="header-actions">
+                        <button class="btn-secondary" id="filter-btn">
+                            <i class="fas fa-filter"></i> Filter
+                        </button>
+                        <button class="btn-primary" id="new-message-header-btn">
+                            <i class="fas fa-plus"></i> New Message
+                        </button>
+                    </div>
+                </div>
+
+                <div class="filter-bar" id="filter-bar" style="display: none;">
+                    <select id="status-filter">
+                        <option value="">All Status</option>
+                        <option value="scheduled">Scheduled</option>
+                        <option value="sent">Sent</option>
+                        <option value="failed">Failed</option>
+                    </select>
+                    <input type="date" id="date-filter" placeholder="Filter by date">
+                    <button class="btn-secondary" id="clear-filters">Clear</button>
+                </div>
+
+                <div class="messages-container" id="messages-container">
+                    <!-- Dynamic message list -->
+                </div>
+            </div>
+
+            <!-- Contacts Tab -->
+            <div id="contacts-tab" class="tab-content">
+                <div class="page-header">
+                    <h1><i class="fas fa-address-book"></i> Contacts</h1>
+                    <div class="header-actions">
+                        <button class="btn-secondary" id="import-contacts-btn">
+                            <i class="fas fa-upload"></i> Import
+                        </button>
+                        <button class="btn-primary" id="add-contact-btn">
+                            <i class="fas fa-plus"></i> Add Contact
+                        </button>
+                    </div>
+                </div>
+
+                <div class="contacts-grid" id="contacts-grid">
+                    <!-- Dynamic contacts list -->
+                </div>
+            </div>
+
+            <!-- Analytics Tab -->
+            <div id="analytics-tab" class="tab-content">
+                <div class="page-header">
+                    <h1><i class="fas fa-chart-bar"></i> Analytics</h1>
+                    <p>Track your messaging performance and engagement</p>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <h3>Message Volume</h3>
+                        <div class="chart-placeholder">
+                            <i class="fas fa-chart-line"></i>
+                            <p>Interactive chart showing message volume over time</p>
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3>Delivery Success Rate</h3>
+                        <div class="chart-placeholder">
+                            <i class="fas fa-chart-pie"></i>
+                            <p>Pie chart showing delivery success rates</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </main>
-
-        <footer class="footer">
-            <p>Powered by DeepSeek AI | Made with ❤️ for better communication</p>
-        </footer>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
-    <script src="shortcut-generator.js"></script>
+    <!-- Message Composer Modal -->
+    <div id="composer-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-edit"></i> Compose Message</h2>
+                <button class="modal-close" id="composer-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="message-form">
+                    <div class="form-group">
+                        <label for="recipient-select">Recipient</label>
+                        <select id="recipient-select" required>
+                            <option value="">Select a contact</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message-content">Message</label>
+                        <div class="message-input-container">
+                            <textarea 
+                                id="message-content" 
+                                placeholder="Type your message here..." 
+                                rows="4" 
+                                maxlength="1600"
+                                required
+                            ></textarea>
+                            <div class="message-tools">
+                                <button type="button" class="tool-btn" id="ai-assist-btn">
+                                    <i class="fas fa-robot"></i> AI Assist
+                                </button>
+                                <span class="char-counter">
+                                    <span id="char-count">0</span>/1600
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="schedule-type">Delivery</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="scheduleType" value="now" checked>
+                                <span>Send Now</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="scheduleType" value="scheduled">
+                                <span>Schedule</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="schedule-datetime-group" style="display: none;">
+                        <label for="schedule-datetime">Schedule Date & Time</label>
+                        <input type="datetime-local" id="schedule-datetime">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" id="save-draft-btn">
+                            Save Draft
+                        </button>
+                        <button type="submit" class="btn-primary" id="send-message-btn">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Assistant Modal -->
+    <div id="ai-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-robot"></i> AI Message Assistant</h2>
+                <button class="modal-close" id="ai-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="ai-options">
+                    <h3>What type of message would you like to create?</h3>
+                    <div class="ai-templates">
+                        <button class="template-btn" data-template="birthday">
+                            <i class="fas fa-birthday-cake"></i>
+                            Birthday Wishes
+                        </button>
+                        <button class="template-btn" data-template="followup">
+                            <i class="fas fa-handshake"></i>
+                            Follow-up
+                        </button>
+                        <button class="template-btn" data-template="reminder">
+                            <i class="fas fa-bell"></i>
+                            Reminder
+                        </button>
+                        <button class="template-btn" data-template="promotional">
+                            <i class="fas fa-tags"></i>
+                            Promotional
+                        </button>
+                        <button class="template-btn" data-template="thank-you">
+                            <i class="fas fa-heart"></i>
+                            Thank You
+                        </button>
+                        <button class="template-btn" data-template="custom">
+                            <i class="fas fa-magic"></i>
+                            Custom
+                        </button>
+                    </div>
+
+                    <div id="custom-ai-input" style="display: none;">
+                        <div class="form-group">
+                            <label for="ai-prompt">Describe your message</label>
+                            <textarea 
+                                id="ai-prompt" 
+                                placeholder="E.g., A friendly reminder about an upcoming appointment"
+                                rows="3"
+                            ></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="ai-tone">Tone</label>
+                            <select id="ai-tone">
+                                <option value="friendly">Friendly</option>
+                                <option value="professional">Professional</option>
+                                <option value="casual">Casual</option>
+                                <option value="formal">Formal</option>
+                                <option value="enthusiastic">Enthusiastic</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn-primary" id="generate-ai-message">
+                            <i class="fas fa-magic"></i> Generate Message
+                        </button>
+                    </div>
+
+                    <div id="ai-generated-content" style="display: none;">
+                        <h4>Generated Message:</h4>
+                        <div class="generated-message" id="generated-message-content"></div>
+                        <div class="form-actions">
+                            <button class="btn-secondary" id="regenerate-ai">
+                                <i class="fas fa-redo"></i> Regenerate
+                            </button>
+                            <button class="btn-primary" id="use-ai-message">
+                                Use This Message
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-user-plus"></i> Add Contact</h2>
+                <button class="modal-close" id="contact-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="contact-form">
+                    <div class="form-group">
+                        <label for="contact-name">Name</label>
+                        <input type="text" id="contact-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-phone">Phone Number</label>
+                        <input type="tel" id="contact-phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-email">Email (Optional)</label>
+                        <input type="email" id="contact-email">
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-tags">Tags</label>
+                        <input type="text" id="contact-tags" placeholder="customer, lead, friend (comma separated)">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" id="cancel-contact">Cancel</button>
+                        <button type="submit" class="btn-primary">Add Contact</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html> 
