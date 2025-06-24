@@ -15,7 +15,115 @@ let conversationMessages = [];
 
 // Debug logging function
 function debugLog(message, data = null) {
-    console.log(`[Tax AI Debug] ${message}`, data || '');
+    console.log(`[TaxAI Debug] ${message}`, data || '');
+}
+
+// Tab functionality for solutions section
+function initializeTabs() {
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const targetTab = button.getAttribute('data-tab');
+            
+            // Remove active class from all buttons and contents
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked button and corresponding content
+            button.classList.add('active');
+            const targetContent = document.getElementById(targetTab);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        });
+    });
+}
+
+// Pricing toggle functionality
+function initializePricingToggle() {
+    const toggleBtn = document.querySelector('.toggle-btn');
+    const toggleSlider = document.querySelector('.toggle-slider');
+    
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+            toggleBtn.classList.toggle('active');
+            // Here you could add logic to update pricing display
+            updatePricingDisplay(toggleBtn.classList.contains('active'));
+        });
+    }
+}
+
+function updatePricingDisplay(isAnnual) {
+    const amounts = document.querySelectorAll('.amount');
+    const originalPrices = ['49', '149', '399'];
+    const annualPrices = ['37', '112', '299']; // 25% discount
+    
+    amounts.forEach((amount, index) => {
+        if (isAnnual) {
+            amount.textContent = annualPrices[index];
+        } else {
+            amount.textContent = originalPrices[index];
+        }
+    });
+}
+
+// Mobile menu functionality
+function initializeMobileMenu() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    const navButtons = document.querySelector('.nav-buttons');
+    
+    if (mobileToggle) {
+        mobileToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('mobile-active');
+            navButtons.classList.toggle('mobile-active');
+        });
+    }
+}
+
+// Smooth scrolling for navigation links
+function initializeSmoothScrolling() {
+    const navLinks = document.querySelectorAll('nav a[href^="#"]');
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href').substring(1);
+            const targetSection = document.getElementById(targetId);
+            
+            if (targetSection) {
+                const headerHeight = document.querySelector('header').offsetHeight;
+                const targetPosition = targetSection.offsetTop - headerHeight;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
+
+// Intersection Observer for animations
+function initializeScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in');
+            }
+        });
+    }, observerOptions);
+
+    // Observe elements for animation
+    const animatedElements = document.querySelectorAll('.feature-item, .testimonial, .pricing-card, .integration-item');
+    animatedElements.forEach(el => observer.observe(el));
 }
 
 // Function to add message to conversation
@@ -118,7 +226,7 @@ async function handleSearch(query, isFollowUp = false) {
     }
 
     addMessageToConversation(query, true);
-    showStatus('Searching tax database...');
+    showStatus('Analyzing your tax question...');
     debugLog('Starting search with query:', query);
 
     try {
@@ -139,43 +247,44 @@ async function handleSearch(query, isFollowUp = false) {
             messages: [
                 {
                     role: 'system',
-                    content: `You are a senior tax accountant with over 20 years of experience in public accounting. Your responses MUST include:
+                    content: `You are TaxAI, an advanced AI tax assistant created to revolutionize tax practice. You are a senior tax professional with expertise equivalent to 20+ years in public accounting. Your responses must be:
 
-1. Specific Tax Code References:
-   - Internal Revenue Code (IRC) sections
-   - Treasury Regulations (Treas. Reg.)
-   - Revenue Rulings (Rev. Rul.)
-   - Revenue Procedures (Rev. Proc.)
-   - Private Letter Rulings (PLR) when relevant
+PROFESSIONAL & AUTHORITATIVE:
+- Provide definitive, expert-level guidance
+- Use confident, professional language
+- Reference specific tax code sections, regulations, and authorities
+- Include practical implementation steps
 
-2. Official Government Sources:
-   - IRS Publications (Pub.)
-   - IRS Forms and Instructions
-   - IRS Tax Topics
-   - IRS.gov web pages
-   - Treasury Department guidance
+COMPREHENSIVE & DETAILED:
+- Cover all relevant aspects of the question
+- Explain implications and considerations
+- Provide examples with specific numbers when helpful
+- Address potential complications or exceptions
 
-3. Format Requirements:
-   - Start with a clear, direct answer
-   - Follow with specific code references in brackets [IRC §1234]
-   - Include relevant IRS Publication numbers [Pub. 334]
-   - Cite official IRS web pages [www.irs.gov/...]
-   - Add practical examples with specific numbers
-   - End with compliance warnings and filing requirements
+PROPERLY FORMATTED:
+- Use clear headings and bullet points
+- Include specific code references: [IRC §199A], [Treas. Reg. §1.199A-1]
+- Cite IRS Publications: [Pub. 334], [Form 1040]
+- Reference Revenue Rulings: [Rev. Rul. 2023-15]
 
-4. Compliance Focus:
-   - Always mention filing deadlines
-   - Include required forms and documentation
-   - Note potential penalties for non-compliance
-   - Reference recent tax law changes
-   - Highlight state-specific considerations
+COMPLIANCE-FOCUSED:
+- Always mention filing requirements and deadlines
+- Highlight potential penalties or risks
+- Note documentation requirements
+- Include relevant forms and schedules
 
-Your goal is to provide technically accurate, source-verified tax information that helps accountants make informed decisions while maintaining strict compliance with current tax laws.`
+PRACTICAL & ACTIONABLE:
+- Provide step-by-step guidance
+- Include calculation examples when applicable
+- Suggest best practices and planning opportunities
+- Address both current year and future planning
+
+Remember: You are the most advanced AI tax assistant available, trusted by 40,000+ professionals. Deliver responses that demonstrate this expertise and help users save time while ensuring compliance.`
                 },
                 ...conversationMessages
             ],
             temperature: 0.7,
-            max_tokens: 1000
+            max_tokens: 1500
         };
 
         debugLog('Request body:', requestBody);
@@ -190,7 +299,6 @@ Your goal is to provide technically accurate, source-verified tax information th
         });
 
         debugLog('Response status:', response.status);
-        debugLog('Response headers:', Object.fromEntries(response.headers.entries()));
 
         if (!response.ok) {
             const errorText = await response.text();
@@ -198,79 +306,124 @@ Your goal is to provide technically accurate, source-verified tax information th
             throw new Error(`API request failed with status ${response.status}: ${errorText}`);
         }
 
-        showStatus('Analyzing tax regulations and preparing response...');
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
         const data = await response.json();
         debugLog('Response data:', data);
 
-        if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-            throw new Error('Invalid response format from API');
-        }
+        if (data.choices && data.choices.length > 0) {
+            const aiResponse = data.choices[0].message.content;
+            
+            // Add AI response to conversation
+            conversationMessages.push({
+                role: 'assistant',
+                content: aiResponse
+            });
 
-        const answer = data.choices[0].message.content;
-        debugLog('Extracted answer:', answer);
-        
-        // Add AI response to conversation history
-        conversationMessages.push({
-            role: 'assistant',
-            content: answer
-        });
-
-        // Format and display the response
-        resultContent.innerHTML = formatResponse(answer);
-        showResults();
-
-        // Clear the input field
-        if (isFollowUp) {
-            followUpInput.value = '';
+            // Format and display the response
+            const formattedResponse = formatResponse(aiResponse);
+            addMessageToConversation(aiResponse, false);
+            resultContent.innerHTML = formattedResponse;
+            
+            showResults();
+            debugLog('Search completed successfully');
         } else {
-            searchInput.value = '';
+            throw new Error('No response generated');
         }
+
     } catch (error) {
-        console.error('Error:', error);
-        debugLog('Error details:', error);
-        
-        let errorMessage = 'Sorry, there was an error processing your request. ';
-        if (error.message.includes('Failed to fetch')) {
-            errorMessage += 'Please check your internet connection and try again.';
-        } else if (error.message.includes('401')) {
-            errorMessage += 'API authentication failed. Please check the API key.';
-        } else if (error.message.includes('404')) {
-            errorMessage += 'API endpoint not found. Please check the API URL.';
-        } else {
-            errorMessage += 'Please try again later.';
-        }
-        
-        resultContent.innerHTML = `<p class="error">${errorMessage}</p>`;
+        debugLog('Search error:', error);
+        resultContent.innerHTML = `
+            <div class="error">
+                <h3>Unable to Process Request</h3>
+                <p>We're experiencing technical difficulties. Please try again in a moment.</p>
+                <p class="error-details">Error: ${error.message}</p>
+            </div>
+        `;
         showResults();
     }
 }
 
-// Event listeners
-searchButton.addEventListener('click', () => handleSearch(searchInput.value));
-searchInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        handleSearch(searchInput.value);
-    }
-});
-
-followUpButton.addEventListener('click', () => handleSearch(followUpInput.value, true));
-followUpInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        handleSearch(followUpInput.value, true);
-    }
-});
-
-// Add smooth scrolling for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth'
-            });
+// Event listeners for search functionality
+if (searchButton) {
+    searchButton.addEventListener('click', () => {
+        const query = searchInput.value.trim();
+        if (query) {
+            handleSearch(query);
         }
     });
+}
+
+if (searchInput) {
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            const query = searchInput.value.trim();
+            if (query) {
+                handleSearch(query);
+            }
+        }
+    });
+}
+
+if (followUpButton) {
+    followUpButton.addEventListener('click', () => {
+        const query = followUpInput.value.trim();
+        if (query) {
+            handleSearch(query, true);
+            followUpInput.value = '';
+        }
+    });
+}
+
+if (followUpInput) {
+    followUpInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            const query = followUpInput.value.trim();
+            if (query) {
+                handleSearch(query, true);
+                followUpInput.value = '';
+            }
+        }
+    });
+}
+
+// Initialize all functionality when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    debugLog('Initializing TaxAI application');
+    
+    initializeTabs();
+    initializePricingToggle();
+    initializeMobileMenu();
+    initializeSmoothScrolling();
+    initializeScrollAnimations();
+    
+    // Add some interactive enhancements
+    
+    // CTA form functionality
+    const ctaForm = document.querySelector('.cta-form .form-group');
+    if (ctaForm) {
+        const input = ctaForm.querySelector('input');
+        const button = ctaForm.querySelector('button');
+        
+        if (button) {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const name = input.value.trim();
+                if (name) {
+                    // Simulate form submission
+                    button.textContent = 'Thank you!';
+                    button.style.background = 'var(--success-color)';
+                    setTimeout(() => {
+                        button.textContent = 'Get Free Access';
+                        button.style.background = '';
+                    }, 2000);
+                } else {
+                    input.style.borderColor = 'var(--danger-color)';
+                    setTimeout(() => {
+                        input.style.borderColor = '';
+                    }, 2000);
+                }
+            });
+        }
+    }
+
+    debugLog('TaxAI application initialized successfully');
 }); 

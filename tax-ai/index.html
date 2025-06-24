@@ -3,44 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tax AI - Your Expert Tax Assistant</title>
+    <title>TaxAI - Revolutionize Your Tax Practice with AI</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
         <nav>
-            <div class="logo">Tax AI</div>
-            <ul>
+            <div class="logo">TaxAI</div>
+            <ul class="nav-links">
                 <li><a href="#features">Features</a></li>
-                <li><a href="#about">About</a></li>
+                <li><a href="#solutions">Solutions</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#testimonials">Reviews</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
+            <div class="nav-buttons">
+                <button class="btn-secondary">Sign In</button>
+                <button class="btn-primary">Get Started</button>
+            </div>
+            <div class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
         </nav>
     </header>
 
     <main>
+        <!-- Hero Section -->
         <section class="hero">
-            <h1>Get Expert Tax Answers Instantly</h1>
-            <p>Your AI-powered tax assistant with deep knowledge of tax codes, regulations, and compliance requirements. Get accurate, detailed answers to your tax questions in seconds.</p>
-            
-            <div class="search-container">
-                <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="Ask any tax question... (e.g., 'What are the 2024 tax brackets?' or 'How do I claim home office expenses?')">
-                    <button id="searchButton">
-                        <i class="fas fa-search"></i>
-                    </button>
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge">NEW</span>
+                    <span>AI Agent Andrew - Revolutionary audit & review tool</span>
                 </div>
-                <div id="searchResults" class="hidden">
-                    <div class="conversation-container">
-                        <div class="conversation-history"></div>
-                        <div class="result-content"></div>
-                        <div class="follow-up-container hidden">
-                            <div class="follow-up-input">
-                                <input type="text" id="followUpInput" placeholder="Ask a follow-up question...">
-                                <button id="followUpButton">
-                                    <i class="fas fa-paper-plane"></i>
-                                </button>
+                <h1>Solve Complex Tax Questions <span class="highlight">in Seconds</span></h1>
+                <p class="hero-subtitle">Transform your tax practice with the world's most advanced AI tax assistant. Research faster, write smarter, reduce errors by 99%, and boost productivity 10x.</p>
+                
+                <div class="search-container">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Ask any tax question... (e.g., 'Section 199A deduction for rental properties')">
+                        <button id="searchButton">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    <p class="search-note">Trusted by over 40,000 tax professionals worldwide</p>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-number">99%</div>
+                        <div class="stat-label">Faster Research</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">10x</div>
+                        <div class="stat-label">Productivity Boost</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">40K+</div>
+                        <div class="stat-label">Professionals</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="searchResults" class="hidden">
+                <div class="conversation-container">
+                    <div class="conversation-history"></div>
+                    <div class="result-content"></div>
+                    <div class="follow-up-container hidden">
+                        <div class="follow-up-input">
+                            <input type="text" id="followUpInput" placeholder="Ask a follow-up question...">
+                            <button id="followUpButton">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Overview -->
+        <section class="features-overview">
+            <div class="container">
+                <h2>Your AI Tax Co-Pilot for Every Challenge</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3>Lightning-Fast Research</h3>
+                        <p>Cut research time by 99% with instant access to tax codes, regulations, and case law</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h3>Smart Memo Writing</h3>
+                        <p>Generate professional tax memos and client communications in minutes, not hours</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h3>Client Intelligence</h3>
+                        <p>Build comprehensive client profiles with personalized tax strategies and insights</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Error Prevention</h3>
+                        <p>Reduce compliance risks with real-time accuracy checks and validation</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Time Liberation</h3>
+                        <p>Save 5+ hours daily and focus on high-value client advisory services</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Practice Growth</h3>
+                        <p>Scale your practice efficiently while maintaining exceptional service quality</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Agent Andrew Feature -->
+        <section class="agent-andrew">
+            <div class="container">
+                <div class="feature-badge">
+                    <span class="badge new">NEW FEATURE</span>
+                </div>
+                <h2>Meet Agent Andrew</h2>
+                <p class="section-subtitle">Revolutionary AI-powered audit and review tool that analyzes prepared tax documents with surgical precision</p>
+                
+                <div class="andrew-grid">
+                    <div class="andrew-content">
+                        <p>Agent Andrew transforms tax review with advanced AI that analyzes 1040, 1065, 1120, 1120-S, and more. Get detailed, downloadable reports with color-coded insights that catch what human eyes might miss.</p>
+                        
+                        <div class="flag-types">
+                            <div class="flag-item red">
+                                <div class="flag-icon">🔴</div>
+                                <div class="flag-content">
+                                    <h4>Red Flags</h4>
+                                    <p>Critical errors like transcription mistakes, omissions, and mismatched data that significantly increase audit risk</p>
+                                </div>
+                            </div>
+                            <div class="flag-item yellow">
+                                <div class="flag-icon">🟡</div>
+                                <div class="flag-content">
+                                    <h4>Yellow Flags</h4>
+                                    <p>Cautionary items requiring review: classifications, carryovers, missing prior year data, bank verifications</p>
+                                </div>
+                            </div>
+                            <div class="flag-item green">
+                                <div class="flag-icon">🟢</div>
+                                <div class="flag-content">
+                                    <h4>Green Flags</h4>
+                                    <p>Tax-saving opportunities: missed deductions, retirement contributions, depreciation elections</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="btn-primary">See Agent Andrew in Action</button>
+                    </div>
+                    <div class="andrew-visual">
+                        <div class="mock-report">
+                            <div class="report-header">
+                                <h4>Tax Review Report</h4>
+                                <span class="report-date">Generated: Today</span>
+                            </div>
+                            <div class="report-flags">
+                                <div class="flag-summary red">3 Critical Issues</div>
+                                <div class="flag-summary yellow">7 Review Items</div>
+                                <div class="flag-summary green">5 Opportunities</div>
                             </div>
                         </div>
                     </div>
@@ -48,51 +189,495 @@
             </div>
         </section>
 
-        <section id="features" class="features">
-            <h2>Why Tax AI?</h2>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <i class="fas fa-gavel"></i>
-                    <h3>Tax Code Expertise</h3>
-                    <p>Get answers backed by current tax laws, regulations, and IRS/CRA guidelines</p>
+        <!-- Solutions Section -->
+        <section id="solutions" class="solutions">
+            <div class="container">
+                <h2>Tailored Solutions for Every Practice</h2>
+                <div class="solutions-tabs">
+                    <button class="tab-btn active" data-tab="firms">Tax Firms</button>
+                    <button class="tab-btn" data-tab="businesses">Businesses</button>
+                    <button class="tab-btn" data-tab="individuals">Individuals</button>
                 </div>
-                <div class="feature-card">
-                    <i class="fas fa-calculator"></i>
-                    <h3>Tax Planning</h3>
-                    <p>Strategic advice for tax optimization and compliance for individuals and businesses</p>
+                
+                <div class="tab-content active" id="firms">
+                    <div class="solution-grid">
+                        <div class="solution-content">
+                            <h3>Transform Your Tax Practice</h3>
+                            <ul class="benefit-list">
+                                <li><i class="fas fa-check"></i> Handle 3x more clients with same staff</li>
+                                <li><i class="fas fa-check"></i> Reduce research time from hours to minutes</li>
+                                <li><i class="fas fa-check"></i> Generate professional memos instantly</li>
+                                <li><i class="fas fa-check"></i> Minimize compliance risks and errors</li>
+                                <li><i class="fas fa-check"></i> Integrate seamlessly into existing workflows</li>
+                                <li><i class="fas fa-check"></i> Scale without sacrificing quality</li>
+                            </ul>
+                            <div class="solution-cta">
+                                <button class="btn-primary">Start Free Trial</button>
+                                <button class="btn-secondary">Schedule Demo</button>
+                            </div>
+                        </div>
+                        <div class="solution-visual">
+                            <div class="workflow-demo">
+                                <div class="step">
+                                    <span class="step-number">1</span>
+                                    <span class="step-text">Upload client documents</span>
+                                </div>
+                                <div class="step">
+                                    <span class="step-number">2</span>
+                                    <span class="step-text">AI analyzes & generates insights</span>
+                                </div>
+                                <div class="step">
+                                    <span class="step-number">3</span>
+                                    <span class="step-text">Receive actionable recommendations</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="feature-card">
-                    <i class="fas fa-file-invoice-dollar"></i>
-                    <h3>Deductions & Credits</h3>
-                    <p>Discover eligible tax deductions, credits, and benefits you might be missing</p>
+                
+                <div class="tab-content" id="businesses">
+                    <div class="solution-grid">
+                        <div class="solution-content">
+                            <h3>Streamline Business Tax Compliance</h3>
+                            <ul class="benefit-list">
+                                <li><i class="fas fa-check"></i> Year-round tax planning guidance</li>
+                                <li><i class="fas fa-check"></i> Automated compliance monitoring</li>
+                                <li><i class="fas fa-check"></i> Multi-state tax optimization</li>
+                                <li><i class="fas fa-check"></i> Real-time regulatory updates</li>
+                                <li><i class="fas fa-check"></i> Strategic tax planning insights</li>
+                                <li><i class="fas fa-check"></i> Integration with accounting systems</li>
+                            </ul>
+                            <div class="solution-cta">
+                                <button class="btn-primary">Get Started</button>
+                                <button class="btn-secondary">Learn More</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="feature-card">
-                    <i class="fas fa-building"></i>
-                    <h3>Business Tax</h3>
-                    <p>Expert guidance on corporate tax, small business deductions, and compliance</p>
+                
+                <div class="tab-content" id="individuals">
+                    <div class="solution-grid">
+                        <div class="solution-content">
+                            <h3>Maximize Your Tax Savings</h3>
+                            <ul class="benefit-list">
+                                <li><i class="fas fa-check"></i> Personalized deduction discovery</li>
+                                <li><i class="fas fa-check"></i> Tax planning throughout the year</li>
+                                <li><i class="fas fa-check"></i> Investment tax optimization</li>
+                                <li><i class="fas fa-check"></i> Retirement planning strategies</li>
+                                <li><i class="fas fa-check"></i> Estate planning guidance</li>
+                                <li><i class="fas fa-check"></i> Easy-to-understand explanations</li>
+                            </ul>
+                            <div class="solution-cta">
+                                <button class="btn-primary">Try Free</button>
+                                <button class="btn-secondary">See Features</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="about" class="about">
-            <h2>Your Trusted Tax Resource</h2>
-            <p>Tax AI combines deep tax expertise with advanced AI technology to provide accurate, up-to-date answers to your tax questions. Whether you're an individual taxpayer, small business owner, or tax professional, get the information you need to make informed tax decisions.</p>
+        <!-- Key Features -->
+        <section id="features" class="key-features">
+            <div class="container">
+                <h2>Why Leading Tax Professionals Choose TaxAI</h2>
+                <div class="features-detailed">
+                    <div class="feature-detailed">
+                        <div class="feature-icon-lg">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3>Unmatched Accuracy</h3>
+                        <p>Powered by proprietary AI trained on millions of tax documents, laws, and CPA-verified sources. Our model delivers precise, up-to-date answers to even the most complex tax scenarios.</p>
+                        <div class="feature-stats">
+                            <span class="stat">99.8% Accuracy Rate</span>
+                            <span class="stat">Daily Updates</span>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-detailed">
+                        <div class="feature-icon-lg">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h3>Bank-Grade Security</h3>
+                        <p>Your sensitive tax data deserves the highest protection. We use enterprise-grade encryption, SOC 2 compliance, and trusted cloud infrastructure from AWS and Azure.</p>
+                        <div class="feature-stats">
+                            <span class="stat">SOC 2 Certified</span>
+                            <span class="stat">256-bit Encryption</span>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-detailed">
+                        <div class="feature-icon-lg">
+                            <i class="fas fa-magic"></i>
+                        </div>
+                        <h3>Personalized Intelligence</h3>
+                        <p>No more generic advice. TaxAI learns your practice patterns and client needs, delivering tailored recommendations that help you identify savings and avoid overpayment.</p>
+                        <div class="feature-stats">
+                            <span class="stat">AI Learning</span>
+                            <span class="stat">Custom Insights</span>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-detailed">
+                        <div class="feature-icon-lg">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>Instant Communication</h3>
+                        <p>Draft professional tax memos, client letters, and IRS responses in seconds. Our AI understands context and maintains your professional voice across all communications.</p>
+                        <div class="feature-stats">
+                            <span class="stat">2-Second Response</span>
+                            <span class="stat">Professional Tone</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section id="testimonials" class="testimonials">
+            <div class="container">
+                <h2>Loved by Tax Professionals Worldwide</h2>
+                <div class="testimonials-grid">
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            <p>"This app is fantastic. I needed specialized research on Section 174 for both film industry and SBIR grantees - got incredible responses with solid references. Absolute game changer for small practitioners."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-info">
+                                <strong>Jackie Compton</strong>
+                                <span>CPA, CTC, CGMA</span>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            <p>"I'm saving 5 hours daily using TaxAI. It's an incredible resource and my clients absolutely love the quality of service I can now provide. The ROI is off the charts."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-info">
+                                <strong>Jeff S.</strong>
+                                <span>CPA</span>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            <p>"Cuts my research time by 75% minimum. Super intuitive interface and the depth of knowledge is impressive. This tool has revolutionized how I serve clients."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-info">
+                                <strong>Ryan H.</strong>
+                                <span>CPA</span>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            <p>"The team loves TaxAI! Today I uploaded client documents and got immediate next-step summaries. As a director of tax, this tool is absolutely fabulous for our practice."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-info">
+                                <strong>Michelle L.</strong>
+                                <span>CPA, Director of Tax</span>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            <p>"The memo functionality alone saves me tremendous time as a sole practitioner. Well-documented, reliable data helps us make confident decisions with clients."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-info">
+                                <strong>Wayne L.</strong>
+                                <span>CPA</span>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            <p>"Providing invaluable assistance with complex client questions. I always strive for top-tier support, and this tool makes it possible to exceed expectations consistently."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-info">
+                                <strong>Angeliese W.</strong>
+                                <span>CPA</span>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Integration Section -->
+        <section class="integration">
+            <div class="container">
+                <h2>Embed TaxAI Into Your Workflows</h2>
+                <p class="section-subtitle">Revolutionize client service with seamless AI integration. Reduce response times by 10x and boost satisfaction ratings across all touchpoints.</p>
+                
+                <div class="integration-features">
+                    <div class="integration-item">
+                        <div class="integration-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3>Website Integration</h3>
+                        <p>Add our AI chatbot to your website in minutes. Provide instant tax guidance to visitors and convert more prospects.</p>
+                    </div>
+                    
+                    <div class="integration-item">
+                        <div class="integration-icon">
+                            <i class="fas fa-plug"></i>
+                        </div>
+                        <h3>API Access</h3>
+                        <p>Integrate TaxAI directly into your existing practice management software for seamless workflows.</p>
+                    </div>
+                    
+                    <div class="integration-item">
+                        <div class="integration-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3>Mobile Apps</h3>
+                        <p>Provide on-the-go tax assistance through your branded mobile applications.</p>
+                    </div>
+                </div>
+                
+                <div class="integration-cta">
+                    <button class="btn-primary">Learn About Integration</button>
+                    <button class="btn-secondary">View API Documentation</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing" class="pricing">
+            <div class="container">
+                <h2>Choose Your Growth Plan</h2>
+                <p class="section-subtitle">Start free, scale as you grow. No hidden fees, no long-term contracts.</p>
+                
+                <div class="pricing-toggle">
+                    <span>Monthly</span>
+                    <button class="toggle-btn">
+                        <span class="toggle-slider"></span>
+                    </button>
+                    <span>Annual <span class="discount">Save 25%</span></span>
+                </div>
+                
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3>Starter</h3>
+                            <div class="price">
+                                <span class="currency">$</span>
+                                <span class="amount">49</span>
+                                <span class="period">/month</span>
+                            </div>
+                            <p>Perfect for solo practitioners</p>
+                        </div>
+                        <ul class="features-list">
+                            <li><i class="fas fa-check"></i> 100 AI queries per month</li>
+                            <li><i class="fas fa-check"></i> Basic tax research</li>
+                            <li><i class="fas fa-check"></i> Email support</li>
+                            <li><i class="fas fa-check"></i> Document analysis</li>
+                        </ul>
+                        <button class="btn-outline">Start Free Trial</button>
+                    </div>
+                    
+                    <div class="pricing-card featured">
+                        <div class="popular-badge">Most Popular</div>
+                        <div class="pricing-header">
+                            <h3>Professional</h3>
+                            <div class="price">
+                                <span class="currency">$</span>
+                                <span class="amount">149</span>
+                                <span class="period">/month</span>
+                            </div>
+                            <p>For growing tax practices</p>
+                        </div>
+                        <ul class="features-list">
+                            <li><i class="fas fa-check"></i> Unlimited AI queries</li>
+                            <li><i class="fas fa-check"></i> Advanced research tools</li>
+                            <li><i class="fas fa-check"></i> Agent Andrew access</li>
+                            <li><i class="fas fa-check"></i> Priority support</li>
+                            <li><i class="fas fa-check"></i> Client portal integration</li>
+                            <li><i class="fas fa-check"></i> Custom memo templates</li>
+                        </ul>
+                        <button class="btn-primary">Start Free Trial</button>
+                    </div>
+                    
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3>Enterprise</h3>
+                            <div class="price">
+                                <span class="currency">$</span>
+                                <span class="amount">399</span>
+                                <span class="period">/month</span>
+                            </div>
+                            <p>For large firms and organizations</p>
+                        </div>
+                        <ul class="features-list">
+                            <li><i class="fas fa-check"></i> Everything in Professional</li>
+                            <li><i class="fas fa-check"></i> API access</li>
+                            <li><i class="fas fa-check"></i> Custom integrations</li>
+                            <li><i class="fas fa-check"></i> Dedicated support manager</li>
+                            <li><i class="fas fa-check"></i> Team analytics</li>
+                            <li><i class="fas fa-check"></i> White-label options</li>
+                        </ul>
+                        <button class="btn-outline">Contact Sales</button>
+                    </div>
+                </div>
+                
+                <div class="pricing-footer">
+                    <p>All plans include 14-day free trial • No setup fees • Cancel anytime</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="final-cta">
+            <div class="container">
+                <h2>Ready to Transform Your Tax Practice?</h2>
+                <p>Join 40,000+ professionals who've revolutionized their workflow with TaxAI</p>
+                
+                <div class="cta-form">
+                    <div class="form-group">
+                        <input type="text" placeholder="Enter your full name" required>
+                        <button class="btn-primary btn-lg">Get Free Access</button>
+                    </div>
+                    <p class="form-note">Start your 14-day free trial • No credit card required</p>
+                </div>
+                
+                <div class="trust-indicators">
+                    <div class="trust-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>SOC 2 Compliant</span>
+                    </div>
+                    <div class="trust-item">
+                        <i class="fas fa-lock"></i>
+                        <span>256-bit Encryption</span>
+                    </div>
+                    <div class="trust-item">
+                        <i class="fas fa-users"></i>
+                        <span>40K+ Users</span>
+                    </div>
+                    <div class="trust-item">
+                        <i class="fas fa-star"></i>
+                        <span>4.9/5 Rating</span>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
 
     <footer>
         <div class="footer-content">
             <div class="footer-section">
-                <h4>Tax AI</h4>
-                <p>Your expert tax assistant</p>
+                <div class="footer-logo">TaxAI</div>
+                <p>Revolutionizing tax practice with advanced AI technology. Trusted by professionals worldwide.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                </div>
             </div>
+            
             <div class="footer-section">
-                <h4>Contact</h4>
-                <p>Email: info@taxai.com</p>
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#">API</a></li>
+                    <li><a href="#">Integrations</a></li>
+                    <li><a href="#">Agent Andrew</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Solutions</h4>
+                <ul>
+                    <li><a href="#">For Tax Firms</a></li>
+                    <li><a href="#">For Businesses</a></li>
+                    <li><a href="#">For Individuals</a></li>
+                    <li><a href="#">Document Management</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Security</a></li>
+                    <li><a href="#">Help Center</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Copyright Policy</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                </ul>
             </div>
         </div>
+        
         <div class="footer-bottom">
-            <p>&copy; 2024 Tax AI. All rights reserved.</p>
+            <div class="footer-bottom-content">
+                <p>&copy; 2024 TaxAI Inc. All rights reserved. TaxAI® is a registered trademark.</p>
+                <div class="footer-badges">
+                    <span class="badge-item">SOC 2 Certified</span>
+                    <span class="badge-item">GDPR Compliant</span>
+                    <span class="badge-item">ISO 27001</span>
+                </div>
+            </div>
         </div>
     </footer>
 
