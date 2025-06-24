@@ -23,6 +23,9 @@
                 <a href="#contacts" class="nav-link" data-tab="contacts">Contacts</a>
             </div>
             <div class="nav-actions">
+                <button class="btn-secondary mobile-menu-btn" id="mobile-menu-btn" style="display: none;">
+                    <i class="fas fa-bars"></i>
+                </button>
                 <button class="btn-secondary" id="settings-btn">
                     <i class="fas fa-cog"></i>
                 </button>
@@ -32,6 +35,32 @@
             </div>
         </div>
     </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu-overlay" class="mobile-menu-overlay" style="display: none;">
+        <div class="mobile-menu-content">
+            <div class="mobile-menu-header">
+                <span>Navigation</span>
+                <button class="mobile-menu-close" id="mobile-menu-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="mobile-menu-nav">
+                <a href="#dashboard" class="mobile-nav-link" data-tab="dashboard">
+                    <i class="fas fa-feather-alt"></i> Dashboard
+                </a>
+                <a href="#messages" class="mobile-nav-link" data-tab="messages">
+                    <i class="fas fa-envelope"></i> Messages
+                </a>
+                <a href="#live-messages" class="mobile-nav-link" data-tab="live-messages">
+                    <i class="fas fa-broadcast-tower"></i> Live Messages
+                </a>
+                <a href="#contacts" class="mobile-nav-link" data-tab="contacts">
+                    <i class="fas fa-users"></i> Contacts
+                </a>
+            </nav>
+        </div>
+    </div>
 
     <!-- Main Container -->
     <div class="main-container">

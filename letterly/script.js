@@ -92,6 +92,23 @@ class MessageFlow {
         document.getElementById('export-live-btn').addEventListener('click', () => this.exportLiveData());
         document.getElementById('auto-refresh-toggle').addEventListener('change', (e) => this.toggleAutoRefresh(e.target.checked));
         document.getElementById('refresh-interval').addEventListener('change', (e) => this.updateRefreshInterval(e.target.value));
+
+        // Mobile menu controls
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => this.openMobileMenu());
+        document.getElementById('mobile-menu-close').addEventListener('click', () => this.closeMobileMenu());
+        document.getElementById('mobile-menu-overlay').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) this.closeMobileMenu();
+        });
+
+        // Mobile navigation links
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const tab = link.dataset.tab;
+                this.switchTab(tab);
+                this.closeMobileMenu();
+            });
+        });
         
         // URL filters
         document.getElementById('url-status-filter').addEventListener('change', () => this.filterUrls());
@@ -192,6 +209,24 @@ class MessageFlow {
         document.getElementById('save-draft-btn').addEventListener('click', () => this.saveDraft());
     }
 
+    // Mobile Menu Management
+    openMobileMenu() {
+        document.getElementById('mobile-menu-overlay').style.display = 'block';
+        setTimeout(() => {
+            document.getElementById('mobile-menu-overlay').classList.add('active');
+        }, 10);
+        document.body.style.overflow = 'hidden';
+    }
+
+    closeMobileMenu() {
+        const overlay = document.getElementById('mobile-menu-overlay');
+        overlay.classList.remove('active');
+        setTimeout(() => {
+            overlay.style.display = 'none';
+        }, 300);
+        document.body.style.overflow = '';
+    }
+
     // Tab Management
     switchTab(tabName) {
         // Update navigation
@@ -199,6 +234,15 @@ class MessageFlow {
             link.classList.remove('active');
         });
         document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+        // Update mobile navigation
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+        const mobileLink = document.querySelector(`.mobile-nav-link[data-tab="${tabName}"]`);
+        if (mobileLink) {
+            mobileLink.classList.add('active');
+        }
 
         // Update content
         document.querySelectorAll('.tab-content').forEach(content => {
