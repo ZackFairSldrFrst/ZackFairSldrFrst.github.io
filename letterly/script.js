@@ -480,7 +480,7 @@ class MessageFlow {
                             <button class="btn-secondary" onclick="messageFlow.editMessage('${message.id}', '${message.pageId}')">
                                 <i class="fas fa-edit"></i> Edit
                             </button>
-                            <button class="btn-secondary" onclick="messageFlow.copyMessageUrl('${message.pageUrl}')">
+                            <button class="btn-secondary" onclick="messageFlow.copyMessageUrl('${message.pageId}', '${message.pageUrl}')">
                                 <i class="fas fa-link"></i> Copy URL
                             </button>
                             <button class="btn-secondary" onclick="messageFlow.deleteMessage('${message.id}', '${message.pageId}')">
@@ -539,20 +539,22 @@ class MessageFlow {
     }
 
     // Preview a message by opening its notification page
-    previewMessage(pageId) {
-        const page = this.notificationPages.find(p => p.id === pageId);
-        if (page) {
-            window.open(page.url, '_blank');
-        } else {
-            // Try to construct URL
+    previewMessage(pageId, pageUrl) {
+        let url = pageUrl;
+        if (!url) {
             const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
-            const pageUrl = `${baseUrl}/notification-page.html?id=${pageId}`;
-            window.open(pageUrl, '_blank');
+            url = `${baseUrl}/notification-page.html?id=${pageId}`;
         }
+        window.open(url, '_blank');
     }
 
     // Copy message URL to clipboard
-    async copyMessageUrl(url) {
+    async copyMessageUrl(pageId, pageUrl) {
+        let url = pageUrl;
+        if (!url) {
+            const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
+            url = `${baseUrl}/notification-page.html?id=${pageId}`;
+        }
         try {
             await navigator.clipboard.writeText(url);
             this.showNotification('URL copied to clipboard!', 'success');
@@ -1969,7 +1971,7 @@ class MessageFlow {
                             <button class="btn-small" onclick="messageFlow.editMessage('${message.id}', '${message.pageId}')">
                                 <i class="fas fa-edit"></i> Edit
                             </button>
-                            <button class="btn-small" onclick="messageFlow.copyMessageUrl('${message.pageUrl}')">
+                            <button class="btn-small" onclick="messageFlow.copyMessageUrl('${message.pageId}', '${message.pageUrl}')">
                                 <i class="fas fa-link"></i> Copy URL
                             </button>
                             <button class="btn-small" onclick="messageFlow.deleteMessage('${message.id}', '${message.pageId}')">
