@@ -1282,6 +1282,21 @@
         border-right: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
+    
+    /* New sections responsive */
+    .network-content-grid,
+    .marketing-content-grid,
+    .scheduling-content-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .calendar-widget {
+        grid-column: span 1;
+    }
+    
+    .campaign-metrics {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 768px) {
@@ -1297,7 +1312,10 @@
         padding: 16px;
     }
     
-    .stats-grid {
+    .stats-grid,
+    .network-stats-grid,
+    .marketing-stats-grid,
+    .scheduling-stats-grid {
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 16px;
     }
@@ -1310,6 +1328,40 @@
     
     .platform-search {
         display: none;
+    }
+    
+    /* Professional cards mobile */
+    .professional-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .professional-actions {
+        justify-content: center;
+    }
+    
+    /* Calendar mobile */
+    .calendar-header,
+    .calendar-body {
+        grid-template-columns: 60px repeat(3, 1fr);
+    }
+    
+    .day-header:nth-child(6),
+    .day-header:nth-child(7),
+    .day-column:nth-child(6),
+    .day-column:nth-child(7) {
+        display: none;
+    }
+    
+    /* Campaign metrics mobile */
+    .campaign-metrics {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    
+    /* Quick actions mobile */
+    .quick-actions-grid {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -1333,6 +1385,812 @@
     .user-profile span {
         display: none;
     }
+    
+    /* Tabs mobile */
+    .network-tabs,
+    .marketing-tabs {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    
+    .network-tab,
+    .marketing-tab {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+    
+    /* Calendar extra mobile */
+    .calendar-header,
+    .calendar-body {
+        grid-template-columns: 50px repeat(2, 1fr);
+    }
+    
+    .day-header:nth-child(4),
+    .day-header:nth-child(5),
+    .day-column:nth-child(4),
+    .day-column:nth-child(5) {
+        display: none;
+    }
+    
+    /* Appointment items mobile */
+    .appointment-item {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .appointment-item .appointment-time {
+        width: auto;
+        font-size: 16px;
+    }
+    
+    .appointment-actions {
+        justify-content: center;
+    }
+    
+    /* Campaign cards mobile */
+    .campaign-header {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .campaign-actions {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    
+    .action-btn {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+}
+
+/* Professional Network Styles */
+.network-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.network-stat-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 24px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.network-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.stat-icon.connections {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.stat-icon.referrals {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.stat-icon.expertise {
+    background: rgba(251, 191, 36, 0.1);
+    color: #fbbf24;
+}
+
+.network-content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+}
+
+.network-widget {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.network-widget.large {
+    grid-row: span 2;
+}
+
+.network-tabs {
+    display: flex;
+    gap: 8px;
+}
+
+.network-tab {
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #9ca3af;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.network-tab.active {
+    background: rgba(0, 217, 255, 0.1);
+    border-color: rgba(0, 217, 255, 0.3);
+    color: #00d9ff;
+}
+
+.network-tab-content {
+    display: none;
+}
+
+.network-tab-content.active {
+    display: block;
+}
+
+.professional-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.professional-card {
+    display: flex;
+    gap: 16px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.professional-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.professional-avatar img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+}
+
+.professional-info {
+    flex: 1;
+}
+
+.professional-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+
+.professional-title {
+    font-size: 14px;
+    color: #9ca3af;
+    margin-bottom: 8px;
+}
+
+.professional-location {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 8px;
+}
+
+.professional-expertise {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.expertise-tag {
+    padding: 2px 8px;
+    background: rgba(0, 217, 255, 0.1);
+    color: #00d9ff;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.professional-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.action-btn {
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #9ca3af;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+    background: rgba(0, 217, 255, 0.1);
+    color: #00d9ff;
+}
+
+.activity-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.timeline-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.timeline-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+}
+
+.timeline-dot.new {
+    background: #00d9ff;
+}
+
+.timeline-dot.referral {
+    background: #22c55e;
+}
+
+.timeline-dot.message {
+    background: #a855f7;
+}
+
+.timeline-content {
+    flex: 1;
+}
+
+.timeline-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 2px;
+}
+
+.timeline-desc {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-bottom: 4px;
+}
+
+.timeline-time {
+    font-size: 11px;
+    color: #6b7280;
+}
+
+/* Marketing Suite Styles */
+.marketing-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.marketing-stat-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 24px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.marketing-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.stat-icon.campaigns {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.stat-icon.leads {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.stat-icon.conversion {
+    background: rgba(168, 85, 247, 0.1);
+    color: #a855f7;
+}
+
+.stat-icon.roi {
+    background: rgba(251, 191, 36, 0.1);
+    color: #fbbf24;
+}
+
+.marketing-content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 24px;
+}
+
+.marketing-widget {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.marketing-widget.large {
+    grid-row: span 2;
+}
+
+.marketing-tabs {
+    display: flex;
+    gap: 8px;
+}
+
+.marketing-tab {
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #9ca3af;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.marketing-tab.active {
+    background: rgba(0, 217, 255, 0.1);
+    border-color: rgba(0, 217, 255, 0.3);
+    color: #00d9ff;
+}
+
+.marketing-tab-content {
+    display: none;
+}
+
+.marketing-tab-content.active {
+    display: block;
+}
+
+.campaign-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.campaign-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    padding: 20px;
+    transition: background 0.2s ease;
+}
+
+.campaign-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.campaign-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.campaign-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+
+.campaign-type {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.campaign-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.campaign-status.active {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.campaign-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.metric {
+    text-align: center;
+}
+
+.metric-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 2px;
+}
+
+.metric-label {
+    font-size: 11px;
+    color: #6b7280;
+}
+
+.campaign-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.content-generator {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.generator-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.generator-option:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.option-icon {
+    width: 36px;
+    height: 36px;
+    background: rgba(0, 217, 255, 0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #00d9ff;
+    flex-shrink: 0;
+}
+
+.option-info {
+    flex: 1;
+}
+
+.option-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 2px;
+}
+
+.option-desc {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.generate-btn {
+    padding: 6px 12px;
+    background: #00d9ff;
+    border: none;
+    border-radius: 6px;
+    color: #0a0a0f;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.generate-btn:hover {
+    background: #0099cc;
+}
+
+/* Smart Scheduling Styles */
+.scheduling-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.scheduling-stat-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 24px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.scheduling-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.stat-icon.appointments {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.stat-icon.utilization {
+    background: rgba(168, 85, 247, 0.1);
+    color: #a855f7;
+}
+
+.stat-icon.satisfaction {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.scheduling-content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 24px;
+}
+
+.scheduling-widget {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.calendar-widget {
+    grid-column: span 2;
+}
+
+.calendar-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-btn {
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.calendar-date {
+    font-size: 14px;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.calendar-grid {
+    overflow: hidden;
+}
+
+.calendar-header {
+    display: grid;
+    grid-template-columns: 80px repeat(5, 1fr);
+    gap: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin-bottom: 1px;
+}
+
+.time-column {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px 8px;
+}
+
+.day-header {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.day-header .date {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+.calendar-body {
+    display: grid;
+    grid-template-columns: 80px repeat(5, 1fr);
+    gap: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    min-height: 400px;
+}
+
+.time-slots {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 8px;
+}
+
+.time-slot {
+    height: 40px;
+    font-size: 11px;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.day-column {
+    background: rgba(255, 255, 255, 0.02);
+    position: relative;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.appointment {
+    position: absolute;
+    left: 4px;
+    right: 4px;
+    background: rgba(0, 217, 255, 0.2);
+    border: 1px solid rgba(0, 217, 255, 0.4);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.appointment:hover {
+    background: rgba(0, 217, 255, 0.3);
+    transform: scale(1.02);
+}
+
+.appointment.current {
+    background: rgba(34, 197, 94, 0.2);
+    border-color: rgba(34, 197, 94, 0.4);
+}
+
+.appointment-title {
+    color: #ffffff;
+    font-weight: 500;
+    margin-bottom: 1px;
+}
+
+.appointment-time {
+    color: #d1d5db;
+    font-size: 10px;
+}
+
+.appointment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.appointment-item {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.appointment-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.appointment-item.current {
+    border-left: 3px solid #22c55e;
+    background: rgba(34, 197, 94, 0.05);
+}
+
+.appointment-item .appointment-time {
+    font-size: 14px;
+    font-weight: 600;
+    color: #00d9ff;
+    width: 60px;
+    flex-shrink: 0;
+}
+
+.appointment-details {
+    flex: 1;
+}
+
+.client-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 2px;
+}
+
+.appointment-type {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-bottom: 4px;
+}
+
+.appointment-status {
+    font-size: 11px;
+    color: #6b7280;
+}
+
+.appointment-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.quick-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.quick-action:hover {
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-2px);
+}
+
+.action-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(0, 217, 255, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #00d9ff;
+    font-size: 20px;
+    margin-bottom: 12px;
+}
+
+.action-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+
+.action-desc {
+    font-size: 12px;
+    color: #9ca3af;
 }
 
 /* Animation for counting numbers */
@@ -1349,5 +2207,4 @@
 
 .stat-number {
     animation: countUp 0.6s ease-out;
-} 
 } 

@@ -598,46 +598,727 @@
                 </div>
             </div>
 
-            <!-- Other Platform Sections -->
+            <!-- Professional Network Section -->
             <div class="platform-section" id="network-section">
                 <div class="section-header">
                     <div class="page-title">
                         <h1>Professional Network</h1>
                         <p>Connect with tax professionals and expand your practice</p>
                     </div>
+                    <div class="section-actions">
+                        <button class="btn-secondary">
+                            <i class="fas fa-filter"></i>
+                            Filter
+                        </button>
+                        <button class="btn-primary">
+                            <i class="fas fa-user-plus"></i>
+                            Invite Contacts
+                        </button>
+                    </div>
                 </div>
-                <div class="coming-soon">
-                    <i class="fas fa-users"></i>
-                    <h3>Professional Network</h3>
-                    <p>This section is available in the full platform</p>
+                
+                <!-- Network Stats -->
+                <div class="network-stats-grid">
+                    <div class="network-stat-card">
+                        <div class="stat-icon connections">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">127</div>
+                            <div class="stat-label">Active Connections</div>
+                            <div class="stat-change positive">+12 this month</div>
+                        </div>
+                    </div>
+                    
+                    <div class="network-stat-card">
+                        <div class="stat-icon referrals">
+                            <i class="fas fa-share-alt"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">38</div>
+                            <div class="stat-label">Referrals Sent</div>
+                            <div class="stat-change positive">+5 this week</div>
+                        </div>
+                    </div>
+                    
+                    <div class="network-stat-card">
+                        <div class="stat-icon expertise">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">4.8</div>
+                            <div class="stat-label">Expertise Rating</div>
+                            <div class="stat-change positive">+0.2 improvement</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Network Content Grid -->
+                <div class="network-content-grid">
+                    <!-- Connections List -->
+                    <div class="network-widget large">
+                        <div class="widget-header">
+                            <h3>Your Network</h3>
+                            <div class="network-tabs">
+                                <button class="network-tab active" data-tab="connections">Connections</button>
+                                <button class="network-tab" data-tab="requests">Requests (3)</button>
+                                <button class="network-tab" data-tab="suggested">Suggested</button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="network-tab-content active" id="connections-content">
+                                <div class="professional-list">
+                                    <div class="professional-card">
+                                        <div class="professional-avatar">
+                                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjQiIGN5PSIyNCIgcj0iMjQiIGZpbGw9IiNmMTc5MmQiLz4KPHN2ZyB4PSIxMiIgeT0iMTAiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xMiAyYzEuNjUgMCAzIDEuMzUgMyAzcy0xLjM1IDMtMyAzLTMtMS4zNS0zLTMgMS4zNS0zIDMtM3ptOCAxOGgtNHYtM2MwLTEuMzMtLjY3LTItMi0ycy0yIC42Ny0yIDJ2M0g0di0zYzAtMi42NyA0LTQgOC00czggMS4zMyA4IDR2M3oiLz4KPC9zdmc+Cjwvc3ZnPgo=" alt="Michael Rodriguez">
+                                        </div>
+                                        <div class="professional-info">
+                                            <div class="professional-name">Michael Rodriguez</div>
+                                            <div class="professional-title">Tax Attorney • M&A Specialist</div>
+                                            <div class="professional-location">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                Los Angeles, CA
+                                            </div>
+                                            <div class="professional-expertise">
+                                                <span class="expertise-tag">Corporate Tax</span>
+                                                <span class="expertise-tag">M&A</span>
+                                            </div>
+                                        </div>
+                                        <div class="professional-actions">
+                                            <button class="action-btn message">
+                                                <i class="fas fa-comment"></i>
+                                                Message
+                                            </button>
+                                            <button class="action-btn refer">
+                                                <i class="fas fa-share"></i>
+                                                Refer
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="professional-card">
+                                        <div class="professional-avatar">
+                                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjQiIGN5PSIyNCIgcj0iMjQiIGZpbGw9IiNlZjQ0NDQiLz4KPHN2ZyB4PSIxMiIgeT0iMTAiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xMiAyYzEuNjUgMCAzIDEuMzUgMyAzcy0xLjM1IDMtMyAzLTMtMS4zNS0zLTMgMS4zNS0zIDMtM3ptOCAxOGgtNHYtM2MwLTEuMzMtLjY3LTItMi0ycy0yIC42Ny0yIDJ2M0g0di0zYzAtMi42NyA0LTQgOC00czggMS4zMyA4IDR2M3oiLz4KPC9zdmc+Cjwvc3ZnPgo=" alt="Lisa Thompson">
+                                        </div>
+                                        <div class="professional-info">
+                                            <div class="professional-name">Lisa Thompson</div>
+                                            <div class="professional-title">CPA • International Tax</div>
+                                            <div class="professional-location">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                New York, NY
+                                            </div>
+                                            <div class="professional-expertise">
+                                                <span class="expertise-tag">International</span>
+                                                <span class="expertise-tag">Transfer Pricing</span>
+                                            </div>
+                                        </div>
+                                        <div class="professional-actions">
+                                            <button class="action-btn message">
+                                                <i class="fas fa-comment"></i>
+                                                Message
+                                            </button>
+                                            <button class="action-btn refer">
+                                                <i class="fas fa-share"></i>
+                                                Refer
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="professional-card">
+                                        <div class="professional-avatar">
+                                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjQiIGN5PSIyNCIgcj0iMjQiIGZpbGw9IiMxMGI5ODEiLz4KPHN2ZyB4PSIxMiIgeT0iMTAiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xMiAyYzEuNjUgMCAzIDEuMzUgMyAzcy0xLjM1IDMtMyAzLTMtMS4zNS0zLTMgMS4zNS0zIDMtM3ptOCAxOGgtNHYtM2MwLTEuMzMtLjY3LTItMi0ycy0yIC42Ny0yIDJ2M0g0di0zYzAtMi42NyA0LTQgOC00czggMS4zMyA4IDR2M3oiLz4KPC9zdmc+Cjwvc3ZnPgo=" alt="David Park">
+                                        </div>
+                                        <div class="professional-info">
+                                            <div class="professional-name">David Park</div>
+                                            <div class="professional-title">Tax Manager • Estate Planning</div>
+                                            <div class="professional-location">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                Chicago, IL
+                                            </div>
+                                            <div class="professional-expertise">
+                                                <span class="expertise-tag">Estate Tax</span>
+                                                <span class="expertise-tag">Trust Planning</span>
+                                            </div>
+                                        </div>
+                                        <div class="professional-actions">
+                                            <button class="action-btn message">
+                                                <i class="fas fa-comment"></i>
+                                                Message
+                                            </button>
+                                            <button class="action-btn refer">
+                                                <i class="fas fa-share"></i>
+                                                Refer
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="network-tab-content" id="requests-content">
+                                <div class="connection-requests">
+                                    <div class="request-card">
+                                        <div class="request-avatar">
+                                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjQiIGN5PSIyNCIgcj0iMjQiIGZpbGw9IiNhODU1ZjciLz4KPHN2ZyB4PSIxMiIgeT0iMTAiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xMiAyYzEuNjUgMCAzIDEuMzUgMyAzcy0xLjM1IDMtMyAzLTMtMS4zNS0zLTMgMS4zNS0zIDMtM3ptOCAxOGgtNHYtM2MwLTEuMzMtLjY3LTItMi0ycy0yIC42Ny0yIDJ2M0g0di0zYzAtMi42NyA0LTQgOC00czggMS4zMyA4IDR2M3oiLz4KPC9zdmc+Cjwvc3ZnPgo=" alt="Jennifer Walsh">
+                                        </div>
+                                        <div class="request-info">
+                                            <div class="request-name">Jennifer Walsh</div>
+                                            <div class="request-title">Senior Tax Consultant</div>
+                                            <div class="request-message">"I'd like to connect regarding partnership tax strategies"</div>
+                                        </div>
+                                        <div class="request-actions">
+                                            <button class="btn-primary small">Accept</button>
+                                            <button class="btn-secondary small">Decline</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Activity -->
+                    <div class="network-widget">
+                        <div class="widget-header">
+                            <h3>Network Activity</h3>
+                        </div>
+                        <div class="widget-content">
+                            <div class="activity-timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-dot new"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">New connection request</div>
+                                        <div class="timeline-desc">Jennifer Walsh wants to connect</div>
+                                        <div class="timeline-time">5 minutes ago</div>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-dot referral"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Referral completed</div>
+                                        <div class="timeline-desc">Client referred to Lisa Thompson</div>
+                                        <div class="timeline-time">2 hours ago</div>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-dot message"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">New message</div>
+                                        <div class="timeline-desc">David Park sent you a message</div>
+                                        <div class="timeline-time">1 day ago</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
+            <!-- Marketing Suite Section -->
             <div class="platform-section" id="marketing-section">
                 <div class="section-header">
                     <div class="page-title">
                         <h1>Marketing Suite</h1>
                         <p>Automated marketing campaigns for tax professionals</p>
                     </div>
+                    <div class="section-actions">
+                        <button class="btn-secondary">
+                            <i class="fas fa-chart-line"></i>
+                            Analytics
+                        </button>
+                        <button class="btn-primary">
+                            <i class="fas fa-plus"></i>
+                            Create Campaign
+                        </button>
+                    </div>
                 </div>
-                <div class="coming-soon">
-                    <i class="fas fa-palette"></i>
-                    <h3>Marketing Suite</h3>
-                    <p>This section is available in the full platform</p>
+                
+                <!-- Marketing Stats -->
+                <div class="marketing-stats-grid">
+                    <div class="marketing-stat-card">
+                        <div class="stat-icon campaigns">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">8</div>
+                            <div class="stat-label">Active Campaigns</div>
+                            <div class="stat-change positive">+2 this month</div>
+                        </div>
+                    </div>
+                    
+                    <div class="marketing-stat-card">
+                        <div class="stat-icon leads">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">342</div>
+                            <div class="stat-label">New Leads</div>
+                            <div class="stat-change positive">+28% this week</div>
+                        </div>
+                    </div>
+                    
+                    <div class="marketing-stat-card">
+                        <div class="stat-icon conversion">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">12.4%</div>
+                            <div class="stat-label">Conversion Rate</div>
+                            <div class="stat-change positive">+3.2% improvement</div>
+                        </div>
+                    </div>
+                    
+                    <div class="marketing-stat-card">
+                        <div class="stat-icon roi">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">485%</div>
+                            <div class="stat-label">ROI</div>
+                            <div class="stat-change positive">+67% this quarter</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Marketing Content -->
+                <div class="marketing-content-grid">
+                    <!-- Campaign Manager -->
+                    <div class="marketing-widget large">
+                        <div class="widget-header">
+                            <h3>Campaign Manager</h3>
+                            <div class="marketing-tabs">
+                                <button class="marketing-tab active" data-tab="active">Active (8)</button>
+                                <button class="marketing-tab" data-tab="drafts">Drafts (3)</button>
+                                <button class="marketing-tab" data-tab="completed">Completed</button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="marketing-tab-content active" id="active-campaigns">
+                                <div class="campaign-list">
+                                    <div class="campaign-card">
+                                        <div class="campaign-header">
+                                            <div class="campaign-info">
+                                                <div class="campaign-name">Tax Season 2024 Prep</div>
+                                                <div class="campaign-type">Email Campaign</div>
+                                            </div>
+                                            <div class="campaign-status active">
+                                                <i class="fas fa-circle"></i>
+                                                Live
+                                            </div>
+                                        </div>
+                                        <div class="campaign-metrics">
+                                            <div class="metric">
+                                                <div class="metric-value">1,247</div>
+                                                <div class="metric-label">Sent</div>
+                                            </div>
+                                            <div class="metric">
+                                                <div class="metric-value">34.2%</div>
+                                                <div class="metric-label">Open Rate</div>
+                                            </div>
+                                            <div class="metric">
+                                                <div class="metric-value">8.7%</div>
+                                                <div class="metric-label">Click Rate</div>
+                                            </div>
+                                            <div class="metric">
+                                                <div class="metric-value">23</div>
+                                                <div class="metric-label">Leads</div>
+                                            </div>
+                                        </div>
+                                        <div class="campaign-actions">
+                                            <button class="action-btn edit">
+                                                <i class="fas fa-edit"></i>
+                                                Edit
+                                            </button>
+                                            <button class="action-btn pause">
+                                                <i class="fas fa-pause"></i>
+                                                Pause
+                                            </button>
+                                            <button class="action-btn analytics">
+                                                <i class="fas fa-chart-bar"></i>
+                                                Analytics
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="campaign-card">
+                                        <div class="campaign-header">
+                                            <div class="campaign-info">
+                                                <div class="campaign-name">Q4 Business Tax Updates</div>
+                                                <div class="campaign-type">Social Media</div>
+                                            </div>
+                                            <div class="campaign-status active">
+                                                <i class="fas fa-circle"></i>
+                                                Live
+                                            </div>
+                                        </div>
+                                        <div class="campaign-metrics">
+                                            <div class="metric">
+                                                <div class="metric-value">2,834</div>
+                                                <div class="metric-label">Reach</div>
+                                            </div>
+                                            <div class="metric">
+                                                <div class="metric-value">186</div>
+                                                <div class="metric-label">Engagement</div>
+                                            </div>
+                                            <div class="metric">
+                                                <div class="metric-value">42</div>
+                                                <div class="metric-label">Shares</div>
+                                            </div>
+                                            <div class="metric">
+                                                <div class="metric-value">12</div>
+                                                <div class="metric-label">Leads</div>
+                                            </div>
+                                        </div>
+                                        <div class="campaign-actions">
+                                            <button class="action-btn edit">
+                                                <i class="fas fa-edit"></i>
+                                                Edit
+                                            </button>
+                                            <button class="action-btn pause">
+                                                <i class="fas fa-pause"></i>
+                                                Pause
+                                            </button>
+                                            <button class="action-btn analytics">
+                                                <i class="fas fa-chart-bar"></i>
+                                                Analytics
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Content Generator -->
+                    <div class="marketing-widget">
+                        <div class="widget-header">
+                            <h3>AI Content Generator</h3>
+                        </div>
+                        <div class="widget-content">
+                            <div class="content-generator">
+                                <div class="generator-option">
+                                    <div class="option-icon">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div class="option-info">
+                                        <div class="option-title">Email Templates</div>
+                                        <div class="option-desc">AI-generated email campaigns</div>
+                                    </div>
+                                    <button class="generate-btn">Generate</button>
+                                </div>
+                                
+                                <div class="generator-option">
+                                    <div class="option-icon">
+                                        <i class="fas fa-share-alt"></i>
+                                    </div>
+                                    <div class="option-info">
+                                        <div class="option-title">Social Posts</div>
+                                        <div class="option-desc">LinkedIn & Twitter content</div>
+                                    </div>
+                                    <button class="generate-btn">Generate</button>
+                                </div>
+                                
+                                <div class="generator-option">
+                                    <div class="option-icon">
+                                        <i class="fas fa-blog"></i>
+                                    </div>
+                                    <div class="option-info">
+                                        <div class="option-title">Blog Articles</div>
+                                        <div class="option-desc">Tax insights & thought leadership</div>
+                                    </div>
+                                    <button class="generate-btn">Generate</button>
+                                </div>
+                                
+                                <div class="generator-option">
+                                    <div class="option-icon">
+                                        <i class="fas fa-ad"></i>
+                                    </div>
+                                    <div class="option-info">
+                                        <div class="option-title">Ad Copy</div>
+                                        <div class="option-desc">Google & Facebook ads</div>
+                                    </div>
+                                    <button class="generate-btn">Generate</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Performance Analytics -->
+                    <div class="marketing-widget">
+                        <div class="widget-header">
+                            <h3>Performance Overview</h3>
+                        </div>
+                        <div class="widget-content">
+                            <div class="performance-metrics">
+                                <div class="performance-chart-container">
+                                    <canvas id="marketingChart" width="300" height="200"></canvas>
+                                    <div class="chart-legend">
+                                        <div class="legend-item">
+                                            <div class="legend-color email"></div>
+                                            <span>Email</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <div class="legend-color social"></div>
+                                            <span>Social</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <div class="legend-color ads"></div>
+                                            <span>Ads</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
+            <!-- Smart Scheduling Section -->
             <div class="platform-section" id="scheduling-section">
                 <div class="section-header">
                     <div class="page-title">
                         <h1>Smart Scheduling</h1>
                         <p>Intelligent appointment scheduling and calendar management</p>
                     </div>
+                    <div class="section-actions">
+                        <button class="btn-secondary">
+                            <i class="fas fa-calendar-week"></i>
+                            Week View
+                        </button>
+                        <button class="btn-primary">
+                            <i class="fas fa-plus"></i>
+                            New Appointment
+                        </button>
+                    </div>
                 </div>
-                <div class="coming-soon">
-                    <i class="fas fa-calendar-check"></i>
-                    <h3>Smart Scheduling</h3>
-                    <p>This section is available in the full platform</p>
+                
+                <!-- Scheduling Stats -->
+                <div class="scheduling-stats-grid">
+                    <div class="scheduling-stat-card">
+                        <div class="stat-icon appointments">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">23</div>
+                            <div class="stat-label">This Week</div>
+                            <div class="stat-change positive">+3 from last week</div>
+                        </div>
+                    </div>
+                    
+                    <div class="scheduling-stat-card">
+                        <div class="stat-icon utilization">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">87%</div>
+                            <div class="stat-label">Utilization Rate</div>
+                            <div class="stat-change positive">+5% improvement</div>
+                        </div>
+                    </div>
+                    
+                    <div class="scheduling-stat-card">
+                        <div class="stat-icon revenue">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">$18.4K</div>
+                            <div class="stat-label">Weekly Revenue</div>
+                            <div class="stat-change positive">+12% increase</div>
+                        </div>
+                    </div>
+                    
+                    <div class="scheduling-stat-card">
+                        <div class="stat-icon satisfaction">
+                            <i class="fas fa-smile"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">4.9</div>
+                            <div class="stat-label">Client Satisfaction</div>
+                            <div class="stat-change positive">+0.1 improvement</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Scheduling Content -->
+                <div class="scheduling-content-grid">
+                    <!-- Calendar View -->
+                    <div class="scheduling-widget calendar-widget">
+                        <div class="widget-header">
+                            <h3>Weekly Calendar</h3>
+                            <div class="calendar-nav">
+                                <button class="nav-btn prev">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <span class="calendar-date">December 18-24, 2024</span>
+                                <button class="nav-btn next">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="calendar-grid">
+                                <div class="calendar-header">
+                                    <div class="time-column"></div>
+                                    <div class="day-header">Mon<span class="date">18</span></div>
+                                    <div class="day-header">Tue<span class="date">19</span></div>
+                                    <div class="day-header">Wed<span class="date">20</span></div>
+                                    <div class="day-header">Thu<span class="date">21</span></div>
+                                    <div class="day-header">Fri<span class="date">22</span></div>
+                                </div>
+                                <div class="calendar-body">
+                                    <div class="time-slots">
+                                        <div class="time-slot">9:00 AM</div>
+                                        <div class="time-slot">10:00 AM</div>
+                                        <div class="time-slot">11:00 AM</div>
+                                        <div class="time-slot">12:00 PM</div>
+                                        <div class="time-slot">1:00 PM</div>
+                                        <div class="time-slot">2:00 PM</div>
+                                        <div class="time-slot">3:00 PM</div>
+                                        <div class="time-slot">4:00 PM</div>
+                                        <div class="time-slot">5:00 PM</div>
+                                    </div>
+                                    <div class="day-column">
+                                        <div class="appointment" style="top: 60px; height: 50px;">
+                                            <div class="appointment-title">Johnson & Associates</div>
+                                            <div class="appointment-time">10:00-10:50</div>
+                                        </div>
+                                        <div class="appointment" style="top: 180px; height: 50px;">
+                                            <div class="appointment-title">Tax Review</div>
+                                            <div class="appointment-time">1:00-1:50</div>
+                                        </div>
+                                    </div>
+                                    <div class="day-column">
+                                        <div class="appointment" style="top: 120px; height: 50px;">
+                                            <div class="appointment-title">Maria Rodriguez</div>
+                                            <div class="appointment-time">12:00-12:50</div>
+                                        </div>
+                                    </div>
+                                    <div class="day-column">
+                                        <div class="appointment current" style="top: 180px; height: 50px;">
+                                            <div class="appointment-title">Current: Tax Planning</div>
+                                            <div class="appointment-time">2:00-2:50</div>
+                                        </div>
+                                    </div>
+                                    <div class="day-column">
+                                        <div class="appointment" style="top: 240px; height: 50px;">
+                                            <div class="appointment-title">Estate Planning</div>
+                                            <div class="appointment-time">3:00-3:50</div>
+                                        </div>
+                                    </div>
+                                    <div class="day-column">
+                                        <div class="appointment" style="top: 60px; height: 50px;">
+                                            <div class="appointment-title">Team Meeting</div>
+                                            <div class="appointment-time">10:00-10:50</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Upcoming Appointments -->
+                    <div class="scheduling-widget">
+                        <div class="widget-header">
+                            <h3>Today's Appointments</h3>
+                            <button class="widget-btn">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="widget-content">
+                            <div class="appointment-list">
+                                <div class="appointment-item current">
+                                    <div class="appointment-time">2:00 PM</div>
+                                    <div class="appointment-details">
+                                        <div class="client-name">Johnson & Associates</div>
+                                        <div class="appointment-type">Tax Planning Review</div>
+                                        <div class="appointment-status">In Progress</div>
+                                    </div>
+                                    <div class="appointment-actions">
+                                        <button class="action-btn join">
+                                            <i class="fas fa-video"></i>
+                                        </button>
+                                        <button class="action-btn reschedule">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="appointment-item upcoming">
+                                    <div class="appointment-time">4:30 PM</div>
+                                    <div class="appointment-details">
+                                        <div class="client-name">Maria Rodriguez</div>
+                                        <div class="appointment-type">Individual Consultation</div>
+                                        <div class="appointment-status">Upcoming</div>
+                                    </div>
+                                    <div class="appointment-actions">
+                                        <button class="action-btn prepare">
+                                            <i class="fas fa-file-alt"></i>
+                                        </button>
+                                        <button class="action-btn reschedule">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="appointment-item upcoming">
+                                    <div class="appointment-time">5:45 PM</div>
+                                    <div class="appointment-details">
+                                        <div class="client-name">Team Standup</div>
+                                        <div class="appointment-type">Internal Meeting</div>
+                                        <div class="appointment-status">Upcoming</div>
+                                    </div>
+                                    <div class="appointment-actions">
+                                        <button class="action-btn join">
+                                            <i class="fas fa-video"></i>
+                                        </button>
+                                        <button class="action-btn notes">
+                                            <i class="fas fa-sticky-note"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="scheduling-widget">
+                        <div class="widget-header">
+                            <h3>Quick Actions</h3>
+                        </div>
+                        <div class="widget-content">
+                            <div class="quick-actions-grid">
+                                <div class="quick-action">
+                                    <div class="action-icon">
+                                        <i class="fas fa-calendar-plus"></i>
+                                    </div>
+                                    <div class="action-title">Schedule Appointment</div>
+                                    <div class="action-desc">Book new client meeting</div>
+                                </div>
+                                
+                                <div class="quick-action">
+                                    <div class="action-icon">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="action-title">Block Time</div>
+                                    <div class="action-desc">Reserve focus time</div>
+                                </div>
+                                
+                                <div class="quick-action">
+                                    <div class="action-icon">
+                                        <i class="fas fa-link"></i>
+                                    </div>
+                                    <div class="action-title">Share Calendar</div>
+                                    <div class="action-desc">Send booking link</div>
+                                </div>
+                                
+                                <div class="quick-action">
+                                    <div class="action-icon">
+                                        <i class="fas fa-cog"></i>
+                                    </div>
+                                    <div class="action-title">Settings</div>
+                                    <div class="action-desc">Availability & preferences</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>

@@ -849,4 +849,245 @@ style.textContent = `
         transform: scale(1.02);
     }
 `;
-document.head.appendChild(style); 
+document.head.appendChild(style);
+
+// Professional Network Functions
+function initializeNetworkSection() {
+    // Network tab switching
+    const networkTabs = document.querySelectorAll('.network-tab');
+    const networkTabContents = document.querySelectorAll('.network-tab-content');
+    
+    networkTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const targetTab = tab.dataset.tab;
+            
+            // Update active tab
+            networkTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            
+            // Update active content
+            networkTabContents.forEach(content => {
+                content.classList.remove('active');
+                if (content.id === targetTab + '-content') {
+                    content.classList.add('active');
+                }
+            });
+        });
+    });
+    
+    // Professional action buttons
+    document.querySelectorAll('.professional-actions .action-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const action = btn.classList.contains('message') ? 'Message sent!' : 'Referral created!';
+            showActionFeedback(action);
+        });
+    });
+    
+    // Connection request actions
+    document.querySelectorAll('.request-actions .btn-primary').forEach(btn => {
+        btn.addEventListener('click', () => {
+            btn.closest('.request-card').style.opacity = '0.5';
+            showActionFeedback('Connection accepted!');
+        });
+    });
+}
+
+// Marketing Suite Functions
+function initializeMarketingSection() {
+    // Marketing tab switching
+    const marketingTabs = document.querySelectorAll('.marketing-tab');
+    const marketingTabContents = document.querySelectorAll('.marketing-tab-content');
+    
+    marketingTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const targetTab = tab.dataset.tab;
+            
+            // Update active tab
+            marketingTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            
+            // Update active content
+            marketingTabContents.forEach(content => {
+                content.classList.remove('active');
+                if (content.id === targetTab + '-campaigns') {
+                    content.classList.add('active');
+                }
+            });
+        });
+    });
+    
+    // Campaign action buttons
+    document.querySelectorAll('.campaign-actions .action-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const action = btn.textContent.trim();
+            if (action === 'Pause') {
+                const status = btn.closest('.campaign-card').querySelector('.campaign-status');
+                status.innerHTML = '<i class="fas fa-pause"></i> Paused';
+                status.className = 'campaign-status paused';
+                btn.innerHTML = '<i class="fas fa-play"></i> Resume';
+                showActionFeedback('Campaign paused');
+            } else if (action === 'Resume') {
+                const status = btn.closest('.campaign-card').querySelector('.campaign-status');
+                status.innerHTML = '<i class="fas fa-circle"></i> Live';
+                status.className = 'campaign-status active';
+                btn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+                showActionFeedback('Campaign resumed');
+            } else {
+                showActionFeedback(`${action} clicked`);
+            }
+        });
+    });
+    
+    // Content generator buttons
+    document.querySelectorAll('.generate-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const optionTitle = btn.closest('.generator-option').querySelector('.option-title').textContent;
+            btn.disabled = true;
+            btn.textContent = 'Generating...';
+            
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.textContent = 'Generate';
+                showActionFeedback(`${optionTitle} generated!`);
+            }, 2000);
+        });
+    });
+    
+    // Initialize marketing performance chart
+    setTimeout(initializeMarketingChart, 100);
+}
+
+// Smart Scheduling Functions
+function initializeSchedulingSection() {
+    // Calendar navigation
+    const prevBtn = document.querySelector('.calendar-nav .prev');
+    const nextBtn = document.querySelector('.calendar-nav .next');
+    const calendarDate = document.querySelector('.calendar-date');
+    
+    if (prevBtn && nextBtn && calendarDate) {
+        prevBtn.addEventListener('click', () => {
+            showActionFeedback('Previous week');
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            showActionFeedback('Next week');
+        });
+    }
+    
+    // Appointment actions
+    document.querySelectorAll('.appointment-actions .action-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const action = btn.classList.contains('join') ? 'Joining meeting...' :
+                         btn.classList.contains('reschedule') ? 'Rescheduling...' :
+                         btn.classList.contains('prepare') ? 'Opening preparation...' :
+                         'Taking notes...';
+            showActionFeedback(action);
+        });
+    });
+    
+    // Calendar appointments
+    document.querySelectorAll('.calendar-body .appointment').forEach(appointment => {
+        appointment.addEventListener('click', () => {
+            const title = appointment.querySelector('.appointment-title').textContent;
+            showActionFeedback(`Opening: ${title}`);
+        });
+    });
+    
+    // Quick actions
+    document.querySelectorAll('.quick-action').forEach(action => {
+        action.addEventListener('click', () => {
+            const title = action.querySelector('.action-title').textContent;
+            showActionFeedback(`${title} opening...`);
+        });
+    });
+    
+    // Appointment list items
+    document.querySelectorAll('.appointment-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            if (!e.target.closest('.appointment-actions')) {
+                const clientName = item.querySelector('.client-name').textContent;
+                showActionFeedback(`Opening appointment with ${clientName}`);
+            }
+        });
+    });
+}
+
+// Marketing Chart Initialization
+function initializeMarketingChart() {
+    const canvas = document.getElementById('marketingChart');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width;
+    const height = canvas.height;
+    
+    // Clear canvas
+    ctx.clearRect(0, 0, width, height);
+    
+    // Chart data
+    const data = [
+        { label: 'Email', value: 45, color: '#00d9ff' },
+        { label: 'Social', value: 30, color: '#22c55e' },
+        { label: 'Ads', value: 25, color: '#a855f7' }
+    ];
+    
+    const barWidth = 40;
+    const barSpacing = 20;
+    const startX = 50;
+    const maxHeight = height - 40;
+    
+    // Draw bars with animation
+    data.forEach((item, index) => {
+        const x = startX + (barWidth + barSpacing) * index;
+        const barHeight = (item.value / 50) * maxHeight;
+        const y = height - barHeight - 20;
+        
+        // Animate bar growth
+        let currentHeight = 0;
+        const growthSpeed = barHeight / 30;
+        
+        function animateBar() {
+            if (currentHeight < barHeight) {
+                currentHeight += growthSpeed;
+                
+                // Clear previous bar
+                ctx.clearRect(x, height - 20 - barHeight, barWidth, barHeight);
+                
+                // Draw current bar
+                ctx.fillStyle = item.color;
+                ctx.fillRect(x, height - 20 - currentHeight, barWidth, currentHeight);
+                
+                requestAnimationFrame(animateBar);
+            } else {
+                // Final draw
+                ctx.fillStyle = item.color;
+                ctx.fillRect(x, y, barWidth, barHeight);
+                
+                // Draw value label
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '12px Inter';
+                ctx.textAlign = 'center';
+                ctx.fillText(item.value + '%', x + barWidth/2, y - 5);
+            }
+        }
+        
+        setTimeout(() => animateBar(), index * 200);
+        
+        // Draw label
+        ctx.fillStyle = '#9ca3af';
+        ctx.font = '10px Inter';
+        ctx.textAlign = 'center';
+        ctx.fillText(item.label, x + barWidth/2, height - 5);
+    });
+}
+
+// Initialize new sections
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize all sections with a slight delay to ensure DOM is ready
+    setTimeout(() => {
+        initializeNetworkSection();
+        initializeMarketingSection();
+        initializeSchedulingSection();
+    }, 100);
+}); 
