@@ -40,63 +40,9 @@
                 <h1>Master Tax Complexity <span class="highlight">Instantly</span></h1>
                 <p class="hero-subtitle">Unleash the power of AI-driven tax intelligence. Navigate regulations effortlessly, draft with precision, eliminate costly mistakes, and amplify your expertise 15x.</p>
                 
-                <div class="chat-container">
-                    <div class="chat-cta">
-                        <h3>Chat with TaxAI Live</h3>
-                        <p>Experience the future of tax intelligence. Start a conversation with our AI and get expert-level answers to complex tax questions in real-time.</p>
-                    </div>
-                    <div class="chat-features">
-                        <div class="chat-feature">
-                            <i class="fas fa-bolt"></i>
-                            <span>Instant responses</span>
-                        </div>
-                        <div class="chat-feature">
-                            <i class="fas fa-shield-alt"></i>
-                            <span>Code references included</span>
-                        </div>
-                        <div class="chat-feature">
-                            <i class="fas fa-star"></i>
-                            <span>Expert-level accuracy</span>
-                        </div>
-                    </div>
-                    
-                    <div class="chat-widget">
-                        <div class="chat-header">
-                            <div class="chat-status">
-                                <div class="status-indicator online"></div>
-                                <span>TaxAI Assistant</span>
-                            </div>
-                            <div class="chat-subtitle">Ask me anything about tax law</div>
-                        </div>
-                        
-                        <div class="chat-messages" id="chatMessages">
-                            <div class="message ai-message welcome-message">
-                                <div class="message-avatar">
-                                    <i class="fas fa-robot"></i>
-                                </div>
-                                <div class="message-content">
-                                    <div class="message-text">
-                                        👋 Hello! I'm your AI tax assistant. Try asking me something like:<br>
-                                        <br>
-                                        • "Explain Section 199A deduction limits"<br>
-                                        • "TCJA impact on partnership distributions"<br>
-                                        • "When can I deduct home office expenses?"
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="chat-input-container">
-                            <div class="chat-input-wrapper">
-                                <input type="text" id="chatInput" placeholder="Type your tax question here..." autocomplete="off">
-                                <button id="chatSendButton" disabled>
-                                    <i class="fas fa-paper-plane"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <p class="chat-note">Join 25,000+ tax professionals discovering the future of tax intelligence</p>
+                <div class="hero-cta">
+                    <button class="btn-primary btn-lg" onclick="openChatWidget()">Try TaxAI Intelligence</button>
+                    <p class="hero-cta-note">Experience instant AI-powered tax insights</p>
                 </div>
 
                 <div class="hero-stats">
@@ -716,6 +662,59 @@
             </div>
         </div>
     </footer>
+
+    <!-- Floating Chat Widget -->
+    <div class="floating-chat-widget" id="chatWidget">
+        <div class="chat-bubble" id="chatBubble">
+            <div class="bubble-icon">
+                <i class="fas fa-comments"></i>
+            </div>
+            <div class="bubble-text">
+                <span class="bubble-title">TaxAI Assistant</span>
+                <span class="bubble-subtitle">Ask any tax question</span>
+            </div>
+            <div class="bubble-close" id="bubbleClose">
+                <i class="fas fa-times"></i>
+            </div>
+        </div>
+        
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <div class="chat-status">
+                    <div class="status-indicator online"></div>
+                    <span>TaxAI Assistant</span>
+                </div>
+                <div class="chat-actions">
+                    <button class="chat-minimize" id="chatMinimize">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button class="chat-close" id="chatClose">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai-message welcome-message">
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-text">Hello! I'm your AI tax assistant. I can help you with complex tax research, provide instant responses with code references, and deliver expert-level accuracy.<br><br>Try asking me something like:<br>• "Explain Section 199A deduction limits"<br>• "TCJA impact on partnership distributions"<br>• "When can I deduct home office expenses?"</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-input-container">
+                <div class="chat-input-wrapper">
+                    <input type="text" id="chatInput" placeholder="Type your tax question here..." autocomplete="off">
+                    <button id="chatSendButton" disabled>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

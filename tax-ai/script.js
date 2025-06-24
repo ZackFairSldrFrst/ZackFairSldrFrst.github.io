@@ -4,6 +4,12 @@ const API_URL = 'https://api.deepseek.com/v1/chat/completions';
 const chatInput = document.getElementById('chatInput');
 const chatSendButton = document.getElementById('chatSendButton');
 const chatMessages = document.getElementById('chatMessages');
+const chatWidget = document.getElementById('chatWidget');
+const chatBubble = document.getElementById('chatBubble');
+const chatWindow = document.getElementById('chatWindow');
+const chatMinimize = document.getElementById('chatMinimize');
+const chatClose = document.getElementById('chatClose');
+const bubbleClose = document.getElementById('bubbleClose');
 
 // Store conversation messages
 let conversationMessages = [];
@@ -191,6 +197,29 @@ function toggleSendButton() {
     chatSendButton.disabled = !hasText;
 }
 
+// Chat widget management functions
+function openChatWidget() {
+    chatBubble.style.display = 'none';
+    chatWindow.classList.add('active');
+    if (chatInput) {
+        setTimeout(() => chatInput.focus(), 100);
+    }
+}
+
+function closeChatWidget() {
+    chatWindow.classList.remove('active');
+    chatBubble.style.display = 'flex';
+}
+
+function minimizeChatWidget() {
+    chatWindow.classList.remove('active');
+    chatBubble.style.display = 'flex';
+}
+
+function hideChatWidget() {
+    chatWidget.style.display = 'none';
+}
+
 // Function to format the response (plain text with basic formatting)
 function formatResponse(text) {
     // Clean markdown formatting while preserving readable structure
@@ -355,6 +384,31 @@ if (chatInput) {
     });
 }
 
+// Floating chat widget event listeners
+if (chatBubble) {
+    chatBubble.addEventListener('click', (e) => {
+        // Don't open if clicking the close button
+        if (!e.target.closest('.bubble-close')) {
+            openChatWidget();
+        }
+    });
+}
+
+if (chatMinimize) {
+    chatMinimize.addEventListener('click', minimizeChatWidget);
+}
+
+if (chatClose) {
+    chatClose.addEventListener('click', closeChatWidget);
+}
+
+if (bubbleClose) {
+    bubbleClose.addEventListener('click', (e) => {
+        e.stopPropagation();
+        hideChatWidget();
+    });
+}
+
 // Initialize all functionality when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     debugLog('Initializing TaxAI application');
@@ -365,10 +419,20 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeSmoothScrolling();
     initializeScrollAnimations();
     
-    // Initialize chat widget
+    // Initialize floating chat widget
     if (chatInput && chatSendButton) {
         toggleSendButton(); // Set initial button state
-        chatInput.focus(); // Focus on chat input for better UX
+    }
+    
+    // Show chat bubble by default, then auto-open after a delay
+    if (chatBubble && chatWindow) {
+        chatBubble.style.display = 'flex';
+        chatWindow.classList.remove('active');
+        
+        // Auto-open chat widget after 2.5 seconds to showcase the AI
+        setTimeout(() => {
+            openChatWidget();
+        }, 2500);
     }
     
     // Add some interactive enhancements
