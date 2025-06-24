@@ -12,6 +12,11 @@ class MessageFlow {
         this.currentPageId = null;
         this.storageKey = 'letterly_data';
         
+        // Firebase properties
+        this.firebaseInitialized = false;
+        this.userId = this.generateUserId();
+        this.db = null;
+        
         // Live Messages properties
         this.liveMessages = [];
         this.autoRefreshInterval = null;
@@ -30,7 +35,7 @@ class MessageFlow {
 
     init() {
         this.initEventListeners();
-        this.loadSavedData();
+        this.initFirebase();
         this.updateDashboard();
         this.setMinDateTime();
         this.checkForDirectPageAccess();
@@ -738,6 +743,22 @@ class MessageFlow {
     openSettings() {
         const settingsHtml = `
             <div style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.2); margin: 1rem;">
+                <h3 style="color: rgba(255, 255, 255, 0.9); margin-bottom: 1.5rem;">Cloud Storage Status</h3>
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div class="status-dot ${this.firebaseInitialized ? 'connected' : 'disconnected'}" style="width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0;"></div>
+                    <span style="color: rgba(255, 255, 255, 0.9);">${this.firebaseInitialized ? 'Connected to Firebase Cloud' : 'Using Local Storage'}</span>
+                </div>
+                <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.875rem; margin-bottom: 1rem;">
+                    User ID: ${this.userId}
+                </p>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem;">
+                    <span style="color: rgba(255, 255, 255, 0.8); font-size: 0.875rem;">Messages: ${this.messages.length}</span>
+                    <span style="color: rgba(255, 255, 255, 0.8); font-size: 0.875rem;">Contacts: ${this.contacts.length}</span>
+                    <span style="color: rgba(255, 255, 255, 0.8); font-size: 0.875rem;">Pages: ${this.notificationPages.length}</span>
+                </div>
+            </div>
+
+            <div style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.2); margin: 1rem;">
                 <h3 style="color: rgba(255, 255, 255, 0.9); margin-bottom: 1.5rem;">Data Management</h3>
                 <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                     <button class="btn-secondary" onclick="letterly.exportData()">
@@ -1058,8 +1079,154 @@ class MessageFlow {
         }
     }
 
+    // Firebase Methods
+    generateUserId() {
+        // Generate a unique user ID for this browser session
+        let userId = localStorage.getItem('letterly_user_id');
+        if (!userId) {
+            userId = 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+            localStorage.setItem('letterly_user_id', userId);
+        }
+        return userId;
+    }
+
+    async initFirebase() {
+        try {
+            this.updateCloudStatus('connecting', 'Connecting to cloud...');
+            
+            // Wait for Firebase to be available
+            await this.waitForFirebase();
+            
+            this.db = window.firebaseDb;
+            this.firebaseInitialized = true;
+            
+            console.log('Firebase initialized in MessageFlow');
+            this.updateCloudStatus('connected', 'Connected to cloud');
+            
+            // Update user ID display
+            this.updateUserIdDisplay();
+            
+            // Load data from Firebase
+            await this.loadSavedData();
+            
+            // Set up real-time listeners
+            this.setupRealtimeListeners();
+            
+        } catch (error) {
+            console.error('Failed to initialize Firebase:', error);
+            this.updateCloudStatus('disconnected', 'Using local storage');
+            this.showNotification('Failed to connect to cloud storage, using local storage', 'warning');
+            // Fallback to localStorage
+            this.loadSavedDataFromLocalStorage();
+        }
+    }
+
+    waitForFirebase() {
+        return new Promise((resolve, reject) => {
+            const checkFirebase = () => {
+                if (window.firebaseDb && window.firestore) {
+                    resolve();
+                } else {
+                    setTimeout(checkFirebase, 100);
+                }
+            };
+            checkFirebase();
+            
+            // Timeout after 10 seconds
+            setTimeout(() => reject(new Error('Firebase initialization timeout')), 10000);
+        });
+    }
+
+    setupRealtimeListeners() {
+        if (!this.firebaseInitialized) return;
+
+        try {
+            const userDocRef = window.firestore.doc(this.db, 'users', this.userId);
+            
+            // Listen for real-time updates
+            window.firestore.onSnapshot(userDocRef, (doc) => {
+                if (doc.exists()) {
+                    const data = doc.data();
+                    this.updateFromFirebaseData(data);
+                }
+            });
+        } catch (error) {
+            console.error('Failed to set up real-time listeners:', error);
+        }
+    }
+
+    updateFromFirebaseData(data) {
+        // Update local data with Firebase data
+        this.contacts = data.contacts || [];
+        this.messages = data.messages || [];
+        this.notificationPages = data.notificationPages || [];
+        this.notificationsEnabled = data.notificationsEnabled || false;
+        this.liveMessages = data.liveMessages || [];
+        
+        // Update UI
+        this.updateDashboard();
+        if (this.currentTab !== 'dashboard') {
+            this.loadTabContent(this.currentTab);
+        }
+        this.updatePageStats();
+        
+        console.log('Data updated from Firebase');
+    }
+
+    updateCloudStatus(status, message) {
+        const statusDot = document.getElementById('cloud-status-dot');
+        const statusText = document.getElementById('cloud-status-text');
+
+        if (statusDot && statusText) {
+            statusText.textContent = message;
+            statusDot.className = `status-dot ${status}`;
+        }
+    }
+
+    updateUserIdDisplay() {
+        const userIdDisplay = document.getElementById('user-id-display');
+        if (userIdDisplay) {
+            const shortId = this.userId.replace('user_', '').substring(0, 8);
+            userIdDisplay.textContent = `User: ${shortId}`;
+        }
+    }
+
     // Data Persistence Methods
-    saveData() {
+    async saveData() {
+        if (this.firebaseInitialized) {
+            await this.saveDataToFirebase();
+        } else {
+            this.saveDataToLocalStorage();
+        }
+    }
+
+    async saveDataToFirebase() {
+        const data = {
+            contacts: this.contacts,
+            messages: this.messages,
+            notificationPages: this.notificationPages,
+            notificationsEnabled: this.notificationsEnabled,
+            liveMessages: this.liveMessages,
+            lastUpdated: window.firestore.serverTimestamp(),
+            userId: this.userId
+        };
+        
+        try {
+            const userDocRef = window.firestore.doc(this.db, 'users', this.userId);
+            await window.firestore.setDoc(userDocRef, data);
+            console.log('Data saved to Firebase successfully');
+            
+            // Also save to localStorage as backup
+            this.saveDataToLocalStorage();
+        } catch (error) {
+            console.error('Failed to save data to Firebase:', error);
+            this.showNotification('Failed to save to cloud, saved locally', 'warning');
+            // Fallback to localStorage
+            this.saveDataToLocalStorage();
+        }
+    }
+
+    saveDataToLocalStorage() {
         const data = {
             contacts: this.contacts,
             messages: this.messages,
@@ -1071,14 +1238,58 @@ class MessageFlow {
         
         try {
             localStorage.setItem(this.storageKey, JSON.stringify(data));
-            console.log('Data saved successfully');
+            console.log('Data saved to localStorage successfully');
         } catch (error) {
-            console.error('Failed to save data:', error);
+            console.error('Failed to save data to localStorage:', error);
             this.showNotification('Failed to save data locally', 'error');
         }
     }
 
-    loadSavedData() {
+    async loadSavedData() {
+        if (this.firebaseInitialized) {
+            await this.loadSavedDataFromFirebase();
+        } else {
+            this.loadSavedDataFromLocalStorage();
+        }
+    }
+
+    async loadSavedDataFromFirebase() {
+        try {
+            const userDocRef = window.firestore.doc(this.db, 'users', this.userId);
+            const docSnap = await window.firestore.getDoc(userDocRef);
+            
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                this.contacts = data.contacts || [];
+                this.messages = data.messages || [];
+                this.notificationPages = data.notificationPages || [];
+                this.notificationsEnabled = data.notificationsEnabled || false;
+                this.liveMessages = data.liveMessages || [];
+                
+                this.updatePageStats();
+                console.log('Data loaded from Firebase successfully', data);
+                this.showNotification('Data synced from cloud', 'success');
+            } else {
+                console.log('No Firebase data found, checking localStorage');
+                // Try to load from localStorage as fallback
+                this.loadSavedDataFromLocalStorage();
+                
+                // If localStorage has data, save it to Firebase
+                if (this.contacts.length > 0 || this.messages.length > 0) {
+                    await this.saveDataToFirebase();
+                } else {
+                    this.initializeWithSampleData();
+                }
+            }
+        } catch (error) {
+            console.error('Failed to load data from Firebase:', error);
+            this.showNotification('Failed to load from cloud, using local data', 'warning');
+            // Fallback to localStorage
+            this.loadSavedDataFromLocalStorage();
+        }
+    }
+
+    loadSavedDataFromLocalStorage() {
         try {
             const savedData = localStorage.getItem(this.storageKey);
             
@@ -1090,17 +1301,14 @@ class MessageFlow {
                 this.notificationsEnabled = data.notificationsEnabled || false;
                 this.liveMessages = data.liveMessages || [];
                 
-                // Update UI based on saved state
-                // Notification status removed from dashboard
-                
                 this.updatePageStats();
-                console.log('Data loaded successfully', data);
+                console.log('Data loaded from localStorage successfully', data);
             } else {
                 console.log('No saved data found, starting fresh');
                 this.initializeWithSampleData();
             }
         } catch (error) {
-            console.error('Failed to load saved data:', error);
+            console.error('Failed to load saved data from localStorage:', error);
             this.showNotification('Failed to load saved data', 'error');
             this.initializeWithSampleData();
         }

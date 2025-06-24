@@ -55,6 +55,19 @@
             </div>
             
             <div class="sidebar-section">
+                <h3>Cloud Status</h3>
+                <div class="cloud-status" id="cloud-status">
+                    <div class="status-indicator">
+                        <span class="status-dot disconnected" id="cloud-status-dot"></span>
+                        <span id="cloud-status-text">Connecting...</span>
+                    </div>
+                    <div class="user-info">
+                        <span id="user-id-display">User: Loading...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
                 <h3>Page Statistics</h3>
                 <div class="page-stats" id="page-stats-section">
                     <div class="stat-item">
@@ -765,6 +778,45 @@
         </div>
     </div>
 
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+        
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDv4MxNd7FThiUrkT0S2XVc9MACcPYc2Us",
+            authDomain: "letterly-3d795.firebaseapp.com",
+            projectId: "letterly-3d795",
+            storageBucket: "letterly-3d795.firebasestorage.app",
+            messagingSenderId: "535792229538",
+            appId: "1:535792229538:web:e672e39fda57f9f4958bfb",
+            measurementId: "G-0RR3KWJX11"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+
+        // Make Firebase services available globally
+        window.firebaseApp = app;
+        window.firebaseDb = db;
+        window.firebaseAnalytics = analytics;
+        
+        // Import Firestore functions globally
+        window.firestore = {
+            doc,
+            setDoc,
+            getDoc,
+            collection,
+            onSnapshot,
+            serverTimestamp
+        };
+
+        console.log('Firebase initialized successfully');
+    </script>
     <script src="script.js"></script>
 </body>
 </html> 

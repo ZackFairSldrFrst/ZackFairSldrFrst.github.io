@@ -281,6 +281,22 @@ body::before {
     color: #10b981;
 }
 
+.status-dot.connecting {
+    background: #f59e0b;
+    box-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.cloud-status {
+    margin-bottom: 1rem;
+}
+
+.user-info {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
 /* Notification System Styles */
 .notification-status {
     margin-bottom: 1rem;
