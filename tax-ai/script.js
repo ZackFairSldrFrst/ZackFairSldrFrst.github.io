@@ -1,14 +1,9 @@
 const API_KEY = 'sk-05df740662cc4782ac9877bf3bf59041';
 const API_URL = 'https://api.deepseek.com/v1/chat/completions';
 
-const searchInput = document.getElementById('searchInput');
-const searchButton = document.getElementById('searchButton');
-const searchResults = document.getElementById('searchResults');
-const resultContent = document.querySelector('.result-content');
-const conversationHistory = document.querySelector('.conversation-history');
-const followUpContainer = document.querySelector('.follow-up-container');
-const followUpInput = document.getElementById('followUpInput');
-const followUpButton = document.getElementById('followUpButton');
+const chatInput = document.getElementById('chatInput');
+const chatSendButton = document.getElementById('chatSendButton');
+const chatMessages = document.getElementById('chatMessages');
 
 // Store conversation messages
 let conversationMessages = [];
@@ -126,116 +121,123 @@ function initializeScrollAnimations() {
     animatedElements.forEach(el => observer.observe(el));
 }
 
-// Function to add message to conversation
-function addMessageToConversation(message, isUser = false) {
+// Function to add message to chat
+function addMessageToChat(message, isUser = false) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
-    messageDiv.textContent = message;
-    conversationHistory.appendChild(messageDiv);
+    
+    const avatar = document.createElement('div');
+    avatar.className = 'message-avatar';
+    avatar.innerHTML = isUser ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>';
+    
+    const content = document.createElement('div');
+    content.className = 'message-content';
+    
+    const text = document.createElement('div');
+    text.className = 'message-text';
+    text.textContent = message;
+    
+    content.appendChild(text);
+    messageDiv.appendChild(avatar);
+    messageDiv.appendChild(content);
+    
+    chatMessages.appendChild(messageDiv);
     messageDiv.scrollIntoView({ behavior: 'smooth' });
 }
 
-// Function to show status message
-function showStatus(message) {
-    resultContent.innerHTML = `<div class="status-message">${message}</div>`;
-    searchResults.classList.remove('hidden');
+// Function to show typing indicator
+function showTypingIndicator() {
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'message ai-message typing-indicator';
+    typingDiv.id = 'typingIndicator';
+    
+    const avatar = document.createElement('div');
+    avatar.className = 'message-avatar';
+    avatar.innerHTML = '<i class="fas fa-robot"></i>';
+    
+    const content = document.createElement('div');
+    content.className = 'message-content';
+    
+    const text = document.createElement('div');
+    text.className = 'message-text';
+    text.innerHTML = `
+        <div class="loading-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <span>Analyzing your tax question...</span>
+    `;
+    
+    content.appendChild(text);
+    typingDiv.appendChild(avatar);
+    typingDiv.appendChild(content);
+    
+    chatMessages.appendChild(typingDiv);
+    typingDiv.scrollIntoView({ behavior: 'smooth' });
 }
 
-// Function to show results
-function showResults() {
-    searchResults.classList.remove('hidden');
-    followUpContainer.classList.remove('hidden');
+// Function to remove typing indicator
+function removeTypingIndicator() {
+    const typingIndicator = document.getElementById('typingIndicator');
+    if (typingIndicator) {
+        typingIndicator.remove();
+    }
 }
 
-// Function to hide results
-function hideResults() {
-    searchResults.classList.add('hidden');
-    followUpContainer.classList.add('hidden');
-    resultContent.innerHTML = '';
+// Function to enable/disable send button
+function toggleSendButton() {
+    const hasText = chatInput.value.trim().length > 0;
+    chatSendButton.disabled = !hasText;
 }
 
-// Function to format the response
+// Function to format the response (plain text with basic formatting)
 function formatResponse(text) {
-    // Convert markdown headers to HTML
-    text = text.replace(/^###### (.*)$/gm, '<h6>$1</h6>')
-               .replace(/^##### (.*)$/gm, '<h5>$1</h5>')
-               .replace(/^#### (.*)$/gm, '<h4>$1</h4>')
-               .replace(/^### (.*)$/gm, '<h3>$1</h3>')
-               .replace(/^## (.*)$/gm, '<h2>$1</h2>')
-               .replace(/^# (.*)$/gm, '<h1>$1</h1>');
+    // Clean markdown formatting while preserving readable structure
+    text = text.replace(/\*\*([^*]+)\*\*/g, '$1')  // Remove bold formatting
+               .replace(/__([^_]+)__/g, '$1')      // Remove bold formatting
+               .replace(/\*([^*]+)\*/g, '$1')      // Remove italic formatting
+               .replace(/_([^_]+)_/g, '$1')        // Remove italic formatting
+               .replace(/`([^`]+)`/g, '$1')        // Remove inline code formatting
+               .replace(/```[\s\S]*?```/g, function(match) {
+                   return match.replace(/```/g, '').trim();
+               });                                 // Remove code block formatting but keep content
 
-    // Convert bold and italic
-    text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-               .replace(/__([^_]+)__/g, '<strong>$1</strong>')
-               .replace(/\*([^*]+)\*/g, '<em>$1</em>')
-               .replace(/_([^_]+)_/g, '<em>$1</em>');
-
-    // Format tax code references
-    text = text.replace(/\[IRC §(\d+[A-Za-z]?)\]/g, '<a href="https://www.law.cornell.edu/uscode/text/26/$1" target="_blank" class="tax-reference">IRC §$1</a>')
-               .replace(/\[Treas\. Reg\. §(\d+\.\d+-\d+)\]/g, '<a href="https://www.ecfr.gov/current/title-26/chapter-I/part-$1" target="_blank" class="tax-reference">Treas. Reg. §$1</a>')
-               .replace(/\[Rev\. Rul\. (\d+-\d+)\]/g, '<a href="https://www.irs.gov/pub/irs-irbs/irb$1.pdf" target="_blank" class="tax-reference">Rev. Rul. $1</a>')
-               .replace(/\[Pub\. (\d+[A-Za-z]?)\]/g, '<a href="https://www.irs.gov/pub/irs-pdf/p$1.pdf" target="_blank" class="tax-reference">Pub. $1</a>');
-
-    // Convert unordered lists (including nested)
-    text = text.replace(/^(\s*)[-*] (.*)$/gm, function(match, spaces, item) {
-        const indent = spaces.length / 2;
-        return `${'  '.repeat(indent)}<li>${item}</li>`;
-    });
-    // Wrap list items in <ul>
-    text = text.replace(/((?:<li>.*<\/li>\s*)+)/g, function(match) {
-        return `<ul>${match}</ul>`;
+    // Clean up list formatting
+    text = text.replace(/^\s*[-*]\s+/gm, '• ');    // Convert markdown bullets to bullet points
+    text = text.replace(/^\s*\d+\.\s+/gm, function(match) {
+        return match.replace(/\d+\./, '•');       // Convert numbered lists to bullet points
     });
 
-    // Convert ordered lists
-    text = text.replace(/^(\s*)\d+\. (.*)$/gm, function(match, spaces, item) {
-        const indent = spaces.length / 2;
-        return `${'  '.repeat(indent)}<li>${item}</li>`;
-    });
-    // Wrap ordered list items in <ol>
-    text = text.replace(/((?:<li>.*<\/li>\s*)+)/g, function(match) {
-        // If already wrapped in <ul>, skip
-        if (match.startsWith('<ul>')) return match;
-        return `<ol>${match}</ol>`;
-    });
+    // Clean up headers while preserving structure
+    text = text.replace(/^#{1,6}\s+(.*)$/gm, '\n$1\n');
 
-    // Convert code blocks
-    text = text.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
-    // Convert inline code
-    text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
-
-    // Convert paragraphs (lines not already in a block element)
-    text = text.replace(/^(?!<h\d>|<ul>|<ol>|<li>|<pre>|<\/ul>|<\/ol>|<\/li>|<\/pre>|<blockquote>|<\/blockquote>)([^\n]+)\n/gm, '<p>$1</p>\n');
-
-    // Remove extra newlines
-    text = text.replace(/\n{2,}/g, '\n');
+    // Remove extra whitespace but preserve line breaks for readability
+    text = text.replace(/\n{3,}/g, '\n\n');
+    text = text.trim();
 
     return text;
 }
 
-// Function to handle the search
-async function handleSearch(query, isFollowUp = false) {
+// Function to handle chat messages
+async function handleChatMessage(query) {
     if (!query) {
-        alert('Please enter a question');
         return;
     }
 
-    if (!isFollowUp) {
-        hideResults();
-        conversationHistory.innerHTML = ''; // Clear conversation history
-        conversationMessages = []; // Reset conversation messages
-    }
-
-    addMessageToConversation(query, true);
-    showStatus('Analyzing your tax question...');
-    debugLog('Starting search with query:', query);
+    // Add user message to chat
+    addMessageToChat(query, true);
+    
+    // Clear input and disable send button
+    chatInput.value = '';
+    toggleSendButton();
+    
+    // Show typing indicator
+    showTypingIndicator();
+    
+    debugLog('Starting chat with query:', query);
 
     try {
-        // Simulate database search delay
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        showStatus('Gathering relevant tax information...');
-        
-        debugLog('Making API request to:', API_URL);
-        
         // Add the new message to the conversation
         conversationMessages.push({
             role: 'user',
@@ -247,44 +249,38 @@ async function handleSearch(query, isFollowUp = false) {
             messages: [
                 {
                     role: 'system',
-                    content: `You are TaxAI, an advanced AI tax assistant created to revolutionize tax practice. You are a senior tax professional with expertise equivalent to 20+ years in public accounting. Your responses must be:
+                    content: `You are TaxAI, an advanced AI tax assistant. You are having a friendly but professional conversation with a tax professional. Your responses should be:
 
-PROFESSIONAL & AUTHORITATIVE:
-- Provide definitive, expert-level guidance
+CONVERSATIONAL & ENGAGING:
+- Use a warm, professional tone
+- Ask follow-up questions when appropriate
+- Acknowledge the user's specific situation
+- Keep responses focused and digestible
+
+EXPERT & AUTHORITATIVE:
+- Provide expert-level tax guidance
+- Reference specific tax code sections when relevant
 - Use confident, professional language
-- Reference specific tax code sections, regulations, and authorities
 - Include practical implementation steps
 
-COMPREHENSIVE & DETAILED:
-- Cover all relevant aspects of the question
-- Explain implications and considerations
-- Provide examples with specific numbers when helpful
-- Address potential complications or exceptions
-
-PROPERLY FORMATTED:
-- Use clear headings and bullet points
-- Include specific code references: [IRC §199A], [Treas. Reg. §1.199A-1]
-- Cite IRS Publications: [Pub. 334], [Form 1040]
-- Reference Revenue Rulings: [Rev. Rul. 2023-15]
+CONCISE BUT COMPREHENSIVE:
+- Keep responses under 300 words when possible
+- Cover the key points without overwhelming
+- Use bullet points for clarity when helpful
+- Focus on actionable insights
 
 COMPLIANCE-FOCUSED:
-- Always mention filing requirements and deadlines
-- Highlight potential penalties or risks
-- Note documentation requirements
-- Include relevant forms and schedules
+- Mention important deadlines and requirements
+- Highlight potential risks or considerations
+- Note documentation needs
+- Include relevant forms when applicable
 
-PRACTICAL & ACTIONABLE:
-- Provide step-by-step guidance
-- Include calculation examples when applicable
-- Suggest best practices and planning opportunities
-- Address both current year and future planning
-
-Remember: You are the most advanced AI tax assistant available, trusted by 40,000+ professionals. Deliver responses that demonstrate this expertise and help users save time while ensuring compliance.`
+Remember: You're chatting with a tax professional who values expertise and efficiency. Be helpful, accurate, and personable.`
                 },
                 ...conversationMessages
             ],
             temperature: 0.7,
-            max_tokens: 1500
+            max_tokens: 800
         };
 
         debugLog('Request body:', requestBody);
@@ -318,68 +314,42 @@ Remember: You are the most advanced AI tax assistant available, trusted by 40,00
                 content: aiResponse
             });
 
-            // Format and display the response
+            // Remove typing indicator and add AI response
+            removeTypingIndicator();
             const formattedResponse = formatResponse(aiResponse);
-            addMessageToConversation(aiResponse, false);
-            resultContent.innerHTML = formattedResponse;
+            addMessageToChat(formattedResponse, false);
             
-            showResults();
-            debugLog('Search completed successfully');
+            debugLog('Chat completed successfully');
         } else {
             throw new Error('No response generated');
         }
 
     } catch (error) {
-        debugLog('Search error:', error);
-        resultContent.innerHTML = `
-            <div class="error">
-                <h3>Unable to Process Request</h3>
-                <p>We're experiencing technical difficulties. Please try again in a moment.</p>
-                <p class="error-details">Error: ${error.message}</p>
-            </div>
-        `;
-        showResults();
+        debugLog('Chat error:', error);
+        removeTypingIndicator();
+        addMessageToChat('Sorry, I\'m having trouble connecting right now. Please try again in a moment.', false);
     }
 }
 
-// Event listeners for search functionality
-if (searchButton) {
-    searchButton.addEventListener('click', () => {
-        const query = searchInput.value.trim();
+// Event listeners for chat functionality
+if (chatSendButton) {
+    chatSendButton.addEventListener('click', () => {
+        const query = chatInput.value.trim();
         if (query) {
-            handleSearch(query);
+            handleChatMessage(query);
         }
     });
 }
 
-if (searchInput) {
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            const query = searchInput.value.trim();
+if (chatInput) {
+    chatInput.addEventListener('input', toggleSendButton);
+    
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            const query = chatInput.value.trim();
             if (query) {
-                handleSearch(query);
-            }
-        }
-    });
-}
-
-if (followUpButton) {
-    followUpButton.addEventListener('click', () => {
-        const query = followUpInput.value.trim();
-        if (query) {
-            handleSearch(query, true);
-            followUpInput.value = '';
-        }
-    });
-}
-
-if (followUpInput) {
-    followUpInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            const query = followUpInput.value.trim();
-            if (query) {
-                handleSearch(query, true);
-                followUpInput.value = '';
+                handleChatMessage(query);
             }
         }
     });
@@ -394,6 +364,12 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeMobileMenu();
     initializeSmoothScrolling();
     initializeScrollAnimations();
+    
+    // Initialize chat widget
+    if (chatInput && chatSendButton) {
+        toggleSendButton(); // Set initial button state
+        chatInput.focus(); // Focus on chat input for better UX
+    }
     
     // Add some interactive enhancements
     
