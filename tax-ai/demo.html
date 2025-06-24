@@ -3,287 +3,486 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Platform Demo - TaxAI Intelligence</title>
+    <title>TaxAI Intelligence Platform</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="demo-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
-    <header>
-        <nav class="container">
-            <div class="logo">TaxAI</div>
-            <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="#features-demo">Features</a>
-                <a href="#chat-demo">AI Chat</a>
-                <a href="#taxscan-demo">TaxScan Pro</a>
+<body class="platform-body">
+    <!-- Platform Header -->
+    <header class="platform-header">
+        <div class="platform-nav">
+            <div class="platform-logo">
+                <i class="fas fa-chart-line"></i>
+                TaxAI Intelligence
             </div>
-            <div class="nav-buttons">
-                <a href="index.html" class="btn-secondary">Back to Home</a>
-                <a href="#" class="btn-primary">Contact Sales</a>
+            <div class="platform-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search anything..." id="globalSearch">
             </div>
-        </nav>
+            <div class="platform-actions">
+                <div class="notification-bell">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+                <div class="user-profile">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9IiMwMGQ5ZmYiLz4KPHN2ZyB4PSI4IiB5PSI2IiB3aWR0aD0iMTYiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0id2hpdGUiPgo8cGF0aCBkPSJNOCAxYzEuMSAwIDIgLjkgMiAycy0uOSAyLTIgMi0yLS45LTItMiAuOS0yIDItMnptNSAxMmgtMnYtMmgtMnYySDd2LTJjMC0xLjMzIDIuNjctMiAzLTIgLjMzIDAgMyAuNjcgMyAydjJ6Ii8+Cjwvc3ZnPgo8L3N2Zz4=" alt="Profile">
+                    <span>Sarah Chen</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <a href="index.html" class="exit-demo">
+                    <i class="fas fa-external-link-alt"></i>
+                    Exit Demo
+                </a>
+            </div>
+        </div>
     </header>
 
-    <main>
-        <!-- Demo Hero -->
-        <section class="demo-hero">
-            <div class="container">
-                <h1>Experience TaxAI Intelligence</h1>
-                <p class="hero-subtitle">Interactive platform demonstration - see every feature in action</p>
+    <!-- Platform Layout -->
+    <div class="platform-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="platform-sidebar">
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-item active" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="nav-item" data-section="chat">
+                        <i class="fas fa-comments"></i>
+                        <span>AI Research</span>
+                        <div class="nav-badge">AI</div>
+                    </div>
+                    <div class="nav-item" data-section="taxscan">
+                        <i class="fas fa-file-search"></i>
+                        <span>TaxScan Pro</span>
+                    </div>
+                    <div class="nav-item" data-section="network">
+                        <i class="fas fa-users"></i>
+                        <span>Professional Network</span>
+                    </div>
+                    <div class="nav-item" data-section="marketing">
+                        <i class="fas fa-palette"></i>
+                        <span>Marketing Suite</span>
+                        <div class="nav-badge new">NEW</div>
+                    </div>
+                    <div class="nav-item" data-section="scheduling">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Smart Scheduling</span>
+                    </div>
+                </div>
                 
-                <div class="demo-navigation">
-                    <button class="demo-nav-btn active" data-demo="overview">Platform Overview</button>
-                    <button class="demo-nav-btn" data-demo="chat">AI Research Chat</button>
-                    <button class="demo-nav-btn" data-demo="taxscan">TaxScan Pro</button>
-                    <button class="demo-nav-btn" data-demo="network">Professional Network</button>
-                    <button class="demo-nav-btn" data-demo="marketing">Marketing Suite</button>
-                    <button class="demo-nav-btn" data-demo="scheduling">Smart Scheduling</button>
+                <div class="nav-section">
+                    <div class="nav-section-title">Analytics</div>
+                    <div class="nav-item" data-section="reports">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Reports</span>
+                    </div>
+                    <div class="nav-item" data-section="time">
+                        <i class="fas fa-clock"></i>
+                        <span>Time Tracking</span>
+                    </div>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Settings</div>
+                    <div class="nav-item" data-section="preferences">
+                        <i class="fas fa-cog"></i>
+                        <span>Preferences</span>
+                    </div>
+                    <div class="nav-item" data-section="security">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Security</span>
+                    </div>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="usage-meter">
+                    <div class="usage-label">API Usage</div>
+                    <div class="usage-bar">
+                        <div class="usage-fill" style="width: 65%"></div>
+                    </div>
+                    <div class="usage-text">1,847 / 3,000 queries</div>
                 </div>
             </div>
-        </section>
+        </aside>
 
-        <!-- Demo Content Container -->
-        <section class="demo-container">
-            <div class="container">
+        <!-- Main Content Area -->
+        <main class="platform-main">
+            <!-- Dashboard Section -->
+            <div class="platform-section active" id="dashboard-section">
+                <div class="section-header">
+                    <div class="page-title">
+                        <h1>Dashboard</h1>
+                        <p>Welcome back, Sarah. Here's what's happening with your practice today.</p>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn-secondary">
+                            <i class="fas fa-download"></i>
+                            Export Report
+                        </button>
+                        <button class="btn-primary">
+                            <i class="fas fa-plus"></i>
+                            New Research
+                        </button>
+                    </div>
+                </div>
                 
-                <!-- Platform Overview Demo -->
-                <div class="demo-section active" id="overview-demo">
-                    <div class="demo-header">
-                        <h2>TaxAI Intelligence Platform</h2>
-                        <p>Complete tax practice management solution powered by advanced AI</p>
+                <!-- Quick Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon ai">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" data-count="247">0</div>
+                            <div class="stat-label">AI Queries Today</div>
+                            <div class="stat-change positive">+18% from yesterday</div>
+                        </div>
                     </div>
                     
-                    <div class="platform-mockup">
-                        <div class="mockup-browser">
-                            <div class="browser-header">
-                                <div class="browser-dots">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                </div>
-                                <div class="browser-url">app.taxai.com/dashboard</div>
-                            </div>
-                            <div class="browser-content">
-                                <div class="dashboard-sidebar">
-                                    <div class="sidebar-logo">TaxAI</div>
-                                    <nav class="sidebar-nav">
-                                        <a href="#" class="nav-item active">
-                                            <i class="fas fa-tachometer-alt"></i>
-                                            Dashboard
-                                        </a>
-                                        <a href="#" class="nav-item">
-                                            <i class="fas fa-comments"></i>
-                                            AI Research Chat
-                                        </a>
-                                        <a href="#" class="nav-item">
-                                            <i class="fas fa-scan"></i>
-                                            TaxScan Pro
-                                        </a>
-                                        <a href="#" class="nav-item">
-                                            <i class="fas fa-users"></i>
-                                            Professional Network
-                                        </a>
-                                        <a href="#" class="nav-item">
-                                            <i class="fas fa-palette"></i>
-                                            Marketing Suite
-                                        </a>
-                                        <a href="#" class="nav-item">
-                                            <i class="fas fa-calendar-check"></i>
-                                            Smart Scheduling
-                                        </a>
-                                    </nav>
-                                </div>
-                                <div class="dashboard-main">
-                                    <div class="dashboard-header">
-                                        <h3>Welcome back, Sarah!</h3>
-                                        <p>Your tax intelligence platform is ready</p>
-                                    </div>
-                                    <div class="dashboard-stats">
-                                        <div class="stat-card">
-                                            <div class="stat-icon">
-                                                <i class="fas fa-comments"></i>
-                                            </div>
-                                            <div class="stat-content">
-                                                <div class="stat-number">247</div>
-                                                <div class="stat-label">AI Queries Today</div>
-                                            </div>
-                                        </div>
-                                        <div class="stat-card">
-                                            <div class="stat-icon">
-                                                <i class="fas fa-file-alt"></i>
-                                            </div>
-                                            <div class="stat-content">
-                                                <div class="stat-number">18</div>
-                                                <div class="stat-label">Documents Scanned</div>
-                                            </div>
-                                        </div>
-                                        <div class="stat-card">
-                                            <div class="stat-icon">
-                                                <i class="fas fa-clock"></i>
-                                            </div>
-                                            <div class="stat-content">
-                                                <div class="stat-number">12.5</div>
-                                                <div class="stat-label">Hours Saved</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="dashboard-widgets">
-                                    <div class="widget">
-                                        <h4>Recent Research</h4>
-                                        <div class="widget-item">
-                                            <i class="fas fa-search"></i>
-                                            <span>Section 199A deduction limits for partnerships</span>
-                                        </div>
-                                        <div class="widget-item">
-                                            <i class="fas fa-search"></i>
-                                            <span>TCJA impact on entertainment expenses</span>
-                                        </div>
-                                    </div>
-                                    <div class="widget">
-                                        <h4>Upcoming Appointments</h4>
-                                        <div class="widget-item">
-                                            <i class="fas fa-calendar"></i>
-                                            <span>Client consultation - 2:00 PM</span>
-                                        </div>
-                                        <div class="widget-item">
-                                            <i class="fas fa-calendar"></i>
-                                            <span>Tax planning meeting - 4:30 PM</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="stat-card">
+                        <div class="stat-icon docs">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" data-count="18">0</div>
+                            <div class="stat-label">Documents Scanned</div>
+                            <div class="stat-change positive">+3 new alerts</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon time">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" data-count="12.5">0</div>
+                            <div class="stat-label">Hours Saved</div>
+                            <div class="stat-change positive">+2.3h this week</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon revenue">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" data-count="24800">0</div>
+                            <div class="stat-label">Revenue Impact</div>
+                            <div class="stat-change positive">+$4.2K this month</div>
                         </div>
                     </div>
                 </div>
-
-                <!-- AI Research Chat Demo -->
-                <div class="demo-section" id="chat-demo">
-                    <div class="demo-header">
-                        <h2>AI Research Chat</h2>
-                        <p>Get instant answers to complex federal and state tax questions</p>
-                    </div>
-                    
-                    <div class="chat-demo-container">
-                        <div class="chat-interface">
-                            <div class="chat-header-demo">
-                                <div class="chat-status-demo">
-                                    <div class="status-indicator online"></div>
-                                    <span>TaxAI Research Assistant</span>
-                                </div>
-                                <div class="chat-features-demo">
-                                    <span class="feature-badge">Federal & State Law</span>
-                                    <span class="feature-badge">Code References</span>
-                                    <span class="feature-badge">Real-time Updates</span>
-                                </div>
-                            </div>
-                            
-                            <div class="chat-messages-demo">
-                                <div class="message-demo ai-message">
-                                    <div class="message-avatar-demo">
-                                        <i class="fas fa-robot"></i>
-                                    </div>
-                                    <div class="message-content-demo">
-                                        <div class="message-text-demo">
-                                            Hello! I'm your AI tax research assistant. I can help you with complex federal and state tax questions. What would you like to research today?
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="message-demo user-message">
-                                    <div class="message-content-demo">
-                                        <div class="message-text-demo">
-                                            Can you explain the Section 199A deduction limits for a partnership with multiple business activities?
-                                        </div>
-                                    </div>
-                                    <div class="message-avatar-demo">
-                                        <i class="fas fa-user"></i>
-                                    </div>
-                                </div>
-                                
-                                <div class="message-demo ai-message">
-                                    <div class="message-avatar-demo">
-                                        <i class="fas fa-robot"></i>
-                                    </div>
-                                    <div class="message-content-demo">
-                                        <div class="message-text-demo">
-                                            <strong>Section 199A Deduction for Partnerships with Multiple Activities</strong><br><br>
-                                            
-                                            The Section 199A deduction for partnerships with multiple business activities involves several key considerations:<br><br>
-                                            
-                                            <strong>1. Activity-Level Analysis (IRC § 199A(c)(1))</strong><br>
-                                            • Each trade or business must be evaluated separately<br>
-                                            • W-2 wages and UBIA limitations apply at the activity level<br>
-                                            • Aggregation rules under Reg. § 1.199A-4 may apply<br><br>
-                                            
-                                            <strong>2. Taxable Income Limitation</strong><br>
-                                            • Overall limitation of 20% of taxable income minus net capital gains<br>
-                                            • Applied after combining all QBI activities<br><br>
-                                            
-                                            <strong>3. Specified Service Trade or Business (SSTB) Rules</strong><br>
-                                            • Different treatment for SSTB vs. non-SSTB activities<br>
-                                            • Phase-out thresholds for 2024: $364,200 (MFJ), $182,050 (others)<br><br>
-                                            
-                                            <strong>References:</strong><br>
-                                            • IRC § 199A(b)(2)(B) - Partnership application<br>
-                                            • Reg. § 1.199A-6 - Relevant pass-through entities<br>
-                                            • Form 8995-A - Qualified Business Income Deduction
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="chat-input-demo">
-                                <input type="text" placeholder="Ask any tax question..." readonly>
-                                <button class="send-btn-demo">
-                                    <i class="fas fa-paper-plane"></i>
+                
+                <!-- Dashboard Content Grid -->
+                <div class="dashboard-grid">
+                    <!-- Recent Activity Widget -->
+                    <div class="dashboard-widget large">
+                        <div class="widget-header">
+                            <h3>Recent Activity</h3>
+                            <div class="widget-actions">
+                                <button class="widget-btn">
+                                    <i class="fas fa-filter"></i>
+                                </button>
+                                <button class="widget-btn">
+                                    <i class="fas fa-external-link-alt"></i>
                                 </button>
                             </div>
                         </div>
-                        
-                        <div class="chat-features-panel">
-                            <h4>Research Capabilities</h4>
-                            <div class="capability-item">
-                                <i class="fas fa-gavel"></i>
-                                <div>
-                                    <strong>Federal Tax Law</strong>
-                                    <p>Complete IRC coverage with regulations and rulings</p>
+                        <div class="widget-content">
+                            <div class="activity-list">
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-search"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">Section 199A deduction limits for partnerships?</div>
+                                        <div class="activity-meta">
+                                            <span class="activity-time">2 minutes ago</span>
+                                            <span class="activity-confidence">98% confidence</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-file-search"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">TaxScan analysis completed: Form 1120S</div>
+                                        <div class="activity-meta">
+                                            <span class="activity-time">8 minutes ago</span>
+                                            <span class="activity-alerts">3 alerts found</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-comments"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">Latest IRS guidance on cryptocurrency taxation</div>
+                                        <div class="activity-meta">
+                                            <span class="activity-time">15 minutes ago</span>
+                                            <span class="activity-sources">12 sources cited</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">New connection: Tax Attorney specializing in M&A</div>
+                                        <div class="activity-meta">
+                                            <span class="activity-time">1 hour ago</span>
+                                            <span class="activity-location">Los Angeles, CA</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="capability-item">
-                                <i class="fas fa-map-marked-alt"></i>
-                                <div>
-                                    <strong>State Tax Law</strong>
-                                    <p>All 50 states plus DC tax codes and regulations</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Schedule Widget -->
+                    <div class="dashboard-widget">
+                        <div class="widget-header">
+                            <h3>Today's Schedule</h3>
+                            <button class="widget-btn">
+                                <i class="fas fa-calendar-plus"></i>
+                            </button>
+                        </div>
+                        <div class="widget-content">
+                            <div class="schedule-list">
+                                <div class="schedule-item current">
+                                    <div class="schedule-time">2:00 PM</div>
+                                    <div class="schedule-details">
+                                        <div class="schedule-title">Johnson & Associates</div>
+                                        <div class="schedule-type">Tax Planning Review</div>
+                                    </div>
+                                    <div class="schedule-status live">Live</div>
+                                </div>
+                                <div class="schedule-item">
+                                    <div class="schedule-time">4:30 PM</div>
+                                    <div class="schedule-details">
+                                        <div class="schedule-title">Maria Rodriguez</div>
+                                        <div class="schedule-type">Individual Consultation</div>
+                                    </div>
+                                    <div class="schedule-status upcoming">Upcoming</div>
+                                </div>
+                                <div class="schedule-item">
+                                    <div class="schedule-time">5:45 PM</div>
+                                    <div class="schedule-details">
+                                        <div class="schedule-title">Team Standup</div>
+                                        <div class="schedule-type">Internal Meeting</div>
+                                    </div>
+                                    <div class="schedule-status upcoming">Upcoming</div>
                                 </div>
                             </div>
-                            <div class="capability-item">
-                                <i class="fas fa-balance-scale"></i>
-                                <div>
-                                    <strong>Court Cases</strong>
-                                    <p>Tax court decisions and precedent analysis</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Performance Chart Widget -->
+                    <div class="dashboard-widget">
+                        <div class="widget-header">
+                            <h3>Weekly Performance</h3>
+                            <select class="widget-select">
+                                <option>This Week</option>
+                                <option>Last Week</option>
+                                <option>This Month</option>
+                            </select>
+                        </div>
+                        <div class="widget-content">
+                            <div class="performance-chart">
+                                <div class="chart-bars">
+                                    <div class="chart-bar" style="height: 60%">
+                                        <div class="bar-value">142</div>
+                                        <div class="bar-label">Mon</div>
+                                    </div>
+                                    <div class="chart-bar" style="height: 80%">
+                                        <div class="bar-value">189</div>
+                                        <div class="bar-label">Tue</div>
+                                    </div>
+                                    <div class="chart-bar" style="height: 45%">
+                                        <div class="bar-value">106</div>
+                                        <div class="bar-label">Wed</div>
+                                    </div>
+                                    <div class="chart-bar" style="height: 90%">
+                                        <div class="bar-value">213</div>
+                                        <div class="bar-label">Thu</div>
+                                    </div>
+                                    <div class="chart-bar active" style="height: 70%">
+                                        <div class="bar-value">167</div>
+                                        <div class="bar-label">Fri</div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="capability-item">
-                                <i class="fas fa-sync-alt"></i>
-                                <div>
-                                    <strong>Real-time Updates</strong>
-                                    <p>Latest regulatory changes and guidance</p>
+                                <div class="chart-legend">
+                                    <div class="legend-item">
+                                        <div class="legend-color"></div>
+                                        <span>AI Queries</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- TaxScan Pro Demo -->
-                <div class="demo-section" id="taxscan-demo">
-                    <div class="demo-header">
-                        <h2>TaxScan Pro</h2>
-                        <p>Automated document review and process optimization</p>
+            <!-- AI Research Chat Section -->
+            <div class="platform-section" id="chat-section">
+                <div class="section-header">
+                    <div class="page-title">
+                        <h1>AI Research</h1>
+                        <p>Get instant answers to complex federal and state tax questions</p>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn-secondary">
+                            <i class="fas fa-history"></i>
+                            Research History
+                        </button>
+                        <button class="btn-primary">
+                            <i class="fas fa-plus"></i>
+                            New Chat
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="chat-container">
+                    <div class="chat-sidebar">
+                        <div class="chat-history">
+                            <h4>Recent Chats</h4>
+                            <div class="chat-history-item active">
+                                <div class="chat-preview">Section 199A deduction limits...</div>
+                                <div class="chat-time">2 min ago</div>
+                            </div>
+                            <div class="chat-history-item">
+                                <div class="chat-preview">TCJA entertainment expenses...</div>
+                                <div class="chat-time">1 hour ago</div>
+                            </div>
+                            <div class="chat-history-item">
+                                <div class="chat-preview">State tax nexus requirements...</div>
+                                <div class="chat-time">Yesterday</div>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="taxscan-demo-container">
+                    <div class="chat-main">
+                        <div class="chat-header">
+                            <div class="chat-status">
+                                <div class="status-indicator online"></div>
+                                <span>TaxAI Research Assistant</span>
+                            </div>
+                            <div class="chat-features">
+                                <span class="feature-badge">Federal & State Law</span>
+                                <span class="feature-badge">Code References</span>
+                                <span class="feature-badge">Real-time Updates</span>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-messages">
+                            <div class="message ai-message">
+                                <div class="message-avatar">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="message-content">
+                                    <div class="message-text">
+                                        Hello! I'm your AI tax research assistant. I can help you with complex federal and state tax questions. What would you like to research today?
+                                    </div>
+                                    <div class="message-time">Just now</div>
+                                </div>
+                            </div>
+                            
+                            <div class="message user-message">
+                                <div class="message-content">
+                                    <div class="message-text">
+                                        Can you explain the Section 199A deduction limits for a partnership with multiple business activities?
+                                    </div>
+                                    <div class="message-time">2 minutes ago</div>
+                                </div>
+                                <div class="message-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="message ai-message">
+                                <div class="message-avatar">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="message-content">
+                                    <div class="message-text">
+                                        <strong>Section 199A Deduction for Partnerships with Multiple Activities</strong><br><br>
+                                        
+                                        The Section 199A deduction for partnerships with multiple business activities involves several key considerations:<br><br>
+                                        
+                                        <strong>1. Activity-Level Analysis (IRC § 199A(c)(1))</strong><br>
+                                        • Each trade or business must be evaluated separately<br>
+                                        • W-2 wages and UBIA limitations apply at the activity level<br>
+                                        • Aggregation rules under Reg. § 1.199A-4 may apply<br><br>
+                                        
+                                        <strong>2. Taxable Income Limitation</strong><br>
+                                        • Overall limitation of 20% of taxable income minus net capital gains<br>
+                                        • Applied after combining all QBI activities<br><br>
+                                        
+                                        <strong>3. Specified Service Trade or Business (SSTB) Rules</strong><br>
+                                        • Different treatment for SSTB vs. non-SSTB activities<br>
+                                        • Phase-out thresholds for 2024: $364,200 (MFJ), $182,050 (others)<br><br>
+                                        
+                                        <strong>References:</strong><br>
+                                        • IRC § 199A(b)(2)(B) - Partnership application<br>
+                                        • Reg. § 1.199A-6 - Relevant pass-through entities<br>
+                                        • Form 8995-A - Qualified Business Income Deduction
+                                    </div>
+                                    <div class="message-actions">
+                                        <button class="message-action">
+                                            <i class="fas fa-copy"></i>
+                                            Copy
+                                        </button>
+                                        <button class="message-action">
+                                            <i class="fas fa-bookmark"></i>
+                                            Save
+                                        </button>
+                                        <button class="message-action">
+                                            <i class="fas fa-share"></i>
+                                            Share
+                                        </button>
+                                    </div>
+                                    <div class="message-time">1 minute ago</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-input">
+                            <input type="text" placeholder="Ask any tax question..." id="chatInput">
+                            <button class="send-btn">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TaxScan Pro Section -->
+            <div class="platform-section" id="taxscan-section">
+                <div class="section-header">
+                    <div class="page-title">
+                        <h1>TaxScan Pro</h1>
+                        <p>Automated document review and process optimization</p>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn-secondary">
+                            <i class="fas fa-history"></i>
+                            Scan History
+                        </button>
+                        <button class="btn-primary">
+                            <i class="fas fa-upload"></i>
+                            Upload Documents
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="taxscan-container">
+                    <div class="upload-area">
                         <div class="upload-zone">
                             <div class="upload-icon">
                                 <i class="fas fa-cloud-upload-alt"></i>
@@ -291,71 +490,105 @@
                             <h4>Upload Tax Documents</h4>
                             <p>Drag & drop or click to upload 1040, 1065, 1120, 1120-S returns</p>
                             <button class="upload-btn">Choose Files</button>
+                            <div class="upload-formats">
+                                Supported: PDF, JPG, PNG, TIFF (Max 10MB each)
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="scan-results">
+                        <div class="scan-header">
+                            <h4>Latest Analysis Report</h4>
+                            <div class="scan-meta">
+                                <span class="scan-date">Generated: Just now</span>
+                                <span class="scan-confidence">95% accuracy</span>
+                            </div>
                         </div>
                         
-                        <div class="scan-results">
-                            <div class="scan-header">
-                                <h4>Analysis Report</h4>
-                                <span class="scan-date">Generated: Just now</span>
-                            </div>
-                            
-                            <div class="scan-summary">
-                                <div class="summary-card critical">
-                                    <div class="summary-icon">⚠️</div>
-                                    <div class="summary-content">
-                                        <div class="summary-number">2</div>
-                                        <div class="summary-label">Critical Alerts</div>
-                                    </div>
-                                </div>
-                                <div class="summary-card warning">
-                                    <div class="summary-icon">📋</div>
-                                    <div class="summary-content">
-                                        <div class="summary-number">5</div>
-                                        <div class="summary-label">Review Points</div>
-                                    </div>
-                                </div>
-                                <div class="summary-card success">
-                                    <div class="summary-icon">💡</div>
-                                    <div class="summary-content">
-                                        <div class="summary-number">8</div>
-                                        <div class="summary-label">Optimization Insights</div>
-                                    </div>
+                        <div class="scan-summary">
+                            <div class="summary-card critical">
+                                <div class="summary-icon">⚠️</div>
+                                <div class="summary-content">
+                                    <div class="summary-number">2</div>
+                                    <div class="summary-label">Critical Alerts</div>
                                 </div>
                             </div>
+                            <div class="summary-card warning">
+                                <div class="summary-icon">📋</div>
+                                <div class="summary-content">
+                                    <div class="summary-number">5</div>
+                                    <div class="summary-label">Review Points</div>
+                                </div>
+                            </div>
+                            <div class="summary-card success">
+                                <div class="summary-icon">💡</div>
+                                <div class="summary-content">
+                                    <div class="summary-number">8</div>
+                                    <div class="summary-label">Optimization Insights</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="scan-details">
+                            <div class="detail-tabs">
+                                <button class="tab-btn active" data-tab="alerts">Critical Alerts</button>
+                                <button class="tab-btn" data-tab="reviews">Review Points</button>
+                                <button class="tab-btn" data-tab="insights">Optimizations</button>
+                            </div>
                             
-                            <div class="scan-details">
-                                <div class="detail-section">
-                                    <h5>Critical Alerts</h5>
-                                    <div class="alert-item critical">
+                            <div class="tab-content active" id="alerts-tab">
+                                <div class="alert-item critical">
+                                    <div class="alert-icon">
                                         <i class="fas fa-exclamation-triangle"></i>
-                                        <div>
-                                            <strong>Mathematical Error - Line 12a</strong>
-                                            <p>Calculated value $45,230 doesn't match entered amount $43,230</p>
-                                        </div>
                                     </div>
-                                    <div class="alert-item critical">
-                                        <i class="fas fa-exclamation-triangle"></i>
-                                        <div>
-                                            <strong>Missing Schedule K-1</strong>
-                                            <p>Partnership income reported but no supporting K-1 attached</p>
+                                    <div class="alert-content">
+                                        <div class="alert-title">Mathematical Error - Line 12a</div>
+                                        <div class="alert-description">Calculated value $45,230 doesn't match entered amount $43,230</div>
+                                        <div class="alert-actions">
+                                            <button class="alert-btn">Fix Error</button>
+                                            <button class="alert-btn secondary">Review Calculation</button>
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <div class="detail-section">
-                                    <h5>Optimization Insights</h5>
-                                    <div class="alert-item success">
-                                        <i class="fas fa-lightbulb"></i>
-                                        <div>
-                                            <strong>Potential QBI Deduction</strong>
-                                            <p>Client may qualify for additional $8,400 Section 199A deduction</p>
+                                <div class="alert-item critical">
+                                    <div class="alert-icon">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                    <div class="alert-content">
+                                        <div class="alert-title">Missing Schedule K-1</div>
+                                        <div class="alert-description">Partnership income reported but no supporting K-1 attached</div>
+                                        <div class="alert-actions">
+                                            <button class="alert-btn">Upload K-1</button>
+                                            <button class="alert-btn secondary">Mark as Reviewed</button>
                                         </div>
                                     </div>
-                                    <div class="alert-item success">
+                                </div>
+                            </div>
+                            
+                            <div class="tab-content" id="insights-tab">
+                                <div class="alert-item success">
+                                    <div class="alert-icon">
                                         <i class="fas fa-lightbulb"></i>
-                                        <div>
-                                            <strong>Home Office Opportunity</strong>
-                                            <p>Unreported home office expenses could save $2,100 in taxes</p>
+                                    </div>
+                                    <div class="alert-content">
+                                        <div class="alert-title">Potential QBI Deduction</div>
+                                        <div class="alert-description">Client may qualify for additional $8,400 Section 199A deduction</div>
+                                        <div class="alert-actions">
+                                            <button class="alert-btn">Calculate QBI</button>
+                                            <button class="alert-btn secondary">Learn More</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert-item success">
+                                    <div class="alert-icon">
+                                        <i class="fas fa-lightbulb"></i>
+                                    </div>
+                                    <div class="alert-content">
+                                        <div class="alert-title">Home Office Opportunity</div>
+                                        <div class="alert-description">Unreported home office expenses could save $2,100 in taxes</div>
+                                        <div class="alert-actions">
+                                            <button class="alert-btn">Add Deduction</button>
+                                            <button class="alert-btn secondary">Calculate Savings</button>
                                         </div>
                                     </div>
                                 </div>
@@ -363,57 +596,52 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-        </section>
 
-        <!-- Demo CTA -->
-        <section class="demo-cta">
-            <div class="container">
-                <h2>Ready to Transform Your Practice?</h2>
-                <p>Experience all these features and more with TaxAI Intelligence</p>
-                <div class="cta-buttons">
-                    <button class="btn-primary btn-lg">Contact Sales</button>
-                    <button class="btn-secondary btn-lg">View More Features</button>
+            <!-- Other Platform Sections -->
+            <div class="platform-section" id="network-section">
+                <div class="section-header">
+                    <div class="page-title">
+                        <h1>Professional Network</h1>
+                        <p>Connect with tax professionals and expand your practice</p>
+                    </div>
                 </div>
-                <p class="cta-note">Ready to transform your practice? Get in touch with our team</p>
+                <div class="coming-soon">
+                    <i class="fas fa-users"></i>
+                    <h3>Professional Network</h3>
+                    <p>This section is available in the full platform</p>
+                </div>
             </div>
-        </section>
-    </main>
 
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <div class="footer-logo">TaxAI</div>
-                <p>Revolutionizing tax practice with advanced AI technology.</p>
+            <div class="platform-section" id="marketing-section">
+                <div class="section-header">
+                    <div class="page-title">
+                        <h1>Marketing Suite</h1>
+                        <p>Automated marketing campaigns for tax professionals</p>
+                    </div>
+                </div>
+                <div class="coming-soon">
+                    <i class="fas fa-palette"></i>
+                    <h3>Marketing Suite</h3>
+                    <p>This section is available in the full platform</p>
+                </div>
             </div>
-            
-            <div class="footer-section">
-                <h4>Product</h4>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="#features-demo">Features</a></li>
-                    <li><a href="#pricing">Pricing</a></li>
-                </ul>
+
+            <div class="platform-section" id="scheduling-section">
+                <div class="section-header">
+                    <div class="page-title">
+                        <h1>Smart Scheduling</h1>
+                        <p>Intelligent appointment scheduling and calendar management</p>
+                    </div>
+                </div>
+                <div class="coming-soon">
+                    <i class="fas fa-calendar-check"></i>
+                    <h3>Smart Scheduling</h3>
+                    <p>This section is available in the full platform</p>
+                </div>
             </div>
-            
-            <div class="footer-section">
-                <h4>Demo</h4>
-                <ul>
-                    <li><a href="#chat-demo">AI Research Chat</a></li>
-                    <li><a href="#taxscan-demo">TaxScan Pro</a></li>
-                    <li><a href="#network-demo">Professional Network</a></li>
-                    <li><a href="#marketing-demo">Marketing Suite</a></li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <div class="footer-bottom-content">
-                <p>&copy; 2024 TaxAI Inc. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+        </main>
+    </div>
 
     <script src="demo-script.js"></script>
 </body>
