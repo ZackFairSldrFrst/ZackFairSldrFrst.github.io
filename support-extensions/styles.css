@@ -385,3 +385,109 @@
       border-color: rgba(15, 23, 42, 0.4);
     }
   }
+
+  /* Coupon Banner Styles */
+  .coupon-banner {
+    background: linear-gradient(135deg, #FF6B6B, #FF8E88);
+    color: white;
+    padding: 1.5rem 2rem;
+    border-radius: var(--radius-lg);
+    margin: 2rem auto 4rem;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 0.8s ease both;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .coupon-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      45deg, 
+      transparent 25%, 
+      rgba(255,255,255,0.1) 50%, 
+      transparent 75%
+    );
+    transform: rotate(45deg);
+    animation: shine 6s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .coupon-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .coupon-icon {
+    font-size: 2.5rem;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .coupon-text h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .coupon-text p {
+    font-size: 1rem;
+    opacity: 0.95;
+  }
+
+  .coupon-code {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .coupon-copy-btn {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 0.8rem 1.5rem;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-medium);
+    font-size: 0.95rem;
+    backdrop-filter: blur(10px);
+  }
+
+  .coupon-copy-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+  }
+
+  .coupon-copy-btn:active {
+    transform: translateY(0);
+  }
+
+  @media (max-width: 768px) {
+    .coupon-content {
+      flex-direction: column;
+      text-align: center;
+      gap: 1rem;
+    }
+    
+    .coupon-text h3 {
+      font-size: 1.3rem;
+    }
+    
+    .coupon-text p {
+      font-size: 0.9rem;
+    }
+  }

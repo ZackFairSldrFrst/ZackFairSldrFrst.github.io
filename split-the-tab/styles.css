@@ -546,6 +546,53 @@ body::before {
     margin: 0;
 }
 
+/* Split Toggle Buttons */
+.split-toggle-buttons {
+    display: flex;
+    gap: 0;
+    margin-top: 0.5rem;
+    border-radius: var(--border-radius-small);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+}
+
+.split-toggle-btn {
+    flex: 1;
+    padding: 0.875rem 1.25rem;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.split-toggle-btn:not(:last-child) {
+    border-right: 1px solid var(--border-color);
+}
+
+.split-toggle-btn:hover:not(.active) {
+    background: var(--bg-glass);
+    color: var(--text-primary);
+}
+
+.split-toggle-btn.active {
+    background: var(--primary-gradient);
+    color: white;
+    box-shadow: var(--shadow-light);
+}
+
+.split-toggle-btn i {
+    font-size: 0.9rem;
+}
+
 /* Custom Split */
 .custom-split-input {
     display: flex;

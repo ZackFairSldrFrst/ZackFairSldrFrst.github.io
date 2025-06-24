@@ -320,15 +320,15 @@
                     </div>
                     <div class="form-group">
                         <label>Split Options</label>
-                        <div class="split-options">
-                            <label class="checkbox-label">
-                                <input type="radio" name="splitOption" id="splitEqually" value="equal" checked>
-                                <span>Split equally among all members</span>
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="radio" name="splitOption" id="customSplit" value="custom">
-                                <span>Custom split amounts</span>
-                            </label>
+                        <div class="split-toggle-buttons">
+                            <button type="button" class="split-toggle-btn active" data-split="equal" id="splitEqually">
+                                <i class="fas fa-equals"></i>
+                                Split Equally
+                            </button>
+                            <button type="button" class="split-toggle-btn" data-split="custom" id="customSplit">
+                                <i class="fas fa-sliders-h"></i>
+                                Custom Split
+                            </button>
                         </div>
                     </div>
                     <div id="customSplitSection" style="display: none;">
@@ -482,15 +482,15 @@
                     </div>
                     <div class="form-group">
                         <label>Split Options</label>
-                        <div class="split-options">
-                            <label class="checkbox-label">
-                                <input type="radio" name="editSplitOption" id="editSplitEqually" value="equal" checked>
-                                <span>Split equally among all members</span>
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="radio" name="editSplitOption" id="editCustomSplit" value="custom">
-                                <span>Custom split amounts</span>
-                            </label>
+                        <div class="split-toggle-buttons">
+                            <button type="button" class="split-toggle-btn active" data-split="equal" id="editSplitEqually">
+                                <i class="fas fa-equals"></i>
+                                Split Equally
+                            </button>
+                            <button type="button" class="split-toggle-btn" data-split="custom" id="editCustomSplit">
+                                <i class="fas fa-sliders-h"></i>
+                                Custom Split
+                            </button>
                         </div>
                     </div>
                     <div id="editCustomSplitSection" style="display: none;">

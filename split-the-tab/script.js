@@ -157,9 +157,26 @@ class SplitTab {
         });
 
         // Split options toggle
-        document.addEventListener('change', (e) => {
-            if (e.target.name === 'splitOption') {
-                this.toggleSplitOptions();
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.split-toggle-btn')) {
+                const button = e.target.closest('.split-toggle-btn');
+                const container = button.parentElement;
+                const isNewExpense = container.querySelector('#splitEqually') !== null;
+                
+                // Remove active class from all buttons in this container
+                container.querySelectorAll('.split-toggle-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                // Toggle functionality based on which form we're in
+                if (isNewExpense) {
+                    this.toggleSplitOptions();
+                } else {
+                    this.toggleEditSplitOptions();
+                }
             }
         });
 
@@ -215,10 +232,6 @@ class SplitTab {
 
         // Edit expense form events
         document.addEventListener('change', (e) => {
-            if (e.target.name === 'editSplitOption') {
-                this.toggleEditSplitOptions();
-            }
-            
             if (e.target.id === 'editExpenseGroup') {
                 this.updateEditExpenseFormMembers();
             }
@@ -466,8 +479,8 @@ class SplitTab {
         const description = document.getElementById('expenseDescription').value.trim();
         const amount = parseFloat(document.getElementById('expenseAmount').value);
         const paidBy = document.getElementById('expensePaidBy').value;
-        const splitEqually = document.getElementById('splitEqually').checked;
-        const customSplit = document.getElementById('customSplit').checked;
+        const splitEqually = document.getElementById('splitEqually').classList.contains('active');
+        const customSplit = document.getElementById('customSplit').classList.contains('active');
         
         if (!groupId || !description || !amount || !paidBy) {
             this.showNotification('Please fill in all required fields', 'error');
@@ -588,7 +601,7 @@ class SplitTab {
         const customSplit = document.getElementById('customSplit');
         const customSplitSection = document.getElementById('customSplitSection');
         
-        if (customSplit.checked) {
+        if (customSplit.classList.contains('active')) {
             customSplitSection.style.display = 'block';
             this.updateExpenseFormMembers();
         } else {
@@ -1556,13 +1569,15 @@ class SplitTab {
         const customSplit = document.getElementById('editCustomSplit');
         const customSplitSection = document.getElementById('editCustomSplitSection');
         
+        // Remove active class from both buttons first
+        splitEqually.classList.remove('active');
+        customSplit.classList.remove('active');
+        
         if (expense.splitEqually !== false) {
-            splitEqually.checked = true;
-            customSplit.checked = false;
+            splitEqually.classList.add('active');
             customSplitSection.style.display = 'none';
         } else {
-            splitEqually.checked = false;
-            customSplit.checked = true;
+            customSplit.classList.add('active');
             customSplitSection.style.display = 'block';
             this.updateEditCustomSplitInputs();
         }
@@ -1622,7 +1637,7 @@ class SplitTab {
         const customSplit = document.getElementById('editCustomSplit');
         const customSplitSection = document.getElementById('editCustomSplitSection');
         
-        if (customSplit.checked) {
+        if (customSplit.classList.contains('active')) {
             customSplitSection.style.display = 'block';
             this.updateEditExpenseFormMembers();
             this.updateEditCustomSplitInputs();
@@ -1643,8 +1658,8 @@ class SplitTab {
         const description = document.getElementById('editExpenseDescription').value.trim();
         const amount = parseFloat(document.getElementById('editExpenseAmount').value);
         const paidBy = document.getElementById('editExpensePaidBy').value;
-        const splitEqually = document.getElementById('editSplitEqually').checked;
-        const customSplit = document.getElementById('editCustomSplit').checked;
+        const splitEqually = document.getElementById('editSplitEqually').classList.contains('active');
+        const customSplit = document.getElementById('editCustomSplit').classList.contains('active');
         
         if (!groupId || !description || !amount || !paidBy) {
             this.showNotification('Please fill in all required fields', 'error');

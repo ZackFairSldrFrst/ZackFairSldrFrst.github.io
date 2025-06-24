@@ -61,6 +61,18 @@
             <p class="subheader">We're thrilled you've joined our community of productivity enthusiasts. This is just the beginning of how we can enhance your browsing experience together.</p>
         </header>
 
+        <!-- Coupon Banner -->
+        <section class="coupon-banner">
+            <div class="coupon-content">
+                <div class="coupon-icon">🎉</div>
+                <div class="coupon-text">
+                    <h3>Special Offer: 30% Off Pro!</h3>
+                    <p>Use code <span class="coupon-code">WELCOME30</span> to get 30% off your first Pro subscription</p>
+                </div>
+                <button class="coupon-copy-btn" onclick="copyCodeToClipboard()">Copy Code</button>
+            </div>
+        </section>
+
         <!-- Top Section: Pin Instructions + Newsletter + Communities -->
         <section class="donate-section compact-section">
             <div class="top-grid">
@@ -188,6 +200,38 @@
                 document.getElementById("loading-container").style.display = "none";
                 document.getElementById("main-content").style.display = "block";
             }, 3000);
+        }
+
+        // Copy coupon code to clipboard
+        function copyCodeToClipboard() {
+            const code = "WELCOME30";
+            navigator.clipboard.writeText(code).then(function() {
+                const button = document.querySelector('.coupon-copy-btn');
+                const originalText = button.textContent;
+                button.textContent = "Copied! ✓";
+                button.style.background = "rgba(0, 191, 99, 0.3)";
+                
+                setTimeout(function() {
+                    button.textContent = originalText;
+                    button.style.background = "rgba(255, 255, 255, 0.15)";
+                }, 2000);
+            }).catch(function() {
+                // Fallback for older browsers
+                const textArea = document.createElement("textarea");
+                textArea.value = code;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                const button = document.querySelector('.coupon-copy-btn');
+                const originalText = button.textContent;
+                button.textContent = "Copied! ✓";
+                
+                setTimeout(function() {
+                    button.textContent = originalText;
+                }, 2000);
+            });
         }
     </script>
 
