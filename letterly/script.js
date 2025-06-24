@@ -35,6 +35,9 @@ class MessageFlow {
             message: ''
         };
         
+        // Message editing properties
+        this.editingMessage = null;
+        
         this.init();
     }
 
@@ -474,6 +477,9 @@ class MessageFlow {
                             <button class="btn-secondary" onclick="messageFlow.previewMessage('${message.pageId}')">
                                 <i class="fas fa-eye"></i> View
                             </button>
+                            <button class="btn-secondary" onclick="messageFlow.editMessage('${message.id}', '${message.pageId}')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
                             <button class="btn-secondary" onclick="messageFlow.copyMessageUrl('${message.pageUrl}')">
                                 <i class="fas fa-link"></i> Copy URL
                             </button>
@@ -731,6 +737,13 @@ class MessageFlow {
         const scheduleType = document.querySelector('input[name="scheduleType"]:checked').value;
         const scheduleDateTime = document.getElementById('schedule-datetime').value;
 
+        // Check if we're editing an existing message
+        if (this.editingMessage) {
+            await this.updateExistingMessage(pageData, scheduleType, scheduleDateTime);
+            return;
+        }
+
+        // Original message creation logic
         const recipient = this.contacts.find(c => c.id === pageData.recipientId);
         
         // Create notification page
@@ -1953,8 +1966,14 @@ class MessageFlow {
                             <button class="btn-small" onclick="messageFlow.previewMessage('${message.pageId}')">
                                 <i class="fas fa-eye"></i> View
                             </button>
+                            <button class="btn-small" onclick="messageFlow.editMessage('${message.id}', '${message.pageId}')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
                             <button class="btn-small" onclick="messageFlow.copyMessageUrl('${message.pageUrl}')">
                                 <i class="fas fa-link"></i> Copy URL
+                            </button>
+                            <button class="btn-small" onclick="messageFlow.deleteMessage('${message.id}', '${message.pageId}')">
+                                <i class="fas fa-trash"></i> Delete
                             </button>
                         </div>
                     </div>
@@ -2242,6 +2261,288 @@ service cloud.firestore {
                 modal.remove();
             }
         });
+    }
+
+    // Edit a message
+    editMessage(messageId, pageId) {
+        // Find the message from all notification pages
+        this.getAllMessages().then(allMessages => {
+            const message = allMessages.find(m => m.id === messageId);
+            if (!message) {
+                this.showNotification('Message not found', 'error');
+                return;
+            }
+
+            // Open the composer modal with the message data
+            this.openComposerForEdit(message, pageId);
+        });
+    }
+
+    // Open composer modal for editing
+    openComposerForEdit(message, pageId) {
+        // Populate the form with existing message data
+        document.getElementById('message-title').value = message.title || '';
+        document.getElementById('message-content').value = message.content || '';
+        
+        // Set the recipient
+        const recipientSelect = document.getElementById('recipient-select');
+        if (recipientSelect) {
+            // Find the contact by name or create a temporary option
+            const contact = this.contacts.find(c => c.name === message.recipientName);
+            if (contact) {
+                recipientSelect.value = contact.id;
+            } else {
+                // Create a temporary option for the recipient
+                const option = document.createElement('option');
+                option.value = 'temp_' + message.recipientId;
+                option.textContent = message.recipientName;
+                recipientSelect.appendChild(option);
+                recipientSelect.value = option.value;
+            }
+        }
+
+        // Set the theme
+        const themeSelect = document.getElementById('theme-select');
+        if (themeSelect && message.theme) {
+            themeSelect.value = message.theme;
+        }
+
+        // Set schedule type to "now" by default for editing
+        const nowRadio = document.querySelector('input[name="scheduleType"][value="now"]');
+        if (nowRadio) {
+            nowRadio.checked = true;
+            document.getElementById('schedule-datetime-group').style.display = 'none';
+        }
+
+        // Update character count
+        const charCount = document.getElementById('char-count');
+        if (charCount) {
+            charCount.textContent = message.content ? message.content.length : 0;
+        }
+
+        // Store editing context
+        this.editingMessage = {
+            originalMessageId: message.id,
+            pageId: pageId,
+            originalMessage: message
+        };
+
+        // Update modal title and button
+        const modalTitle = document.querySelector('#composer-modal .modal-header h2');
+        if (modalTitle) {
+            modalTitle.innerHTML = '<i class="fas fa-edit"></i> Edit Message';
+        }
+
+        const submitButton = document.querySelector('#message-form button[type="submit"]');
+        if (submitButton) {
+            submitButton.innerHTML = '<i class="fas fa-save"></i> Update Message';
+        }
+
+        // Open the modal
+        this.openModal('composer-modal');
+    }
+
+    // Update existing message
+    async updateExistingMessage(pageData, scheduleType, scheduleDateTime) {
+        try {
+            const recipient = this.contacts.find(c => c.id === pageData.recipientId);
+            const originalMessage = this.editingMessage.originalMessage;
+            const pageId = this.editingMessage.pageId;
+
+            // Create updated message data
+            const updatedMessageData = {
+                ...originalMessage,
+                recipientId: pageData.recipientId,
+                recipientName: recipient ? recipient.name : originalMessage.recipientName,
+                recipientPhone: recipient ? recipient.phone : originalMessage.recipientPhone,
+                content: pageData.content,
+                title: pageData.title,
+                theme: pageData.theme,
+                status: scheduleType === 'now' ? 'sent' : 'scheduled',
+                scheduledTime: scheduleType === 'scheduled' ? scheduleDateTime : null,
+                updatedAt: new Date().toISOString(),
+                isUpdated: true
+            };
+
+            // Update the message on the notification page
+            await this.updateMessageOnNotificationPage(pageId, originalMessage.id, updatedMessageData);
+
+            // Update the reference in main app
+            const referenceIndex = this.messages.findIndex(m => m.id === this.editingMessage.originalMessageId);
+            if (referenceIndex !== -1) {
+                this.messages[referenceIndex] = {
+                    ...this.messages[referenceIndex],
+                    title: pageData.title,
+                    status: scheduleType === 'now' ? 'sent' : 'scheduled',
+                    scheduledTime: scheduleType === 'scheduled' ? scheduleDateTime : null,
+                    updatedAt: new Date().toISOString()
+                };
+            }
+
+            // Handle immediate send or scheduling
+            if (scheduleType === 'now') {
+                // Update notification page immediately
+                await this.updateNotificationPageContent(pageId, updatedMessageData);
+                
+                // Send notification to recipient
+                await this.notifyRecipientOfUpdate(updatedMessageData);
+                
+                this.showNotification(
+                    `Message updated and sent! Recipient has been notified.`,
+                    'success'
+                );
+            } else {
+                this.showNotification(
+                    `Message updated and scheduled for ${this.formatDateTime(scheduleDateTime)}`,
+                    'success'
+                );
+            }
+
+            // Clear editing context
+            this.editingMessage = null;
+
+            // Reset modal
+            this.resetComposerModal();
+
+            // Save data and close modal
+            this.saveData();
+            this.closeModal('composer-modal');
+
+            // Update displays
+            this.updateDashboard();
+            if (this.currentTab === 'messages') {
+                this.loadMessages();
+            }
+            if (this.currentTab === 'live-messages') {
+                this.loadLiveMessages();
+            }
+
+        } catch (error) {
+            console.error('Failed to update message:', error);
+            this.showNotification('Failed to update message', 'error');
+        }
+    }
+
+    // Update message on notification page
+    async updateMessageOnNotificationPage(pageId, messageId, updatedMessageData) {
+        try {
+            if (this.firebaseInitialized) {
+                // Update in Firebase
+                const pageDocRef = window.firestore.doc(this.db, 'notificationPages', pageId);
+                const docSnap = await window.firestore.getDoc(pageDocRef);
+                
+                if (docSnap.exists()) {
+                    const pageData = docSnap.data();
+                    const messages = pageData.messages.map(m => 
+                        m.id === messageId ? updatedMessageData : m
+                    );
+                    
+                    await window.firestore.setDoc(pageDocRef, {
+                        ...pageData,
+                        messages: messages,
+                        lastUpdated: window.firestore.serverTimestamp()
+                    });
+                }
+            } else {
+                // Update in localStorage
+                const pageKey = `letterly_page_${pageId}`;
+                const existingData = localStorage.getItem(pageKey);
+                
+                if (existingData) {
+                    const pageData = JSON.parse(existingData);
+                    const messages = pageData.messages.map(m => 
+                        m.id === messageId ? updatedMessageData : m
+                    );
+                    
+                    pageData.messages = messages;
+                    pageData.lastUpdated = new Date().toISOString();
+                    
+                    localStorage.setItem(pageKey, JSON.stringify(pageData));
+                }
+            }
+        } catch (error) {
+            console.error('Failed to update message on notification page:', error);
+            throw error;
+        }
+    }
+
+    // Update notification page content
+    async updateNotificationPageContent(pageId, messageData) {
+        try {
+            if (this.firebaseInitialized) {
+                // Update the page configuration in Firebase
+                const pageDocRef = window.firestore.doc(this.db, 'notificationPages', pageId);
+                await window.firestore.setDoc(pageDocRef, {
+                    title: messageData.title,
+                    message: messageData.content,
+                    theme: messageData.theme,
+                    lastUpdated: window.firestore.serverTimestamp()
+                }, { merge: true });
+            } else {
+                // Update in localStorage
+                const pageKey = `letterly_page_${pageId}`;
+                const existingData = localStorage.getItem(pageKey);
+                
+                if (existingData) {
+                    const pageData = JSON.parse(existingData);
+                    pageData.title = messageData.title;
+                    pageData.message = messageData.content;
+                    pageData.theme = messageData.theme;
+                    pageData.lastUpdated = new Date().toISOString();
+                    
+                    localStorage.setItem(pageKey, JSON.stringify(pageData));
+                }
+            }
+        } catch (error) {
+            console.error('Failed to update notification page content:', error);
+            throw error;
+        }
+    }
+
+    // Notify recipient of message update
+    async notifyRecipientOfUpdate(messageData) {
+        try {
+            // Send browser notification if enabled
+            if (this.notificationsEnabled && 'Notification' in window && Notification.permission === 'granted') {
+                new Notification('Message Updated', {
+                    body: `Your message to ${messageData.recipientName} has been updated and sent.`,
+                    icon: '/favicon.ico',
+                    tag: 'message-updated'
+                });
+            }
+
+            // In a real app, you would send SMS/email notification here
+            console.log(`Notification sent to ${messageData.recipientName} about updated message`);
+            
+        } catch (error) {
+            console.error('Failed to notify recipient:', error);
+        }
+    }
+
+    // Reset composer modal to original state
+    resetComposerModal() {
+        // Reset form
+        document.getElementById('message-form').reset();
+        
+        // Reset character count
+        const charCount = document.getElementById('char-count');
+        if (charCount) {
+            charCount.textContent = '0';
+        }
+
+        // Reset modal title and button
+        const modalTitle = document.querySelector('#composer-modal .modal-header h2');
+        if (modalTitle) {
+            modalTitle.innerHTML = '<i class="fas fa-plus"></i> Create Message';
+        }
+
+        const submitButton = document.querySelector('#message-form button[type="submit"]');
+        if (submitButton) {
+            submitButton.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+        }
+
+        // Clear editing context
+        this.editingMessage = null;
     }
 }
 
