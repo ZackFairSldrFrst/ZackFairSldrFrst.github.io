@@ -756,7 +756,7 @@
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, serverTimestamp, getDocs } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
         
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -786,10 +786,32 @@
             getDoc,
             collection,
             onSnapshot,
-            serverTimestamp
+            serverTimestamp,
+            getDocs
         };
 
-        console.log('Firebase initialized successfully');
+        // Test Firebase connection
+        async function testFirebaseConnection() {
+            try {
+                console.log('Testing Firebase connection...');
+                const testDoc = doc(db, 'test', 'connection');
+                await setDoc(testDoc, { timestamp: serverTimestamp() });
+                console.log('Firebase connection successful');
+                return true;
+            } catch (error) {
+                console.error('Firebase connection failed:', error);
+                return false;
+            }
+        }
+
+        // Initialize and test
+        testFirebaseConnection().then(success => {
+            if (success) {
+                console.log('Firebase initialized successfully');
+            } else {
+                console.log('Firebase failed to initialize, will use local storage');
+            }
+        });
     </script>
     <script src="script.js"></script>
 </body>

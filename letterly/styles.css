@@ -2216,8 +2216,8 @@ body::before {
 }
 
 .live-message-item:hover {
-    background: rgba(255, 255, 255, 0.08);
-    transform: translateX(5px);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .live-message-item.new {
@@ -2491,4 +2491,294 @@ body::before {
     .onboarding-actions {
         flex-direction: column;
     }
+}
+
+/* Message Cards */
+.message-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.message-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.message-card.sent {
+    border-left: 4px solid #4CAF50;
+}
+
+.message-card.scheduled {
+    border-left: 4px solid #FF9800;
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.message-info h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.message-recipient {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.message-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.message-status.sent {
+    color: #4CAF50;
+}
+
+.message-status.scheduled {
+    color: #FF9800;
+}
+
+.message-content {
+    margin-bottom: 1rem;
+}
+
+.message-content p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.message-scheduled {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    margin-top: 0.5rem;
+}
+
+.message-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.btn-small {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    color: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-small:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+/* Activity Items */
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.activity-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-title {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.activity-meta {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    display: flex;
+    gap: 1rem;
+}
+
+.activity-status {
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.activity-status.sent {
+    color: #4CAF50;
+}
+
+.activity-status.scheduled {
+    color: #FF9800;
+}
+
+/* Upcoming Items */
+.upcoming-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.upcoming-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.upcoming-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 193, 7, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #FFC107;
+}
+
+.upcoming-content {
+    flex: 1;
+}
+
+.upcoming-title {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.upcoming-meta {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    display: flex;
+    gap: 1rem;
+}
+
+.upcoming-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Live Message Items */
+.live-message-item {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.live-message-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.live-message-item.sent {
+    border-left: 4px solid #4CAF50;
+}
+
+.live-message-item.scheduled {
+    border-left: 4px solid #FF9800;
+}
+
+.live-message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.live-message-info h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.live-message-recipient {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.live-message-time {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+.live-message-content {
+    margin-bottom: 1rem;
+}
+
+.live-message-content p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.live-message-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.live-message-status.sent {
+    color: #4CAF50;
+}
+
+.live-message-status.scheduled {
+    color: #FF9800;
+}
+
+.live-message-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
 } 

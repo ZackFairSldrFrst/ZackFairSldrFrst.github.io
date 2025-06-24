@@ -633,6 +633,39 @@
         </div>
     </div>
 
+    <script type="module">
+        // Import Firebase functions
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, serverTimestamp, getDocs } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+        
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDv4MxNd7FThiUrkT0S2XVc9MACcPYc2Us",
+            authDomain: "letterly-3d795.firebaseapp.com",
+            projectId: "letterly-3d795",
+            storageBucket: "letterly-3d795.firebasestorage.app",
+            messagingSenderId: "535792229538",
+            appId: "1:535792229538:web:e672e39fda57f9f4958bfb",
+            measurementId: "G-0RR3KWJX11"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        // Make Firebase services available globally
+        window.firebaseApp = app;
+        window.firebaseDb = db;
+        window.firestore = {
+            doc,
+            setDoc,
+            getDoc,
+            collection,
+            onSnapshot,
+            serverTimestamp,
+            getDocs
+        };
+    </script>
     <script>
         // Page configuration (normally passed from URL params or API)
         let pageConfig = {
@@ -652,6 +685,11 @@
             showOnboarding: true
         };
 
+        // Message management
+        let pageMessages = [];
+        let firebaseInitialized = false;
+        let pageId = null;
+
         // Onboarding state
         let onboardingState = {
             currentStep: 1,
@@ -660,10 +698,13 @@
         };
 
         // Initialize page
-        function initializePage() {
+        async function initializePage() {
             // Parse URL parameters
             const urlParams = new URLSearchParams(window.location.search);
-            const pageId = urlParams.get('id');
+            pageId = urlParams.get('id');
+            
+            // Initialize Firebase
+            await initFirebase();
             
             // Parse page configuration
             if (urlParams.get('title')) pageConfig.title = urlParams.get('title');
@@ -678,6 +719,9 @@
             if (urlParams.get('recipient')) pageConfig.recipient = urlParams.get('recipient');
             if (urlParams.get('sender')) pageConfig.sender = urlParams.get('sender');
             if (urlParams.get('onboarding')) pageConfig.showOnboarding = urlParams.get('onboarding') === 'true';
+
+            // Load page data from Firebase/localStorage
+            await loadPageData();
 
             // Check if this is a returning visitor
             const hasVisited = localStorage.getItem(`letterly_visited_${pageId}`);
@@ -702,6 +746,167 @@
                 // Track page view
                 trackPageView();
             }, 1500);
+        }
+
+        // Firebase initialization
+        async function initFirebase() {
+            try {
+                // Wait for Firebase to be available
+                await waitForFirebase();
+                
+                // Test connection
+                await testFirebaseConnection();
+                
+                firebaseInitialized = true;
+                console.log('Firebase initialized on notification page');
+                
+            } catch (error) {
+                console.error('Failed to initialize Firebase:', error);
+                firebaseInitialized = false;
+            }
+        }
+
+        async function waitForFirebase() {
+            return new Promise((resolve, reject) => {
+                const checkFirebase = () => {
+                    if (window.firebaseDb && window.firestore) {
+                        resolve();
+                    } else {
+                        setTimeout(checkFirebase, 100);
+                    }
+                };
+                checkFirebase();
+                
+                // Timeout after 10 seconds
+                setTimeout(() => reject(new Error('Firebase initialization timeout')), 10000);
+            });
+        }
+
+        async function testFirebaseConnection() {
+            try {
+                const testDocRef = window.firestore.doc(window.firebaseDb, 'test', 'connection');
+                await window.firestore.setDoc(testDocRef, { 
+                    timestamp: window.firestore.serverTimestamp(),
+                    test: true 
+                });
+                
+                const docSnap = await window.firestore.getDoc(testDocRef);
+                if (!docSnap.exists()) {
+                    throw new Error('Test document not found');
+                }
+                
+                console.log('Firebase connection test successful');
+                return true;
+            } catch (error) {
+                console.error('Firebase connection test failed:', error);
+                throw error;
+            }
+        }
+
+        // Load page data from Firebase or localStorage
+        async function loadPageData() {
+            if (!pageId) return;
+
+            try {
+                if (firebaseInitialized) {
+                    // Try to load from Firebase
+                    const pageDocRef = window.firestore.doc(window.firebaseDb, 'notificationPages', pageId);
+                    const docSnap = await window.firestore.getDoc(pageDocRef);
+                    
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        pageConfig = { ...pageConfig, ...data };
+                        pageMessages = data.messages || [];
+                        console.log('Page data loaded from Firebase');
+                    } else {
+                        // Create new page document
+                        await savePageData();
+                    }
+                } else {
+                    // Fallback to localStorage
+                    const savedData = localStorage.getItem(`letterly_page_${pageId}`);
+                    if (savedData) {
+                        const data = JSON.parse(savedData);
+                        pageConfig = { ...pageConfig, ...data };
+                        pageMessages = data.messages || [];
+                        console.log('Page data loaded from localStorage');
+                    } else {
+                        // Save initial page data
+                        savePageDataToLocalStorage();
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to load page data:', error);
+                // Fallback to localStorage
+                const savedData = localStorage.getItem(`letterly_page_${pageId}`);
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    pageConfig = { ...pageConfig, ...data };
+                    pageMessages = data.messages || [];
+                }
+            }
+        }
+
+        // Save page data to Firebase or localStorage
+        async function savePageData() {
+            if (!pageId) return;
+
+            const data = {
+                ...pageConfig,
+                messages: pageMessages,
+                lastUpdated: firebaseInitialized ? window.firestore.serverTimestamp() : new Date().toISOString(),
+                pageId: pageId
+            };
+
+            try {
+                if (firebaseInitialized) {
+                    const pageDocRef = window.firestore.doc(window.firebaseDb, 'notificationPages', pageId);
+                    await window.firestore.setDoc(pageDocRef, data);
+                    console.log('Page data saved to Firebase');
+                }
+                
+                // Always save to localStorage as backup
+                savePageDataToLocalStorage();
+                
+            } catch (error) {
+                console.error('Failed to save page data to Firebase:', error);
+                savePageDataToLocalStorage();
+            }
+        }
+
+        function savePageDataToLocalStorage() {
+            if (!pageId) return;
+            
+            const data = {
+                ...pageConfig,
+                messages: pageMessages,
+                lastUpdated: new Date().toISOString(),
+                pageId: pageId
+            };
+            
+            localStorage.setItem(`letterly_page_${pageId}`, JSON.stringify(data));
+            console.log('Page data saved to localStorage');
+        }
+
+        // Add a new message to this page
+        function addMessage(messageData) {
+            const message = {
+                id: generateId(),
+                ...messageData,
+                createdAt: new Date().toISOString(),
+                pageId: pageId
+            };
+            
+            pageMessages.push(message);
+            savePageData();
+            
+            console.log('Message added to page:', message);
+            return message;
+        }
+
+        // Generate unique ID
+        function generateId() {
+            return 'msg_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
         }
 
         // Onboarding Functions

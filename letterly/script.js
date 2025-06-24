@@ -277,127 +277,346 @@ class MessageFlow {
     // Dashboard
     updateDashboard() {
         // Update stats
-        document.getElementById('total-messages').textContent = this.messages.length;
-        document.getElementById('total-contacts').textContent = this.contacts.length;
-        document.getElementById('scheduled-messages').textContent = 
-            this.messages.filter(m => m.status === 'scheduled').length;
-
-        // Update sidebar counts
-        document.getElementById('scheduled-count').textContent = 
-            this.messages.filter(m => m.status === 'scheduled').length;
-        document.getElementById('sent-count').textContent = 
-            this.messages.filter(m => m.status === 'sent').length;
-        document.getElementById('failed-count').textContent = 
-            this.messages.filter(m => m.status === 'failed').length;
-
-        // Load upcoming messages
-        this.loadUpcomingMessages();
+        document.getElementById('total-contacts-count').textContent = this.contacts.length;
+        document.getElementById('active-pages-count').textContent = this.notificationPages.filter(p => p.status === 'active').length;
+        
+        // Get total messages from all notification pages
+        this.getTotalMessageCount().then(totalMessages => {
+            document.getElementById('total-messages-count').textContent = totalMessages;
+        });
+        
+        // Update recent activity
         this.loadRecentActivity();
+        
+        // Update upcoming messages
+        this.loadUpcomingMessages();
     }
 
-    loadUpcomingMessages() {
-        const upcomingContainer = document.getElementById('upcoming-messages');
-        const upcomingMessages = this.messages
-            .filter(m => m.status === 'scheduled')
-            .sort((a, b) => new Date(a.scheduledTime) - new Date(b.scheduledTime))
-            .slice(0, 5);
-
-        if (upcomingMessages.length === 0) {
-            upcomingContainer.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-calendar-alt"></i>
-                    <h3>No upcoming messages</h3>
-                    <p>Schedule your first message to get started!</p>
-                </div>
-            `;
-            return;
+    // Get total message count from all notification pages
+    async getTotalMessageCount() {
+        let totalCount = 0;
+        
+        // Count reference messages from main app
+        totalCount += this.messages.filter(m => m.isReference).length;
+        
+        // Count messages from notification pages
+        try {
+            if (this.firebaseInitialized) {
+                // Get all notification pages from Firebase
+                const pagesCollection = window.firestore.collection(this.db, 'notificationPages');
+                const querySnapshot = await window.firestore.getDocs(pagesCollection);
+                
+                querySnapshot.forEach(doc => {
+                    const pageData = doc.data();
+                    if (pageData.messages && Array.isArray(pageData.messages)) {
+                        totalCount += pageData.messages.length;
+                    }
+                });
+            } else {
+                // Get from localStorage
+                const keys = Object.keys(localStorage);
+                const pageKeys = keys.filter(key => key.startsWith('letterly_page_'));
+                
+                pageKeys.forEach(key => {
+                    try {
+                        const pageData = JSON.parse(localStorage.getItem(key));
+                        if (pageData.messages && Array.isArray(pageData.messages)) {
+                            totalCount += pageData.messages.length;
+                        }
+                    } catch (error) {
+                        console.error('Failed to parse page data:', error);
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Failed to get message count from notification pages:', error);
         }
-
-        upcomingContainer.innerHTML = upcomingMessages.map(message => `
-            <div class="message-item">
-                <div class="message-info">
-                    <div class="message-recipient">${message.recipientName}</div>
-                    <div class="message-preview">${message.content}</div>
-                    <div class="message-meta">
-                        <span>📅 ${this.formatDateTime(message.scheduledTime)}</span>
-                    </div>
-                </div>
-                <div class="message-status ${message.status}">${message.status}</div>
-            </div>
-        `).join('');
+        
+        return totalCount;
     }
 
     loadRecentActivity() {
-        const activityContainer = document.getElementById('recent-activity');
-        const recentMessages = this.messages
-            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-            .slice(0, 5);
+        const container = document.getElementById('recent-activity');
+        if (!container) return;
 
-        if (recentMessages.length === 0) {
-            activityContainer.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-history"></i>
-                    <h3>No recent activity</h3>
-                    <p>Your message activity will appear here.</p>
-                </div>
-            `;
-            return;
-        }
+        // Get recent messages from all notification pages
+        this.getAllMessages().then(allMessages => {
+            const recentMessages = allMessages
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .slice(0, 5);
 
-        activityContainer.innerHTML = recentMessages.map(message => `
-            <div class="message-item">
-                <div class="message-info">
-                    <div class="message-recipient">${message.recipientName}</div>
-                    <div class="message-preview">${message.content}</div>
-                    <div class="message-meta">
-                        <span>📅 ${this.formatDateTime(message.createdAt)}</span>
+            if (recentMessages.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-clock"></i>
+                        <p>No recent activity</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = recentMessages.map(message => `
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">${message.title || 'Untitled Message'}</div>
+                        <div class="activity-meta">
+                            <span>${message.recipientName || 'Unknown Recipient'}</span>
+                            <span>${this.formatDateTime(message.createdAt)}</span>
+                        </div>
+                    </div>
+                    <div class="activity-status ${message.status}">
+                        <i class="fas fa-${message.status === 'sent' ? 'check' : 'clock'}"></i>
                     </div>
                 </div>
-                <div class="message-status ${message.status}">${message.status}</div>
-            </div>
-        `).join('');
+            `).join('');
+        });
+    }
+
+    loadUpcomingMessages() {
+        const container = document.getElementById('upcoming-messages');
+        if (!container) return;
+
+        // Get scheduled messages from all notification pages
+        this.getAllMessages().then(allMessages => {
+            const now = new Date();
+            const scheduledMessages = allMessages
+                .filter(message => message.status === 'scheduled' && message.scheduledTime)
+                .filter(message => new Date(message.scheduledTime) > now)
+                .sort((a, b) => new Date(a.scheduledTime) - new Date(b.scheduledTime))
+                .slice(0, 5);
+
+            if (scheduledMessages.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-calendar"></i>
+                        <p>No upcoming messages</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = scheduledMessages.map(message => `
+                <div class="upcoming-item">
+                    <div class="upcoming-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="upcoming-content">
+                        <div class="upcoming-title">${message.title || 'Untitled Message'}</div>
+                        <div class="upcoming-meta">
+                            <span>${message.recipientName || 'Unknown Recipient'}</span>
+                            <span>${this.formatDateTime(message.scheduledTime)}</span>
+                        </div>
+                    </div>
+                    <div class="upcoming-actions">
+                        <button class="btn-small" onclick="messageFlow.previewMessage('${message.pageId}')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        });
     }
 
     // Messages
     loadMessages() {
-        const container = document.getElementById('messages-container');
+        const messagesContainer = document.getElementById('messages-container');
+        if (!messagesContainer) return;
+
+        // Get all messages from notification pages and main app references
+        this.getAllMessages().then(allMessages => {
+            if (allMessages.length === 0) {
+                messagesContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-envelope-open-text"></i>
+                        <h3>No Messages Yet</h3>
+                        <p>Create your first notification message to get started.</p>
+                        <button class="btn-primary" onclick="messageFlow.openComposer()">
+                            <i class="fas fa-plus"></i> Create Message
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            // Sort messages by creation date (newest first)
+            allMessages.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+            const messagesHTML = allMessages.map(message => {
+                const statusClass = message.status === 'sent' ? 'sent' : 'scheduled';
+                const statusIcon = message.status === 'sent' ? 'fas fa-check-circle' : 'fas fa-clock';
+                const statusText = message.status === 'sent' ? 'Sent' : 'Scheduled';
+                
+                const scheduledTime = message.scheduledTime ? 
+                    `<div class="message-scheduled">Scheduled for: ${this.formatDateTime(message.scheduledTime)}</div>` : '';
+
+                return `
+                    <div class="message-card ${statusClass}">
+                        <div class="message-header">
+                            <div class="message-info">
+                                <h4>${message.title || 'Untitled Message'}</h4>
+                                <p class="message-recipient">
+                                    <i class="fas fa-user"></i> ${message.recipientName || 'Unknown Recipient'}
+                                </p>
+                            </div>
+                            <div class="message-status">
+                                <i class="${statusIcon}"></i>
+                                <span>${statusText}</span>
+                            </div>
+                        </div>
+                        <div class="message-content">
+                            <p>${message.content || message.title || 'No content'}</p>
+                            ${scheduledTime}
+                        </div>
+                        <div class="message-actions">
+                            <button class="btn-secondary" onclick="messageFlow.previewMessage('${message.pageId}')">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                            <button class="btn-secondary" onclick="messageFlow.copyMessageUrl('${message.pageUrl}')">
+                                <i class="fas fa-link"></i> Copy URL
+                            </button>
+                            <button class="btn-secondary" onclick="messageFlow.deleteMessage('${message.id}', '${message.pageId}')">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            messagesContainer.innerHTML = messagesHTML;
+        });
+    }
+
+    // Get all messages from notification pages and main app
+    async getAllMessages() {
+        const allMessages = [];
         
-        if (this.messages.length === 0) {
-            container.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-envelope"></i>
-                    <h3>No messages yet</h3>
-                    <p>Create your first message to get started!</p>
-                    <button class="btn-primary" onclick="messageFlow.openComposer()">
-                        <i class="fas fa-plus"></i> Create Message
-                    </button>
-                </div>
-            `;
+        // Add reference messages from main app
+        allMessages.push(...this.messages.filter(m => m.isReference));
+        
+        // Get messages from all notification pages
+        try {
+            if (this.firebaseInitialized) {
+                // Get all notification pages from Firebase
+                const pagesCollection = window.firestore.collection(this.db, 'notificationPages');
+                const querySnapshot = await window.firestore.getDocs(pagesCollection);
+                
+                querySnapshot.forEach(doc => {
+                    const pageData = doc.data();
+                    if (pageData.messages && Array.isArray(pageData.messages)) {
+                        allMessages.push(...pageData.messages);
+                    }
+                });
+            } else {
+                // Get from localStorage
+                const keys = Object.keys(localStorage);
+                const pageKeys = keys.filter(key => key.startsWith('letterly_page_'));
+                
+                pageKeys.forEach(key => {
+                    try {
+                        const pageData = JSON.parse(localStorage.getItem(key));
+                        if (pageData.messages && Array.isArray(pageData.messages)) {
+                            allMessages.push(...pageData.messages);
+                        }
+                    } catch (error) {
+                        console.error('Failed to parse page data:', error);
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Failed to get messages from notification pages:', error);
+        }
+        
+        return allMessages;
+    }
+
+    // Preview a message by opening its notification page
+    previewMessage(pageId) {
+        const page = this.notificationPages.find(p => p.id === pageId);
+        if (page) {
+            window.open(page.url, '_blank');
+        } else {
+            // Try to construct URL
+            const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
+            const pageUrl = `${baseUrl}/notification-page.html?id=${pageId}`;
+            window.open(pageUrl, '_blank');
+        }
+    }
+
+    // Copy message URL to clipboard
+    async copyMessageUrl(url) {
+        try {
+            await navigator.clipboard.writeText(url);
+            this.showNotification('URL copied to clipboard!', 'success');
+        } catch (error) {
+            console.error('Failed to copy URL:', error);
+            this.showNotification('Failed to copy URL', 'error');
+        }
+    }
+
+    // Delete a message
+    async deleteMessage(messageId, pageId) {
+        if (!confirm('Are you sure you want to delete this message?')) {
             return;
         }
 
-        const sortedMessages = this.messages
-            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        try {
+            // Remove from main app references
+            this.messages = this.messages.filter(m => m.id !== messageId);
+            
+            // Remove from notification page
+            await this.deleteMessageFromNotificationPage(pageId, messageId);
+            
+            this.saveData();
+            this.loadMessages();
+            this.updateDashboard();
+            
+            this.showNotification('Message deleted successfully!', 'success');
+        } catch (error) {
+            console.error('Failed to delete message:', error);
+            this.showNotification('Failed to delete message', 'error');
+        }
+    }
 
-        container.innerHTML = sortedMessages.map(message => `
-            <div class="message-item">
-                <div class="message-info">
-                    <div class="message-recipient">${message.recipientName}</div>
-                    <div class="message-preview">${message.content}</div>
-                    <div class="message-meta">
-                        <span>📞 ${message.recipientPhone}</span>
-                        <span>📅 ${this.formatDateTime(message.scheduledTime || message.createdAt)}</span>
-                        ${message.pageUrl ? `<span>🔗 <a href="${message.pageUrl}" target="_blank" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">View Page</a></span>` : ''}
-                        ${message.theme ? `<span class="theme-indicator ${message.theme}">
-                            <i class="fas fa-palette"></i>
-                            ${message.theme.charAt(0).toUpperCase() + message.theme.slice(1)}
-                        </span>` : ''}
-                        ${message.pageId ? `<span>📊 Views: ${this.getPageViews(message.pageId)} | Clicks: ${this.getPageClicks(message.pageId)}</span>` : ''}
-                    </div>
-                </div>
-                <div class="message-status ${message.status}">${message.status}</div>
-            </div>
-        `).join('');
+    // Delete message from notification page
+    async deleteMessageFromNotificationPage(pageId, messageId) {
+        try {
+            if (this.firebaseInitialized) {
+                // Remove from Firebase
+                const pageDocRef = window.firestore.doc(this.db, 'notificationPages', pageId);
+                const docSnap = await window.firestore.getDoc(pageDocRef);
+                
+                if (docSnap.exists()) {
+                    const pageData = docSnap.data();
+                    const messages = pageData.messages.filter(m => m.id !== messageId);
+                    
+                    await window.firestore.setDoc(pageDocRef, {
+                        ...pageData,
+                        messages: messages,
+                        lastUpdated: window.firestore.serverTimestamp()
+                    });
+                }
+            } else {
+                // Remove from localStorage
+                const pageKey = `letterly_page_${pageId}`;
+                const existingData = localStorage.getItem(pageKey);
+                
+                if (existingData) {
+                    const pageData = JSON.parse(existingData);
+                    const messages = pageData.messages.filter(m => m.id !== messageId);
+                    
+                    pageData.messages = messages;
+                    pageData.lastUpdated = new Date().toISOString();
+                    
+                    localStorage.setItem(pageKey, JSON.stringify(pageData));
+                }
+            }
+        } catch (error) {
+            console.error('Failed to delete message from notification page:', error);
+            throw error;
+        }
     }
 
     // Contacts
@@ -517,8 +736,8 @@ class MessageFlow {
         // Create notification page
         const page = this.createNotificationPage(pageData);
         
-        const message = {
-            id: this.generateId(),
+        // Create message data that will be stored on the notification page
+        const messageData = {
             recipientId: pageData.recipientId,
             recipientName: recipient.name,
             recipientPhone: recipient.phone,
@@ -528,15 +747,32 @@ class MessageFlow {
             pageUrl: page.url,
             pageId: page.id,
             status: scheduleType === 'now' ? 'sent' : 'scheduled',
-            createdAt: new Date().toISOString(),
-            scheduledTime: scheduleType === 'scheduled' ? scheduleDateTime : null
+            scheduledTime: scheduleType === 'scheduled' ? scheduleDateTime : null,
+            senderId: this.userId,
+            senderName: 'You' // Could be made configurable
         };
 
-        this.messages.push(message);
+        // Store message on the notification page instead of main app
+        await this.storeMessageOnNotificationPage(page.id, messageData);
+
+        // Create a reference message in the main app for tracking
+        const messageReference = {
+            id: this.generateId(),
+            pageId: page.id,
+            pageUrl: page.url,
+            title: pageData.title,
+            recipientName: recipient.name,
+            status: scheduleType === 'now' ? 'sent' : 'scheduled',
+            createdAt: new Date().toISOString(),
+            scheduledTime: scheduleType === 'scheduled' ? scheduleDateTime : null,
+            isReference: true // Flag to indicate this is just a reference
+        };
+
+        this.messages.push(messageReference);
 
         // Send notification immediately if not scheduled
         if (scheduleType === 'now') {
-            message.status = 'sent';
+            messageReference.status = 'sent';
             this.showNotification(
                 `Notification page created! Share this URL: ${page.url}`,
                 'success'
@@ -559,6 +795,85 @@ class MessageFlow {
         }
         if (this.currentTab === 'live-messages') {
             this.loadLiveMessages();
+        }
+    }
+
+    // Store message on the notification page
+    async storeMessageOnNotificationPage(pageId, messageData) {
+        try {
+            if (this.firebaseInitialized) {
+                // Store in Firebase under the notification page's document
+                const pageDocRef = window.firestore.doc(this.db, 'notificationPages', pageId);
+                
+                // Get existing page data
+                const docSnap = await window.firestore.getDoc(pageDocRef);
+                let pageData = {};
+                
+                if (docSnap.exists()) {
+                    pageData = docSnap.data();
+                }
+                
+                // Add message to page's messages array
+                const messages = pageData.messages || [];
+                messages.push({
+                    ...messageData,
+                    id: this.generateId(),
+                    createdAt: new Date().toISOString()
+                });
+                
+                // Update the page document
+                await window.firestore.setDoc(pageDocRef, {
+                    ...pageData,
+                    messages: messages,
+                    lastUpdated: window.firestore.serverTimestamp()
+                });
+                
+                console.log('Message stored on notification page in Firebase');
+            } else {
+                // Store in localStorage
+                const pageKey = `letterly_page_${pageId}`;
+                const existingData = localStorage.getItem(pageKey);
+                let pageData = {};
+                
+                if (existingData) {
+                    pageData = JSON.parse(existingData);
+                }
+                
+                const messages = pageData.messages || [];
+                messages.push({
+                    ...messageData,
+                    id: this.generateId(),
+                    createdAt: new Date().toISOString()
+                });
+                
+                pageData.messages = messages;
+                pageData.lastUpdated = new Date().toISOString();
+                
+                localStorage.setItem(pageKey, JSON.stringify(pageData));
+                console.log('Message stored on notification page in localStorage');
+            }
+        } catch (error) {
+            console.error('Failed to store message on notification page:', error);
+            // Fallback to localStorage
+            const pageKey = `letterly_page_${pageId}`;
+            const existingData = localStorage.getItem(pageKey);
+            let pageData = {};
+            
+            if (existingData) {
+                pageData = JSON.parse(existingData);
+            }
+            
+            const messages = pageData.messages || [];
+            messages.push({
+                ...messageData,
+                id: this.generateId(),
+                createdAt: new Date().toISOString()
+            });
+            
+            pageData.messages = messages;
+            pageData.lastUpdated = new Date().toISOString();
+            
+            localStorage.setItem(pageKey, JSON.stringify(pageData));
         }
     }
 
@@ -1230,6 +1545,10 @@ class MessageFlow {
             await this.waitForFirebase();
             
             this.db = window.firebaseDb;
+            
+            // Test the connection by trying to read/write
+            await this.testFirebaseConnection();
+            
             this.firebaseInitialized = true;
             
             console.log('Firebase initialized in MessageFlow');
@@ -1247,9 +1566,43 @@ class MessageFlow {
         } catch (error) {
             console.error('Failed to initialize Firebase:', error);
             this.updateCloudStatus('disconnected', 'Using local storage');
-            this.showNotification('Failed to connect to cloud storage, using local storage', 'warning');
+            
+            // Provide more specific error message
+            let errorMessage = 'Failed to connect to cloud storage, using local storage';
+            if (error.message.includes('permission-denied')) {
+                errorMessage = 'Firebase security rules prevent access. Using local storage.';
+            } else if (error.message.includes('unavailable')) {
+                errorMessage = 'Firebase service unavailable. Using local storage.';
+            } else if (error.message.includes('timeout')) {
+                errorMessage = 'Firebase connection timeout. Using local storage.';
+            }
+            
+            this.showNotification(errorMessage, 'warning');
             // Fallback to localStorage
             this.loadSavedDataFromLocalStorage();
+        }
+    }
+
+    async testFirebaseConnection() {
+        try {
+            // Try to write a test document
+            const testDocRef = window.firestore.doc(this.db, 'test', 'connection');
+            await window.firestore.setDoc(testDocRef, { 
+                timestamp: window.firestore.serverTimestamp(),
+                test: true 
+            });
+            
+            // Try to read it back
+            const docSnap = await window.firestore.getDoc(testDocRef);
+            if (!docSnap.exists()) {
+                throw new Error('Test document not found');
+            }
+            
+            console.log('Firebase connection test successful');
+            return true;
+        } catch (error) {
+            console.error('Firebase connection test failed:', error);
+            throw error;
         }
     }
 
@@ -1312,6 +1665,17 @@ class MessageFlow {
         if (statusDot && statusText) {
             statusText.textContent = message;
             statusDot.className = `status-dot ${status}`;
+            
+            // Add click handler for disconnected status to show help
+            if (status === 'disconnected') {
+                statusText.style.cursor = 'pointer';
+                statusText.title = 'Click for help with Firebase setup';
+                statusText.onclick = () => this.showFirebaseHelp();
+            } else {
+                statusText.style.cursor = 'default';
+                statusText.title = '';
+                statusText.onclick = null;
+            }
         }
     }
 
@@ -1352,8 +1716,17 @@ class MessageFlow {
             this.saveDataToLocalStorage();
         } catch (error) {
             console.error('Failed to save data to Firebase:', error);
-            this.showNotification('Failed to save to cloud, saved locally', 'warning');
-            // Fallback to localStorage
+            
+            // Check if it's a permissions issue
+            if (error.code === 'permission-denied') {
+                this.showNotification('Firebase security rules prevent saving. Using local storage only.', 'warning');
+                this.firebaseInitialized = false;
+                this.updateCloudStatus('disconnected', 'Security rules prevent access');
+            } else {
+                this.showNotification('Failed to save to cloud, saved locally', 'warning');
+            }
+            
+            // Always save to localStorage as backup
             this.saveDataToLocalStorage();
         }
     }
@@ -1415,7 +1788,16 @@ class MessageFlow {
             }
         } catch (error) {
             console.error('Failed to load data from Firebase:', error);
-            this.showNotification('Failed to load from cloud, using local data', 'warning');
+            
+            // Check if it's a permissions issue
+            if (error.code === 'permission-denied') {
+                this.showNotification('Firebase security rules prevent access. Using local storage.', 'warning');
+                this.firebaseInitialized = false;
+                this.updateCloudStatus('disconnected', 'Security rules prevent access');
+            } else {
+                this.showNotification('Failed to load from cloud, using local data', 'warning');
+            }
+            
             // Fallback to localStorage
             this.loadSavedDataFromLocalStorage();
         }
@@ -1516,139 +1898,90 @@ class MessageFlow {
 
     // Live Messages functionality
     loadLiveMessages() {
-        this.updateLiveStats();
-        this.loadLiveMessageStream();
-        this.loadActiveUrls();
-        
-        // Start auto-refresh if enabled
-        if (document.getElementById('auto-refresh-toggle').checked) {
-            this.startAutoRefresh();
-        }
-    }
+        const container = document.getElementById('live-messages-container');
+        if (!container) return;
 
-    updateLiveStats() {
-        const today = new Date().toDateString();
-        const todayMessages = this.messages.filter(msg => 
-            new Date(msg.createdAt).toDateString() === today
-        );
-        
-        const totalUrls = this.notificationPages.length;
-        const totalViews = this.notificationPages.reduce((sum, page) => 
-            sum + (page.views || 0), 0
-        );
-        const totalClicks = this.notificationPages.reduce((sum, page) => 
-            sum + (page.clicks || 0), 0
-        );
+        // Get all messages from notification pages for live monitoring
+        this.getAllMessages().then(allMessages => {
+            // Filter for recent messages (last 24 hours)
+            const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+            const recentMessages = allMessages.filter(message => 
+                new Date(message.createdAt) > oneDayAgo
+            );
 
-        document.getElementById('live-total-sent').textContent = todayMessages.length;
-        document.getElementById('live-total-urls').textContent = totalUrls;
-        document.getElementById('live-total-views').textContent = totalViews;
-        document.getElementById('live-total-clicks').textContent = totalClicks;
-    }
-
-    loadLiveMessageStream() {
-        const liveList = document.getElementById('live-messages-list');
-        
-        if (this.messages.length === 0) {
-            liveList.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-stream"></i>
-                    <h3>No Messages Yet</h3>
-                    <p>Messages will appear here in real-time as they are sent</p>
-                </div>
-            `;
-            return;
-        }
-
-        // Sort messages by timestamp (newest first)
-        const sortedMessages = [...this.messages].sort((a, b) => 
-            new Date(b.createdAt) - new Date(a.createdAt)
-        );
-
-        liveList.innerHTML = sortedMessages.map(message => {
-            const recipient = this.contacts.find(c => c.id === message.recipientId);
-            const pageUrl = message.pageId ? `${window.location.origin}${window.location.pathname}?page=${message.pageId}` : '';
-            const isNew = Date.now() - new Date(message.createdAt).getTime() < 60000; // New if less than 1 minute old
-
-            return `
-                <div class="live-message-item ${isNew ? 'new' : ''}">
-                    <div class="message-status-dot ${message.status}"></div>
-                    <div class="live-message-content">
-                        <div class="live-message-recipient">${recipient ? recipient.name : 'Unknown Contact'}</div>
-                        <div class="live-message-preview">${message.content.substring(0, 100)}${message.content.length > 100 ? '...' : ''}</div>
-                        ${pageUrl ? `<a href="${pageUrl}" class="live-message-url" target="_blank">${pageUrl}</a>` : ''}
+            if (recentMessages.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>No Recent Messages</h3>
+                        <p>Messages from the last 24 hours will appear here.</p>
                     </div>
-                    <div class="live-message-time">${this.formatDateTime(message.createdAt)}</div>
-                </div>
-            `;
-        }).join('');
-    }
-
-    loadActiveUrls() {
-        const urlsGrid = document.getElementById('live-urls-grid');
-        
-        if (this.notificationPages.length === 0) {
-            urlsGrid.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-link"></i>
-                    <h3>No Active URLs</h3>
-                    <p>Notification page URLs will appear here once created</p>
-                </div>
-            `;
-            return;
-        }
-
-        urlsGrid.innerHTML = this.notificationPages.map(page => {
-            const pageUrl = `${window.location.origin}${window.location.pathname}?page=${page.id}`;
-            const isExpired = page.countdownDate && new Date(page.countdownDate) < new Date();
-            
-            return `
-                <div class="url-card">
-                    <div class="url-card-header">
-                        <h4 class="url-card-title">${page.title}</h4>
-                        <span class="url-status-badge ${isExpired ? 'expired' : 'active'}">
-                            ${isExpired ? 'Expired' : 'Active'}
-                        </span>
-                    </div>
-                    <a href="${pageUrl}" class="url-card-url" target="_blank">${pageUrl}</a>
-                    <div class="url-card-stats">
-                        <span><i class="fas fa-eye"></i> ${page.views || 0} views</span>
-                        <span><i class="fas fa-mouse-pointer"></i> ${page.clicks || 0} clicks</span>
-                    </div>
-                </div>
-            `;
-        }).join('');
-    }
-
-    refreshLiveMessages() {
-        this.loadLiveMessages();
-        this.showNotification('Live messages refreshed', 'success');
-    }
-
-    exportLiveData() {
-        const data = {
-            messages: this.messages,
-            urls: this.notificationPages,
-            exportDate: new Date().toISOString(),
-            stats: {
-                totalMessages: this.messages.length,
-                totalUrls: this.notificationPages.length,
-                totalViews: this.notificationPages.reduce((sum, page) => sum + (page.views || 0), 0),
-                totalClicks: this.notificationPages.reduce((sum, page) => sum + (page.clicks || 0), 0)
+                `;
+                return;
             }
-        };
+
+            // Sort by creation time (newest first)
+            recentMessages.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+            const messagesHTML = recentMessages.map(message => {
+                const timeAgo = this.getTimeAgo(new Date(message.createdAt));
+                const statusClass = message.status === 'sent' ? 'sent' : 'scheduled';
+                const statusIcon = message.status === 'sent' ? 'fas fa-check-circle' : 'fas fa-clock';
+
+                return `
+                    <div class="live-message-item ${statusClass}">
+                        <div class="live-message-header">
+                            <div class="live-message-info">
+                                <h4>${message.title || 'Untitled Message'}</h4>
+                                <p class="live-message-recipient">
+                                    <i class="fas fa-user"></i> ${message.recipientName || 'Unknown Recipient'}
+                                </p>
+                            </div>
+                            <div class="live-message-time">
+                                <i class="fas fa-clock"></i>
+                                <span>${timeAgo}</span>
+                            </div>
+                        </div>
+                        <div class="live-message-content">
+                            <p>${message.content || message.title || 'No content'}</p>
+                        </div>
+                        <div class="live-message-status">
+                            <i class="${statusIcon}"></i>
+                            <span>${message.status}</span>
+                        </div>
+                        <div class="live-message-actions">
+                            <button class="btn-small" onclick="messageFlow.previewMessage('${message.pageId}')">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                            <button class="btn-small" onclick="messageFlow.copyMessageUrl('${message.pageUrl}')">
+                                <i class="fas fa-link"></i> Copy URL
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = messagesHTML;
+        });
+    }
+
+    // Helper function to get time ago
+    getTimeAgo(date) {
+        const now = new Date();
+        const diffInSeconds = Math.floor((now - date) / 1000);
         
-        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `letterly-live-data-${new Date().toISOString().split('T')[0]}.json`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        
-        this.showNotification('Live data exported successfully', 'success');
+        if (diffInSeconds < 60) {
+            return `${diffInSeconds}s ago`;
+        } else if (diffInSeconds < 3600) {
+            const minutes = Math.floor(diffInSeconds / 60);
+            return `${minutes}m ago`;
+        } else if (diffInSeconds < 86400) {
+            const hours = Math.floor(diffInSeconds / 3600);
+            return `${hours}h ago`;
+        } else {
+            const days = Math.floor(diffInSeconds / 86400);
+            return `${days}d ago`;
+        }
     }
 
     toggleAutoRefresh(enabled) {
@@ -1853,6 +2186,62 @@ class MessageFlow {
         this.notificationPages = [];
         
         this.showNotification('Welcome to Letterly! Start by creating your first notification page.', 'info');
+    }
+
+    showFirebaseHelp() {
+        const helpMessage = `
+            <div style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.2); margin: 1rem;">
+                <h3 style="color: rgba(255, 255, 255, 0.9); margin-bottom: 1.5rem;">🔧 Firebase Setup Help</h3>
+                <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 1rem;">
+                    To enable cloud storage, you need to configure Firebase security rules:
+                </p>
+                <ol style="color: rgba(255, 255, 255, 0.8); margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                    <li>Go to <a href="https://console.firebase.google.com/project/letterly-3d795/firestore/rules" target="_blank" style="color: #667eea;">Firebase Console</a></li>
+                    <li>Navigate to Firestore Database → Rules</li>
+                    <li>Replace the rules with:</li>
+                </ol>
+                <pre style="background: rgba(0, 0, 0, 0.3); padding: 1rem; border-radius: 8px; font-size: 0.8rem; color: #10b981; overflow-x: auto;">
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read, write: if true;
+    }
+    match /test/{document} {
+      allow read, write: if true;
+    }
+  }
+}</pre>
+                <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.875rem; margin-top: 1rem;">
+                    <strong>Note:</strong> These rules allow public access. For production, implement proper authentication.
+                </p>
+            </div>
+        `;
+        
+        // Create temporary modal
+        const modal = document.createElement('div');
+        modal.className = 'modal active';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-question-circle"></i> Firebase Setup</h2>
+                    <button class="modal-close" onclick="this.closest('.modal').remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ${helpMessage}
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        
+        // Close on background click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.remove();
+            }
+        });
     }
 }
 
