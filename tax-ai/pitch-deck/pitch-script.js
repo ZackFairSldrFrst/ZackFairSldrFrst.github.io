@@ -1,7 +1,7 @@
 // TaxAI Pitch Deck JavaScript
 
 let currentSlide = 1;
-const totalSlides = 8; // Updated to match actual slides
+const totalSlides = 9; // Updated to match new slide structure
 
 // Google Analytics tracking for pitch deck
 function trackPitchEvent(eventName, slideNumber, details = {}) {

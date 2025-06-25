@@ -275,6 +275,15 @@ nav {
     transform: translateX(0);
 }
 
+/* Desktop: Hide mobile menu elements */
+@media (min-width: 769px) {
+    .mobile-menu-toggle,
+    .mobile-menu-overlay,
+    .mobile-menu {
+        display: none !important;
+    }
+}
+
 .mobile-menu-header {
     display: flex;
     justify-content: space-between;
