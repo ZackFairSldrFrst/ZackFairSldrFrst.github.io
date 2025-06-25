@@ -1090,4 +1090,39 @@ document.addEventListener('DOMContentLoaded', function() {
         initializeMarketingSection();
         initializeSchedulingSection();
     }, 100);
+});
+
+// Function to open typeform
+function openTypeform() {
+    window.open('https://form.typeform.com/to/KIiZ1uuX', '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+}
+
+// Waitlist popup functionality
+function showWaitlistPopup() {
+    const popup = document.getElementById('waitlistPopup');
+    if (popup) {
+        popup.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeWaitlistPopup() {
+    const popup = document.getElementById('waitlistPopup');
+    if (popup) {
+        popup.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+// Show waitlist popup after 30 seconds
+setTimeout(() => {
+    showWaitlistPopup();
+}, 30000);
+
+// Close popup when clicking outside
+document.addEventListener('click', function(e) {
+    const popup = document.getElementById('waitlistPopup');
+    if (popup && e.target === popup) {
+        closeWaitlistPopup();
+    }
 }); 

@@ -409,6 +409,11 @@ if (bubbleClose) {
     });
 }
 
+// Function to open typeform
+function openTypeform() {
+    window.open('https://form.typeform.com/to/KIiZ1uuX', '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+}
+
 // Initialize all functionality when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     debugLog('Initializing TaxAI application');
