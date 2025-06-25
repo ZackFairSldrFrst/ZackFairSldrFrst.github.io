@@ -150,6 +150,95 @@ body {
     white-space: pre-wrap;
 }
 
+.message-content code {
+    background-color: #f1f3f4;
+    color: #d73a49;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.9em;
+}
+
+.message-content pre {
+    background-color: #f6f8fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    padding: 12px;
+    margin: 8px 0;
+    overflow-x: auto;
+}
+
+.message-content pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+    border-radius: 0;
+    font-size: 0.85em;
+}
+
+.message-content strong {
+    font-weight: 600;
+}
+
+.message-content em {
+    font-style: italic;
+}
+
+/* Message actions */
+.message-actions {
+    display: flex;
+    gap: 4px;
+    margin-top: 8px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    justify-content: flex-end;
+}
+
+.message:hover .message-actions {
+    opacity: 1;
+}
+
+/* Position copy button at bottom for assistant messages */
+.message.assistant {
+    flex-direction: column;
+}
+
+.message.assistant .message-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.message.assistant .message-actions {
+    align-self: flex-end;
+    margin-top: 12px;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    color: #6b7280;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-btn:hover {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.copy-btn:hover {
+    color: #10a37f;
+}
+
+.edit-btn:hover {
+    color: #3b82f6;
+}
+
 /* Input area */
 .input-area {
     padding: 24px;
@@ -380,6 +469,17 @@ body {
     
     .example-prompt {
         padding: 12px;
+    }
+    
+    /* Make action buttons more visible on mobile */
+    .message-actions {
+        opacity: 1;
+    }
+    
+    .action-btn {
+        padding: 8px;
+        background-color: #f9fafb;
+        border: 1px solid #e5e7eb;
     }
 }
 
