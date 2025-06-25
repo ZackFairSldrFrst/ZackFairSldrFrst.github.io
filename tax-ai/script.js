@@ -555,6 +555,12 @@ function toggleMobileMenu() {
     const menu = document.getElementById('mobileMenu');
     const overlay = document.getElementById('mobileMenuOverlay');
     
+    // Defensive check - if elements don't exist, just return
+    if (!menu || !overlay) {
+        console.log('Mobile menu elements not found - mobile menu disabled');
+        return;
+    }
+    
     if (menu && overlay) {
         const isActive = menu.classList.contains('active');
         
@@ -570,6 +576,12 @@ function openMobileMenu() {
     const menu = document.getElementById('mobileMenu');
     const overlay = document.getElementById('mobileMenuOverlay');
     
+    // Defensive check - if elements don't exist, just return
+    if (!menu || !overlay) {
+        console.log('Mobile menu elements not found - mobile menu disabled');
+        return;
+    }
+    
     if (menu && overlay) {
         menu.classList.add('active');
         overlay.classList.add('active');
@@ -580,6 +592,12 @@ function openMobileMenu() {
 function closeMobileMenu() {
     const menu = document.getElementById('mobileMenu');
     const overlay = document.getElementById('mobileMenuOverlay');
+    
+    // Defensive check - if elements don't exist, just return
+    if (!menu || !overlay) {
+        console.log('Mobile menu elements not found - mobile menu disabled');
+        return;
+    }
     
     if (menu && overlay) {
         menu.classList.remove('active');
