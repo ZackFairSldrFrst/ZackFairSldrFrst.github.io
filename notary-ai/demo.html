@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NotaryAI Intelligence Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="demo-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2EG1848XM3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-2EG1848XM3');
+    </script>
+    
+    <!-- LinkedIn Insight Tag -->
+    <script type="text/javascript">
+    _linkedin_partner_id = "7449156";
+    window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+    window._linkedin_data_partner_ids.push(_linkedin_partner_id);
+    </script><script type="text/javascript">
+    (function(l) {
+    if (!l){window.lintrk = function(a,b){window.lintrk.q.push([a,b])};
+    window.lintrk.q=[]}
+    var s = document.getElementsByTagName("script")[0];
+    var b = document.createElement("script");
+    b.type = "text/javascript";b.async = true;
+    b.src = "https://snap.licdn.com/li.js";
+    s.parentNode.insertBefore(b, s);})(window.lintrk);
+    </script>
+    <noscript>
+    <img height="1" width="1" style="display:none;" alt="" src="https://px.ads.linkedin.com/collect/?pid=7449156&fmt=gif" />
+    </noscript>
+</head>
+<body class="platform-body">
+    <!-- Platform Header -->
+    <header class="platform-header">
+        <div class="platform-nav">
+            <div class="platform-logo">
+                <i class="fas fa-chart-line"></i>
+                NotaryAI Intelligence
+            </div>
+            <div class="platform-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search anything..." id="globalSearch">
+            </div>
+            <div class="platform-actions">
+                <button class="btn-secondary btn-sm" onclick="openTypeform(); trackButtonClick('get_started', 'demo_header');" style="margin-right: 15px;">
+                    <i class="fas fa-user-plus"></i>
+                    Get Started
+                </button>
+                <div class="notification-bell">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+                <div class="user-profile">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9IiMwMGQ5ZmYiLz4KPHN2ZyB4PSI4IiB5PSI2IiB3aWR0aD0iMTYiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0id2hpdGUiPgo8cGF0aCBkPSJNOCAxYzEuMSAwIDIgLjkgMiAycy0uOSAyLTIgMi0yLS45LTItMiAuOS0yIDItMnptNSAxMmgtMnYtMmgtMnYySDd2LTJjMC0xLjMzIDIuNjctMiAzLTIgLjMzIDAgMyAuNjcgMyAydjJ6Ii8+Cjwvc3ZnPgo8L3N2Zz4=" alt="Profile">
+                    <span>Sarah Chen</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <a href="index.html" class="exit-demo">
+                    <i class="fas fa-external-link-alt"></i>
+                    Exit Demo
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Platform Layout -->
+    <div class="platform-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="platform-sidebar">
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-item active" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="nav-item" data-section="chat">
+                        <i class="fas fa-comments"></i>
+                        <span>AI Research</span>
+                        <div class="nav-badge">AI</div>
+                    </div>
+                    <div class="nav-item" data-section="notaryscan">
+                        <i class="fas fa-file-search"></i>
+                        <span>NotaryScan Pro</span>
+                    </div>
+                    <div class="nav-item" data-section="network">
+                        <i class="fas fa-users"></i>
+                        <span>Professional Network</span>
+                    </div>
+                    <div class="nav-item" data-section="marketing">
+                        <i class="fas fa-palette"></i>
+                        <span>Marketing Suite</span>
+                        <div class="nav-badge new">NEW</div>
+                    </div>
+                    <div class="nav-item" data-section="scheduling">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Smart Scheduling</span>
+                    </div>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Analytics</div>
+                    <div class="nav-item" data-section="reports">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Reports</span>
+                    </div>
+                    <div class="nav-item" data-section="time">
+                        <i class="fas fa-clock"></i>
+                        <span>Time Tracking</span>
+                    </div>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Settings</div>
+                    <div class="nav-item" data-section="preferences">
+                        <i class="fas fa-cog"></i>
+                        <span>Preferences</span>
+                    </div>
+                    <div class="nav-item" data-section="security">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Security</span>
+                    </div>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="usage-meter">
+                    <div class="usage-label">API Usage</div>
+                    <div class="usage-bar">
+                        <div class="usage-fill" style="width: 65%"></div>
+                    </div>
+                    <div class="usage-text">1,847 / 3,000 queries</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="platform-main">
+            <!-- Dashboard Section -->
+            <div class="platform-section active" id="dashboard-section">
+                <div class="section-header">
+                    <div class="page-title">
+                        <h1>Dashboard</h1>
+                        <p>Welcome back, Sarah. Here's what's happening with your practice today.</p>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn-secondary">
+                            <i class="fas fa-download"></i>
+                            Export Report
+                        </button>
+                        <button class="btn-primary">
+                            <i class="fas fa-plus"></i>
+                            New Research
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Quick Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon ai">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" data-count="247">0</div>
+                            <div class="stat-label">AI Queries Today</div>
+                            <div class="stat-change positive">+18% from yesterday</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon docs">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" data-count="18">0</div>
+                            <div class="stat-label">Documents Scanned</div>
+                            <div class="stat-change positive">+3 new alerts</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon time">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" data-count="12.5">0</div>
+                            <div class="stat-label">Hours Saved</div>
+                            <div class="stat-change positive">+2.3h this week</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon revenue">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" data-count="24800">0</div>
+                            <div class="stat-label">Revenue Impact</div>
+                            <div class="stat-change positive">+$4.2K this month</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Dashboard Content Grid -->
+                <div class="dashboard-grid">
+                    <!-- Recent Activity Widget -->
+                    <div class="dashboard-widget large">
+                        <div class="widget-header">
+                            <h3>Recent Activity</h3>
+                            <div class="widget-actions">
+                                <button class="widget-btn">
+                                    <i class="fas fa-filter"></i>
+                                </button>
+                                <button class="widget-btn">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="activity-list">
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-search"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">Interstate notarization requirements for corporations?</div>
+                                        <div class="activity-meta">
+                                            <span class="activity-time">2 minutes ago</span>
+                                            <span class="activity-confidence">98% confidence</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-file-search"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">NotaryScan analysis completed: Real Estate Documents</div>
+                                        <div class="activity-meta">
+                                            <span class="activity-time">8 minutes ago</span>
+                                            <span class="activity-alerts">3 alerts found</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-comments"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">Latest state guidance on electronic notarization</div>
+                                        <div class="activity-meta">
+                                            <span class="activity-time">15 minutes ago</span>
+                                            <span class="activity-sources">12 sources cited</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">New connection: Legal Counsel specializing in Real Estate</div>
+                                        <div class="activity-meta">
+                                            <span class="activity-time">1 hour ago</span>
+                                            <span class="activity-location">Los Angeles, CA</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Schedule Widget -->
+                    <div class="dashboard-widget">
+                        <div class="widget-header">
+                            <h3>Today's Schedule</h3>
+                            <button class="widget-btn">
+                                <i class="fas fa-calendar-plus"></i>
+                            </button>
+                        </div>
+                        <div class="widget-content">
+                            <div class="schedule-list">
+                                <div class="schedule-item current">
+                                    <div class="schedule-time">2:00 PM</div>
+                                    <div class="schedule-details">
+                                        <div class="schedule-title">Johnson & Associates</div>
+                                        <div class="schedule-type">Document Review</div>
+                                    </div>
+                                    <div class="schedule-status live">Live</div>
+                                </div>
+                                <div class="schedule-item">
+                                    <div class="schedule-time">4:30 PM</div>
+                                    <div class="schedule-details">
+                                        <div class="schedule-title">Maria Rodriguez</div>
+                                        <div class="schedule-type">Individual Consultation</div>
+                                    </div>
+                                    <div class="schedule-status upcoming">Upcoming</div>
+                                </div>
+                                <div class="schedule-item">
+                                    <div class="schedule-time">5:45 PM</div>
+                                    <div class="schedule-details">
+                                        <div class="schedule-title">Team Standup</div>
+                                        <div class="schedule-type">Internal Meeting</div>
+                                    </div>
+                                    <div class="schedule-status upcoming">Upcoming</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Performance Chart Widget -->
+                    <div class="dashboard-widget">
+                        <div class="widget-header">
+                            <h3>Weekly Performance</h3>
+                            <select class="widget-select">
+                                <option>This Week</option>
+                                <option>Last Week</option>
+                                <option>This Month</option>
+                            </select>
+                        </div>
+                        <div class="widget-content">
+                            <div class="performance-chart">
+                                <div class="chart-bars">
+                                    <div class="chart-bar" style="height: 60%">
+                                        <div class="bar-value">142</div>
+                                        <div class="bar-label">Mon</div>
+                                    </div>
+                                    <div class="chart-bar" style="height: 80%">
+                                        <div class="bar-value">189</div>
+                                        <div class="bar-label">Tue</div>
+                                    </div>
+                                    <div class="chart-bar" style="height: 45%">
+                                        <div class="bar-value">106</div>
+                                        <div class="bar-label">Wed</div>
+                                    </div>
+                                    <div class="chart-bar" style="height: 90%">
+                                        <div class="bar-value">213</div>
+                                        <div class="bar-label">Thu</div>
+                                    </div>
+                                    <div class="chart-bar active" style="height: 70%">
+                                        <div class="bar-value">167</div>
+                                        <div class="bar-label">Fri</div>
+                                    </div>
+                                </div>
+                                <div class="chart-legend">
+                                    <div class="legend-item">
+                                        <div class="legend-color"></div>
+                                        <span>AI Queries</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Research Chat Section -->
+            <div class="platform-section" id="chat-section">
+                <div class="section-header">
+                    <div class="page-title">
+                        <h1>AI Research</h1>
+                        <p>Get instant answers to complex state notary law questions</p>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn-secondary">
+                            <i class="fas fa-history"></i>
+                            Research History
+                        </button>
+                        <button class="btn-primary">
+                            <i class="fas fa-plus"></i>
+                            New Chat
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="chat-container">
+                    <div class="chat-history">
+                        <div class="chat-history-header">
+                            <h3>Recent Chats</h3>
+                            <button class="new-chat-btn">
+                                <i class="fas fa-plus"></i>
+                                New
+                            </button>
+                        </div>
+                        <div class="chat-history-list">
+                            <div class="chat-history-item active">
+                                <div class="chat-history-icon">
+                                    <i class="fas fa-comment"></i>
+                                </div>
+                                <div class="chat-history-content">
+                                    <div class="chat-history-title">Interstate notarization requirements...</div>
+                                    <div class="chat-history-meta">2 min ago</div>
+                                </div>
+                            </div>
+                            <div class="chat-history-item">
+                                <div class="chat-history-icon">
+                                    <i class="fas fa-comment"></i>
+                                </div>
+                                <div class="chat-history-content">
+                                    <div class="chat-history-title">TCJA entertainment expenses...</div>
+                                    <div class="chat-history-meta">1 hour ago</div>
+                                </div>
+                            </div>
+                            <div class="chat-history-item">
+                                <div class="chat-history-icon">
+                                    <i class="fas fa-comment"></i>
+                                </div>
+                                <div class="chat-history-content">
+                                    <div class="chat-history-title">State notary jurisdiction requirements...</div>
+                                    <div class="chat-history-meta">Yesterday</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-main">
+                        <div class="chat-header">
+                            <div class="chat-status">
+                                <div class="status-indicator online"></div>
+                                <span>NotaryAI Research Assistant</span>
+                            </div>
+                            <div class="chat-features">
+                                <span class="feature-badge">State Notary Law</span>
+                                <span class="feature-badge">Code References</span>
+                                <span class="feature-badge">Real-time Updates</span>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-messages">
+                            <div class="message ai-message">
+                                <div class="message-avatar">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="message-content">
+                                    <div class="message-text">
+                                        Hello! I'm your AI notary research assistant. I can help you with complex state notary law questions. What would you like to research today?
+                                    </div>
+                                    <div class="message-time">Just now</div>
+                                </div>
+                            </div>
+                            
+                            <div class="message user-message">
+                                <div class="message-content">
+                                    <div class="message-text">
+                                        Can you explain the notarization requirements for a multi-state corporation with various document types?
+                                    </div>
+                                    <div class="message-time">2 minutes ago</div>
+                                </div>
+                                <div class="message-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="message ai-message">
+                                <div class="message-avatar">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="message-content">
+                                    <div class="message-text">
+                                        <strong>Section 199A Deduction for Partnerships with Multiple Activities</strong><br><br>
+                                        
+                                        The Section 199A deduction for partnerships with multiple business activities involves several key considerations:<br><br>
+                                        
+                                        <strong>1. Activity-Level Analysis (IRC § 199A(c)(1))</strong><br>
+                                        • Each trade or business must be evaluated separately<br>
+                                        • W-2 wages and UBIA limitations apply at the activity level<br>
+                                        • Aggregation rules under Reg. § 1.199A-4 may apply<br><br>
+                                        
+                                        <strong>2. Taxable Income Limitation</strong><br>
+                                        • Overall limitation of 20% of taxable income minus net capital gains<br>
+                                        • Applied after combining all QBI activities<br><br>
+                                        
+                                        <strong>3. Specified Service Trade or Business (SSTB) Rules</strong><br>
+                                        • Different treatment for SSTB vs. non-SSTB activities<br>
+                                        • Phase-out thresholds for 2024: $364,200 (MFJ), $182,050 (others)<br><br>
+                                        
+                                        <strong>References:</strong><br>
+                                        • IRC § 199A(b)(2)(B) - Partnership application<br>
+                                        • Reg. § 1.199A-6 - Relevant pass-through entities<br>
+                                        • Form 8995-A - Qualified Business Income Deduction
+                                    </div>
+                                    <div class="message-actions">
+                                        <button class="message-action">
+                                            <i class="fas fa-copy"></i>
+                                            Copy
+                                        </button>
+                                        <button class="message-action">
+                                            <i class="fas fa-bookmark"></i>
+                                            Save
+                                        </button>
+                                        <button class="message-action">
+                                            <i class="fas fa-share"></i>
+                                            Share
+                                        </button>
+                                    </div>
+                                    <div class="message-time">1 minute ago</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-input-area">
+                            <div class="chat-input-container">
+                                <input type="text" placeholder="Ask any notary question..." id="chatInput">
+                                <button class="send-btn">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                            <div class="chat-suggestions">
+                                <div class="suggestion-title">Try asking:</div>
+                                <div class="suggestion-chips">
+                                    <button class="suggestion-chip">Section 199A deduction rules</button>
+                                    <button class="suggestion-chip">Business expense categories</button>
+                                    <button class="suggestion-chip">State tax nexus requirements</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NotaryScan Pro Section -->
+            <div class="platform-section" id="notaryscan-section">
+                <div class="section-header">
+                    <div class="page-title">
+                        <h1>NotaryScan Pro</h1>
+                        <p>Automated document review and process optimization</p>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn-secondary">
+                            <i class="fas fa-history"></i>
+                            Scan History
+                        </button>
+                        <button class="btn-primary">
+                            <i class="fas fa-upload"></i>
+                            Upload Documents
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="notaryscan-container">
+                    <div class="upload-area">
+                        <div class="upload-zone">
+                            <div class="upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                                            <h4>Upload Documents for Review</h4>
+                <p>Drag & drop or click to upload contracts, deeds, powers of attorney, or other notarial documents</p>
+                            <button class="upload-btn">Choose Files</button>
+                            <div class="upload-formats">
+                                Supported: PDF, JPG, PNG, TIFF (Max 10MB each)
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="scan-results">
+                        <div class="scan-header">
+                            <h4>Latest Analysis Report</h4>
+                            <div class="scan-meta">
+                                <span class="scan-date">Generated: Just now</span>
+                                <span class="scan-confidence">95% accuracy</span>
+                            </div>
+                        </div>
+                        
+                        <div class="scan-summary">
+                            <div class="summary-card critical">
+                                <div class="summary-icon">⚠️</div>
+                                <div class="summary-content">
+                                    <div class="summary-number">2</div>
+                                    <div class="summary-label">Critical Alerts</div>
+                                </div>
+                            </div>
+                            <div class="summary-card warning">
+                                <div class="summary-icon">📋</div>
+                                <div class="summary-content">
+                                    <div class="summary-number">5</div>
+                                    <div class="summary-label">Review Points</div>
+                                </div>
+                            </div>
+                            <div class="summary-card success">
+                                <div class="summary-icon">💡</div>
+                                <div class="summary-content">
+                                    <div class="summary-number">8</div>
+                                    <div class="summary-label">Optimization Insights</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="scan-details">
+                            <div class="detail-tabs">
+                                <button class="tab-btn active" data-tab="alerts">Critical Alerts</button>
+                                <button class="tab-btn" data-tab="reviews">Review Points</button>
+                                <button class="tab-btn" data-tab="insights">Optimizations</button>
+                            </div>
+                            
+                            <div class="tab-content active" id="alerts-tab">
+                                <div class="alert-item critical">
+                                    <div class="alert-icon">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                    <div class="alert-content">
+                                        <div class="alert-title">Mathematical Error - Line 12a</div>
+                                        <div class="alert-description">Calculated value $45,230 doesn't match entered amount $43,230</div>
+                                        <div class="alert-actions">
+                                            <button class="alert-btn">Fix Error</button>
+                                            <button class="alert-btn secondary">Review Calculation</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert-item critical">
+                                    <div class="alert-icon">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                    <div class="alert-content">
+                                        <div class="alert-title">Missing Schedule K-1</div>
+                                        <div class="alert-description">Partnership income reported but no supporting K-1 attached</div>
+                                        <div class="alert-actions">
+                                            <button class="alert-btn">Upload K-1</button>
+                                            <button class="alert-btn secondary">Mark as Reviewed</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-content" id="insights-tab">
+                                <div class="alert-item success">
+                                    <div class="alert-icon">
+                                        <i class="fas fa-lightbulb"></i>
+                                    </div>
+                                    <div class="alert-content">
+                                                        <div class="alert-title">Authentication Required</div>
+                <div class="alert-description">Document requires additional identity verification for notarization</div>
+                                        <div class="alert-actions">
+                                            <button class="alert-btn">Calculate QBI</button>
+                                            <button class="alert-btn secondary">Learn More</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert-item success">
+                                    <div class="alert-icon">
+                                        <i class="fas fa-lightbulb"></i>
+                                    </div>
+                                    <div class="alert-content">
+                                        <div class="alert-title">Home Office Opportunity</div>
+                                        <div class="alert-description">Missing witness signature may invalidate document authentication</div>
+                                        <div class="alert-actions">
+                                            <button class="alert-btn">Fix Issue</button>
+                                            <button class="alert-btn secondary">Calculate Savings</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Professional Network Section -->
+            <div class="platform-section" id="network-section">
+                <div class="section-header">
+                    <div class="page-title">
+                        <h1>Professional Network</h1>
+                        <p>Connect with notary professionals and expand your practice</p>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn-secondary">
+                            <i class="fas fa-filter"></i>
+                            Filter
+                        </button>
+                        <button class="btn-primary">
+                            <i class="fas fa-user-plus"></i>
+                            Invite Contacts
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Network Stats -->
+                <div class="network-stats-grid">
+                    <div class="network-stat-card">
+                        <div class="stat-icon connections">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">127</div>
+                            <div class="stat-label">Active Connections</div>
+                            <div class="stat-change positive">+12 this month</div>
+                        </div>
+                    </div>
+                    
+                    <div class="network-stat-card">
+                        <div class="stat-icon referrals">
+                            <i class="fas fa-share-alt"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">38</div>
+                            <div class="stat-label">Referrals Sent</div>
+                            <div class="stat-change positive">+5 this week</div>
+                        </div>
+                    </div>
+                    
+                    <div class="network-stat-card">
+                        <div class="stat-icon expertise">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">4.8</div>
+                            <div class="stat-label">Expertise Rating</div>
+                            <div class="stat-change positive">+0.2 improvement</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Network Content Grid -->
+                <div class="network-content-grid">
+                    <!-- Connections List -->
+                    <div class="network-widget large">
+                        <div class="widget-header">
+                            <h3>Your Network</h3>
+                            <div class="network-tabs">
+                                <button class="network-tab active" data-tab="connections">Connections</button>
+                                <button class="network-tab" data-tab="requests">Requests (3)</button>
+                                <button class="network-tab" data-tab="suggested">Suggested</button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="network-tab-content active" id="connections-content">
+                                <div class="professional-list">
+                                    <div class="professional-card">
+                                        <div class="professional-avatar">
+                                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjQiIGN5PSIyNCIgcj0iMjQiIGZpbGw9IiNmMTc5MmQiLz4KPHN2ZyB4PSIxMiIgeT0iMTAiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xMiAyYzEuNjUgMCAzIDEuMzUgMyAzcy0xLjM1IDMtMyAzLTMtMS4zNS0zLTMgMS4zNS0zIDMtM3ptOCAxOGgtNHYtM2MwLTEuMzMtLjY3LTItMi0ycy0yIC42Ny0yIDJ2M0g0di0zYzAtMi42NyA0LTQgOC00czggMS4zMyA4IDR2M3oiLz4KPC9zdmc+Cjwvc3ZnPgo=" alt="Michael Rodriguez">
+                                        </div>
+                                        <div class="professional-info">
+                                            <div class="professional-name">Michael Rodriguez</div>
+                                            <div class="professional-title">Legal Counsel • Real Estate Specialist</div>
+                                            <div class="professional-location">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                Los Angeles, CA
+                                            </div>
+                                            <div class="professional-expertise">
+                                                <span class="expertise-tag">Corporate Documents</span>
+                                                <span class="expertise-tag">M&A</span>
+                                            </div>
+                                        </div>
+                                        <div class="professional-actions">
+                                            <button class="action-btn message">
+                                                <i class="fas fa-comment"></i>
+                                                Message
+                                            </button>
+                                            <button class="action-btn refer">
+                                                <i class="fas fa-share"></i>
+                                                Refer
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="professional-card">
+                                        <div class="professional-avatar">
+                                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjQiIGN5PSIyNCIgcj0iMjQiIGZpbGw9IiNlZjQ0NDQiLz4KPHN2ZyB4PSIxMiIgeT0iMTAiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xMiAyYzEuNjUgMCAzIDEuMzUgMyAzcy0xLjM1IDMtMyAzLTMtMS4zNS0zLTMgMS4zNS0zIDMtM3ptOCAxOGgtNHYtM2MwLTEuMzMtLjY3LTItMi0ycy0yIC42Ny0yIDJ2M0g0di0zYzAtMi42NyA0LTQgOC00czggMS4zMyA4IDR2M3oiLz4KPC9zdmc+Cjwvc3ZnPgo=" alt="Lisa Thompson">
+                                        </div>
+                                        <div class="professional-info">
+                                            <div class="professional-name">Lisa Thompson</div>
+                                            <div class="professional-title">Licensed Notary • International Documents</div>
+                                            <div class="professional-location">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                New York, NY
+                                            </div>
+                                            <div class="professional-expertise">
+                                                <span class="expertise-tag">International</span>
+                                                <span class="expertise-tag">Transfer Pricing</span>
+                                            </div>
+                                        </div>
+                                        <div class="professional-actions">
+                                            <button class="action-btn message">
+                                                <i class="fas fa-comment"></i>
+                                                Message
+                                            </button>
+                                            <button class="action-btn refer">
+                                                <i class="fas fa-share"></i>
+                                                Refer
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="professional-card">
+                                        <div class="professional-avatar">
+                                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjQiIGN5PSIyNCIgcj0iMjQiIGZpbGw9IiMxMGI5ODEiLz4KPHN2ZyB4PSIxMiIgeT0iMTAiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xMiAyYzEuNjUgMCAzIDEuMzUgMyAzcy0xLjM1IDMtMyAzLTMtMS4zNS0zLTMgMS4zNS0zIDMtM3ptOCAxOGgtNHYtM2MwLTEuMzMtLjY3LTItMi0ycy0yIC42Ny0yIDJ2M0g0di0zYzAtMi42NyA0LTQgOC00czggMS4zMyA4IDR2M3oiLz4KPC9zdmc+Cjwvc3ZnPgo=" alt="David Park">
+                                        </div>
+                                        <div class="professional-info">
+                                            <div class="professional-name">David Park</div>
+                                            <div class="professional-title">Document Manager • Estate Planning</div>
+                                            <div class="professional-location">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                Chicago, IL
+                                            </div>
+                                            <div class="professional-expertise">
+                                                <span class="expertise-tag">Estate Documents</span>
+                                                <span class="expertise-tag">Trust Planning</span>
+                                            </div>
+                                        </div>
+                                        <div class="professional-actions">
+                                            <button class="action-btn message">
+                                                <i class="fas fa-comment"></i>
+                                                Message
+                                            </button>
+                                            <button class="action-btn refer">
+                                                <i class="fas fa-share"></i>
+                                                Refer
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="network-tab-content" id="requests-content">
+                                <div class="connection-requests">
+                                    <div class="request-card">
+                                        <div class="request-avatar">
+                                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjQiIGN5PSIyNCIgcj0iMjQiIGZpbGw9IiNhODU1ZjciLz4KPHN2ZyB4PSIxMiIgeT0iMTAiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xMiAyYzEuNjUgMCAzIDEuMzUgMyAzcy0xLjM1IDMtMyAzLTMtMS4zNS0zLTMgMS4zNS0zIDMtM3ptOCAxOGgtNHYtM2MwLTEuMzMtLjY3LTItMi0ycy0yIC42Ny0yIDJ2M0g0di0zYzAtMi42NyA0LTQgOC00czggMS4zMyA4IDR2M3oiLz4KPC9zdmc+Cjwvc3ZnPgo=" alt="Jennifer Walsh">
+                                        </div>
+                                        <div class="request-info">
+                                            <div class="request-name">Jennifer Walsh</div>
+                                                            <div class="request-title">Senior Notary Consultant</div>
+                <div class="request-message">"I'd like to connect regarding partnership document authentication"</div>
+                                        </div>
+                                        <div class="request-actions">
+                                            <button class="btn-primary small">Accept</button>
+                                            <button class="btn-secondary small">Decline</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Activity -->
+                    <div class="network-widget">
+                        <div class="widget-header">
+                            <h3>Network Activity</h3>
+                        </div>
+                        <div class="widget-content">
+                            <div class="activity-timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-dot new"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">New connection request</div>
+                                        <div class="timeline-desc">Jennifer Walsh wants to connect</div>
+                                        <div class="timeline-time">5 minutes ago</div>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-dot referral"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Referral completed</div>
+                                        <div class="timeline-desc">Client referred to Lisa Thompson</div>
+                                        <div class="timeline-time">2 hours ago</div>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-dot message"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">New message</div>
+                                        <div class="timeline-desc">David Park sent you a message</div>
+                                        <div class="timeline-time">1 day ago</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Marketing Suite Section -->
+            <div class="platform-section" id="marketing-section">
+                <div class="section-header">
+                    <div class="page-title">
+                        <h1>Marketing Suite</h1>
+                        <p>Automated marketing campaigns for notary professionals</p>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn-secondary">
+                            <i class="fas fa-chart-line"></i>
+                            Analytics
+                        </button>
+                        <button class="btn-primary">
+                            <i class="fas fa-plus"></i>
+                            Create Campaign
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Marketing Stats -->
+                <div class="marketing-stats-grid">
+                    <div class="marketing-stat-card">
+                        <div class="stat-icon campaigns">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">8</div>
+                            <div class="stat-label">Active Campaigns</div>
+                            <div class="stat-change positive">+2 this month</div>
+                        </div>
+                    </div>
+                    
+                    <div class="marketing-stat-card">
+                        <div class="stat-icon leads">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">342</div>
+                            <div class="stat-label">New Leads</div>
+                            <div class="stat-change positive">+28% this week</div>
+                        </div>
+                    </div>
+                    
+                    <div class="marketing-stat-card">
+                        <div class="stat-icon conversion">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">12.4%</div>
+                            <div class="stat-label">Conversion Rate</div>
+                            <div class="stat-change positive">+3.2% improvement</div>
+                        </div>
+                    </div>
+                    
+                    <div class="marketing-stat-card">
+                        <div class="stat-icon roi">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">485%</div>
+                            <div class="stat-label">ROI</div>
+                            <div class="stat-change positive">+67% this quarter</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Marketing Content -->
+                <div class="marketing-content-grid">
+                    <!-- Campaign Manager -->
+                    <div class="marketing-widget large">
+                        <div class="widget-header">
+                            <h3>Campaign Manager</h3>
+                            <div class="marketing-tabs">
+                                <button class="marketing-tab active" data-tab="active">Active (8)</button>
+                                <button class="marketing-tab" data-tab="drafts">Drafts (3)</button>
+                                <button class="marketing-tab" data-tab="completed">Completed</button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="marketing-tab-content active" id="active-campaigns">
+                                <div class="campaign-list">
+                                    <div class="campaign-card">
+                                        <div class="campaign-header">
+                                            <div class="campaign-info">
+                                                <div class="campaign-name">Document Season 2024 Prep</div>
+                                                <div class="campaign-type">Email Campaign</div>
+                                            </div>
+                                            <div class="campaign-status active">
+                                                <i class="fas fa-circle"></i>
+                                                Live
+                                            </div>
+                                        </div>
+                                        <div class="campaign-metrics">
+                                            <div class="metric">
+                                                <div class="metric-value">1,247</div>
+                                                <div class="metric-label">Sent</div>
+                                            </div>
+                                            <div class="metric">
+                                                <div class="metric-value">34.2%</div>
+                                                <div class="metric-label">Open Rate</div>
+                                            </div>
+                                            <div class="metric">
+                                                <div class="metric-value">8.7%</div>
+                                                <div class="metric-label">Click Rate</div>
+                                            </div>
+                                            <div class="metric">
+                                                <div class="metric-value">23</div>
+                                                <div class="metric-label">Leads</div>
+                                            </div>
+                                        </div>
+                                        <div class="campaign-actions">
+                                            <button class="action-btn edit">
+                                                <i class="fas fa-edit"></i>
+                                                Edit
+                                            </button>
+                                            <button class="action-btn pause">
+                                                <i class="fas fa-pause"></i>
+                                                Pause
+                                            </button>
+                                            <button class="action-btn analytics">
+                                                <i class="fas fa-chart-bar"></i>
+                                                Analytics
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="campaign-card">
+                                        <div class="campaign-header">
+                                            <div class="campaign-info">
+                                                <div class="campaign-name">Q4 Business Document Updates</div>
+                                                <div class="campaign-type">Social Media</div>
+                                            </div>
+                                            <div class="campaign-status active">
+                                                <i class="fas fa-circle"></i>
+                                                Live
+                                            </div>
+                                        </div>
+                                        <div class="campaign-metrics">
+                                            <div class="metric">
+                                                <div class="metric-value">2,834</div>
+                                                <div class="metric-label">Reach</div>
+                                            </div>
+                                            <div class="metric">
+                                                <div class="metric-value">186</div>
+                                                <div class="metric-label">Engagement</div>
+                                            </div>
+                                            <div class="metric">
+                                                <div class="metric-value">42</div>
+                                                <div class="metric-label">Shares</div>
+                                            </div>
+                                            <div class="metric">
+                                                <div class="metric-value">12</div>
+                                                <div class="metric-label">Leads</div>
+                                            </div>
+                                        </div>
+                                        <div class="campaign-actions">
+                                            <button class="action-btn edit">
+                                                <i class="fas fa-edit"></i>
+                                                Edit
+                                            </button>
+                                            <button class="action-btn pause">
+                                                <i class="fas fa-pause"></i>
+                                                Pause
+                                            </button>
+                                            <button class="action-btn analytics">
+                                                <i class="fas fa-chart-bar"></i>
+                                                Analytics
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Content Generator -->
+                    <div class="marketing-widget">
+                        <div class="widget-header">
+                            <h3>AI Content Generator</h3>
+                        </div>
+                        <div class="widget-content">
+                            <div class="content-generator">
+                                <div class="generator-option">
+                                    <div class="option-icon">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div class="option-info">
+                                        <div class="option-title">Email Templates</div>
+                                        <div class="option-desc">AI-generated email campaigns</div>
+                                    </div>
+                                    <button class="generate-btn">Generate</button>
+                                </div>
+                                
+                                <div class="generator-option">
+                                    <div class="option-icon">
+                                        <i class="fas fa-share-alt"></i>
+                                    </div>
+                                    <div class="option-info">
+                                        <div class="option-title">Social Posts</div>
+                                        <div class="option-desc">LinkedIn & Twitter content</div>
+                                    </div>
+                                    <button class="generate-btn">Generate</button>
+                                </div>
+                                
+                                <div class="generator-option">
+                                    <div class="option-icon">
+                                        <i class="fas fa-blog"></i>
+                                    </div>
+                                    <div class="option-info">
+                                        <div class="option-title">Blog Articles</div>
+                                        <div class="option-desc">Notary insights & thought leadership</div>
+                                    </div>
+                                    <button class="generate-btn">Generate</button>
+                                </div>
+                                
+                                <div class="generator-option">
+                                    <div class="option-icon">
+                                        <i class="fas fa-ad"></i>
+                                    </div>
+                                    <div class="option-info">
+                                        <div class="option-title">Ad Copy</div>
+                                        <div class="option-desc">Google & Facebook ads</div>
+                                    </div>
+                                    <button class="generate-btn">Generate</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Performance Analytics -->
+                    <div class="marketing-widget">
+                        <div class="widget-header">
+                            <h3>Performance Overview</h3>
+                        </div>
+                        <div class="widget-content">
+                            <div class="performance-metrics">
+                                <div class="performance-chart-container">
+                                    <canvas id="marketingChart" width="300" height="200"></canvas>
+                                    <div class="chart-legend">
+                                        <div class="legend-item">
+                                            <div class="legend-color email"></div>
+                                            <span>Email</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <div class="legend-color social"></div>
+                                            <span>Social</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <div class="legend-color ads"></div>
+                                            <span>Ads</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Smart Scheduling Section -->
+            <div class="platform-section" id="scheduling-section">
+                <div class="section-header">
+                    <div class="page-title">
+                        <h1>Smart Scheduling</h1>
+                        <p>Intelligent appointment scheduling and calendar management</p>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn-secondary">
+                            <i class="fas fa-calendar-week"></i>
+                            Week View
+                        </button>
+                        <button class="btn-primary">
+                            <i class="fas fa-plus"></i>
+                            New Appointment
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Scheduling Stats -->
+                <div class="scheduling-stats-grid">
+                    <div class="scheduling-stat-card">
+                        <div class="stat-icon appointments">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">23</div>
+                            <div class="stat-label">This Week</div>
+                            <div class="stat-change positive">+3 from last week</div>
+                        </div>
+                    </div>
+                    
+                    <div class="scheduling-stat-card">
+                        <div class="stat-icon utilization">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">87%</div>
+                            <div class="stat-label">Utilization Rate</div>
+                            <div class="stat-change positive">+5% improvement</div>
+                        </div>
+                    </div>
+                    
+                    <div class="scheduling-stat-card">
+                        <div class="stat-icon revenue">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">$18.4K</div>
+                            <div class="stat-label">Weekly Revenue</div>
+                            <div class="stat-change positive">+12% increase</div>
+                        </div>
+                    </div>
+                    
+                    <div class="scheduling-stat-card">
+                        <div class="stat-icon satisfaction">
+                            <i class="fas fa-smile"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">4.9</div>
+                            <div class="stat-label">Client Satisfaction</div>
+                            <div class="stat-change positive">+0.1 improvement</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Scheduling Content -->
+                <div class="scheduling-content-grid">
+                    <!-- Calendar View -->
+                    <div class="scheduling-widget calendar-widget">
+                        <div class="widget-header">
+                            <h3>Weekly Calendar</h3>
+                            <div class="calendar-nav">
+                                <button class="nav-btn prev">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <span class="calendar-date">December 18-24, 2024</span>
+                                <button class="nav-btn next">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="calendar-grid">
+                                <div class="calendar-header">
+                                    <div class="time-column"></div>
+                                    <div class="day-header">Mon<span class="date">18</span></div>
+                                    <div class="day-header">Tue<span class="date">19</span></div>
+                                    <div class="day-header">Wed<span class="date">20</span></div>
+                                    <div class="day-header">Thu<span class="date">21</span></div>
+                                    <div class="day-header">Fri<span class="date">22</span></div>
+                                </div>
+                                <div class="calendar-body">
+                                    <div class="time-slots">
+                                        <div class="time-slot">9:00 AM</div>
+                                        <div class="time-slot">10:00 AM</div>
+                                        <div class="time-slot">11:00 AM</div>
+                                        <div class="time-slot">12:00 PM</div>
+                                        <div class="time-slot">1:00 PM</div>
+                                        <div class="time-slot">2:00 PM</div>
+                                        <div class="time-slot">3:00 PM</div>
+                                        <div class="time-slot">4:00 PM</div>
+                                        <div class="time-slot">5:00 PM</div>
+                                    </div>
+                                    <div class="day-column">
+                                        <div class="appointment" style="top: 60px; height: 50px;">
+                                            <div class="appointment-title">Johnson & Associates</div>
+                                            <div class="appointment-time">10:00-10:50</div>
+                                        </div>
+                                        <div class="appointment" style="top: 180px; height: 50px;">
+                                            <div class="appointment-title">Document Review</div>
+                                            <div class="appointment-time">1:00-1:50</div>
+                                        </div>
+                                    </div>
+                                    <div class="day-column">
+                                        <div class="appointment" style="top: 120px; height: 50px;">
+                                            <div class="appointment-title">Maria Rodriguez</div>
+                                            <div class="appointment-time">12:00-12:50</div>
+                                        </div>
+                                    </div>
+                                    <div class="day-column">
+                                        <div class="appointment current" style="top: 180px; height: 50px;">
+                                            <div class="appointment-title">Current: Document Planning</div>
+                                            <div class="appointment-time">2:00-2:50</div>
+                                        </div>
+                                    </div>
+                                    <div class="day-column">
+                                        <div class="appointment" style="top: 240px; height: 50px;">
+                                            <div class="appointment-title">Estate Planning</div>
+                                            <div class="appointment-time">3:00-3:50</div>
+                                        </div>
+                                    </div>
+                                    <div class="day-column">
+                                        <div class="appointment" style="top: 60px; height: 50px;">
+                                            <div class="appointment-title">Team Meeting</div>
+                                            <div class="appointment-time">10:00-10:50</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Upcoming Appointments -->
+                    <div class="scheduling-widget">
+                        <div class="widget-header">
+                            <h3>Today's Appointments</h3>
+                            <button class="widget-btn">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="widget-content">
+                            <div class="appointment-list">
+                                <div class="appointment-item current">
+                                    <div class="appointment-time">2:00 PM</div>
+                                    <div class="appointment-details">
+                                        <div class="client-name">Johnson & Associates</div>
+                                        <div class="appointment-type">Document Planning Review</div>
+                                        <div class="appointment-status">In Progress</div>
+                                    </div>
+                                    <div class="appointment-actions">
+                                        <button class="action-btn join">
+                                            <i class="fas fa-video"></i>
+                                        </button>
+                                        <button class="action-btn reschedule">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="appointment-item upcoming">
+                                    <div class="appointment-time">4:30 PM</div>
+                                    <div class="appointment-details">
+                                        <div class="client-name">Maria Rodriguez</div>
+                                        <div class="appointment-type">Individual Consultation</div>
+                                        <div class="appointment-status">Upcoming</div>
+                                    </div>
+                                    <div class="appointment-actions">
+                                        <button class="action-btn prepare">
+                                            <i class="fas fa-file-alt"></i>
+                                        </button>
+                                        <button class="action-btn reschedule">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="appointment-item upcoming">
+                                    <div class="appointment-time">5:45 PM</div>
+                                    <div class="appointment-details">
+                                        <div class="client-name">Team Standup</div>
+                                        <div class="appointment-type">Internal Meeting</div>
+                                        <div class="appointment-status">Upcoming</div>
+                                    </div>
+                                    <div class="appointment-actions">
+                                        <button class="action-btn join">
+                                            <i class="fas fa-video"></i>
+                                        </button>
+                                        <button class="action-btn notes">
+                                            <i class="fas fa-sticky-note"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="scheduling-widget">
+                        <div class="widget-header">
+                            <h3>Quick Actions</h3>
+                        </div>
+                        <div class="widget-content">
+                            <div class="quick-actions-grid">
+                                <div class="quick-action">
+                                    <div class="action-icon">
+                                        <i class="fas fa-calendar-plus"></i>
+                                    </div>
+                                    <div class="action-title">Schedule Appointment</div>
+                                    <div class="action-desc">Book new client meeting</div>
+                                </div>
+                                
+                                <div class="quick-action">
+                                    <div class="action-icon">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="action-title">Block Time</div>
+                                    <div class="action-desc">Reserve focus time</div>
+                                </div>
+                                
+                                <div class="quick-action">
+                                    <div class="action-icon">
+                                        <i class="fas fa-link"></i>
+                                    </div>
+                                    <div class="action-title">Share Calendar</div>
+                                    <div class="action-desc">Send booking link</div>
+                                </div>
+                                
+                                <div class="quick-action">
+                                    <div class="action-icon">
+                                        <i class="fas fa-cog"></i>
+                                    </div>
+                                    <div class="action-title">Settings</div>
+                                    <div class="action-desc">Availability & preferences</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Reports Section -->
+            <div class="platform-section" id="reports-section">
+                <div class="section-header">
+                    <div class="page-title">
+                        <h1>Reports</h1>
+                        <p>Comprehensive analytics and reporting dashboard</p>
+                    </div>
+                </div>
+                <div class="coming-soon">
+                    <i class="fas fa-chart-bar"></i>
+                    <h3>Reports</h3>
+                    <p>This section is available in the full platform</p>
+                </div>
+            </div>
+            
+            <!-- Time Tracking Section -->
+            <div class="platform-section" id="time-section">
+                <div class="section-header">
+                    <div class="page-title">
+                        <h1>Time Tracking</h1>
+                        <p>Track billable hours and productivity metrics</p>
+                    </div>
+                </div>
+                <div class="coming-soon">
+                    <i class="fas fa-clock"></i>
+                    <h3>Time Tracking</h3>
+                    <p>This section is available in the full platform</p>
+                </div>
+            </div>
+            
+            <!-- Preferences Section -->
+            <div class="platform-section" id="preferences-section">
+                <div class="section-header">
+                    <div class="page-title">
+                        <h1>Preferences</h1>
+                        <p>Customize your NotaryAI experience</p>
+                    </div>
+                </div>
+                <div class="coming-soon">
+                    <i class="fas fa-cog"></i>
+                    <h3>Preferences</h3>
+                    <p>This section is available in the full platform</p>
+                </div>
+            </div>
+            
+            <!-- Security Section -->
+            <div class="platform-section" id="security-section">
+                <div class="section-header">
+                    <div class="page-title">
+                        <h1>Security</h1>
+                        <p>Manage account security and privacy settings</p>
+                    </div>
+                </div>
+                <div class="coming-soon">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Security</h3>
+                    <p>This section is available in the full platform</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Waitlist Popup Notification -->
+    <div id="waitlistPopup" class="waitlist-popup">
+        <div class="waitlist-popup-content">
+            <div class="waitlist-popup-header">
+                <h3>🚀 Ready to Transform Your Notary Practice?</h3>
+                <button class="waitlist-popup-close" onclick="closeWaitlistPopup()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="waitlist-popup-body">
+                <p>Join our exclusive early access program and be among the first to experience NotaryAI's revolutionary features. Get priority access and special launch pricing.</p>
+            </div>
+            <div class="waitlist-popup-footer">
+                <button class="btn-primary" onclick="openTypeform(); trackButtonClick('get_started', 'waitlist_popup');">
+                    <i class="fas fa-rocket"></i>
+                    Get Started
+                </button>
+                <button class="btn-secondary" onclick="closeWaitlistPopup()">
+                    Maybe Later
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="demo-script.js"></script>
+</body>
+</html> 
