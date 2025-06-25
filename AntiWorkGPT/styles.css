@@ -199,11 +199,8 @@ body {
 }
 
 /* Position copy button at bottom for assistant messages */
-.message.assistant {
-    flex-direction: column;
-}
-
-.message.assistant .message-content {
+.message-content-wrapper {
+    flex: 1;
     display: flex;
     flex-direction: column;
 }
@@ -211,6 +208,7 @@ body {
 .message.assistant .message-actions {
     align-self: flex-end;
     margin-top: 12px;
+    justify-content: flex-end;
 }
 
 .action-btn {
