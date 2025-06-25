@@ -2743,44 +2743,736 @@
     color: var(--text-primary);
 }
 
-/* Responsive adjustments for chat page */
+/* Responsive Design for Demo Platform */
+@media (max-width: 1024px) {
+    /* Platform Header - Tablet */
+    .platform-nav {
+        padding: 0 16px;
+    }
+
+    .platform-search {
+        max-width: 300px;
+        margin: 0 20px;
+    }
+
+    /* Platform Sidebar - Tablet */
+    .platform-sidebar {
+        width: 200px;
+    }
+
+    .platform-main {
+        margin-left: 200px;
+    }
+
+    /* Stats Grid - Tablet */
+    .stats-grid,
+    .network-stats-grid,
+    .marketing-stats-grid,
+    .scheduling-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    /* Dashboard Grid - Tablet */
+    .dashboard-grid,
+    .network-content-grid,
+    .marketing-content-grid,
+    .scheduling-content-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    /* Chat Container - Tablet */
+    .chat-container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .chat-history {
+        width: 100%;
+        height: 150px;
+        position: relative;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .chat-main {
+        margin-left: 0;
+        height: calc(100vh - 210px);
+    }
+}
+
 @media (max-width: 768px) {
+    /* Platform Body - Mobile */
+    .platform-body {
+        font-size: 14px;
+    }
+
+    /* Platform Header - Mobile */
+    .platform-header {
+        height: 56px;
+    }
+
+    .platform-nav {
+        padding: 0 12px;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .platform-logo {
+        font-size: 16px;
+        order: 1;
+    }
+
+    .platform-search {
+        order: 3;
+        flex: 1 1 100%;
+        max-width: none;
+        margin: 0;
+    }
+
+    .platform-search input {
+        height: 32px;
+        font-size: 13px;
+        padding: 0 12px 0 36px;
+    }
+
+    .platform-search i {
+        left: 12px;
+        font-size: 12px;
+    }
+
+    .platform-actions {
+        order: 2;
+        gap: 12px;
+    }
+
+    .user-profile {
+        padding: 4px 8px;
+        gap: 6px;
+    }
+
+    .user-profile img {
+        width: 24px;
+        height: 24px;
+    }
+
+    .user-profile span {
+        font-size: 13px;
+    }
+
+    .exit-demo {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+
+    /* Platform Layout - Mobile */
+    .platform-layout {
+        padding-top: 56px;
+    }
+
+    .platform-sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        top: 0;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        z-index: auto;
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 12px 0;
+        gap: 8px;
+    }
+
+    .nav-section {
+        display: flex;
+        gap: 8px;
+        border-bottom: none;
+    }
+
+    .nav-section-title {
+        display: none;
+    }
+
+    .nav-item {
+        white-space: nowrap;
+        flex-shrink: 0;
+        padding: 8px 12px;
+        border-radius: 6px;
+        min-width: auto;
+    }
+
+    .nav-item i {
+        margin-right: 6px;
+    }
+
+    .nav-item span {
+        font-size: 13px;
+    }
+
+    .sidebar-footer {
+        display: none;
+    }
+
+    .platform-main {
+        margin-left: 0;
+        padding: 16px 12px;
+    }
+
+    /* Section Header - Mobile */
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .page-title h1 {
+        font-size: 20px;
+        margin-bottom: 4px;
+    }
+
+    .page-title p {
+        font-size: 13px;
+    }
+
+    .section-actions {
+        align-self: stretch;
+        gap: 8px;
+    }
+
+    .section-actions .btn-primary,
+    .section-actions .btn-secondary {
+        flex: 1;
+        font-size: 13px;
+        padding: 8px 12px;
+    }
+
+    /* Stats Grid - Mobile */
+    .stats-grid,
+    .network-stats-grid,
+    .marketing-stats-grid,
+    .scheduling-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .stat-card,
+    .network-stat-card,
+    .marketing-stat-card,
+    .scheduling-stat-card {
+        padding: 12px;
+    }
+
+    .stat-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+
+    .stat-number {
+        font-size: 20px;
+        margin-bottom: 2px;
+    }
+
+    .stat-label {
+        font-size: 11px;
+    }
+
+    .stat-change {
+        font-size: 10px;
+    }
+
+    /* Dashboard Grid - Mobile */
+    .dashboard-grid,
+    .network-content-grid,
+    .marketing-content-grid,
+    .scheduling-content-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .dashboard-widget,
+    .network-widget,
+    .marketing-widget,
+    .scheduling-widget {
+        padding: 12px;
+    }
+
+    .widget-header h3 {
+        font-size: 14px;
+    }
+
+    .widget-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+
+    /* Activity Lists - Mobile */
+    .activity-item,
+    .schedule-item,
+    .professional-card,
+    .campaign-card,
+    .appointment-item {
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .activity-icon,
+    .schedule-time,
+    .professional-avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+
+    .activity-title,
+    .schedule-title,
+    .professional-name,
+    .campaign-name,
+    .client-name {
+        font-size: 13px;
+        margin-bottom: 2px;
+    }
+
+    .activity-meta,
+    .schedule-type,
+    .professional-title,
+    .campaign-type,
+    .appointment-type {
+        font-size: 11px;
+    }
+
+    /* Chat - Mobile */
     .chat-header {
         padding: 12px 16px;
+        height: 48px;
     }
     
     .chat-header-content {
         flex-direction: column;
-        gap: 12px;
+        gap: 8px;
         align-items: stretch;
+    }
+    
+    .chat-logo {
+        font-size: 14px;
     }
     
     .chat-header-actions {
         justify-content: center;
         flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .chat-header-actions .btn-sm {
+        padding: 4px 8px;
+        font-size: 11px;
     }
     
     .chat-container {
         flex-direction: column;
-        padding-top: 120px; /* Account for taller header on mobile */
+        height: calc(100vh - 56px);
+        padding-top: 0;
     }
     
     .chat-history {
         width: 100%;
-        height: 200px;
+        height: 120px;
+        position: relative;
+        top: 0;
+        left: 0;
         border-right: none;
         border-bottom: 1px solid var(--glass-border);
+    }
+
+    .chat-history-header {
+        padding: 8px 12px;
+    }
+
+    .chat-history-header h3 {
+        font-size: 14px;
+    }
+
+    .new-chat-btn {
+        padding: 4px 8px;
+        font-size: 11px;
     }
     
     .chat-history-list {
         display: flex;
         overflow-x: auto;
-        padding: 10px;
-        gap: 10px;
+        gap: 8px;
+        padding: 8px 12px;
+        height: auto;
     }
     
     .chat-history-item {
-        min-width: 200px;
+        min-width: 160px;
+        flex-shrink: 0;
+        padding: 8px 12px;
         margin-bottom: 0;
+    }
+
+    .chat-history-title {
+        font-size: 12px;
+        margin-bottom: 2px;
+    }
+
+    .chat-history-meta {
+        font-size: 10px;
+    }
+
+    .chat-main {
+        margin-left: 0;
+        height: calc(100vh - 176px);
+        padding: 12px;
+    }
+
+    .chat-messages {
+        height: calc(100% - 140px);
+        padding: 12px;
+    }
+
+    .message {
+        margin-bottom: 12px;
+        gap: 8px;
+    }
+
+    .message-avatar {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+
+    .message-header {
+        margin-bottom: 4px;
+    }
+
+    .message-author {
+        font-size: 12px;
+    }
+
+    .message-time {
+        font-size: 10px;
+    }
+
+    .message-text {
+        font-size: 13px;
+        line-height: 1.4;
+        padding: 8px 10px;
+    }
+
+    .chat-input-area {
+        padding: 12px;
+    }
+
+    .chat-input-container {
+        gap: 8px;
+    }
+
+    #chatInput {
+        font-size: 13px;
+        padding: 8px 12px;
+        min-height: 36px;
+    }
+
+    .send-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+
+    .suggestion-title {
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
+
+    .suggestion-chips {
+        gap: 6px;
+    }
+
+    .suggestion-chip {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+
+    /* TaxScan - Mobile */
+    .taxscan-container {
+        padding: 12px;
+    }
+
+    .upload-zone {
+        padding: 20px 12px;
+        min-height: 120px;
+    }
+
+    .upload-zone h4 {
+        font-size: 14px;
+    }
+
+    .upload-zone p {
+        font-size: 12px;
+    }
+
+    .upload-btn {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+
+    .scan-results {
+        padding: 12px;
+    }
+
+    .scan-header h4 {
+        font-size: 14px;
+    }
+
+    .summary-card {
+        padding: 10px;
+    }
+
+    .summary-number {
+        font-size: 18px;
+    }
+
+    .summary-label {
+        font-size: 11px;
+    }
+
+    .detail-tabs {
+        gap: 4px;
+    }
+
+    .tab-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .alert-item {
+        padding: 10px;
+    }
+
+    .alert-title {
+        font-size: 13px;
+    }
+
+    .alert-description {
+        font-size: 11px;
+    }
+
+    .alert-btn {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+
+    /* Network - Mobile */
+    .network-tabs,
+    .marketing-tabs {
+        gap: 4px;
+        flex-wrap: wrap;
+    }
+
+    .network-tab,
+    .marketing-tab {
+        padding: 6px 12px;
+        font-size: 12px;
+        flex: 1;
+        min-width: 80px;
+    }
+
+    .professional-expertise {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .expertise-tag {
+        padding: 2px 6px;
+        font-size: 10px;
+    }
+
+    .action-btn {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+
+    /* Marketing - Mobile */
+    .campaign-metrics {
+        gap: 8px;
+    }
+
+    .metric-value {
+        font-size: 14px;
+    }
+
+    .metric-label {
+        font-size: 10px;
+    }
+
+    .generator-option {
+        padding: 10px;
+    }
+
+    .option-title {
+        font-size: 13px;
+    }
+
+    .option-desc {
+        font-size: 11px;
+    }
+
+    .generate-btn {
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+
+    /* Scheduling - Mobile */
+    .calendar-nav {
+        gap: 8px;
+    }
+
+    .nav-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+
+    .calendar-date {
+        font-size: 14px;
+    }
+
+    .calendar-grid {
+        font-size: 12px;
+    }
+
+    .day-header {
+        padding: 6px 4px;
+    }
+
+    .appointment {
+        padding: 4px 6px;
+        margin: 1px 0;
+    }
+
+    .appointment-title {
+        font-size: 10px;
+    }
+
+    .appointment-time {
+        font-size: 9px;
+    }
+
+    .quick-actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .quick-action {
+        padding: 12px 8px;
+    }
+
+    .action-title {
+        font-size: 12px;
+    }
+
+    .action-desc {
+        font-size: 10px;
+    }
+
+    /* Waitlist Popup - Mobile */
+    .waitlist-popup-content {
+        margin: 20px;
+        padding: 20px;
+        max-width: none;
+    }
+
+    .waitlist-popup-header h3 {
+        font-size: 18px;
+    }
+
+    .waitlist-popup-footer {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .waitlist-popup-footer .btn-primary,
+    .waitlist-popup-footer .btn-secondary {
+        width: 100%;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Extra Small - Mobile */
+    .stats-grid,
+    .network-stats-grid,
+    .marketing-stats-grid,
+    .scheduling-stats-grid {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .stat-card,
+    .network-stat-card,
+    .marketing-stat-card,
+    .scheduling-stat-card {
+        padding: 10px;
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .stat-icon {
+        flex-shrink: 0;
+    }
+
+    .platform-search {
+        order: 2;
+        flex: 1 1 auto;
+    }
+
+    .platform-actions {
+        order: 3;
+    }
+
+    .nav-item span {
+        display: none;
+    }
+
+    .nav-item {
+        padding: 8px;
+        min-width: 40px;
+        justify-content: center;
+    }
+
+    .chat-history {
+        height: 80px;
+    }
+
+    .chat-history-item {
+        min-width: 120px;
+        padding: 6px 8px;
+    }
+
+    .chat-main {
+        height: calc(100vh - 136px);
+    }
+
+    .quick-actions-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .network-tabs,
+    .marketing-tabs {
+        flex-direction: column;
+    }
+
+    .network-tab,
+    .marketing-tab {
+        width: 100%;
     }
 } 

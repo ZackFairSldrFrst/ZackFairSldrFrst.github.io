@@ -24,11 +24,35 @@
                 <button class="btn-secondary" onclick="openTypeform()">Contact Sales</button>
                 <a href="demo.html" class="btn-primary">View Demo</a>
             </div>
-            <div class="mobile-menu-toggle">
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
                 <i class="fas fa-bars"></i>
-            </div>
+            </button>
         </nav>
     </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="closeMobileMenu()"></div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <div class="logo">TaxAI</div>
+            <button class="mobile-menu-close" onclick="closeMobileMenu()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="mobile-nav-links">
+            <li><a href="#solutions" onclick="closeMobileMenu()">Solutions</a></li>
+            <li><a href="demo.html" onclick="closeMobileMenu()">Demo</a></li>
+            <li><a href="#pricing" onclick="closeMobileMenu()">Pricing</a></li>
+            <li><a href="#testimonials" onclick="closeMobileMenu()">Reviews</a></li>
+        </ul>
+        <div class="mobile-nav-buttons">
+            <button class="btn-secondary" onclick="openTypeform(); closeMobileMenu();">Get Started</button>
+            <button class="btn-secondary" onclick="openTypeform(); closeMobileMenu();">Contact Sales</button>
+            <a href="demo.html" class="btn-primary" onclick="closeMobileMenu()">View Demo</a>
+        </div>
+    </div>
 
     <main>
         <!-- Hero Section -->

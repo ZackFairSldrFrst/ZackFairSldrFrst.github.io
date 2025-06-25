@@ -414,6 +414,44 @@ function openTypeform() {
     window.open('https://form.typeform.com/to/KIiZ1uuX', '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
 }
 
+// Mobile menu functions
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const overlay = document.getElementById('mobileMenuOverlay');
+    
+    if (menu && overlay) {
+        const isActive = menu.classList.contains('active');
+        
+        if (isActive) {
+            closeMobileMenu();
+        } else {
+            openMobileMenu();
+        }
+    }
+}
+
+function openMobileMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const overlay = document.getElementById('mobileMenuOverlay');
+    
+    if (menu && overlay) {
+        menu.classList.add('active');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeMobileMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const overlay = document.getElementById('mobileMenuOverlay');
+    
+    if (menu && overlay) {
+        menu.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
 // Initialize all functionality when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     debugLog('Initializing TaxAI application');
