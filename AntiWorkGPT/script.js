@@ -25,7 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
 // Auto-resize textarea
 function autoResize(textarea) {
     textarea.style.height = 'auto';
-    textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+    const maxHeight = window.innerWidth <= 768 ? 120 : 200; // Smaller max height on mobile
+    textarea.style.height = Math.min(textarea.scrollHeight, maxHeight) + 'px';
 }
 
 // Handle keyboard shortcuts
@@ -47,7 +48,16 @@ function startNewChat() {
     currentChatId = generateChatId();
     clearChatContainer();
     updateChatHistory();
-    document.getElementById('messageInput').focus();
+    
+    // Close sidebar on mobile after starting new chat
+    if (window.innerWidth <= 768) {
+        closeSidebar();
+    }
+    
+    const messageInput = document.getElementById('messageInput');
+    if (messageInput) {
+        messageInput.focus();
+    }
 }
 
 // Generate unique chat ID
@@ -328,6 +338,11 @@ function loadChat(chatId) {
     });
     
     updateChatHistory();
+    
+    // Close sidebar on mobile after selecting a chat
+    if (window.innerWidth <= 768) {
+        closeSidebar();
+    }
 }
 
 // Delete chat
@@ -353,5 +368,48 @@ function deleteChat(chatId, event) {
 function updateChatHistory() {
     loadChatHistory();
 }
+
+// Mobile sidebar functionality
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const hamburger = document.getElementById('hamburgerMenu');
+    
+    if (sidebar && overlay && hamburger) {
+        const isOpen = sidebar.classList.contains('open');
+        
+        if (isOpen) {
+            closeSidebar();
+        } else {
+            openSidebar();
+        }
+    }
+}
+
+function openSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const hamburger = document.getElementById('hamburgerMenu');
+    
+    if (sidebar && overlay && hamburger) {
+        sidebar.classList.add('open');
+        overlay.classList.add('show');
+        hamburger.classList.add('active');
+    }
+}
+
+function closeSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const hamburger = document.getElementById('hamburgerMenu');
+    
+    if (sidebar && overlay && hamburger) {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+        hamburger.classList.remove('active');
+    }
+}
+
+
 
  
