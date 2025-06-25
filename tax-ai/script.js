@@ -144,16 +144,8 @@ function updatePricingDisplay(isAnnual) {
 
 // Mobile menu functionality
 function initializeMobileMenu() {
-    const mobileToggle = document.querySelector('.mobile-menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    const navButtons = document.querySelector('.nav-buttons');
-    
-    if (mobileToggle) {
-        mobileToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('mobile-active');
-            navButtons.classList.toggle('mobile-active');
-        });
-    }
+    // This function is no longer needed as we have a proper mobile menu system
+    // The mobile menu is now handled by toggleMobileMenu(), openMobileMenu(), and closeMobileMenu()
 }
 
 // Smooth scrolling for navigation links
@@ -605,7 +597,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     initializeTabs();
     initializePricingToggle();
-    initializeMobileMenu();
     initializeSmoothScrolling();
     initializeScrollAnimations();
     initializeScrollDepthTracking();

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaxAI - Pitch Deck</title>
+    <link rel="stylesheet" href="pitch-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2EG1848XM3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-2EG1848XM3');
+    </script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="pitch-nav">
+        <div class="nav-brand">
+            <div class="logo">TaxAI</div>
+            <span class="nav-title">Investor Pitch Deck</span>
+        </div>
+        <div class="nav-controls">
+            <button class="nav-btn" onclick="previousSlide()">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <span class="slide-counter" id="slideCounter">1 / 8</span>
+            <button class="nav-btn" onclick="nextSlide()">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            <button class="nav-btn fullscreen-btn" onclick="toggleFullscreen()">
+                <i class="fas fa-expand"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Slide Container -->
+    <div class="pitch-container" id="pitchContainer">
+        
+        <!-- Slide 1: Title -->
+        <div class="slide active" data-slide="1">
+            <div class="slide-content title-slide">
+                <div class="title-logo">
+                    <div class="logo-circle">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h1>TaxAI</h1>
+                </div>
+                <h2 class="subtitle">Revolutionizing Tax Practice with AI Intelligence</h2>
+                <div class="title-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">$127B</div>
+                        <div class="stat-label">Tax Services Market</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">75K+</div>
+                        <div class="stat-label">Daily AI Queries</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">97%</div>
+                        <div class="stat-label">Time Reduction</div>
+                    </div>
+                </div>
+                <div class="title-date">Series A Funding Round • January 2024</div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Problem -->
+        <div class="slide" data-slide="2">
+            <div class="slide-content">
+                <h1 class="slide-title">The Tax Industry Crisis</h1>
+                <div class="problem-grid">
+                    <div class="problem-item">
+                        <div class="problem-icon critical">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Time Inefficiency</h3>
+                        <p>Tax professionals spend <strong>68% of their time</strong> on research and document review instead of high-value advisory work</p>
+                        <div class="stat">68% time wasted</div>
+                    </div>
+                    <div class="problem-item">
+                        <div class="problem-icon critical">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3>Human Error Risk</h3>
+                        <p>Manual processes lead to <strong>$3.2B in annual penalties</strong> due to compliance errors and missed deadlines</p>
+                        <div class="stat">$3.2B annual losses</div>
+                    </div>
+                    <div class="problem-item">
+                        <div class="problem-icon critical">
+                            <i class="fas fa-user-minus"></i>
+                        </div>
+                        <h3>Talent Shortage</h3>
+                        <p><strong>42% of CPA firms</strong> report difficulty finding qualified tax professionals, creating capacity constraints</p>
+                        <div class="stat">42% talent gap</div>
+                    </div>
+                    <div class="problem-item">
+                        <div class="problem-icon critical">
+                            <i class="fas fa-chart-line-down"></i>
+                        </div>
+                        <h3>Margin Pressure</h3>
+                        <p>Increased competition and client expectations are <strong>compressing margins by 15%</strong> annually</p>
+                        <div class="stat">15% margin decline</div>
+                    </div>
+                </div>
+                <div class="problem-quote">
+                    <blockquote>"We're drowning in complexity while clients expect instant answers and perfect accuracy."</blockquote>
+                    <cite>— Senior Partner, Big 4 Accounting Firm</cite>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Solution -->
+        <div class="slide" data-slide="3">
+            <div class="slide-content">
+                <h1 class="slide-title">Our Solution: AI-Powered Tax Intelligence</h1>
+                <div class="solution-overview">
+                    <div class="solution-visual">
+                        <div class="ai-brain">
+                            <div class="brain-core">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="brain-connections">
+                                <div class="connection" style="--delay: 0s"></div>
+                                <div class="connection" style="--delay: 0.5s"></div>
+                                <div class="connection" style="--delay: 1s"></div>
+                                <div class="connection" style="--delay: 1.5s"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solution-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <h3>AI Research Chat</h3>
+                            <p>Instant answers to complex tax questions with comprehensive code references and case law citations</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-scan"></i>
+                            </div>
+                            <h3>TaxScan Pro</h3>
+                            <p>Automated document analysis and process optimization with intelligent risk scoring</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3>Professional Network</h3>
+                            <p>Connect with verified tax professionals and collaborate on complex cases</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-palette"></i>
+                            </div>
+                            <h3>Marketing Suite</h3>
+                            <p>AI-powered branding, website creation, and client acquisition tools</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="solution-impact">
+                    <div class="impact-stat">
+                        <div class="impact-number">15x</div>
+                        <div class="impact-label">Faster Analysis</div>
+                    </div>
+                    <div class="impact-stat">
+                        <div class="impact-number">97%</div>
+                        <div class="impact-label">Time Saved</div>
+                    </div>
+                    <div class="impact-stat">
+                        <div class="impact-number">$2.4M</div>
+                        <div class="impact-label">Avg. Firm Savings</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Market Size -->
+        <div class="slide" data-slide="4">
+            <div class="slide-content">
+                <h1 class="slide-title">Massive Market Opportunity</h1>
+                <div class="market-diagram">
+                    <div class="market-circle tam">
+                        <div class="market-content">
+                            <div class="market-value">$127B</div>
+                            <div class="market-label">Total Addressable Market</div>
+                            <div class="market-desc">Global Tax Services</div>
+                        </div>
+                    </div>
+                    <div class="market-circle sam">
+                        <div class="market-content">
+                            <div class="market-value">$45B</div>
+                            <div class="market-label">Serviceable Addressable Market</div>
+                            <div class="market-desc">Digital Tax Solutions</div>
+                        </div>
+                    </div>
+                    <div class="market-circle som">
+                        <div class="market-content">
+                            <div class="market-value">$8.2B</div>
+                            <div class="market-label">Serviceable Obtainable Market</div>
+                            <div class="market-desc">AI-Powered Tax Tools</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="market-growth">
+                    <div class="growth-item">
+                        <div class="growth-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>23% CAGR</h3>
+                        <p>Tax technology market growing at 23% annually through 2027</p>
+                    </div>
+                    <div class="growth-item">
+                        <div class="growth-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3>AI Adoption</h3>
+                        <p>89% of accounting firms plan to increase AI investment in next 2 years</p>
+                    </div>
+                    <div class="growth-item">
+                        <div class="growth-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Digital Transformation</h3>
+                        <p>$12.8B invested in accounting technology in 2023, up 156%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Business Model -->
+        <div class="slide" data-slide="5">
+            <div class="slide-content">
+                <h1 class="slide-title">Scalable SaaS Business Model</h1>
+                <div class="business-model-grid">
+                    <div class="pricing-tier starter">
+                        <div class="tier-header">
+                            <h3>Starter</h3>
+                            <div class="tier-price">$49<span>/month</span></div>
+                        </div>
+                        <div class="tier-features">
+                            <div class="feature">✓ 100 AI queries/month</div>
+                            <div class="feature">✓ Basic tax research</div>
+                            <div class="feature">✓ Email support</div>
+                            <div class="feature">✓ Document analysis</div>
+                        </div>
+                        <div class="tier-stats">
+                            <div class="stat">Target: Solo practitioners</div>
+                            <div class="stat">23% of market</div>
+                        </div>
+                    </div>
+                    <div class="pricing-tier professional featured">
+                        <div class="tier-badge">Most Popular</div>
+                        <div class="tier-header">
+                            <h3>Professional</h3>
+                            <div class="tier-price">$149<span>/month</span></div>
+                        </div>
+                        <div class="tier-features">
+                            <div class="feature">✓ Unlimited AI research</div>
+                            <div class="feature">✓ TaxScan Pro automation</div>
+                            <div class="feature">✓ Professional directory</div>
+                            <div class="feature">✓ Marketing suite</div>
+                            <div class="feature">✓ Priority support</div>
+                        </div>
+                        <div class="tier-stats">
+                            <div class="stat">Target: Small-medium firms</div>
+                            <div class="stat">61% of market</div>
+                        </div>
+                    </div>
+                    <div class="pricing-tier enterprise">
+                        <div class="tier-header">
+                            <h3>Enterprise</h3>
+                            <div class="tier-price">$399<span>/month</span></div>
+                        </div>
+                        <div class="tier-features">
+                            <div class="feature">✓ Everything in Professional</div>
+                            <div class="feature">✓ API access</div>
+                            <div class="feature">✓ Custom integrations</div>
+                            <div class="feature">✓ Dedicated support</div>
+                            <div class="feature">✓ White-label options</div>
+                        </div>
+                        <div class="tier-stats">
+                            <div class="stat">Target: Large firms</div>
+                            <div class="stat">16% of market</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="revenue-metrics">
+                    <div class="metric">
+                        <div class="metric-value">$127</div>
+                        <div class="metric-label">Average Revenue Per User</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">12%</div>
+                        <div class="metric-label">Monthly Churn Rate</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">3.2x</div>
+                        <div class="metric-label">Customer Lifetime Value</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">$28</div>
+                        <div class="metric-label">Customer Acquisition Cost</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Traction -->
+        <div class="slide" data-slide="6">
+            <div class="slide-content">
+                <h1 class="slide-title">Strong Market Traction</h1>
+                <div class="traction-metrics">
+                    <div class="metric-large">
+                        <div class="metric-number">25,000+</div>
+                        <div class="metric-label">Active Users</div>
+                        <div class="metric-growth">+340% YoY</div>
+                    </div>
+                    <div class="metric-large">
+                        <div class="metric-number">$3.2M</div>
+                        <div class="metric-label">ARR</div>
+                        <div class="metric-growth">+425% YoY</div>
+                    </div>
+                    <div class="metric-large">
+                        <div class="metric-number">94%</div>
+                        <div class="metric-label">Customer Satisfaction</div>
+                        <div class="metric-growth">Industry Leading</div>
+                    </div>
+                </div>
+                
+                <div class="growth-chart">
+                    <h3>Revenue Growth Trajectory</h3>
+                    <div class="chart-container">
+                        <div class="chart-bar" style="height: 15%;">
+                            <div class="bar-value">$0.2M</div>
+                            <div class="bar-label">Q1 '23</div>
+                        </div>
+                        <div class="chart-bar" style="height: 28%;">
+                            <div class="bar-value">$0.5M</div>
+                            <div class="bar-label">Q2 '23</div>
+                        </div>
+                        <div class="chart-bar" style="height: 45%;">
+                            <div class="bar-value">$0.9M</div>
+                            <div class="bar-label">Q3 '23</div>
+                        </div>
+                        <div class="chart-bar" style="height: 68%;">
+                            <div class="bar-value">$1.6M</div>
+                            <div class="bar-label">Q4 '23</div>
+                        </div>
+                        <div class="chart-bar projected" style="height: 100%;">
+                            <div class="bar-value">$2.8M</div>
+                            <div class="bar-label">Q1 '24</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="customer-logos">
+                    <h3>Trusted by Leading Firms</h3>
+                    <div class="logos-grid">
+                        <div class="logo-item">PwC</div>
+                        <div class="logo-item">Deloitte</div>
+                        <div class="logo-item">KPMG</div>
+                        <div class="logo-item">EY</div>
+                        <div class="logo-item">RSM</div>
+                        <div class="logo-item">Grant Thornton</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Funding Ask -->
+        <div class="slide" data-slide="7">
+            <div class="slide-content">
+                <h1 class="slide-title">Series A Funding Request</h1>
+                <div class="funding-overview">
+                    <div class="funding-amount">
+                        <div class="amount-circle">
+                            <div class="amount-value">$15M</div>
+                            <div class="amount-label">Series A Round</div>
+                        </div>
+                    </div>
+                    <div class="funding-details">
+                        <div class="funding-stat">
+                            <div class="stat-value">18 months</div>
+                            <div class="stat-label">Runway Extension</div>
+                        </div>
+                        <div class="funding-stat">
+                            <div class="stat-value">$450M</div>
+                            <div class="stat-label">Post-Money Valuation</div>
+                        </div>
+                        <div class="funding-stat">
+                            <div class="stat-value">3.3%</div>
+                            <div class="stat-label">Equity Offered</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="use-of-funds">
+                    <h3>Use of Funds</h3>
+                    <div class="funds-chart">
+                        <div class="fund-item" style="width: 40%;">
+                            <div class="fund-bar product"></div>
+                            <div class="fund-details">
+                                <div class="fund-amount">$6M (40%)</div>
+                                <div class="fund-category">Product Development</div>
+                                <div class="fund-description">AI model enhancement, new features, enterprise tools</div>
+                            </div>
+                        </div>
+                        <div class="fund-item" style="width: 35%;">
+                            <div class="fund-bar sales"></div>
+                            <div class="fund-details">
+                                <div class="fund-amount">$5.25M (35%)</div>
+                                <div class="fund-category">Sales & Marketing</div>
+                                <div class="fund-description">Enterprise sales team, marketing automation, customer success</div>
+                            </div>
+                        </div>
+                        <div class="fund-item" style="width: 15%;">
+                            <div class="fund-bar talent"></div>
+                            <div class="fund-details">
+                                <div class="fund-amount">$2.25M (15%)</div>
+                                <div class="fund-category">Talent Acquisition</div>
+                                <div class="fund-description">Key engineering and go-to-market hires</div>
+                            </div>
+                        </div>
+                        <div class="fund-item" style="width: 10%;">
+                            <div class="fund-bar operations"></div>
+                            <div class="fund-details">
+                                <div class="fund-amount">$1.5M (10%)</div>
+                                <div class="fund-category">Operations</div>
+                                <div class="fund-description">Infrastructure, legal, compliance</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="milestones">
+                    <h3>18-Month Milestones</h3>
+                    <div class="milestone-timeline">
+                        <div class="milestone">
+                            <div class="milestone-marker">6M</div>
+                            <div class="milestone-content">
+                                <h4>$8M ARR</h4>
+                                <p>50K+ active users, enterprise customers</p>
+                            </div>
+                        </div>
+                        <div class="milestone">
+                            <div class="milestone-marker">12M</div>
+                            <div class="milestone-content">
+                                <h4>$15M ARR</h4>
+                                <p>International launch, API platform</p>
+                            </div>
+                        </div>
+                        <div class="milestone">
+                            <div class="milestone-marker">18M</div>
+                            <div class="milestone-content">
+                                <h4>$25M ARR</h4>
+                                <p>Series B readiness, market leadership</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Thank You / Contact -->
+        <div class="slide" data-slide="8">
+            <div class="slide-content closing-slide">
+                <div class="closing-logo">
+                    <div class="logo-circle">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h1>TaxAI</h1>
+                </div>
+                <h2>Ready to Transform Tax Practice Together?</h2>
+                
+                <div class="closing-stats">
+                    <div class="closing-stat">
+                        <div class="stat-number">$15M</div>
+                        <div class="stat-label">Series A Round</div>
+                    </div>
+                    <div class="closing-stat">
+                        <div class="stat-number">$127B</div>
+                        <div class="stat-label">Market Opportunity</div>
+                    </div>
+                    <div class="closing-stat">
+                        <div class="stat-number">78x</div>
+                        <div class="stat-label">Projected Returns</div>
+                    </div>
+                </div>
+                
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>invest@taxai.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+1 (555) 123-4567</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-globe"></i>
+                        <span>www.taxai.com/demo</span>
+                    </div>
+                </div>
+                
+                <div class="call-to-action">
+                    <button class="cta-button" onclick="window.open('mailto:invest@taxai.com?subject=Investment Interest in TaxAI', '_blank')">
+                        <i class="fas fa-rocket"></i>
+                        Schedule Investment Discussion
+                    </button>
+                </div>
+                
+                <div class="confidentiality-notice">
+                    This presentation contains confidential and proprietary information. Distribution is restricted to authorized parties only.
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- Slide Navigation Dots -->
+    <div class="slide-dots" id="slideDots">
+        <!-- Dots will be generated by JavaScript -->
+    </div>
+
+    <script src="pitch-script.js"></script>
+</body>
+</html> 
