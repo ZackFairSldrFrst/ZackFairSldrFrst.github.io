@@ -261,6 +261,17 @@ function formatMarkdown(text) {
     html = html
         // Code blocks (```code```)
         .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+        // Headers
+        .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+        .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+        .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+        // Lists - convert lines starting with - or * to list items
+        .replace(/^[\s]*[-\*\+] (.*)$/gm, '<li>$1</li>')
+        // Wrap consecutive list items in ul tags
+        .replace(/(<li>.*<\/li>)(?:\s*<br>\s*)?(?=<li>)/g, '$1')
+        .replace(/(<li>.*<\/li>)/g, '<ul>$1</ul>')
+        // Clean up multiple ul tags
+        .replace(/<\/ul>\s*<br>\s*<ul>/g, '')
         // Inline code (`code`)
         .replace(/`([^`]+)`/g, '<code>$1</code>')
         // Bold (**text** or __text__)

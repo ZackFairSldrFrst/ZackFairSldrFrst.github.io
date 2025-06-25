@@ -184,6 +184,37 @@ body {
     font-style: italic;
 }
 
+.message-content h1 {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin: 16px 0 8px 0;
+    color: #1f2937;
+}
+
+.message-content h2 {
+    font-size: 1.3em;
+    font-weight: 600;
+    margin: 14px 0 6px 0;
+    color: #1f2937;
+}
+
+.message-content h3 {
+    font-size: 1.1em;
+    font-weight: 600;
+    margin: 12px 0 4px 0;
+    color: #1f2937;
+}
+
+.message-content ul {
+    margin: 8px 0;
+    padding-left: 20px;
+}
+
+.message-content li {
+    margin: 4px 0;
+    line-height: 1.5;
+}
+
 /* Message actions */
 .message-actions {
     display: flex;
