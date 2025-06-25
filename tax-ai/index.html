@@ -7,6 +7,16 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2EG1848XM3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-2EG1848XM3');
+    </script>
 </head>
 <body>
     <header>
@@ -20,9 +30,9 @@
                 <li><a href="#testimonials">Reviews</a></li>
             </ul>
             <div class="nav-buttons">
-                <button class="btn-secondary" onclick="openTypeform()">Get Started</button>
-                <button class="btn-secondary" onclick="openTypeform()">Contact Sales</button>
-                <a href="demo.html" class="btn-primary">View Demo</a>
+                                    <button class="btn-secondary" onclick="openTypeform(); trackButtonClick('get_started', 'nav');">Get Started</button>
+                <button class="btn-secondary" onclick="openTypeform(); trackButtonClick('contact_sales', 'nav');">Contact Sales</button>
+                <a href="demo.html" class="btn-primary" onclick="trackButtonClick('view_demo', 'nav');">View Demo</a>
             </div>
             <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
                 <i class="fas fa-bars"></i>
@@ -50,7 +60,7 @@
         <div class="mobile-nav-buttons">
             <button class="btn-secondary" onclick="openTypeform(); closeMobileMenu();">Get Started</button>
             <button class="btn-secondary" onclick="openTypeform(); closeMobileMenu();">Contact Sales</button>
-            <a href="demo.html" class="btn-primary" onclick="closeMobileMenu()">View Demo</a>
+            <a href="demo.html" class="btn-primary" onclick="closeMobileMenu(); trackButtonClick('view_demo', 'mobile_menu');">View Demo</a>
         </div>
     </div>
 
@@ -66,8 +76,8 @@
                 <p class="hero-subtitle">Unleash the power of AI-driven tax intelligence. Navigate regulations effortlessly, draft with precision, eliminate costly mistakes, and amplify your expertise 15x.</p>
                 
                 <div class="hero-cta">
-                    <a href="demo.html" class="btn-primary btn-lg">Explore Live Demo</a>
-                    <button class="btn-secondary btn-lg" onclick="openTypeform()">Get Started</button>
+                    <a href="demo.html" class="btn-primary btn-lg" onclick="trackButtonClick('explore_demo', 'hero');">Explore Live Demo</a>
+                    <button class="btn-secondary btn-lg" onclick="openTypeform(); trackButtonClick('get_started', 'hero');">Get Started</button>
                     <p class="hero-cta-note">See the platform in action - no signup required</p>
                 </div>
 
@@ -221,7 +231,7 @@
                             </ul>
                             <div class="solution-cta">
                                 <a href="demo.html" class="btn-primary">View Interactive Demo</a>
-                                <button class="btn-secondary" onclick="openTypeform()">Contact Sales</button>
+                                <button class="btn-secondary" onclick="openTypeform(); trackButtonClick('contact_sales', 'nav');">Contact Sales</button>
                             </div>
                         </div>
                         <div class="solution-visual">
@@ -608,7 +618,7 @@
                             <li><i class="fas fa-check"></i> Document analysis</li>
                         </ul>
                         <div class="pricing-actions">
-                            <button class="btn-primary" onclick="openTypeform()">Subscribe Now</button>
+                            <button class="btn-primary" onclick="openTypeform(); trackButtonClick('subscribe_now', 'pricing_starter');">Subscribe Now</button>
                             <a href="demo.html" class="btn-secondary btn-sm">View Demo</a>
                         </div>
                     </div>
@@ -633,7 +643,7 @@
                             <li><i class="fas fa-check"></i> Priority support</li>
                         </ul>
                         <div class="pricing-actions">
-                            <button class="btn-primary" onclick="openTypeform()">Subscribe Now</button>
+                            <button class="btn-primary" onclick="openTypeform(); trackButtonClick('subscribe_now', 'pricing_professional');">Subscribe Now</button>
                             <a href="demo.html" class="btn-secondary btn-sm">View Demo</a>
                         </div>
                     </div>
@@ -657,7 +667,7 @@
                             <li><i class="fas fa-check"></i> White-label options</li>
                         </ul>
                         <div class="pricing-actions">
-                            <button class="btn-outline" onclick="openTypeform()">Contact Sales</button>
+                            <button class="btn-outline" onclick="openTypeform(); trackButtonClick('contact_sales', 'pricing_enterprise');">Contact Sales</button>
                             <a href="demo.html" class="btn-secondary btn-sm">View Demo</a>
                         </div>
                     </div>
@@ -676,8 +686,8 @@
                 <p>Join 25,000+ elite practitioners who've revolutionized their expertise with TaxAI</p>
                 
                 <div class="cta-buttons">
-                    <a href="demo.html" class="btn-primary btn-lg">Explore Interactive Demo</a>
-                    <button class="btn-secondary btn-lg" onclick="openTypeform()">Contact Sales</button>
+                    <a href="demo.html" class="btn-primary btn-lg" onclick="trackButtonClick('explore_demo', 'cta_section');">Explore Interactive Demo</a>
+                    <button class="btn-secondary btn-lg" onclick="openTypeform(); trackButtonClick('contact_sales', 'cta_section');">Contact Sales</button>
                 </div>
                 <p class="form-note">See the platform in action • No signup required</p>
                 

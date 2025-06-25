@@ -1,6 +1,58 @@
 const API_KEY = 'sk-05df740662cc4782ac9877bf3bf59041';
 const API_URL = 'https://api.deepseek.com/v1/chat/completions';
 
+// Google Analytics helper functions
+function trackEvent(eventName, category, label, value = 1, customParams = {}) {
+    if (typeof gtag !== 'undefined') {
+        gtag('event', eventName, {
+            event_category: category,
+            event_label: label,
+            value: value,
+            ...customParams
+        });
+    }
+}
+
+function trackPageView(pageName) {
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'page_view', {
+            page_title: pageName,
+            page_location: window.location.href
+        });
+    }
+}
+
+function trackButtonClick(buttonName, location) {
+    trackEvent('button_click', 'engagement', buttonName, 1, { location: location });
+}
+
+function trackScrollDepth(percentage) {
+    trackEvent('scroll_depth', 'engagement', `${percentage}%`, percentage);
+}
+
+// Track scroll depth
+let scrollDepthTracker = {
+    25: false,
+    50: false,
+    75: false,
+    100: false
+};
+
+function initializeScrollDepthTracking() {
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.pageYOffset;
+        const docHeight = document.body.scrollHeight - window.innerHeight;
+        const scrollPercent = Math.round((scrollTop / docHeight) * 100);
+        
+        Object.keys(scrollDepthTracker).forEach(depth => {
+            if (scrollPercent >= depth && !scrollDepthTracker[depth]) {
+                scrollDepthTracker[depth] = true;
+                trackScrollDepth(depth);
+            }
+        });
+    });
+}
+
 const chatInput = document.getElementById('chatInput');
 const chatSendButton = document.getElementById('chatSendButton');
 const chatMessages = document.getElementById('chatMessages');
@@ -28,6 +80,15 @@ function initializeTabs() {
         button.addEventListener('click', () => {
             const targetTab = button.getAttribute('data-tab');
             
+            // Track tab click
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'tab_click', {
+                    event_category: 'navigation',
+                    event_label: targetTab,
+                    value: 1
+                });
+            }
+            
             // Remove active class from all buttons and contents
             tabButtons.forEach(btn => btn.classList.remove('active'));
             tabContents.forEach(content => content.classList.remove('active'));
@@ -49,6 +110,17 @@ function initializePricingToggle() {
     
     if (toggleBtn) {
         toggleBtn.addEventListener('click', () => {
+            const isAnnual = !toggleBtn.classList.contains('active');
+            
+            // Track pricing toggle
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'pricing_toggle', {
+                    event_category: 'engagement',
+                    event_label: isAnnual ? 'annual' : 'monthly',
+                    value: 1
+                });
+            }
+            
             toggleBtn.classList.toggle('active');
             // Here you could add logic to update pricing display
             updatePricingDisplay(toggleBtn.classList.contains('active'));
@@ -93,6 +165,15 @@ function initializeSmoothScrolling() {
             e.preventDefault();
             const targetId = link.getAttribute('href').substring(1);
             const targetSection = document.getElementById(targetId);
+            
+            // Track navigation clicks
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'navigation_click', {
+                    event_category: 'navigation',
+                    event_label: targetId,
+                    value: 1
+                });
+            }
             
             if (targetSection) {
                 const headerHeight = document.querySelector('header').offsetHeight;
@@ -199,6 +280,15 @@ function toggleSendButton() {
 
 // Chat widget management functions
 function openChatWidget() {
+    // Track chat widget open
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'chat_open', {
+            event_category: 'engagement',
+            event_label: 'chat_widget',
+            value: 1
+        });
+    }
+    
     chatBubble.style.display = 'none';
     chatWindow.classList.add('active');
     if (chatInput) {
@@ -207,6 +297,15 @@ function openChatWidget() {
 }
 
 function closeChatWidget() {
+    // Track chat widget close
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'chat_close', {
+            event_category: 'engagement',
+            event_label: 'chat_widget',
+            value: 1
+        });
+    }
+    
     chatWindow.classList.remove('active');
     chatBubble.style.display = 'flex';
 }
@@ -252,6 +351,18 @@ function formatResponse(text) {
 async function handleChatMessage(query) {
     if (!query) {
         return;
+    }
+
+    // Track chat message sent
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'chat_message_sent', {
+            event_category: 'engagement',
+            event_label: 'ai_chat',
+            custom_parameters: {
+                message_length: query.length,
+                conversation_length: conversationMessages.length
+            }
+        });
     }
 
     // Add user message to chat
@@ -337,6 +448,18 @@ Remember: You're chatting with a tax professional who values expertise and effic
         if (data.choices && data.choices.length > 0) {
             const aiResponse = data.choices[0].message.content;
             
+            // Track successful AI response
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'chat_ai_response_received', {
+                    event_category: 'engagement',
+                    event_label: 'ai_chat_success',
+                    custom_parameters: {
+                        response_length: aiResponse.length,
+                        conversation_length: conversationMessages.length + 1
+                    }
+                });
+            }
+            
             // Add AI response to conversation
             conversationMessages.push({
                 role: 'assistant',
@@ -355,6 +478,19 @@ Remember: You're chatting with a tax professional who values expertise and effic
 
     } catch (error) {
         debugLog('Chat error:', error);
+        
+        // Track chat error
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'chat_error', {
+                event_category: 'error',
+                event_label: 'ai_chat_failure',
+                custom_parameters: {
+                    error_message: error.message,
+                    conversation_length: conversationMessages.length
+                }
+            });
+        }
+        
         removeTypingIndicator();
         addMessageToChat('Sorry, I\'m having trouble connecting right now. Please try again in a moment.', false);
     }
@@ -411,6 +547,14 @@ if (bubbleClose) {
 
 // Function to open typeform
 function openTypeform() {
+    // Track typeform click event
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'typeform_open', {
+            event_category: 'engagement',
+            event_label: 'typeform_signup',
+            value: 1
+        });
+    }
     window.open('https://form.typeform.com/to/KIiZ1uuX', '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
 }
 
@@ -456,11 +600,15 @@ function closeMobileMenu() {
 document.addEventListener('DOMContentLoaded', () => {
     debugLog('Initializing TaxAI application');
     
+    // Track page load
+    trackPageView('TaxAI Homepage');
+    
     initializeTabs();
     initializePricingToggle();
     initializeMobileMenu();
     initializeSmoothScrolling();
     initializeScrollAnimations();
+    initializeScrollDepthTracking();
     
     // Initialize floating chat widget
     if (chatInput && chatSendButton) {
@@ -491,6 +639,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 const name = input.value.trim();
                 if (name) {
+                    // Track successful form submission
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'form_submit', {
+                            event_category: 'engagement',
+                            event_label: 'cta_form_success',
+                            value: 1
+                        });
+                    }
+                    
                     // Simulate form submission
                     button.textContent = 'Thank you!';
                     button.style.background = 'var(--success-color)';
@@ -499,6 +656,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         button.style.background = '';
                     }, 2000);
                 } else {
+                    // Track form validation error
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'form_error', {
+                            event_category: 'error',
+                            event_label: 'cta_form_validation',
+                            value: 1
+                        });
+                    }
+                    
                     input.style.borderColor = 'var(--danger-color)';
                     setTimeout(() => {
                         input.style.borderColor = '';
@@ -509,4 +675,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     debugLog('TaxAI application initialized successfully');
+    
+    // Track exit intent
+    let exitIntentTracked = false;
+    document.addEventListener('mouseleave', (e) => {
+        if (e.clientY <= 0 && !exitIntentTracked) {
+            trackEvent('exit_intent', 'behavior', 'page_exit', 1);
+            exitIntentTracked = true;
+        }
+    });
+    
+    // Track time on page milestones
+    setTimeout(() => trackEvent('time_on_page', 'engagement', '30_seconds', 30), 30000);
+    setTimeout(() => trackEvent('time_on_page', 'engagement', '60_seconds', 60), 60000);
+    setTimeout(() => trackEvent('time_on_page', 'engagement', '2_minutes', 120), 120000);
+    setTimeout(() => trackEvent('time_on_page', 'engagement', '5_minutes', 300), 300000);
+    
+    // Track page visibility changes
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            trackEvent('page_visibility', 'behavior', 'page_hidden', 1);
+        } else {
+            trackEvent('page_visibility', 'behavior', 'page_visible', 1);
+        }
+    });
 }); 

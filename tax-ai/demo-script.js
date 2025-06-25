@@ -1,6 +1,45 @@
 // Platform Demo JavaScript
 
+// Google Analytics helper functions
+function trackEvent(eventName, category, label, value = 1, customParams = {}) {
+    if (typeof gtag !== 'undefined') {
+        gtag('event', eventName, {
+            event_category: category,
+            event_label: label,
+            value: value,
+            ...customParams
+        });
+    }
+}
+
+function trackButtonClick(buttonName, location) {
+    trackEvent('button_click', 'engagement', buttonName, 1, { location: location });
+}
+
+function trackSectionView(sectionName) {
+    trackEvent('section_view', 'navigation', sectionName, 1);
+}
+
+function trackDemoInteraction(interactionType, element) {
+    trackEvent('demo_interaction', 'engagement', interactionType, 1, { element: element });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+    // Track demo page load and engagement
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'page_view', {
+            page_title: 'TaxAI Demo Platform',
+            page_location: window.location.href
+        });
+        
+        // Track demo engagement
+        gtag('event', 'demo_page_loaded', {
+            event_category: 'engagement',
+            event_label: 'demo_platform',
+            value: 1
+        });
+    }
+    
     initializePlatform();
     initializeAnimations();
     initializeInteractivity();
@@ -14,6 +53,9 @@ function initializePlatform() {
     navItems.forEach(item => {
         item.addEventListener('click', function() {
             const targetSection = this.dataset.section;
+            
+            // Track section navigation
+            trackSectionView(targetSection);
             
             // Update active nav item
             navItems.forEach(nav => nav.classList.remove('active'));
@@ -165,12 +207,16 @@ function initializeChat() {
             const message = chatInput.value.trim();
             if (!message) return;
             
+            // Track demo chat interaction
+            trackDemoInteraction('chat_message_sent', 'demo_chat');
+            
             // Add user message
             addChatMessage(message, 'user');
             chatInput.value = '';
             
             // Simulate AI response
             setTimeout(() => {
+                trackDemoInteraction('chat_ai_response', 'demo_chat');
                 addChatMessage('I\'m analyzing your question. This is a demo response showing how the AI would provide detailed tax research with relevant code sections and case law.', 'ai');
             }, 1500);
         }
@@ -313,6 +359,9 @@ function initializeTaxScan() {
 }
 
 function simulateFileUpload() {
+    // Track file upload demo interaction
+    trackDemoInteraction('file_upload_demo', 'taxscan');
+    
     // Create upload feedback
     const uploadZone = document.querySelector('.upload-zone');
     if (!uploadZone) return;
@@ -340,6 +389,9 @@ function simulateFileUpload() {
     
     // Complete upload
     setTimeout(() => {
+        // Track upload completion
+        trackDemoInteraction('file_upload_complete', 'taxscan');
+        
         uploadZone.innerHTML = `
             <div class="upload-complete">
                 <i class="fas fa-check-circle" style="font-size: 48px; color: #22c55e; margin-bottom: 16px;"></i>
@@ -1094,11 +1146,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Function to open typeform
 function openTypeform() {
+    // Track typeform click from demo
+    trackEvent('typeform_open', 'engagement', 'typeform_demo', 1);
     window.open('https://form.typeform.com/to/KIiZ1uuX', '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
 }
 
 // Waitlist popup functionality
 function showWaitlistPopup() {
+    // Track waitlist popup show
+    trackDemoInteraction('waitlist_popup_shown', 'demo_popup');
+    
     const popup = document.getElementById('waitlistPopup');
     if (popup) {
         popup.classList.add('active');
@@ -1107,6 +1164,9 @@ function showWaitlistPopup() {
 }
 
 function closeWaitlistPopup() {
+    // Track waitlist popup close
+    trackDemoInteraction('waitlist_popup_closed', 'demo_popup');
+    
     const popup = document.getElementById('waitlistPopup');
     if (popup) {
         popup.classList.remove('active');
