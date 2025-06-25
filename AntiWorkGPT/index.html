@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AntiWorkGPT</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f7f7f8;
+            height: 100vh;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 260px;
+            background-color: #202123;
+            display: flex;
+            flex-direction: column;
+            padding: 8px;
+            overflow-y: auto;
+        }
+
+        .new-chat-btn {
+            background-color: transparent;
+            border: 1px solid #565869;
+            color: white;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .new-chat-btn:hover {
+            background-color: #2a2b32;
+        }
+
+        .chat-history {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .chat-item {
+            color: #ececf1;
+            padding: 8px 12px;
+            margin: 2px 0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-item:hover {
+            background-color: #2a2b32;
+        }
+
+        .chat-item.active {
+            background-color: #343541;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+        }
+
+        .chat-header {
+            background-color: white;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-header h1 {
+            color: #202123;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .message {
+            display: flex;
+            gap: 16px;
+            max-width: 768px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .message.user {
+            background-color: #f7f7f8;
+            padding: 24px;
+            border-radius: 12px;
+        }
+
+        .message.assistant {
+            background-color: white;
+        }
+
+        .message-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .user .message-avatar {
+            background-color: #19c37d;
+            color: white;
+        }
+
+        .assistant .message-avatar {
+            background-color: #ab68ff;
+            color: white;
+        }
+
+        .message-content {
+            flex: 1;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .input-area {
+            padding: 24px;
+            background-color: white;
+            border-top: 1px solid #e5e5e5;
+        }
+
+        .input-container {
+            max-width: 768px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .message-input {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            padding: 12px 48px 12px 16px;
+            font-size: 16px;
+            resize: none;
+            outline: none;
+            min-height: 24px;
+            max-height: 200px;
+            line-height: 1.5;
+        }
+
+        .message-input:focus {
+            border-color: #10a37f;
+        }
+
+        .send-button {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #19c37d;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+
+        .send-button:hover:not(:disabled) {
+            background-color: #16a574;
+        }
+
+        .send-button:disabled {
+            background-color: #d1d5db;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        .loading-dots {
+            display: inline-block;
+        }
+
+        .loading-dots::after {
+            content: '';
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        .empty-state {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        .empty-state h2 {
+            font-size: 32px;
+            margin-bottom: 16px;
+            color: #202123;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+            margin-bottom: 32px;
+        }
+
+        .example-prompts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
+            max-width: 768px;
+            width: 100%;
+        }
+
+        .example-prompt {
+            background-color: #f7f7f8;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-align: left;
+        }
+
+        .example-prompt:hover {
+            background-color: #f1f1f2;
+        }
+
+        .example-prompt h4 {
+            color: #202123;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .example-prompt p {
+            color: #6b7280;
+            font-size: 13px;
+            margin: 0;
+        }
+
+        .delete-chat {
+            background: none;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            font-size: 12px;
+        }
+
+        .chat-item:hover .delete-chat {
+            opacity: 1;
+        }
+
+        .delete-chat:hover {
+            background-color: #fee2e2;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <button class="new-chat-btn" onclick="startNewChat()">
+            <span>+</span>
+            New chat
+        </button>
+        <div class="chat-history" id="chatHistory">
+            <!-- Chat history will be populated here -->
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="chat-header">
+            <h1>AntiWorkGPT</h1>
+        </div>
+
+        <div class="chat-container" id="chatContainer">
+            <div class="empty-state" id="emptyState">
+                <h2>AntiWorkGPT</h2>
+                <p>How can I help you today?</p>
+                <div class="example-prompts">
+                    <div class="example-prompt" onclick="usePrompt('Explain quantum computing in simple terms')">
+                        <h4>Explain a concept</h4>
+                        <p>Explain quantum computing in simple terms</p>
+                    </div>
+                    <div class="example-prompt" onclick="usePrompt('Write a creative story about a robot learning to feel emotions')">
+                        <h4>Creative writing</h4>
+                        <p>Write a creative story about a robot</p>
+                    </div>
+                    <div class="example-prompt" onclick="usePrompt('Help me debug this Python code')">
+                        <h4>Code help</h4>
+                        <p>Help me debug this Python code</p>
+                    </div>
+                    <div class="example-prompt" onclick="usePrompt('Plan a 7-day itinerary for visiting Japan')">
+                        <h4>Plan & organize</h4>
+                        <p>Plan a 7-day itinerary for visiting Japan</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-area">
+            <div class="input-container">
+                <textarea 
+                    class="message-input" 
+                    id="messageInput" 
+                    placeholder="Message AntiWorkGPT..."
+                    rows="1"
+                    onkeydown="handleKeyDown(event)"
+                    oninput="autoResize(this)"
+                ></textarea>
+                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = 'sk-44477fd533454d8c944bd138ceb5b919';
+        const API_URL = 'https://api.deepseek.com/v1/chat/completions';
+        
+        let currentChatId = null;
+        let isTyping = false;
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            loadChatHistory();
+            if (!currentChatId) {
+                showEmptyState();
+            }
+        });
+
+        // Auto-resize textarea
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+        }
+
+        // Handle keyboard shortcuts
+        function handleKeyDown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        // Use example prompt
+        function usePrompt(prompt) {
+            document.getElementById('messageInput').value = prompt;
+            document.getElementById('messageInput').focus();
+        }
+
+        // Start new chat
+        function startNewChat() {
+            currentChatId = generateChatId();
+            clearChatContainer();
+            updateChatHistory();
+            document.getElementById('messageInput').focus();
+        }
+
+        // Generate unique chat ID
+        function generateChatId() {
+            return 'chat_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        // Clear chat container
+        function clearChatContainer() {
+            const container = document.getElementById('chatContainer');
+            container.innerHTML = '';
+            hideEmptyState();
+        }
+
+        // Show empty state
+        function showEmptyState() {
+            document.getElementById('emptyState').style.display = 'flex';
+        }
+
+        // Hide empty state
+        function hideEmptyState() {
+            document.getElementById('emptyState').style.display = 'none';
+        }
+
+        // Send message
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message || isTyping) return;
+
+            if (!currentChatId) {
+                startNewChat();
+            }
+
+            // Clear input and disable send button
+            input.value = '';
+            autoResize(input);
+            toggleSendButton(false);
+
+            // Add user message to chat
+            addMessage('user', message);
+            hideEmptyState();
+
+            // Save user message
+            saveMessage(message, 'user');
+
+            // Show typing indicator
+            const typingId = addTypingIndicator();
+            isTyping = true;
+
+            try {
+                // Get chat history for context
+                const chatData = getChatData(currentChatId);
+                const messages = chatData ? chatData.messages : [];
+
+                // Prepare messages for API
+                const apiMessages = messages.map(msg => ({
+                    role: msg.role,
+                    content: msg.content
+                }));
+
+                // Add current message
+                apiMessages.push({ role: 'user', content: message });
+
+                // Call DeepSeek API
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: 'deepseek-chat',
+                        messages: apiMessages,
+                        temperature: 0.7,
+                        max_tokens: 2048
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const assistantMessage = data.choices[0].message.content;
+
+                // Remove typing indicator
+                removeTypingIndicator(typingId);
+
+                // Add assistant response
+                addMessage('assistant', assistantMessage);
+                saveMessage(assistantMessage, 'assistant');
+
+                // Update chat title if this is the first exchange
+                updateChatTitle(currentChatId, message);
+
+            } catch (error) {
+                console.error('Error:', error);
+                removeTypingIndicator(typingId);
+                addMessage('assistant', 'Sorry, I encountered an error. Please try again.');
+            } finally {
+                isTyping = false;
+                toggleSendButton(true);
+            }
+        }
+
+        // Toggle send button state
+        function toggleSendButton(enabled) {
+            const button = document.getElementById('sendButton');
+            button.disabled = !enabled;
+        }
+
+        // Add message to chat container
+        function addMessage(role, content) {
+            const container = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${role === 'user' ? 'U' : 'AI'}</div>
+                <div class="message-content">${content}</div>
+            `;
+            
+            container.appendChild(messageDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Add typing indicator
+        function addTypingIndicator() {
+            const container = document.getElementById('chatContainer');
+            const typingDiv = document.createElement('div');
+            const typingId = 'typing_' + Date.now();
+            typingDiv.id = typingId;
+            typingDiv.className = 'message assistant';
+            
+            typingDiv.innerHTML = `
+                <div class="message-avatar">AI</div>
+                <div class="message-content loading">
+                    <span class="loading-dots"></span>
+                </div>
+            `;
+            
+            container.appendChild(typingDiv);
+            container.scrollTop = container.scrollHeight;
+            return typingId;
+        }
+
+        // Remove typing indicator
+        function removeTypingIndicator(typingId) {
+            const typingDiv = document.getElementById(typingId);
+            if (typingDiv) {
+                typingDiv.remove();
+            }
+        }
+
+        // Save message to localStorage
+        function saveMessage(content, role) {
+            const chats = JSON.parse(localStorage.getItem('antiworkgpt_chats') || '{}');
+            
+            if (!chats[currentChatId]) {
+                chats[currentChatId] = {
+                    id: currentChatId,
+                    title: content.substring(0, 50) + (content.length > 50 ? '...' : ''),
+                    messages: [],
+                    createdAt: new Date().toISOString()
+                };
+            }
+            
+            chats[currentChatId].messages.push({
+                role,
+                content,
+                timestamp: new Date().toISOString()
+            });
+            
+            localStorage.setItem('antiworkgpt_chats', JSON.stringify(chats));
+            updateChatHistory();
+        }
+
+        // Get chat data
+        function getChatData(chatId) {
+            const chats = JSON.parse(localStorage.getItem('antiworkgpt_chats') || '{}');
+            return chats[chatId];
+        }
+
+        // Update chat title
+        function updateChatTitle(chatId, firstMessage) {
+            const chats = JSON.parse(localStorage.getItem('antiworkgpt_chats') || '{}');
+            if (chats[chatId] && chats[chatId].messages.length <= 2) {
+                chats[chatId].title = firstMessage.substring(0, 50) + (firstMessage.length > 50 ? '...' : '');
+                localStorage.setItem('antiworkgpt_chats', JSON.stringify(chats));
+                updateChatHistory();
+            }
+        }
+
+        // Load chat history
+        function loadChatHistory() {
+            const chats = JSON.parse(localStorage.getItem('antiworkgpt_chats') || '{}');
+            const chatArray = Object.values(chats).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            
+            const historyDiv = document.getElementById('chatHistory');
+            historyDiv.innerHTML = '';
+            
+            chatArray.forEach(chat => {
+                const chatItem = document.createElement('div');
+                chatItem.className = 'chat-item';
+                if (chat.id === currentChatId) {
+                    chatItem.classList.add('active');
+                }
+                
+                chatItem.innerHTML = `
+                    <span onclick="loadChat('${chat.id}')" style="flex: 1; overflow: hidden; text-overflow: ellipsis;">${chat.title}</span>
+                    <button class="delete-chat" onclick="deleteChat('${chat.id}', event)">×</button>
+                `;
+                
+                historyDiv.appendChild(chatItem);
+            });
+        }
+
+        // Load specific chat
+        function loadChat(chatId) {
+            currentChatId = chatId;
+            const chatData = getChatData(chatId);
+            
+            if (!chatData) return;
+            
+            clearChatContainer();
+            
+            // Load all messages
+            chatData.messages.forEach(msg => {
+                addMessage(msg.role, msg.content);
+            });
+            
+            updateChatHistory();
+        }
+
+        // Delete chat
+        function deleteChat(chatId, event) {
+            event.stopPropagation();
+            
+            if (confirm('Are you sure you want to delete this chat?')) {
+                const chats = JSON.parse(localStorage.getItem('antiworkgpt_chats') || '{}');
+                delete chats[chatId];
+                localStorage.setItem('antiworkgpt_chats', JSON.stringify(chats));
+                
+                if (currentChatId === chatId) {
+                    currentChatId = null;
+                    clearChatContainer();
+                    showEmptyState();
+                }
+                
+                updateChatHistory();
+            }
+        }
+
+        // Update chat history display
+        function updateChatHistory() {
+            loadChatHistory();
+        }
+
+        // Enable send button when there's text
+        document.getElementById('messageInput').addEventListener('input', function() {
+            const hasText = this.value.trim().length > 0;
+            toggleSendButton(hasText && !isTyping);
+        });
+    </script>
+</body>
+</html> 
