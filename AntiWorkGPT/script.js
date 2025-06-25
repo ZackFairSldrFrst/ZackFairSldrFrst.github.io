@@ -280,7 +280,7 @@ function typewriterEffect(element, text) {
     element.innerHTML = '';
     element.classList.add('typewriter-cursor');
     let i = 0;
-    const speed = 30; // milliseconds per character
+    const speed = 15; // milliseconds per character
     const formattedText = formatMarkdown(text);
     
     // Create a temporary element to get plain text for typing
