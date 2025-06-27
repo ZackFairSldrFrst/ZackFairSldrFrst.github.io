@@ -48,13 +48,23 @@
     </nav>
     <!-- Mobile menu button -->
     <div class="md:hidden">
-      <button class="text-gray-700 hover:text-primary">
+      <button id="mobile-menu-button" class="text-gray-700 hover:text-primary">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
       </button>
     </div>
   </header>
+
+  <!-- Mobile Navigation Menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-200 shadow-lg">
+    <div class="px-6 py-4 space-y-4">
+      <a href="index.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-2">Home</a>
+      <a href="about.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-2">About Us</a>
+      <a href="services.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-2">Services</a>
+      <a href="contact.html" class="block text-primary font-semibold py-2 border-b border-highlight">Contact</a>
+    </div>
+  </div>
 
   <!-- Contact Section -->
   <section class="bg-gradient-to-br from-gray-50 to-white py-20 lg:py-28">
@@ -269,5 +279,35 @@
       </div>
     </div>
   </footer>
+
+  <script>
+    // Mobile menu functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+
+      mobileMenuButton.addEventListener('click', function() {
+        mobileMenu.classList.toggle('hidden');
+      });
+
+      // Close mobile menu when clicking on a link
+      const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+      mobileMenuLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          mobileMenu.classList.add('hidden');
+        });
+      });
+
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', function(event) {
+        const isClickInsideMenu = mobileMenu.contains(event.target);
+        const isClickOnButton = mobileMenuButton.contains(event.target);
+        
+        if (!isClickInsideMenu && !isClickOnButton) {
+          mobileMenu.classList.add('hidden');
+        }
+      });
+    });
+  </script>
 </body>
 </html> 
