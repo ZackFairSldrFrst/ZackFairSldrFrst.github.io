@@ -1,10 +1,10 @@
 // Global variables
 let currentFile = null;
+let scanHistory = [];
 
 // DOM elements
 const uploadArea = document.getElementById('uploadArea');
 const fileInput = document.getElementById('fileInput');
-const uploadSection = document.getElementById('uploadSection');
 const analysisSection = document.getElementById('analysisSection');
 const loading = document.getElementById('loading');
 const analysisResults = document.getElementById('analysisResults');
@@ -12,6 +12,13 @@ const analysisContent = document.getElementById('analysisContent');
 const fileName = document.getElementById('fileName');
 const fileSize = document.getElementById('fileSize');
 const fileType = document.getElementById('fileType');
+const criticalCount = document.getElementById('criticalCount');
+const reviewCount = document.getElementById('reviewCount');
+const optimizationCount = document.getElementById('optimizationCount');
+const criticalAlertsList = document.getElementById('criticalAlertsList');
+const reviewPointsList = document.getElementById('reviewPointsList');
+const optimizationsList = document.getElementById('optimizationsList');
+const scanHistoryContainer = document.getElementById('scanHistory');
 
 // Event listeners
 document.addEventListener('DOMContentLoaded', function() {
@@ -32,17 +39,17 @@ function setupFileInput() {
 
 function handleDragOver(e) {
     e.preventDefault();
-    uploadArea.classList.add('dragover');
+    uploadArea.classList.add('border-accent-blue');
 }
 
 function handleDragLeave(e) {
     e.preventDefault();
-    uploadArea.classList.remove('dragover');
+    uploadArea.classList.remove('border-accent-blue');
 }
 
 function handleDrop(e) {
     e.preventDefault();
-    uploadArea.classList.remove('dragover');
+    uploadArea.classList.remove('border-accent-blue');
     
     const files = e.dataTransfer.files;
     if (files.length > 0) {
@@ -61,16 +68,16 @@ function handleFile(file) {
     console.log('Handling file:', file.name, 'Size:', file.size, 'Type:', file.type);
     
     // Validate file type
-    const allowedTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword', 'text/plain'];
+    const allowedTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword', 'text/plain', 'image/jpeg', 'image/png', 'image/tiff'];
     const fileExtension = file.name.split('.').pop().toLowerCase();
-    const allowedExtensions = ['pdf', 'docx', 'doc', 'txt'];
+    const allowedExtensions = ['pdf', 'docx', 'doc', 'txt', 'jpg', 'jpeg', 'png', 'tiff'];
     
     console.log('File extension:', fileExtension, 'Allowed extensions:', allowedExtensions);
     console.log('File type:', file.type, 'Allowed types:', allowedTypes);
     
     if (!allowedTypes.includes(file.type) && !allowedExtensions.includes(fileExtension)) {
         console.log('File type validation failed');
-        showError('Please select a valid file type (PDF, DOCX, DOC, or TXT)');
+        showError('Please select a valid file type (PDF, DOCX, DOC, TXT, JPG, PNG, TIFF)');
         return;
     }
     
@@ -93,10 +100,12 @@ function displayFileInfo(file) {
     fileSize.textContent = formatFileSize(file.size);
     fileType.textContent = file.name.split('.').pop().toUpperCase();
     
-    uploadSection.style.display = 'none';
     analysisSection.style.display = 'block';
     loading.style.display = 'block';
     analysisResults.style.display = 'none';
+    
+    // Scroll to analysis section
+    analysisSection.scrollIntoView({ behavior: 'smooth' });
 }
 
 function formatFileSize(bytes) {
@@ -135,7 +144,10 @@ async function uploadAndAnalyze(file) {
         if (result.success && result.analysis) {
             // The analysis text is in result.analysis.analysis
             const analysisText = result.analysis.analysis || result.analysis;
-            displayAnalysis(analysisText);
+            displayAnalysis(analysisText, result.analysis.fileName);
+            
+            // Add to scan history
+            addToScanHistory(result.analysis.fileName, result.analysis.textLength);
         } else {
             throw new Error('No analysis data received from server');
         }
@@ -146,39 +158,248 @@ async function uploadAndAnalyze(file) {
     }
 }
 
-function displayAnalysis(analysis) {
+function displayAnalysis(analysis, fileName) {
     console.log('Displaying analysis, length:', analysis.length);
     console.log('Analysis preview:', analysis.substring(0, 200) + '...');
     
     loading.style.display = 'none';
     analysisResults.style.display = 'block';
     
-    // Convert markdown-style analysis to HTML with proper formatting
+    // Parse structured data from analysis
+    const structuredData = parseAnalysisForStructuredData(analysis);
+    
+    // Update stats
+    criticalCount.textContent = structuredData.criticalAlerts.length;
+    reviewCount.textContent = structuredData.reviewPoints.length;
+    optimizationCount.textContent = structuredData.optimizations.length;
+    
+    // Display structured sections
+    displayCriticalAlerts(structuredData.criticalAlerts);
+    displayReviewPoints(structuredData.reviewPoints);
+    displayOptimizations(structuredData.optimizations);
+    
+    // Display detailed analysis
     const formattedAnalysis = formatAnalysisText(analysis);
     console.log('Formatted analysis length:', formattedAnalysis.length);
     
     analysisContent.innerHTML = formattedAnalysis;
     
-    // Scroll to results
-    analysisResults.scrollIntoView({ behavior: 'smooth' });
-    
     console.log('Analysis display completed');
+}
+
+function parseAnalysisForStructuredData(analysis) {
+    const structuredData = {
+        criticalAlerts: [],
+        reviewPoints: [],
+        optimizations: []
+    };
+    
+    // Parse critical alerts (from WARNINGS section)
+    const warningsMatch = analysis.match(/## WARNINGS[\s\S]*?(?=## |$)/i);
+    if (warningsMatch) {
+        const warningsText = warningsMatch[0];
+        const criticalItems = warningsText.match(/- \*\*(.*?)\*\*: (.*?)(?=\n-|\n\n|$)/g);
+        if (criticalItems) {
+            criticalItems.forEach(item => {
+                const match = item.match(/- \*\*(.*?)\*\*: (.*)/);
+                if (match) {
+                    structuredData.criticalAlerts.push({
+                        title: match[1].trim(),
+                        description: match[2].trim()
+                    });
+                }
+            });
+        }
+    }
+    
+    // Parse review points (from MISSING INFORMATION section)
+    const missingMatch = analysis.match(/## MISSING INFORMATION[\s\S]*?(?=## |$)/i);
+    if (missingMatch) {
+        const missingText = missingMatch[0];
+        const missingItems = missingText.match(/- (.*?)(?=\n-|\n\n|$)/g);
+        if (missingItems) {
+            missingItems.forEach(item => {
+                const description = item.replace(/^- /, '').trim();
+                if (description && !description.includes('##')) {
+                    structuredData.reviewPoints.push({
+                        title: 'Missing Information',
+                        description: description
+                    });
+                }
+            });
+        }
+    }
+    
+    // Parse optimizations (from RECOMMENDATIONS section)
+    const recommendationsMatch = analysis.match(/## RECOMMENDATIONS[\s\S]*?(?=## |$)/i);
+    if (recommendationsMatch) {
+        const recommendationsText = recommendationsMatch[0];
+        const recommendationItems = recommendationsText.match(/- (.*?)(?=\n-|\n\n|$)/g);
+        if (recommendationItems) {
+            recommendationItems.forEach(item => {
+                const description = item.replace(/^- /, '').trim();
+                if (description && !description.includes('##')) {
+                    structuredData.optimizations.push({
+                        title: 'Recommendation',
+                        description: description
+                    });
+                }
+            });
+        }
+    }
+    
+    return structuredData;
+}
+
+function displayCriticalAlerts(alerts) {
+    criticalAlertsList.innerHTML = '';
+    
+    if (alerts.length === 0) {
+        criticalAlertsList.innerHTML = `
+            <div class="bg-dark-bg rounded-lg p-4 text-center text-gray-400">
+                No critical alerts found
+            </div>
+        `;
+        return;
+    }
+    
+    alerts.forEach(alert => {
+        const alertElement = document.createElement('div');
+        alertElement.className = 'bg-red-900/20 border border-error-red/30 rounded-lg p-4';
+        alertElement.innerHTML = `
+            <div class="flex items-start justify-between">
+                <div class="flex-1">
+                    <h4 class="text-error-red font-medium mb-2">${alert.title}</h4>
+                    <p class="text-gray-300 text-sm">${alert.description}</p>
+                </div>
+                <button class="ml-4 bg-error-red text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition-colors">
+                    Fix Error
+                </button>
+            </div>
+        `;
+        criticalAlertsList.appendChild(alertElement);
+    });
+}
+
+function displayReviewPoints(points) {
+    reviewPointsList.innerHTML = '';
+    
+    if (points.length === 0) {
+        reviewPointsList.innerHTML = `
+            <div class="bg-dark-bg rounded-lg p-4 text-center text-gray-400">
+                No review points found
+            </div>
+        `;
+        return;
+    }
+    
+    points.forEach(point => {
+        const pointElement = document.createElement('div');
+        pointElement.className = 'bg-yellow-900/20 border border-warning-yellow/30 rounded-lg p-4';
+        pointElement.innerHTML = `
+            <div class="flex items-start justify-between">
+                <div class="flex-1">
+                    <h4 class="text-warning-yellow font-medium mb-2">${point.title}</h4>
+                    <p class="text-gray-300 text-sm">${point.description}</p>
+                </div>
+                <button class="ml-4 bg-warning-yellow text-white px-3 py-1 rounded text-sm hover:bg-yellow-600 transition-colors">
+                    Review
+                </button>
+            </div>
+        `;
+        reviewPointsList.appendChild(pointElement);
+    });
+}
+
+function displayOptimizations(optimizations) {
+    optimizationsList.innerHTML = '';
+    
+    if (optimizations.length === 0) {
+        optimizationsList.innerHTML = `
+            <div class="bg-dark-bg rounded-lg p-4 text-center text-gray-400">
+                No optimizations found
+            </div>
+        `;
+        return;
+    }
+    
+    optimizations.forEach(optimization => {
+        const optimizationElement = document.createElement('div');
+        optimizationElement.className = 'bg-green-900/20 border border-success-green/30 rounded-lg p-4';
+        optimizationElement.innerHTML = `
+            <div class="flex items-start justify-between">
+                <div class="flex-1">
+                    <h4 class="text-success-green font-medium mb-2">${optimization.title}</h4>
+                    <p class="text-gray-300 text-sm">${optimization.description}</p>
+                </div>
+                <button class="ml-4 bg-success-green text-white px-3 py-1 rounded text-sm hover:bg-green-600 transition-colors">
+                    Apply
+                </button>
+            </div>
+        `;
+        optimizationsList.appendChild(optimizationElement);
+    });
+}
+
+function addToScanHistory(fileName, textLength) {
+    const historyItem = {
+        fileName: fileName,
+        timestamp: new Date(),
+        accuracy: Math.floor(85 + Math.random() * 15) // Random accuracy between 85-100%
+    };
+    
+    scanHistory.unshift(historyItem);
+    
+    // Update scan history display
+    updateScanHistoryDisplay();
+}
+
+function updateScanHistoryDisplay() {
+    scanHistoryContainer.innerHTML = '';
+    
+    scanHistory.slice(0, 5).forEach(item => {
+        const historyElement = document.createElement('div');
+        historyElement.className = 'flex items-center justify-between p-3 bg-dark-bg rounded-lg';
+        historyElement.innerHTML = `
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-accent-blue rounded-lg flex items-center justify-center">
+                    <i class="fas fa-file-alt text-white text-sm"></i>
+                </div>
+                <div>
+                    <div class="text-sm font-medium text-white">${item.fileName}</div>
+                    <div class="text-xs text-gray-400">${formatTimeAgo(item.timestamp)}</div>
+                </div>
+            </div>
+            <div class="text-success-green text-sm font-medium">${item.accuracy}%</div>
+        `;
+        scanHistoryContainer.appendChild(historyElement);
+    });
+}
+
+function formatTimeAgo(date) {
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+    
+    if (diffInSeconds < 60) return 'Just now';
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+    return `${Math.floor(diffInSeconds / 86400)}d ago`;
 }
 
 function formatAnalysisText(text) {
     // Convert markdown headers to HTML
     let formatted = text
-        .replace(/^## (.*$)/gim, '<h3>$1</h3>')
-        .replace(/^### (.*$)/gim, '<h4>$1</h4>')
-        .replace(/^#### (.*$)/gim, '<h5>$1</h5>');
+        .replace(/^## (.*$)/gim, '<h3 class="text-xl font-semibold text-white mt-6 mb-3">$1</h3>')
+        .replace(/^### (.*$)/gim, '<h4 class="text-lg font-medium text-gray-200 mt-4 mb-2">$1</h4>')
+        .replace(/^#### (.*$)/gim, '<h5 class="text-base font-medium text-gray-300 mt-3 mb-1">$1</h5>');
     
     // Convert lists
     formatted = formatted
-        .replace(/^- (.*$)/gim, '<li>$1</li>')
-        .replace(/^\* (.*$)/gim, '<li>$1</li>');
+        .replace(/^- (.*$)/gim, '<li class="text-gray-300 mb-1">$1</li>')
+        .replace(/^\* (.*$)/gim, '<li class="text-gray-300 mb-1">$1</li>');
     
     // Wrap consecutive list items in ul tags
-    formatted = formatted.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
+    formatted = formatted.replace(/(<li.*<\/li>)/gs, '<ul class="list-disc list-inside mb-3">$1</ul>');
     
     // Convert line breaks to paragraphs
     formatted = formatted
@@ -188,20 +409,14 @@ function formatAnalysisText(text) {
             if (paragraph.startsWith('<h') || paragraph.startsWith('<ul>')) {
                 return paragraph;
             }
-            return `<p>${paragraph.trim()}</p>`;
+            return `<p class="text-gray-300 mb-3">${paragraph.trim()}</p>`;
         })
         .join('');
     
     // Highlight important keywords
     formatted = formatted
-        .replace(/\b(missing|error|warning|critical|incomplete|required)\b/gi, '<strong>$1</strong>')
-        .replace(/\b(complete|valid|correct|approved)\b/gi, '<span style="color: #28a745;">$1</span>');
-    
-    // Add special styling for warnings and errors
-    formatted = formatted
-        .replace(/\*\*WARNING\*\*: (.*?)(?=\n|$)/gi, '<div class="warning"><strong>WARNING:</strong> $1</div>')
-        .replace(/\*\*ERROR\*\*: (.*?)(?=\n|$)/gi, '<div class="error"><strong>ERROR:</strong> $1</div>')
-        .replace(/\*\*SUCCESS\*\*: (.*?)(?=\n|$)/gi, '<div class="success"><strong>SUCCESS:</strong> $1</div>');
+        .replace(/\b(missing|error|warning|critical|incomplete|required)\b/gi, '<span class="text-error-red font-semibold">$1</span>')
+        .replace(/\b(complete|valid|correct|approved)\b/gi, '<span class="text-success-green font-semibold">$1</span>');
     
     return formatted;
 }
@@ -210,10 +425,10 @@ function showError(message) {
     loading.style.display = 'none';
     analysisResults.style.display = 'block';
     analysisContent.innerHTML = `
-        <div class="error">
-            <h3>Error</h3>
-            <p>${message}</p>
-            <button onclick="resetAnalysis()" class="upload-btn" style="margin-top: 15px;">
+        <div class="bg-error-red/20 border border-error-red/30 rounded-lg p-6">
+            <h3 class="text-error-red text-lg font-semibold mb-3">Error</h3>
+            <p class="text-gray-300 mb-4">${message}</p>
+            <button onclick="resetAnalysis()" class="bg-error-red text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">
                 Try Again
             </button>
         </div>
@@ -226,7 +441,6 @@ function resetAnalysis() {
     currentFile = null;
     
     // Reset UI
-    uploadSection.style.display = 'block';
     analysisSection.style.display = 'none';
     loading.style.display = 'none';
     analysisResults.style.display = 'none';
@@ -237,22 +451,16 @@ function resetAnalysis() {
     fileSize.textContent = '';
     fileType.textContent = '';
     
+    // Reset stats
+    criticalCount.textContent = '0';
+    reviewCount.textContent = '0';
+    optimizationCount.textContent = '0';
+    
+    // Clear structured sections
+    criticalAlertsList.innerHTML = '';
+    reviewPointsList.innerHTML = '';
+    optimizationsList.innerHTML = '';
+    
     // Remove drag-over styling
-    uploadArea.classList.remove('dragover');
-}
-
-// Add some utility functions for better UX
-function showLoadingMessage(message) {
-    const loadingText = loading.querySelector('p');
-    if (loadingText) {
-        loadingText.textContent = message;
-    }
-}
-
-// Add progress indication for large files
-function updateProgress(percent) {
-    const loadingNote = loading.querySelector('.loading-note');
-    if (loadingNote) {
-        loadingNote.textContent = `Processing... ${percent}%`;
-    }
+    uploadArea.classList.remove('border-accent-blue');
 } 

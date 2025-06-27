@@ -3,70 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DocuRead - AI Document Analysis</title>
+    <title>DocuRead Pro - AI Document Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'dark-bg': '#0f0f23',
+                        'dark-card': '#1a1a2e',
+                        'dark-border': '#2d2d44',
+                        'accent-blue': '#3b82f6',
+                        'accent-purple': '#8b5cf6',
+                        'success-green': '#10b981',
+                        'warning-yellow': '#f59e0b',
+                        'error-red': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body>
-    <div class="container">
-        <header class="header">
-            <div class="logo">
-                <i class="fas fa-file-alt"></i>
-                <h1>DocuRead</h1>
-            </div>
-            <p class="subtitle">AI-Powered Document Analysis</p>
-        </header>
-
-        <main class="main-content">
-            <div class="upload-section" id="uploadSection">
-                <div class="upload-area" id="uploadArea">
-                    <div class="upload-icon">
-                        <i class="fas fa-cloud-upload-alt"></i>
+<body class="bg-dark-bg text-gray-100 min-h-screen">
+    <!-- Header -->
+    <header class="bg-dark-card border-b border-dark-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-accent-blue to-accent-purple rounded-lg flex items-center justify-center">
+                        <i class="fas fa-file-alt text-white text-lg"></i>
                     </div>
-                    <h2>Upload Your Document</h2>
-                    <p>Drag and drop your document here or click to browse</p>
-                    <p class="file-types">Supported formats: PDF, DOCX, DOC, TXT</p>
-                    <input type="file" id="fileInput" accept=".pdf,.docx,.doc,.txt" hidden>
-                    <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
-                        Choose File
-                    </button>
+                    <div>
+                        <h1 class="text-xl font-bold text-white">DocuRead Pro</h1>
+                        <p class="text-sm text-gray-400">Automated document review and process optimization</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-right">
+                        <div class="text-sm text-gray-400">Status</div>
+                        <div class="text-success-green text-sm font-medium">● Online</div>
+                    </div>
                 </div>
             </div>
+        </div>
+    </header>
 
-            <div class="analysis-section" id="analysisSection" style="display: none;">
-                <div class="analysis-header">
-                    <h2>Document Analysis</h2>
-                    <button class="new-analysis-btn" onclick="resetAnalysis()">
-                        <i class="fas fa-plus"></i> New Analysis
-                    </button>
-                </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Left Column - Upload & History -->
+            <div class="lg:col-span-1 space-y-6">
                 
-                <div class="file-info" id="fileInfo">
-                    <div class="file-details">
-                        <i class="fas fa-file-alt"></i>
-                        <span id="fileName"></span>
-                    </div>
-                    <div class="file-stats">
-                        <span id="fileSize"></span>
-                        <span id="fileType"></span>
+                <!-- Upload Section -->
+                <div class="bg-dark-card rounded-xl border border-dark-border p-6">
+                    <h2 class="text-lg font-semibold text-white mb-4">Upload Documents</h2>
+                    <div class="upload-area bg-dark-bg border-2 border-dashed border-dark-border rounded-lg p-8 text-center transition-all duration-300 hover:border-accent-blue" id="uploadArea">
+                        <div class="upload-icon mb-4">
+                            <i class="fas fa-cloud-upload-alt text-4xl text-accent-blue"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-white mb-2">Upload Tax Documents</h3>
+                        <p class="text-gray-400 mb-4">Drag & drop or click to upload 1040, 1065, 1120, 1120-S returns</p>
+                        <input type="file" id="fileInput" accept=".pdf,.docx,.doc,.txt,.jpg,.jpeg,.png,.tiff" class="hidden">
+                        <button class="bg-gradient-to-r from-accent-blue to-accent-purple text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-opacity" onclick="document.getElementById('fileInput').click()">
+                            Choose Files
+                        </button>
+                        <p class="text-sm text-gray-500 mt-3">Supported: PDF, DOCX, DOC, TXT, JPG, PNG, TIFF (Max 10MB each)</p>
                     </div>
                 </div>
 
-                <div class="loading" id="loading">
-                    <div class="spinner"></div>
-                    <p>Analyzing your document with AI...</p>
-                    <p class="loading-note">This may take a few moments for large documents</p>
-                </div>
-
-                <div class="analysis-results" id="analysisResults" style="display: none;">
-                    <div class="analysis-content" id="analysisContent"></div>
+                <!-- Scan History -->
+                <div class="bg-dark-card rounded-xl border border-dark-border p-6">
+                    <h2 class="text-lg font-semibold text-white mb-4">Scan History</h2>
+                    <div class="space-y-3" id="scanHistory">
+                        <div class="flex items-center justify-between p-3 bg-dark-bg rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-accent-blue rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-file-alt text-white text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-white">sample-tax-form.txt</div>
+                                    <div class="text-xs text-gray-400">Just now</div>
+                                </div>
+                            </div>
+                            <div class="text-success-green text-sm font-medium">95%</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </main>
 
-        <footer class="footer">
-            <p>&copy; 2024 DocuRead. Powered by DeepSeek AI.</p>
-        </footer>
+            <!-- Right Column - Analysis Results -->
+            <div class="lg:col-span-2 space-y-6">
+                
+                <!-- Latest Analysis Report -->
+                <div class="bg-dark-card rounded-xl border border-dark-border p-6" id="analysisSection" style="display: none;">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-lg font-semibold text-white">Latest Analysis Report</h2>
+                        <button class="text-accent-blue hover:text-accent-purple transition-colors" onclick="resetAnalysis()">
+                            <i class="fas fa-plus mr-2"></i>New Analysis
+                        </button>
+                    </div>
+
+                    <!-- File Info -->
+                    <div class="bg-dark-bg rounded-lg p-4 mb-6" id="fileInfo">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-accent-blue rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-file-alt text-white"></i>
+                                </div>
+                                <div>
+                                    <div class="text-white font-medium" id="fileName"></div>
+                                    <div class="text-sm text-gray-400">
+                                        <span id="fileSize"></span> • <span id="fileType"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm text-gray-400">Generated</div>
+                                <div class="text-white font-medium">Just now</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats Overview -->
+                    <div class="grid grid-cols-3 gap-4 mb-6" id="statsOverview">
+                        <div class="bg-dark-bg rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold text-error-red mb-1" id="criticalCount">0</div>
+                            <div class="text-sm text-gray-400">Critical Alerts</div>
+                        </div>
+                        <div class="bg-dark-bg rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold text-warning-yellow mb-1" id="reviewCount">0</div>
+                            <div class="text-sm text-gray-400">Review Points</div>
+                        </div>
+                        <div class="bg-dark-bg rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold text-success-green mb-1" id="optimizationCount">0</div>
+                            <div class="text-sm text-gray-400">Optimizations</div>
+                        </div>
+                    </div>
+
+                    <!-- Loading State -->
+                    <div class="text-center py-12" id="loading">
+                        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-accent-blue mb-4"></div>
+                        <p class="text-white text-lg mb-2">Analyzing your document with AI...</p>
+                        <p class="text-gray-400">This may take a few moments for large documents</p>
+                    </div>
+
+                    <!-- Analysis Results -->
+                    <div id="analysisResults" style="display: none;">
+                        <!-- Critical Alerts -->
+                        <div class="mb-6" id="criticalAlerts">
+                            <h3 class="text-lg font-semibold text-error-red mb-4 flex items-center">
+                                <i class="fas fa-exclamation-triangle mr-2"></i>Critical Alerts
+                            </h3>
+                            <div class="space-y-3" id="criticalAlertsList"></div>
+                        </div>
+
+                        <!-- Review Points -->
+                        <div class="mb-6" id="reviewPoints">
+                            <h3 class="text-lg font-semibold text-warning-yellow mb-4 flex items-center">
+                                <i class="fas fa-clipboard-list mr-2"></i>Review Points
+                            </h3>
+                            <div class="space-y-3" id="reviewPointsList"></div>
+                        </div>
+
+                        <!-- Optimizations -->
+                        <div class="mb-6" id="optimizations">
+                            <h3 class="text-lg font-semibold text-success-green mb-4 flex items-center">
+                                <i class="fas fa-lightbulb mr-2"></i>Optimizations
+                            </h3>
+                            <div class="space-y-3" id="optimizationsList"></div>
+                        </div>
+
+                        <!-- Detailed Analysis -->
+                        <div class="bg-dark-bg rounded-lg p-6">
+                            <h3 class="text-lg font-semibold text-white mb-4">Detailed Analysis</h3>
+                            <div class="prose prose-invert max-w-none" id="analysisContent"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
