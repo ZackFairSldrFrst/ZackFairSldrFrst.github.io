@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>JE Notaries - Professional Notarial Services in Richmond, BC</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Source+Sans+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -16,8 +16,8 @@
             highlight: '#f6c270',
           },
           fontFamily: {
-            'serif': ['Playfair Display', 'serif'],
-            'sans': ['Inter', 'sans-serif'],
+            'serif': ['Cormorant Garamond', 'serif'],
+            'sans': ['Source Sans Pro', 'sans-serif'],
           }
         }
       }
@@ -96,16 +96,15 @@
         </div>
       </div>
 
-      <!-- Image Grid -->
-      <div class="flex flex-col md:flex-row justify-center gap-6 mt-16">
-        <div class="hover-lift">
-          <img src="pexels-karolina-grabowska-7876053.jpg" alt="Professional Consultation" class="w-full max-w-sm mx-auto rounded-xl shadow-lg object-cover h-64">
-        </div>
-        <div class="hover-lift">
-          <img src="pexels-rdne-7841454.jpg" alt="Document Signing" class="w-full max-w-sm mx-auto rounded-xl shadow-lg object-cover h-64">
-        </div>
-        <div class="hover-lift">
-          <img src="pexels-pixabay-63332.jpg" alt="Legal Services" class="w-full max-w-sm mx-auto rounded-xl shadow-lg object-cover h-64">
+      <!-- Hero Image -->
+      <div class="mt-16 max-w-4xl mx-auto">
+        <div class="relative overflow-hidden rounded-2xl shadow-2xl hover-lift">
+          <img src="vancouver.jpg" alt="Professional Notarial Consultation" class="w-full h-80 object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+          <div class="absolute bottom-6 left-6 text-white">
+            <h3 class="text-2xl font-serif font-semibold mb-2">Professional Guidance You Can Trust</h3>
+            <p class="text-gray-200">Personalized service for your most important legal documents</p>
+          </div>
         </div>
       </div>
     </div>
@@ -115,7 +114,7 @@
   <section class="bg-gradient-custom py-20 lg:py-28 text-white relative overflow-hidden">
     <!-- Background image overlay -->
     <div class="absolute inset-0">
-      <img src="pexels-karolina-grabowska-7876053.jpg" alt="Professional Background" class="w-full h-full object-cover opacity-10">
+      <img src="vancouver.jpg" alt="Professional Background" class="w-full h-full object-cover opacity-10">
     </div>
     <div class="absolute inset-0 bg-black/20"></div>
     
