@@ -30,7 +30,6 @@ function setupDragAndDrop() {
     uploadArea.addEventListener('dragover', handleDragOver);
     uploadArea.addEventListener('dragleave', handleDragLeave);
     uploadArea.addEventListener('drop', handleDrop);
-    uploadArea.addEventListener('click', () => fileInput.click());
 }
 
 function setupFileInput() {
@@ -198,10 +197,24 @@ function parseAnalysisForStructuredData(analysis) {
     const warningsMatch = analysis.match(/## WARNINGS[\s\S]*?(?=## |$)/i);
     if (warningsMatch) {
         const warningsText = warningsMatch[0];
-        const criticalItems = warningsText.match(/- \*\*(.*?)\*\*: (.*?)(?=\n-|\n\n|$)/g);
+        // Look for numbered items with bold headers
+        const criticalItems = warningsText.match(/(\d+)\.\s+\*\*(.*?)\*\*:\s*(.*?)(?=\n\d+\.|\n\n|$)/g);
         if (criticalItems) {
             criticalItems.forEach(item => {
-                const match = item.match(/- \*\*(.*?)\*\*: (.*)/);
+                const match = item.match(/(\d+)\.\s+\*\*(.*?)\*\*:\s*(.*)/);
+                if (match) {
+                    structuredData.criticalAlerts.push({
+                        title: match[2].trim(),
+                        description: match[3].trim()
+                    });
+                }
+            });
+        }
+        // Also look for bullet points with bold headers
+        const bulletItems = warningsText.match(/- \*\*(.*?)\*\*:\s*(.*?)(?=\n-|\n\n|$)/g);
+        if (bulletItems) {
+            bulletItems.forEach(item => {
+                const match = item.match(/- \*\*(.*?)\*\*:\s*(.*)/);
                 if (match) {
                     structuredData.criticalAlerts.push({
                         title: match[1].trim(),
@@ -216,9 +229,23 @@ function parseAnalysisForStructuredData(analysis) {
     const missingMatch = analysis.match(/## MISSING INFORMATION[\s\S]*?(?=## |$)/i);
     if (missingMatch) {
         const missingText = missingMatch[0];
-        const missingItems = missingText.match(/- (.*?)(?=\n-|\n\n|$)/g);
+        // Look for numbered items
+        const missingItems = missingText.match(/(\d+)\.\s+\*\*(.*?)\*\*:\s*(.*?)(?=\n\d+\.|\n\n|$)/g);
         if (missingItems) {
             missingItems.forEach(item => {
+                const match = item.match(/(\d+)\.\s+\*\*(.*?)\*\*:\s*(.*)/);
+                if (match) {
+                    structuredData.reviewPoints.push({
+                        title: match[2].trim(),
+                        description: match[3].trim()
+                    });
+                }
+            });
+        }
+        // Also look for bullet points
+        const bulletItems = missingText.match(/- (.*?)(?=\n-|\n\n|$)/g);
+        if (bulletItems) {
+            bulletItems.forEach(item => {
                 const description = item.replace(/^- /, '').trim();
                 if (description && !description.includes('##')) {
                     structuredData.reviewPoints.push({
@@ -234,9 +261,23 @@ function parseAnalysisForStructuredData(analysis) {
     const recommendationsMatch = analysis.match(/## RECOMMENDATIONS[\s\S]*?(?=## |$)/i);
     if (recommendationsMatch) {
         const recommendationsText = recommendationsMatch[0];
-        const recommendationItems = recommendationsText.match(/- (.*?)(?=\n-|\n\n|$)/g);
+        // Look for numbered items
+        const recommendationItems = recommendationsText.match(/(\d+)\.\s+\*\*(.*?)\*\*:\s*(.*?)(?=\n\d+\.|\n\n|$)/g);
         if (recommendationItems) {
             recommendationItems.forEach(item => {
+                const match = item.match(/(\d+)\.\s+\*\*(.*?)\*\*:\s*(.*)/);
+                if (match) {
+                    structuredData.optimizations.push({
+                        title: match[2].trim(),
+                        description: match[3].trim()
+                    });
+                }
+            });
+        }
+        // Also look for bullet points
+        const bulletItems = recommendationsText.match(/- (.*?)(?=\n-|\n\n|$)/g);
+        if (bulletItems) {
+            bulletItems.forEach(item => {
                 const description = item.replace(/^- /, '').trim();
                 if (description && !description.includes('##')) {
                     structuredData.optimizations.push({
@@ -245,6 +286,45 @@ function parseAnalysisForStructuredData(analysis) {
                     });
                 }
             });
+        }
+    }
+    
+    // If no structured data found, create some from the overall analysis
+    if (structuredData.criticalAlerts.length === 0 && structuredData.reviewPoints.length === 0 && structuredData.optimizations.length === 0) {
+        // Extract from ERRORS AND ISSUES section
+        const errorsMatch = analysis.match(/## ERRORS AND ISSUES[\s\S]*?(?=## |$)/i);
+        if (errorsMatch) {
+            const errorsText = errorsMatch[0];
+            const errorItems = errorsText.match(/(\d+)\.\s+\*\*(.*?)\*\*:\s*(.*?)(?=\n\d+\.|\n\n|$)/g);
+            if (errorItems) {
+                errorItems.forEach(item => {
+                    const match = item.match(/(\d+)\.\s+\*\*(.*?)\*\*:\s*(.*)/);
+                    if (match) {
+                        structuredData.criticalAlerts.push({
+                            title: match[2].trim(),
+                            description: match[3].trim()
+                        });
+                    }
+                });
+            }
+        }
+        
+        // Extract from SUMMARY section
+        const summaryMatch = analysis.match(/## SUMMARY[\s\S]*?(?=## |$)/i);
+        if (summaryMatch) {
+            const summaryText = summaryMatch[0];
+            const summaryItems = summaryText.match(/- (.*?)(?=\n-|\n\n|$)/g);
+            if (summaryItems) {
+                summaryItems.forEach(item => {
+                    const description = item.replace(/^- /, '').trim();
+                    if (description && !description.includes('##')) {
+                        structuredData.optimizations.push({
+                            title: 'Summary Point',
+                            description: description
+                        });
+                    }
+                });
+            }
         }
     }
     
@@ -387,36 +467,58 @@ function formatTimeAgo(date) {
 }
 
 function formatAnalysisText(text) {
-    // Convert markdown headers to HTML
+    // First, let's clean up the text and handle special cases
     let formatted = text
-        .replace(/^## (.*$)/gim, '<h3 class="text-xl font-semibold text-white mt-6 mb-3">$1</h3>')
+        // Remove the initial "Here is your comprehensive analysis..." text
+        .replace(/^Here is your comprehensive analysis.*?\n\n---\n\n/gi, '')
+        // Remove trailing "Let me know if you need..." text
+        .replace(/\n---\s*\n\nLet me know.*$/gi, '')
+        // Clean up extra dashes
+        .replace(/\n---\s*\n/g, '\n\n');
+    
+    // Convert markdown headers to HTML
+    formatted = formatted
+        .replace(/^## (.*$)/gim, '<h3 class="text-xl font-semibold text-white mt-6 mb-3 border-b border-dark-border pb-2">$1</h3>')
         .replace(/^### (.*$)/gim, '<h4 class="text-lg font-medium text-gray-200 mt-4 mb-2">$1</h4>')
         .replace(/^#### (.*$)/gim, '<h5 class="text-base font-medium text-gray-300 mt-3 mb-1">$1</h5>');
     
-    // Convert lists
+    // Convert numbered lists
     formatted = formatted
-        .replace(/^- (.*$)/gim, '<li class="text-gray-300 mb-1">$1</li>')
-        .replace(/^\* (.*$)/gim, '<li class="text-gray-300 mb-1">$1</li>');
+        .replace(/^(\d+)\.\s+\*\*(.*?)\*\*:\s*(.*?)(?=\n\d+\.|\n\n|$)/gim, '<div class="mb-3"><span class="text-accent-blue font-semibold">$1. $2:</span> <span class="text-gray-300">$3</span></div>')
+        .replace(/^(\d+)\.\s+(.*?)(?=\n\d+\.|\n\n|$)/gim, '<div class="mb-2"><span class="text-accent-blue font-medium">$1.</span> <span class="text-gray-300">$2</span></div>');
     
-    // Wrap consecutive list items in ul tags
-    formatted = formatted.replace(/(<li.*<\/li>)/gs, '<ul class="list-disc list-inside mb-3">$1</ul>');
+    // Convert bullet lists
+    formatted = formatted
+        .replace(/^- \*\*(.*?)\*\*:\s*(.*?)(?=\n-|\n\n|$)/gim, '<div class="mb-2"><span class="text-error-red font-semibold">• $1:</span> <span class="text-gray-300">$2</span></div>')
+        .replace(/^- (.*?)(?=\n-|\n\n|$)/gim, '<div class="mb-2 text-gray-300">• $1</div>')
+        .replace(/^\* (.*?)(?=\n\*|\n\n|$)/gim, '<div class="mb-2 text-gray-300">• $1</div>');
+    
+    // Convert bold text
+    formatted = formatted
+        .replace(/\*\*(.*?)\*\*/g, '<span class="font-semibold text-accent-blue">$1</span>');
     
     // Convert line breaks to paragraphs
     formatted = formatted
         .split('\n\n')
         .map(paragraph => {
             if (paragraph.trim() === '') return '';
-            if (paragraph.startsWith('<h') || paragraph.startsWith('<ul>')) {
+            if (paragraph.startsWith('<h') || paragraph.startsWith('<div')) {
                 return paragraph;
             }
-            return `<p class="text-gray-300 mb-3">${paragraph.trim()}</p>`;
+            return `<p class="text-gray-300 mb-3 leading-relaxed">${paragraph.trim()}</p>`;
         })
         .join('');
     
     // Highlight important keywords
     formatted = formatted
         .replace(/\b(missing|error|warning|critical|incomplete|required)\b/gi, '<span class="text-error-red font-semibold">$1</span>')
-        .replace(/\b(complete|valid|correct|approved)\b/gi, '<span class="text-success-green font-semibold">$1</span>');
+        .replace(/\b(complete|valid|correct|approved)\b/gi, '<span class="text-success-green font-semibold">$1</span>')
+        .replace(/\b(high|medium|low)\b/gi, '<span class="text-warning-yellow font-semibold">$1</span>');
+    
+    // Add special styling for specific sections
+    formatted = formatted
+        .replace(/(Overall Assessment|Priority Level|Next Steps):/gi, '<span class="text-accent-purple font-bold text-lg">$1:</span>')
+        .replace(/(Complete|Incomplete|Needs Review)/gi, '<span class="text-success-green font-bold">$1</span>');
     
     return formatted;
 }
