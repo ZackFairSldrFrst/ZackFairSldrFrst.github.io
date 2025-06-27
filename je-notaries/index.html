@@ -75,12 +75,14 @@
   </header>
 
   <!-- Mobile Navigation Menu -->
-  <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-200 shadow-lg">
-    <div class="px-6 py-4 space-y-4">
-      <a href="index.html" class="block text-primary font-semibold py-2 border-b border-highlight">Home</a>
-      <a href="about.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-2">About Us</a>
-      <a href="services.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-2">Services</a>
-      <a href="contact.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-2">Contact</a>
+  <div id="mobile-menu" class="hidden md:hidden fixed top-0 left-0 w-full h-full bg-black/50 z-40">
+    <div class="bg-white w-full shadow-lg transform transition-transform duration-300 -translate-y-full" id="mobile-menu-content">
+      <div class="px-6 py-4 space-y-4 border-b border-gray-200">
+        <a href="index.html" class="block text-primary font-semibold py-3 border-b border-highlight text-lg">Home</a>
+        <a href="about.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-3 text-lg">About Us</a>
+        <a href="services.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-3 text-lg">Services</a>
+        <a href="contact.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-3 text-lg">Contact</a>
+      </div>
     </div>
   </div>
 
@@ -312,26 +314,46 @@
     document.addEventListener('DOMContentLoaded', function() {
       const mobileMenuButton = document.getElementById('mobile-menu-button');
       const mobileMenu = document.getElementById('mobile-menu');
+      const mobileMenuContent = document.getElementById('mobile-menu-content');
 
       mobileMenuButton.addEventListener('click', function() {
-        mobileMenu.classList.toggle('hidden');
+        if (mobileMenu.classList.contains('hidden')) {
+          // Show menu
+          mobileMenu.classList.remove('hidden');
+          setTimeout(() => {
+            mobileMenuContent.classList.remove('-translate-y-full');
+            mobileMenuContent.classList.add('translate-y-0');
+          }, 10);
+        } else {
+          // Hide menu
+          mobileMenuContent.classList.remove('translate-y-0');
+          mobileMenuContent.classList.add('-translate-y-full');
+          setTimeout(() => {
+            mobileMenu.classList.add('hidden');
+          }, 300);
+        }
       });
 
       // Close mobile menu when clicking on a link
       const mobileMenuLinks = mobileMenu.querySelectorAll('a');
       mobileMenuLinks.forEach(link => {
         link.addEventListener('click', function() {
-          mobileMenu.classList.add('hidden');
+          mobileMenuContent.classList.remove('translate-y-0');
+          mobileMenuContent.classList.add('-translate-y-full');
+          setTimeout(() => {
+            mobileMenu.classList.add('hidden');
+          }, 300);
         });
       });
 
-      // Close mobile menu when clicking outside
-      document.addEventListener('click', function(event) {
-        const isClickInsideMenu = mobileMenu.contains(event.target);
-        const isClickOnButton = mobileMenuButton.contains(event.target);
-        
-        if (!isClickInsideMenu && !isClickOnButton) {
-          mobileMenu.classList.add('hidden');
+      // Close mobile menu when clicking on backdrop
+      mobileMenu.addEventListener('click', function(event) {
+        if (event.target === mobileMenu) {
+          mobileMenuContent.classList.remove('translate-y-0');
+          mobileMenuContent.classList.add('-translate-y-full');
+          setTimeout(() => {
+            mobileMenu.classList.add('hidden');
+          }, 300);
         }
       });
     });
