@@ -1,0 +1,56 @@
+FORM 1040 - U.S. INDIVIDUAL INCOME TAX RETURN
+
+Tax Year: 2024
+Filing Status: Married Filing Jointly
+
+PERSONAL INFORMATION:
+Name: Jane Smith
+SSN: 987-65-4321
+Address: 456 Oak Avenue, Somewhere, NY 10001
+
+Spouse Name: John Smith
+Spouse SSN: 111-22-3333
+
+INCOME:
+Wages, salaries, tips: $75,000
+Interest income: $800
+Dividend income: $2,500
+Business income: $15,000
+Total income: $93,300
+
+ADJUSTMENTS TO INCOME:
+IRA contribution: $3,000
+Student loan interest: $750
+Health savings account: $1,000
+Total adjustments: $4,750
+
+ADJUSTED GROSS INCOME: $88,550
+
+DEDUCTIONS:
+Itemized deductions: $18,000
+Total deductions: $18,000
+
+TAXABLE INCOME: $70,550
+
+TAX CALCULATION:
+Federal income tax: $8,200
+Self-employment tax: $2,119
+Alternative minimum tax: $0
+Total tax: $10,319
+
+PAYMENTS:
+Federal income tax withheld: $9,500
+Estimated tax payments: $500
+Total payments: $10,000
+
+REFUND OR AMOUNT YOU OWE:
+Amount you owe: $319
+
+SIGNATURE:
+Taxpayer signature: _________________
+Date: _________________
+
+Spouse signature: _________________
+Date: _________________
+
+Note: This form is incomplete and contains some errors for testing purposes. 
