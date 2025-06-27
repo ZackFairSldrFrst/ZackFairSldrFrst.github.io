@@ -3,293 +3,314 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JE Notaries</title>
+  <title>JE Notaries - Professional Notarial Services in Richmond, BC</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1e3a45',
+            accent: '#f7f6f1',
+            highlight: '#f6c270',
+          },
+          fontFamily: {
+            'serif': ['Playfair Display', 'serif'],
+            'sans': ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    :root {
-      --primary: #1e3a45;
-      --accent: #f7f6f1;
-      --highlight: #f6c270;
+    .bg-gradient-custom {
+      background: linear-gradient(135deg, #1e3a45 0%, #2c5f75 100%);
     }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    
+    .text-shadow {
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: white;
-      color: #333;
-      line-height: 1.6;
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
     }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.5rem 3rem;
-      border-bottom: 1px solid #eee;
-      background: white;
+    
+    .float-animation {
+      animation: float 3s ease-in-out infinite;
     }
-
-    .logo {
-      font-weight: bold;
-      font-size: 1.1rem;
-      letter-spacing: 1px;
+    
+    .hover-lift {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-
-    nav a {
-      margin-left: 2rem;
-      text-decoration: none;
-      color: #333;
-      font-size: 0.9rem;
-    }
-
-    .hero {
-      text-align: center;
-      padding: 4rem 2rem;
-    }
-
-    .hero h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 3.5rem;
-      color: var(--primary);
-    }
-
-    .hero p {
-      font-size: 1.25rem;
-      margin-top: 0.5rem;
-    }
-
-    .hero p span {
-      color: var(--highlight);
-    }
-
-    .hero-content {
-      max-width: 800px;
-      margin: 2rem auto;
-    }
-
-    .hero-content button {
-      margin-top: 1rem;
-      padding: 0.75rem 1.5rem;
-      background-color: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .image-grid {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 2rem;
-    }
-
-    .image-grid img {
-      width: 100%;
-      max-width: 300px;
-      border-radius: 5px;
-      object-fit: cover;
-      height: 200px;
-    }
-
-    .services-section {
-      background: #f3f5f7;
-      text-align: center;
-      padding: 4rem 2rem;
-    }
-
-    .services-section h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.5rem;
-      color: var(--primary);
-    }
-
-    .services-section p {
-      font-style: italic;
-      color: #555;
-    }
-
-    .services-grid {
-      display: flex;
-      justify-content: center;
-      margin-top: 2.5rem;
-      gap: 2rem;
-    }
-
-    .service-box {
-      background: #dce4e6;
-      padding: 2rem;
-      border-radius: 10px;
-      width: 250px;
-    }
-
-    .service-box h3 {
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
-      color: var(--primary);
-    }
-
-    .highlight-section {
-      background: url('/images/overlay.jpg') center/cover no-repeat;
-      padding: 4rem 2rem;
-      color: white;
-      text-align: center;
-    }
-
-    .highlight-section h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-    }
-
-    .highlight-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 3rem;
-      margin-top: 2rem;
-    }
-
-    .highlight-box {
-      width: 220px;
-      text-align: left;
-    }
-
-    .highlight-box h4 {
-      margin-bottom: 0.5rem;
-    }
-
-    .cta-section {
-      background: #d0dbe2;
-      padding: 3rem 2rem;
-      text-align: center;
-    }
-
-    .cta-section h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      color: var(--primary);
-    }
-
-    .cta-section button {
-      margin-top: 1rem;
-      padding: 0.75rem 1.5rem;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    footer {
-      background: #f6f6f6;
-      padding: 3rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      font-size: 0.9rem;
-    }
-
-    footer .column {
-      margin-bottom: 1.5rem;
-    }
-
-    footer a {
-      color: var(--primary);
-      text-decoration: none;
+    
+    .hover-lift:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
     }
   </style>
 </head>
-<body>
-  <header>
-    <div class="logo">JE Notaries</div>
-    <nav>
-      <a href="#about">About Us</a>
-      <a href="#services">Services</a>
-      <a href="#contact">Contact</a>
+<body class="font-sans bg-white text-gray-800 leading-relaxed">
+  <!-- Header -->
+  <header class="flex justify-between items-center px-6 lg:px-12 py-4 border-b border-gray-200 bg-white sticky top-0 z-50 backdrop-blur-sm bg-white/95">
+    <div class="flex items-center">
+      <img src="logo.JPG" alt="JE Notaries" class="h-12 w-auto object-contain">
+    </div>
+    <nav class="hidden md:flex space-x-8">
+      <a href="index.html" class="text-primary font-semibold border-b-2 border-highlight">Home</a>
+      <a href="about.html" class="text-gray-700 hover:text-primary transition-colors duration-300 text-sm font-medium">About Us</a>
+      <a href="services.html" class="text-gray-700 hover:text-primary transition-colors duration-300 text-sm font-medium">Services</a>
+      <a href="contact.html" class="text-gray-700 hover:text-primary transition-colors duration-300 text-sm font-medium">Contact</a>
     </nav>
+    <!-- Mobile menu button -->
+    <div class="md:hidden">
+      <button class="text-gray-700 hover:text-primary">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
   </header>
 
-  <section class="hero">
-    <h1>JE Notaries</h1>
-    <p>notary services that fit <span>your</span> needs.</p>
-    <div class="hero-content">
-      <p>Let us be your trusted partner in notarial matters — your peace of mind is our priority. Whether you're navigating the real estate or life-planning process, our team is here to guide you every step of the way.</p>
-      <button>Explore Services</button>
-    </div>
-    <div class="image-grid">
-      <img src="/images/image1.jpg" alt="Image 1">
-      <img src="/images/image2.jpg" alt="Image 2">
-      <img src="/images/image3.jpg" alt="Image 3">
-    </div>
-  </section>
+  <!-- Hero Section -->
+  <section class="text-center px-6 lg:px-12 py-16 lg:py-24 bg-gradient-to-br from-gray-50 to-white">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="font-serif text-5xl lg:text-7xl text-primary mb-4 float-animation">JE Notaries</h1>
+      <p class="text-xl lg:text-2xl mb-8 text-gray-700">
+        Professional notarial services that fit <span class="text-highlight font-semibold">your</span> needs.
+      </p>
+      
+      <div class="max-w-4xl mx-auto mb-12">
+        <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+          Let us be your trusted partner in notarial matters — your peace of mind is our priority. 
+          Whether you're navigating the real estate or life-planning process, our team is here to guide you every step of the way.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="services.html" class="bg-primary hover:bg-opacity-90 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+            Explore Our Services
+          </a>
+          <a href="contact.html" class="border-2 border-primary text-primary hover:bg-primary hover:text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300">
+            Get in Touch
+          </a>
+        </div>
+      </div>
 
-  <section class="services-section" id="services">
-    <h2>Services</h2>
-    <p>SEE HOW WE CAN HELP</p>
-    <div class="services-grid">
-      <div class="service-box">
-        <h3>01. Real Estate Transactions</h3>
-        <p>Buying, Selling, Refinancing</p>
-      </div>
-      <div class="service-box">
-        <h3>02. Estate Planning</h3>
-        <p>Wills, Powers of Attorney, Representation Agreements</p>
-      </div>
-      <div class="service-box">
-        <h3>03. Notarization</h3>
-        <p>Witness documents, affidavits, statutory declarations, certified true copies</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="highlight-section">
-    <h2>What Sets Us Apart</h2>
-    <p>At JE Notaries, we take the stress out of your legal needs.</p>
-    <div class="highlight-grid">
-      <div class="highlight-box">
-        <h4>Affordable Services</h4>
-        <p>High-quality legal services at a reasonable price. We make legal services accessible for everyone.</p>
-      </div>
-      <div class="highlight-box">
-        <h4>Experienced & Certified</h4>
-        <p>Over 17 years of experience, high quality service backed by knowledge and a commitment to excellence.</p>
-      </div>
-      <div class="highlight-box">
-        <h4>Multilingual Team</h4>
-        <p>We speak Mandarin, Cantonese, and English, providing seamless service no matter the language.</p>
-      </div>
-      <div class="highlight-box">
-        <h4>Convenient & Flexible</h4>
-        <p>We offer flexible hours, mobile appointments, and services when and where it works best for you.</p>
+      <!-- Image Grid -->
+      <div class="flex flex-col md:flex-row justify-center gap-6 mt-16">
+        <div class="hover-lift">
+          <img src="pexels-karolina-grabowska-7876053.jpg" alt="Professional Consultation" class="w-full max-w-sm mx-auto rounded-xl shadow-lg object-cover h-64">
+        </div>
+        <div class="hover-lift">
+          <img src="pexels-rdne-7841454.jpg" alt="Document Signing" class="w-full max-w-sm mx-auto rounded-xl shadow-lg object-cover h-64">
+        </div>
+        <div class="hover-lift">
+          <img src="pexels-pixabay-63332.jpg" alt="Legal Services" class="w-full max-w-sm mx-auto rounded-xl shadow-lg object-cover h-64">
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="cta-section" id="contact">
-    <h2>Get Started Today</h2>
-    <p>Ready to take the next step? Contact us for assistance or any questions on your notarial needs. Our team is here to help!</p>
-    <button>Get in Touch</button>
+  <!-- What Sets Us Apart - Main Content -->
+  <section class="bg-gradient-custom py-20 lg:py-28 text-white relative overflow-hidden">
+    <!-- Background image overlay -->
+    <div class="absolute inset-0">
+      <img src="pexels-karolina-grabowska-7876053.jpg" alt="Professional Background" class="w-full h-full object-cover opacity-10">
+    </div>
+    <div class="absolute inset-0 bg-black/20"></div>
+    
+    <div class="relative max-w-6xl mx-auto px-6 lg:px-12">
+      <div class="text-center mb-16">
+        <h2 class="font-serif text-4xl lg:text-6xl mb-6 text-shadow">What Sets Us Apart</h2>
+        <p class="text-xl lg:text-2xl mb-8 text-gray-200 max-w-4xl mx-auto">
+          At JE Notaries, we don't just process paperwork — we provide comprehensive legal support that takes the stress out of your important life decisions.
+        </p>
+        <p class="text-lg text-gray-300 max-w-3xl mx-auto">
+          With over 17 years of combined experience and a commitment to excellence, we've built our practice on the foundation of trust, expertise, and genuine care for our clients' success.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-16">
+        <div class="text-left group">
+          <div class="bg-white/10 backdrop-blur-sm p-8 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 h-full">
+            <div class="w-16 h-16 bg-highlight/20 rounded-full flex items-center justify-center mb-6">
+              <svg class="w-8 h-8 text-highlight" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+              </svg>
+            </div>
+            <h4 class="text-xl font-semibold mb-4 text-highlight">Affordable Excellence</h4>
+            <p class="text-gray-200 leading-relaxed mb-4">
+              High-quality legal services at transparent, reasonable prices. We believe everyone deserves access to professional notarial services without breaking the bank.
+            </p>
+            <p class="text-gray-300 text-sm">
+              No hidden fees, no surprises — just honest pricing for exceptional service.
+            </p>
+          </div>
+        </div>
+        
+        <div class="text-left group">
+          <div class="bg-white/10 backdrop-blur-sm p-8 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 h-full">
+            <div class="w-16 h-16 bg-highlight/20 rounded-full flex items-center justify-center mb-6">
+              <svg class="w-8 h-8 text-highlight" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+              </svg>
+            </div>
+            <h4 class="text-xl font-semibold mb-4 text-highlight">Proven Expertise</h4>
+            <p class="text-gray-200 leading-relaxed mb-4">
+              Over 17 years of combined experience in notarial services, backed by Jeffrey's CPA background and Elaine's banking expertise.
+            </p>
+            <p class="text-gray-300 text-sm">
+              Our unique combination of legal, accounting, and financial knowledge sets us apart from traditional notary services.
+            </p>
+          </div>
+        </div>
+        
+        <div class="text-left group">
+          <div class="bg-white/10 backdrop-blur-sm p-8 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 h-full">
+            <div class="w-16 h-16 bg-highlight/20 rounded-full flex items-center justify-center mb-6">
+              <svg class="w-8 h-8 text-highlight" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h4 class="text-xl font-semibold mb-4 text-highlight">Multilingual Service</h4>
+            <p class="text-gray-200 leading-relaxed mb-4">
+              We serve clients in Mandarin, Cantonese, and English, ensuring clear communication and understanding throughout your legal process.
+            </p>
+            <p class="text-gray-300 text-sm">
+              Breaking down language barriers to provide accessible legal services to Richmond's diverse community.
+            </p>
+          </div>
+        </div>
+        
+        <div class="text-left group">
+          <div class="bg-white/10 backdrop-blur-sm p-8 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 h-full">
+            <div class="w-16 h-16 bg-highlight/20 rounded-full flex items-center justify-center mb-6">
+              <svg class="w-8 h-8 text-highlight" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h4 class="text-xl font-semibold mb-4 text-highlight">Flexible & Convenient</h4>
+            <p class="text-gray-200 leading-relaxed mb-4">
+              We offer flexible scheduling, mobile appointments, and remote signing options because we understand life doesn't always happen during business hours.
+            </p>
+            <p class="text-gray-300 text-sm">
+              Your time is valuable — we work around your schedule, not the other way around.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Value Propositions -->
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <h3 class="font-serif text-3xl lg:text-4xl mb-6">Why Choose JE Notaries?</h3>
+          <div class="space-y-6">
+            <div class="flex items-start space-x-4">
+              <div class="w-3 h-3 bg-highlight rounded-full mt-2 flex-shrink-0"></div>
+              <div>
+                <h4 class="font-semibold text-lg mb-2">Comprehensive Legal Network</h4>
+                <p class="text-gray-200">We work with legal professionals worldwide, offering remote and alternative signing options for international transactions.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-4">
+              <div class="w-3 h-3 bg-highlight rounded-full mt-2 flex-shrink-0"></div>
+              <div>
+                <h4 class="font-semibold text-lg mb-2">Specialized Expertise</h4>
+                <p class="text-gray-200">From complex real estate transactions to estate planning and Chinese document authentication — we handle it all with precision.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-4">
+              <div class="w-3 h-3 bg-highlight rounded-full mt-2 flex-shrink-0"></div>
+              <div>
+                <h4 class="font-semibold text-lg mb-2">Client-Centered Approach</h4>
+                <p class="text-gray-200">Every client receives personalized attention and clear explanations throughout the entire process.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-center">
+          <div class="bg-white/10 backdrop-blur-sm p-8 rounded-2xl">
+            <div class="text-6xl font-bold text-highlight mb-4">17+</div>
+            <p class="text-xl font-semibold mb-2">Years of Experience</p>
+            <p class="text-gray-300">Serving Richmond and the Lower Mainland with integrity and professionalism</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <footer>
-    <div class="column">
-      <strong>ADDRESS</strong><br>
-      #211 - 8906 Euclid Road<br>
-      Richmond, BC V6Y 4K6
+  <!-- Call to Action -->
+  <section class="py-20 lg:py-28 bg-gradient-to-br from-gray-50 to-white">
+    <div class="max-w-4xl mx-auto px-6 lg:px-12 text-center">
+      <h2 class="font-serif text-4xl lg:text-5xl text-primary mb-6">Ready to Experience the Difference?</h2>
+      <p class="text-lg text-gray-600 mb-12 leading-relaxed">
+        Join hundreds of satisfied clients who have trusted JE Notaries with their most important legal documents. 
+        Let us show you why experience, expertise, and exceptional service matter.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="contact.html" class="bg-primary hover:bg-opacity-90 text-white px-12 py-5 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-lg">
+          Schedule a Consultation
+        </a>
+        <a href="services.html" class="border-2 border-primary text-primary hover:bg-primary hover:text-white px-12 py-5 rounded-lg font-semibold transition-all duration-300 text-lg">
+          View Our Services
+        </a>
+      </div>
     </div>
-    <div class="column">
-      <strong>CONTACT</strong><br>
-      <a href="tel:+16043800217">604-380-0217</a><br>
-      <a href="mailto:jean@jenotaries.ca">jean@jenotaries.ca</a>
-    </div>
-    <div class="column">
-      <img src="/images/stamp.png" alt="Official Stamp" style="height: 80px;">
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 py-16 lg:py-20">
+    <div class="max-w-6xl mx-auto px-6 lg:px-12">
+      <div class="grid md:grid-cols-3 gap-12 text-center md:text-left">
+        <div>
+          <h3 class="font-bold text-primary mb-4 text-lg">ADDRESS</h3>
+          <p class="text-gray-600 leading-relaxed">
+            #231 - 8680 Cambie Road<br>
+            Richmond, BC V6X 4K1
+          </p>
+        </div>
+        
+        <div>
+          <h3 class="font-bold text-primary mb-4 text-lg">CONTACT</h3>
+          <div class="space-y-2">
+            <p>
+              <a href="tel:+16042888171" class="text-primary hover:text-highlight transition-colors duration-300 font-medium">
+                604-288-8171
+              </a>
+            </p>
+            <p>
+              <a href="mailto:jlamnp@gmail.com" class="text-primary hover:text-highlight transition-colors duration-300 font-medium">
+                jlamnp@gmail.com
+              </a>
+            </p>
+          </div>
+        </div>
+        
+        <div class="flex justify-center md:justify-end">
+          <img src="badge.avif" alt="Official Certification Badge" class="w-24 h-24 object-contain">
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-300 mt-12 pt-8 text-center">
+        <p class="text-gray-500 text-sm">© 2024 JE Notaries. All rights reserved.</p>
+      </div>
     </div>
   </footer>
+
+  <script>
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
 </body>
-</html>
+</html> 

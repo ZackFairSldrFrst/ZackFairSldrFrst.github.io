@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services - JE Notaries</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1e3a45',
+            accent: '#f7f6f1',
+            highlight: '#f6c270',
+          },
+          fontFamily: {
+            'serif': ['Playfair Display', 'serif'],
+            'sans': ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .hover-lift {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .hover-lift:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+    
+    .tab-button {
+      color: #6b7280;
+      background: transparent;
+    }
+    
+    .tab-button:hover {
+      color: #1e3a45;
+      background: rgba(30, 58, 69, 0.1);
+    }
+    
+    .active-tab {
+      color: white !important;
+      background: #1e3a45 !important;
+    }
+    
+    .tab-panel {
+      display: none;
+    }
+    
+    .active-panel {
+      display: block;
+    }
+  </style>
+</head>
+<body class="font-sans bg-white text-gray-800 leading-relaxed">
+  <!-- Header -->
+  <header class="flex justify-between items-center px-6 lg:px-12 py-4 border-b border-gray-200 bg-white sticky top-0 z-50 backdrop-blur-sm bg-white/95">
+    <div class="flex items-center">
+      <img src="logo.JPG" alt="JE Notaries" class="h-12 w-auto object-contain">
+    </div>
+    <nav class="hidden md:flex space-x-8">
+      <a href="index.html" class="text-gray-700 hover:text-primary transition-colors duration-300 text-sm font-medium">Home</a>
+      <a href="about.html" class="text-gray-700 hover:text-primary transition-colors duration-300 text-sm font-medium">About Us</a>
+      <a href="services.html" class="text-primary font-semibold border-b-2 border-highlight">Services</a>
+      <a href="contact.html" class="text-gray-700 hover:text-primary transition-colors duration-300 text-sm font-medium">Contact</a>
+    </nav>
+    <!-- Mobile menu button -->
+    <div class="md:hidden">
+      <button class="text-gray-700 hover:text-primary">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Services Section -->
+  <section class="bg-gradient-to-br from-gray-100 to-gray-50 py-20 lg:py-28 relative overflow-hidden">
+    <!-- Background image -->
+    <div class="absolute inset-0 opacity-5">
+      <img src="pexels-pixabay-63332.jpg" alt="Professional Background" class="w-full h-full object-cover">
+    </div>
+    
+    <div class="relative max-w-6xl mx-auto px-6 lg:px-12">
+      <div class="text-center mb-16">
+        <h1 class="font-serif text-4xl lg:text-5xl text-primary mb-6">Services</h1>
+        <p class="text-lg text-gray-700 mb-4">When it comes to notarial and legal services, JE Notaries is the team to trust to keep things stress-free.</p>
+        <p class="text-gray-600 font-medium">We're here to simplify the process and provide you with exceptional service in —</p>
+      </div>
+
+      <!-- Tab Navigation -->
+      <div class="flex flex-wrap justify-center mb-12 bg-white/70 backdrop-blur-sm rounded-2xl p-2 shadow-lg">
+        <button class="tab-button active-tab px-6 py-3 mx-1 mb-2 rounded-xl font-semibold transition-all duration-300" data-tab="real-estate">
+          Real Estate Transactions
+        </button>
+        <button class="tab-button px-6 py-3 mx-1 mb-2 rounded-xl font-semibold transition-all duration-300" data-tab="estate-planning">
+          Estate Planning
+        </button>
+        <button class="tab-button px-6 py-3 mx-1 mb-2 rounded-xl font-semibold transition-all duration-300" data-tab="notarizations">
+          Notarizations
+        </button>
+      </div>
+
+      <!-- Tab Content -->
+      <div class="tab-content">
+        <!-- Real Estate Tab -->
+        <div id="real-estate" class="tab-panel active-panel">
+          <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 lg:p-12 shadow-lg">
+            <h2 class="font-serif text-3xl text-primary mb-6">Real Estate Transactions</h2>
+            <div class="grid lg:grid-cols-2 gap-8">
+              <div>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                  Real estate conveyancing is the legal process of transferring property ownership from one party to another. We specialize in guiding you through the real estate closing process with ease. Whether you're buying or selling a home, securing an investment property, or refinancing, we are here to handle it all and assist you at every step of the way.
+                </p>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                  We work with a wide network of legal professionals overseas. If you can't sign in person, contact us and we can provide you with remote & alternative options!
+                </p>
+                <div class="bg-primary/5 p-6 rounded-xl">
+                  <h3 class="font-semibold text-primary mb-4">We're ready to support you in:</h3>
+                  <ul class="space-y-2 text-gray-700">
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Residential Purchases and Sales
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Residential Refinancing and Mortgages
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Commercial Purchases and Sales
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Business Asset Purchase and Sales
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Family Transfers (separation agreements)
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Transmission to Surviving Joint Tenant, Executor, or Administrator
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Real Estate Development
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="flex items-center justify-center">
+                <img src="pexels-pixabay-63332.jpg" alt="Real Estate Services" class="rounded-xl shadow-lg w-full max-w-md">
+              </div>
+            </div>
+            <div class="mt-8 text-center">
+              <p class="text-gray-700 mb-4">If you still have more questions, or are confused about the next steps, we're here to guide you through the process. Contact our team today!</p>
+              <a href="contact.html" class="bg-primary hover:bg-opacity-90 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
+                Get in Touch
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estate Planning Tab -->
+        <div id="estate-planning" class="tab-panel hidden">
+          <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 lg:p-12 shadow-lg">
+            <h2 class="font-serif text-3xl text-primary mb-6">Estate Planning</h2>
+            <div class="grid lg:grid-cols-2 gap-8">
+              <div>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                  Estate planning is about securing your future and protecting your loved ones. By creating a comprehensive estate plan, you ensure that your wishes are honored and your family is cared for, both now and in the future.
+                </p>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                  Our team is here to help you navigate the key components and make sure you have all the right documents in place so you can have peace of mind knowing your affairs are in order.
+                </p>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                  Whether you are drafting a will, assigning a power of attorney, or creating health / financial representation agreements, we are committed to minimizing legal complexities and costs for when the time comes.
+                </p>
+                <div class="bg-primary/5 p-6 rounded-xl">
+                  <h3 class="font-semibold text-primary mb-4">We're ready to support you in:</h3>
+                  <ul class="space-y-2 text-gray-700">
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Wills
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Powers of Attorney
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Representation Agreements
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="flex items-center justify-center">
+                <img src="pexels-karolina-grabowska-7876053.jpg" alt="Estate Planning Services" class="rounded-xl shadow-lg w-full max-w-md">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notarizations Tab -->
+        <div id="notarizations" class="tab-panel hidden">
+          <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 lg:p-12 shadow-lg">
+            <h2 class="font-serif text-3xl text-primary mb-6">Notarizations</h2>
+            <div class="grid lg:grid-cols-2 gap-8">
+              <div>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                  At JE Notaries, we offer reliable, prompt notarization services for a variety of important documents. Whether you need documents for local or international use, our team is here to assist you with everything from apostilles, affidavits, and statutory declarations to travel consents and certified true copies.
+                </p>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                  We also provide specialized notarization services for Chinese documents, including authentication and apostille services for use overseas.
+                </p>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                  Don't see a document listed that you need notarized? We may still be able to help! Connect with us today to learn more.
+                </p>
+                <div class="bg-primary/5 p-6 rounded-xl">
+                  <h3 class="font-semibold text-primary mb-4">We're ready to support you in:</h3>
+                  <ul class="space-y-2 text-gray-700">
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Statutory Declarations / Affidavits
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Invitation Letters
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Travel Consents
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Certified True Copies
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Executor Affidavits for Probate Applications
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      ICBC Statutory Declarations
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="flex items-center justify-center">
+                <img src="pexels-rdne-7841454.jpg" alt="Notarization Services" class="rounded-xl shadow-lg w-full max-w-md">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 py-16 lg:py-20">
+    <div class="max-w-6xl mx-auto px-6 lg:px-12">
+      <div class="grid md:grid-cols-3 gap-12 text-center md:text-left">
+        <div>
+          <h3 class="font-bold text-primary mb-4 text-lg">ADDRESS</h3>
+          <p class="text-gray-600 leading-relaxed">
+            #231 - 8680 Cambie Road<br>
+            Richmond, BC V6X 4K1
+          </p>
+        </div>
+        
+        <div>
+          <h3 class="font-bold text-primary mb-4 text-lg">CONTACT</h3>
+          <div class="space-y-2">
+            <p>
+              <a href="tel:+16042888171" class="text-primary hover:text-highlight transition-colors duration-300 font-medium">
+                604-288-8171
+              </a>
+            </p>
+            <p>
+              <a href="mailto:jlamnp@gmail.com" class="text-primary hover:text-highlight transition-colors duration-300 font-medium">
+                jlamnp@gmail.com
+              </a>
+            </p>
+          </div>
+        </div>
+        
+        <div class="flex justify-center md:justify-end">
+          <img src="badge.avif" alt="Official Certification Badge" class="w-24 h-24 object-contain">
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-300 mt-12 pt-8 text-center">
+        <p class="text-gray-500 text-sm">© 2024 JE Notaries. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Tab functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabButtons = document.querySelectorAll('.tab-button');
+      const tabPanels = document.querySelectorAll('.tab-panel');
+
+      tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const targetTab = this.getAttribute('data-tab');
+
+          // Remove active class from all buttons and panels
+          tabButtons.forEach(btn => btn.classList.remove('active-tab'));
+          tabPanels.forEach(panel => {
+            panel.classList.remove('active-panel');
+            panel.classList.add('hidden');
+          });
+
+          // Add active class to clicked button and corresponding panel
+          this.classList.add('active-tab');
+          const targetPanel = document.getElementById(targetTab);
+          if (targetPanel) {
+            targetPanel.classList.add('active-panel');
+            targetPanel.classList.remove('hidden');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html> 
