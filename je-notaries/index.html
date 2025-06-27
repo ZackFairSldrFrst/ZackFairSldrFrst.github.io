@@ -1,173 +1,295 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JE Notaries - Professional Notary Services in Richmond, BC</title>
-    <meta name="description" content="Professional notary services in Richmond, BC. Real estate, estate planning, and document notarization. Call 604-288-8171">
-    
-    <!-- Clean, modern fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/x-icon" href="logo.JPG">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JE Notaries</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1e3a45;
+      --accent: #f7f6f1;
+      --highlight: #f6c270;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: white;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 3rem;
+      border-bottom: 1px solid #eee;
+      background: white;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+    }
+
+    nav a {
+      margin-left: 2rem;
+      text-decoration: none;
+      color: #333;
+      font-size: 0.9rem;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      color: var(--primary);
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      margin-top: 0.5rem;
+    }
+
+    .hero p span {
+      color: var(--highlight);
+    }
+
+    .hero-content {
+      max-width: 800px;
+      margin: 2rem auto;
+    }
+
+    .hero-content button {
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .image-grid {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .image-grid img {
+      width: 100%;
+      max-width: 300px;
+      border-radius: 5px;
+      object-fit: cover;
+      height: 200px;
+    }
+
+    .services-section {
+      background: #f3f5f7;
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .services-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: var(--primary);
+    }
+
+    .services-section p {
+      font-style: italic;
+      color: #555;
+    }
+
+    .services-grid {
+      display: flex;
+      justify-content: center;
+      margin-top: 2.5rem;
+      gap: 2rem;
+    }
+
+    .service-box {
+      background: #dce4e6;
+      padding: 2rem;
+      border-radius: 10px;
+      width: 250px;
+    }
+
+    .service-box h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    .highlight-section {
+      background: url('/images/overlay.jpg') center/cover no-repeat;
+      padding: 4rem 2rem;
+      color: white;
+      text-align: center;
+    }
+
+    .highlight-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+    }
+
+    .highlight-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 3rem;
+      margin-top: 2rem;
+    }
+
+    .highlight-box {
+      width: 220px;
+      text-align: left;
+    }
+
+    .highlight-box h4 {
+      margin-bottom: 0.5rem;
+    }
+
+    .cta-section {
+      background: #d0dbe2;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .cta-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--primary);
+    }
+
+    .cta-section button {
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    footer {
+      background: #f6f6f6;
+      padding: 3rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+    }
+
+    footer .column {
+      margin-bottom: 1.5rem;
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <img src="logo.JPG" alt="JE Notaries" class="logo-img">
-            </div>
-            
-            <div class="nav-links">
-                <a href="index.html" class="active">Home</a>
-                <a href="about.html">About</a>
-                <a href="services.html">Services</a>
-                <a href="contact.html">Contact</a>
-                <a href="tel:604-288-8171" class="call-btn">Call Now</a>
-            </div>
-            
-            <button class="mobile-menu-btn" id="mobileBtn">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
+  <header>
+    <div class="logo">JE Notaries</div>
+    <nav>
+      <a href="#about">About Us</a>
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
     </nav>
+  </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1>JE Notaries –<br>notary services that fit your needs.</h1>
-                <p class="hero-subtitle">Let us be your trusted partner in notarial matters — your peace of mind is our priority.</p>
-                
-                <p class="hero-description">Whether you're navigating the real estate landscape or estate planning, our experienced team is here to guide you every step of the way.</p>
-                
-                <div class="hero-actions">
-                    <a href="services.html" class="btn-primary">Explore Services</a>
-                    <a href="tel:604-288-8171" class="btn-secondary">
-                        📞 Call 604-288-8171
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
+  <section class="hero">
+    <h1>JE Notaries</h1>
+    <p>notary services that fit <span>your</span> needs.</p>
+    <div class="hero-content">
+      <p>Let us be your trusted partner in notarial matters — your peace of mind is our priority. Whether you're navigating the real estate or life-planning process, our team is here to guide you every step of the way.</p>
+      <button>Explore Services</button>
+    </div>
+    <div class="image-grid">
+      <img src="/images/image1.jpg" alt="Image 1">
+      <img src="/images/image2.jpg" alt="Image 2">
+      <img src="/images/image3.jpg" alt="Image 3">
+    </div>
+  </section>
 
-    <!-- Services Overview -->
-    <section class="services-overview">
-        <div class="container">
-            <div class="section-header">
-                <h2>Services</h2>
-                <p class="section-subtitle">SEE HOW WE CAN HELP</p>
-            </div>
+  <section class="services-section" id="services">
+    <h2>Services</h2>
+    <p>SEE HOW WE CAN HELP</p>
+    <div class="services-grid">
+      <div class="service-box">
+        <h3>01. Real Estate Transactions</h3>
+        <p>Buying, Selling, Refinancing</p>
+      </div>
+      <div class="service-box">
+        <h3>02. Estate Planning</h3>
+        <p>Wills, Powers of Attorney, Representation Agreements</p>
+      </div>
+      <div class="service-box">
+        <h3>03. Notarization</h3>
+        <p>Witness documents, affidavits, statutory declarations, certified true copies</p>
+      </div>
+    </div>
+  </section>
 
-            <div class="services-grid">
-                <div class="service-item">
-                    <div class="service-number">01.</div>
-                    <h3>Real Estate Transactions</h3>
-                    <p>Buying, Selling, Refinancing</p>
-                </div>
+  <section class="highlight-section">
+    <h2>What Sets Us Apart</h2>
+    <p>At JE Notaries, we take the stress out of your legal needs.</p>
+    <div class="highlight-grid">
+      <div class="highlight-box">
+        <h4>Affordable Services</h4>
+        <p>High-quality legal services at a reasonable price. We make legal services accessible for everyone.</p>
+      </div>
+      <div class="highlight-box">
+        <h4>Experienced & Certified</h4>
+        <p>Over 17 years of experience, high quality service backed by knowledge and a commitment to excellence.</p>
+      </div>
+      <div class="highlight-box">
+        <h4>Multilingual Team</h4>
+        <p>We speak Mandarin, Cantonese, and English, providing seamless service no matter the language.</p>
+      </div>
+      <div class="highlight-box">
+        <h4>Convenient & Flexible</h4>
+        <p>We offer flexible hours, mobile appointments, and services when and where it works best for you.</p>
+      </div>
+    </div>
+  </section>
 
-                <div class="service-item">
-                    <div class="service-number">02.</div>
-                    <h3>Estate Planning</h3>
-                    <p>Wills, Power of Attorney's, Representation Agreements</p>
-                </div>
+  <section class="cta-section" id="contact">
+    <h2>Get Started Today</h2>
+    <p>Ready to take the next step? Contact us for assistance or any questions on your notarial needs. Our team is here to help!</p>
+    <button>Get in Touch</button>
+  </section>
 
-                <div class="service-item">
-                    <div class="service-number">03.</div>
-                    <h3>Notarization</h3>
-                    <p>Witness documents such as affidavits, statutory declarations, certifying true copies</p>
-                </div>
-            </div>
-
-            <div class="services-cta">
-                <a href="services.html" class="btn-primary">View All Services</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- What Sets Us Apart -->
-    <section class="advantages">
-        <div class="container">
-            <div class="section-header">
-                <h2>What Sets Us Apart</h2>
-                <p>At JE Notaries, we take the stress out of your legal needs.</p>
-                <p>From real estate to estate planning and general notarizations, you'll get expert guidance and dependable service — without the hassle.</p>
-            </div>
-
-            <div class="advantages-grid">
-                <div class="advantage-card">
-                    <div class="advantage-icon">💰</div>
-                    <h3>Affordable Services</h3>
-                    <p>We are committed to providing high-quality legal services at a reasonable price. Our affordable rates ensure that you have access to expert legal guidance when you need it most, without compromising on quality, making legal services accessible for everyone.</p>
-                </div>
-
-                <div class="advantage-card">
-                    <div class="advantage-icon">🌐</div>
-                    <h3>Multilingual Team</h3>
-                    <p>Our multilingual team speaks Mandarin, Cantonese, and English, ensuring clear and effective communication in the language you're most comfortable with. We're here to provide each client personalized, seamless service, no matter the language.</p>
-                </div>
-
-                <div class="advantage-card">
-                    <div class="advantage-icon">🏆</div>
-                    <h3>Experienced & Certified</h3>
-                    <p>With over 17 years of combined experience, our team delivers trusted, high-quality service backed by deep industry knowledge and a commitment to excellence. When you choose us, you choose seasoned experts who will make your experience seamless and reliable.</p>
-                </div>
-
-                <div class="advantage-card">
-                    <div class="advantage-icon">🕐</div>
-                    <h3>Convenient & Flexible</h3>
-                    <p>We understand that life gets busy and the traditional work hours may not always fit your schedule. That's why we offer flexible appointment times designed to fit your needs. Experience hassle-free convenience, when and where it works best for you.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Call to Action -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2>Get Started Today</h2>
-                <p>Ready to take the next steps? Contact us for assistance or any questions on your notarial needs. Our team is here to help!</p>
-                
-                <div class="cta-actions">
-                    <a href="contact.html" class="btn-primary">Contact Us</a>
-                    <a href="tel:604-288-8171" class="btn-secondary">Call 604-288-8171</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-left">
-                    <div class="logo">
-                        <img src="logo.JPG" alt="JE Notaries" class="logo-img">
-                    </div>
-                    <p>Professional notary services in Richmond, BC</p>
-                </div>
-                
-                <div class="footer-right">
-                    <div class="footer-links">
-                        <a href="index.html">Home</a>
-                        <a href="about.html">About</a>
-                        <a href="services.html">Services</a>
-                        <a href="contact.html">Contact</a>
-                    </div>
-                    <p>&copy; 2024 JE Notaries. All rights reserved.</p>
-                    <p>Licensed members of the Society of Notaries Public of BC</p>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
+  <footer>
+    <div class="column">
+      <strong>ADDRESS</strong><br>
+      #211 - 8906 Euclid Road<br>
+      Richmond, BC V6Y 4K6
+    </div>
+    <div class="column">
+      <strong>CONTACT</strong><br>
+      <a href="tel:+16043800217">604-380-0217</a><br>
+      <a href="mailto:jean@jenotaries.ca">jean@jenotaries.ca</a>
+    </div>
+    <div class="column">
+      <img src="/images/stamp.png" alt="Official Stamp" style="height: 80px;">
+    </div>
+  </footer>
 </body>
-</html> 
+</html>
