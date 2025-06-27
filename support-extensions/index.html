@@ -4,119 +4,198 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Support my browser extensions</title>
-    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'ui-sans-serif', 'system-ui'],
+                    },
+                    colors: {
+                        primary: '#00BF63',
+                        secondary: '#1ABC9C',
+                        accent: '#1a2634',
+                        'primary-light': '#E8F9F1',
+                        'secondary-light': '#E8F8F6',
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 2s infinite',
+                        'spin-slow': 'spin 3s linear infinite',
+                        'pulse-slow': 'pulse 3s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                        'fade-in': 'fadeIn 0.8s ease-out',
+                        'loading-bar': 'loadingBar 3s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 20px rgba(0, 191, 99, 0.3)' },
+                            '100%': { boxShadow: '0 0 30px rgba(0, 191, 99, 0.6)' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        loadingBar: {
+                            '0%': { width: '0%' },
+                            '100%': { width: '100%' },
+                        },
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+                        'mesh-gradient': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                        'medium': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                        'large': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                        'glow': '0 0 20px rgba(0, 191, 99, 0.3)',
+                        'glow-lg': '0 0 40px rgba(0, 191, 99, 0.4)',
+                    },
+                }
+            }
+        }
+    </script>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VDZNRELZ6H"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VDZNRELZ6H"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-  gtag('config', 'G-VDZNRELZ6H');
-</script>
-  <!-- Reddit Pixel -->
-  <script>
-    !function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);rdt('init','a2_gpup90minuyz');rdt('track', 'PageVisit');
+      gtag('config', 'G-VDZNRELZ6H');
+    </script>
+    <!-- Reddit Pixel -->
+    <script>
+        !function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);rdt('init','a2_gpup90minuyz');rdt('track', 'PageVisit');
     </script>
     <!-- DO NOT MODIFY UNLESS TO REPLACE A USER IDENTIFIER -->
     <!-- End Reddit Pixel -->
     <style>
-        @keyframes pinAnimation {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-            100% { transform: translateY(0); }
+        .reddit-button {
+            background-color: #FF4500;
         }
-        .pin-demo {
-            background: #f5f5f5;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-            text-align: center;
-        }
-        .pin-icon {
-            font-size: 24px;
-            animation: pinAnimation 2s infinite;
-            display: inline-block;
-            margin: 10px;
-        }
-        .info-box {
-            background: #e8f4ff;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
+        .reddit-button:hover {
+            background-color: #E03D00;
         }
     </style>
 </head>
-<body>
-    <div id="loading-container">
-        <div id="loading-text">Installing extension updates...</div>
-        <div id="loading-bar-container">
-            <div id="loading-bar"></div>
+<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-green-50 min-h-screen font-sans antialiased">
+    <!-- Background Pattern -->
+    <div class="fixed inset-0 opacity-30">
+        <div class="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-secondary/5"></div>
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float"></div>
+        <div class="absolute top-0 right-1/4 w-96 h-96 bg-secondary/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style="animation-delay: 2s;"></div>
+        <div class="absolute bottom-0 left-1/3 w-96 h-96 bg-blue-300/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style="animation-delay: 4s;"></div>
+    </div>
+
+    <!-- Loading Container -->
+    <div id="loading-container" class="fixed inset-0 bg-white/95 backdrop-blur-sm flex flex-col items-center justify-center z-50">
+        <div class="text-center">
+            <div class="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full mx-auto mb-6 animate-pulse shadow-glow"></div>
+            <div id="loading-text" class="text-2xl font-semibold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-6">Installing extension updates...</div>
+            <div class="w-80 bg-gray-200 rounded-full h-3 overflow-hidden">
+                <div id="loading-bar" class="bg-gradient-to-r from-primary via-secondary to-primary h-full rounded-full animate-loading-bar"></div>
+            </div>
         </div>
     </div>
 
-    <div id="main-content" class="container" style="display:none;">
-        <header>
-            <h1>Your extension is up to date!</h1>
-            <p class="subheader">We're thrilled you've joined our community of productivity enthusiasts. This is just the beginning of how we can enhance your browsing experience together.</p>
+    <!-- Main Content -->
+    <div id="main-content" class="relative z-10 container mx-auto px-6 py-12 max-w-7xl hidden">
+        <!-- Header -->
+        <header class="text-center mb-16 animate-slide-up">
+            <h1 class="text-5xl md:text-7xl font-black bg-gradient-to-r from-primary via-secondary to-emerald-500 bg-clip-text text-transparent mb-8 leading-tight tracking-tight">
+                Your extension is up to date!
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-medium">
+                We're thrilled you've joined our community of productivity enthusiasts. This is just the beginning of how we can enhance your browsing experience together.
+            </p>
+            <div class="mt-8 w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto rounded-full"></div>
         </header>
 
         <!-- Coupon Banner -->
-        <section class="coupon-banner">
-            <div class="coupon-content">
-                <div class="coupon-icon">🎉</div>
-                <div class="coupon-text">
-                    <h3>Special Offer: 30% Off Pro!</h3>
-                    <p>Use code <span class="coupon-code">WELCOME90</span> to get 30% off your first Pro subscription</p>
+        <section class="relative overflow-hidden bg-gradient-to-r from-primary via-emerald-500 to-secondary rounded-3xl p-8 mb-16 text-white shadow-large hover:shadow-glow-lg transition-all duration-500 animate-fade-in">
+            <div class="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent"></div>
+            <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
+            <div class="absolute bottom-0 left-0 w-40 h-40 bg-white/5 rounded-full -ml-20 -mb-20"></div>
+            <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-6">
+                    <div class="text-5xl animate-bounce-slow">🎉</div>
+                    <div>
+                        <h3 class="text-2xl lg:text-3xl font-bold mb-2">Special Offer: 90% Off Pro!</h3>
+                        <p class="text-lg">Use code <span class="font-black bg-white text-primary px-3 py-2 rounded-lg shadow-medium">WELCOME90</span> to get 90% off your first Pro subscription</p>
+                    </div>
                 </div>
-                <button class="coupon-copy-btn" onclick="copyCodeToClipboard()">Copy Code</button>
+                <button id="copy-btn" onclick="copyCodeToClipboard()" class="bg-white text-primary hover:bg-gray-100 font-bold px-8 py-4 rounded-xl text-lg transition-all duration-300 whitespace-nowrap hover:scale-105 shadow-medium hover:shadow-large">
+                    Copy Code
+                </button>
             </div>
         </section>
 
         <!-- Top Section: Pin Instructions + Newsletter + Communities -->
-        <section class="donate-section compact-section">
-            <div class="top-grid">
+        <section class="bg-white/70 backdrop-blur-sm rounded-3xl p-8 lg:p-12 shadow-large hover:shadow-glow transition-all duration-500 mb-16 border border-white/50">
+            <div class="grid lg:grid-cols-3 gap-12">
                 <!-- Pin Instructions -->
-                <div class="pin-section">
-                    <h2>Get Started in 3 Simple Steps</h2>
-                    <div class="step-container">
-                        <div class="step">
-                            <div class="step-number">1</div>
-                            <p>Click the extensions menu (puzzle piece icon)</p>
+                <div class="lg:col-span-2">
+                    <h2 class="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-8">Get Started in 3 Simple Steps</h2>
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="group text-center p-6 bg-gradient-to-br from-primary-light to-white rounded-2xl border border-primary/20 hover:border-primary/40 transition-all duration-300 hover:scale-105">
+                            <div class="w-16 h-16 bg-gradient-to-r from-primary to-secondary text-white rounded-2xl flex items-center justify-center font-black text-xl mx-auto mb-4 shadow-medium group-hover:shadow-glow transition-all duration-300">1</div>
+                            <p class="font-medium text-gray-700">Click the extensions menu (puzzle piece icon)</p>
                         </div>
-                        <div class="step">
-                            <div class="step-number">2</div>
-                            <p>Locate your new extension</p>
+                        <div class="group text-center p-6 bg-gradient-to-br from-secondary-light to-white rounded-2xl border border-secondary/20 hover:border-secondary/40 transition-all duration-300 hover:scale-105">
+                            <div class="w-16 h-16 bg-gradient-to-r from-secondary to-primary text-white rounded-2xl flex items-center justify-center font-black text-xl mx-auto mb-4 shadow-medium group-hover:shadow-glow transition-all duration-300">2</div>
+                            <p class="font-medium text-gray-700">Locate your new extension</p>
                         </div>
-                        <div class="step">
-                            <div class="step-number">3</div>
-                            <p>Click the pin icon 📌 to keep it accessible</p>
+                        <div class="group text-center p-6 bg-gradient-to-br from-emerald-50 to-white rounded-2xl border border-emerald-200/50 hover:border-emerald-300 transition-all duration-300 hover:scale-105">
+                            <div class="w-16 h-16 bg-gradient-to-r from-emerald-500 to-primary text-white rounded-2xl flex items-center justify-center font-black text-xl mx-auto mb-4 shadow-medium group-hover:shadow-glow transition-all duration-300">3</div>
+                            <p class="font-medium text-gray-700">Click the pin icon 📌 to keep it accessible</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Newsletter and Communities -->
-                <div class="side-section">
+                <div class="space-y-8">
                     <!-- Newsletter -->
-                    <div class="newsletter-box">
-                        <h3>📧 Stay Updated</h3>
-                        <p>Get notified about new extensions and updates!</p>
-                        <a href="https://forms.gle/YRzJjdXgeRXuboZk7" class="extension-button newsletter-button" target="_blank">
+                    <div class="bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 p-8 rounded-2xl border border-blue-200/50 hover:border-blue-300 transition-all duration-300 hover:scale-105 shadow-soft">
+                        <h3 class="text-xl font-bold text-primary mb-3 flex items-center gap-2">
+                            <span class="text-2xl">📧</span>
+                            Stay Updated
+                        </h3>
+                        <p class="text-gray-600 mb-6 font-medium">Get notified about new extensions and updates!</p>
+                        <a href="https://forms.gle/YRzJjdXgeRXuboZk7" class="block bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl text-center transition-all duration-300 shadow-medium hover:shadow-large hover:scale-105" target="_blank">
                             Subscribe to Newsletter
                         </a>
                     </div>
 
                     <!-- Communities -->
-                    <div class="communities-box">
-                        <h3>🤝 Join Our Communities</h3>
-                        <div class="community-links-compact">
-                            <a href="https://reddit.com/r/SnipIt" class="community-button-compact" target="_blank">
-                                <span class="reddit-icon">🔗</span>
-                                r/SnipIt
+                    <div class="bg-gradient-to-br from-green-50 via-emerald-50 to-green-100 p-8 rounded-2xl border border-green-200/50 hover:border-green-300 transition-all duration-300 hover:scale-105 shadow-soft">
+                        <h3 class="text-xl font-bold text-primary mb-4 flex items-center gap-2">
+                            <span class="text-2xl">🤝</span>
+                            Join Our Communities
+                        </h3>
+                        <div class="space-y-4">
+                            <a href="https://reddit.com/r/SnipIt" class="flex items-center gap-4 text-white p-4 rounded-xl transition-all duration-300 shadow-medium hover:shadow-large hover:scale-105 reddit-button" target="_blank">
+                                <span class="text-2xl">🔗</span>
+                                <span class="font-bold text-lg">r/SnipIt</span>
                             </a>
-                            <a href="https://reddit.com/r/SmutWriter" class="community-button-compact" target="_blank">
-                                <span class="reddit-icon">✍️</span>
-                                r/SmutWriter
+                            <a href="https://reddit.com/r/SmutWriter" class="flex items-center gap-4 text-white p-4 rounded-xl transition-all duration-300 shadow-medium hover:shadow-large hover:scale-105 reddit-button" target="_blank">
+                                <span class="text-2xl">✍️</span>
+                                <span class="font-bold text-lg">r/SmutWriter</span>
                             </a>
                         </div>
                     </div>
@@ -125,71 +204,77 @@
         </section>
 
         <!-- Other Extensions Section -->
-        <section class="donate-section compact-section">
-            <h2>Explore Our Productivity Suite</h2>
-            <p class="subheader">We've crafted a collection of tools designed to streamline your digital life. Here's what we offer:</p>
+        <section class="bg-white/70 backdrop-blur-sm rounded-3xl p-8 lg:p-12 shadow-large hover:shadow-glow transition-all duration-500 mb-16 border border-white/50">
+            <h2 class="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-6 text-center">Explore Our Productivity Suite</h2>
+            <p class="text-xl text-gray-600 text-center mb-12 max-w-4xl mx-auto font-medium leading-relaxed">
+                We've crafted a collection of tools designed to streamline your digital life. Here's what we offer:
+            </p>
             
-            <div class="extension-grid">
-                <div class="extension-card">
-                    <h3>SnipIt</h3>
-                    <p>Instantly condense articles, blogs, and documents into key points. Perfect for quick research and staying informed.</p>
-                    <a href="https://chromewebstore.google.com/detail/tldr-free-summarize-tool/oilacejfpoonhegdhlhklckannjhmdgk?authuser=0&hl=en-US" class="extension-button" target="_blank">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="group bg-gradient-to-br from-slate-50 to-white p-8 rounded-2xl hover:from-primary-light hover:to-white transition-all duration-300 hover:scale-105 shadow-soft hover:shadow-large border border-gray-100 hover:border-primary/30">
+                    <h3 class="text-2xl font-bold text-primary mb-4 group-hover:text-secondary transition-colors">SnipIt</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed font-medium">Instantly condense articles, blogs, and documents into key points. Perfect for quick research and staying informed.</p>
+                    <a href="https://chromewebstore.google.com/detail/tldr-free-summarize-tool/oilacejfpoonhegdhlhklckannjhmdgk?authuser=0&hl=en-US" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 shadow-medium hover:shadow-large hover:scale-105" target="_blank">
                         Get SnipIt
                     </a>
                 </div>
 
-                <div class="extension-card">
-                    <h3>Image Downloader Pro</h3>
-                    <p>Effortlessly save and organize images from any webpage. Ideal for designers, marketers, and content creators.</p>
-                    <a href="https://chromewebstore.google.com/detail/image-downloader-pro/gopdanplkgidodnnaajdpfikhkfijifp?authuser=0&hl=en-US" class="extension-button" target="_blank">
+                <div class="group bg-gradient-to-br from-slate-50 to-white p-8 rounded-2xl hover:from-secondary-light hover:to-white transition-all duration-300 hover:scale-105 shadow-soft hover:shadow-large border border-gray-100 hover:border-secondary/30">
+                    <h3 class="text-2xl font-bold text-primary mb-4 group-hover:text-secondary transition-colors">Image Downloader Pro</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed font-medium">Effortlessly save and organize images from any webpage. Ideal for designers, marketers, and content creators.</p>
+                    <a href="https://chromewebstore.google.com/detail/image-downloader-pro/gopdanplkgidodnnaajdpfikhkfijifp?authuser=0&hl=en-US" class="inline-block bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 shadow-medium hover:shadow-large hover:scale-105" target="_blank">
                         Get Image Downloader
                     </a>
                 </div>
 
-                <div class="extension-card">
-                    <h3>BPM Finder</h3>
-                    <p>Quickly identify the beats per minute of any song. A must-have for DJs, musicians, and music enthusiasts.</p>
-                    <a href="https://chromewebstore.google.com/detail/bpm-finder/glfilnfaeoncigpdmopgnmcggamgocfa?authuser=0&hl=en-US" class="extension-button" target="_blank">
+                <div class="group bg-gradient-to-br from-slate-50 to-white p-8 rounded-2xl hover:from-emerald-50 hover:to-white transition-all duration-300 hover:scale-105 shadow-soft hover:shadow-large border border-gray-100 hover:border-emerald-300">
+                    <h3 class="text-2xl font-bold text-primary mb-4 group-hover:text-emerald-600 transition-colors">BPM Finder</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed font-medium">Quickly identify the beats per minute of any song. A must-have for DJs, musicians, and music enthusiasts.</p>
+                    <a href="https://chromewebstore.google.com/detail/bpm-finder/glfilnfaeoncigpdmopgnmcggamgocfa?authuser=0&hl=en-US" class="inline-block bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 shadow-medium hover:shadow-large hover:scale-105" target="_blank">
                         Get BPM Finder
                     </a>
                 </div>
 
-                <div class="extension-card">
-                    <h3>AI Writer for Realtors</h3>
-                    <p>Generate compelling property descriptions and marketing copy in seconds. Your real estate writing assistant.</p>
-                    <a href="https://chromewebstore.google.com/detail/ai-writer-for-realtors/hkmjaemcanhghbbikckiojknlhkkogdh?authuser=0&hl=en-US" class="extension-button" target="_blank">
+                <div class="group bg-gradient-to-br from-slate-50 to-white p-8 rounded-2xl hover:from-purple-50 hover:to-white transition-all duration-300 hover:scale-105 shadow-soft hover:shadow-large border border-gray-100 hover:border-purple-300">
+                    <h3 class="text-2xl font-bold text-primary mb-4 group-hover:text-purple-600 transition-colors">AI Writer for Realtors</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed font-medium">Generate compelling property descriptions and marketing copy in seconds. Your real estate writing assistant.</p>
+                    <a href="https://chromewebstore.google.com/detail/ai-writer-for-realtors/hkmjaemcanhghbbikckiojknlhkkogdh?authuser=0&hl=en-US" class="inline-block bg-violet-600 hover:bg-violet-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 shadow-medium hover:shadow-large hover:scale-105" target="_blank">
                         Get AI Writer
                     </a>
                 </div>
 
-                <div class="extension-card">
-                    <h3>Focus Lock</h3>
-                    <p>Eliminate distractions and boost productivity with our concentration assistant. Your digital focus coach.</p>
-                    <a href="https://chromewebstore.google.com/detail/focus-lock/khfghagkchhicjklmcdegbohcmjgfmif?authuser=0&hl=en-US" class="extension-button" target="_blank">
+                <div class="group bg-gradient-to-br from-slate-50 to-white p-8 rounded-2xl hover:from-blue-50 hover:to-white transition-all duration-300 hover:scale-105 shadow-soft hover:shadow-large border border-gray-100 hover:border-blue-300">
+                    <h3 class="text-2xl font-bold text-primary mb-4 group-hover:text-blue-600 transition-colors">Focus Lock</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed font-medium">Eliminate distractions and boost productivity with our concentration assistant. Your digital focus coach.</p>
+                    <a href="https://chromewebstore.google.com/detail/focus-lock/khfghagkchhicjklmcdegbohcmjgfmif?authuser=0&hl=en-US" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 shadow-medium hover:shadow-large hover:scale-105" target="_blank">
                         Get Focus Lock
                     </a>
                 </div>
 
-                <div class="extension-card">
-                    <h3>AI Marketing Consultant</h3>
-                    <p>Get instant marketing insights and strategy suggestions. Your 24/7 marketing advisor.</p>
-                    <a href="https://chromewebstore.google.com/detail/ai-marketing-consultant/jgjimhmiddinkiohnmlinhgjaejnfafk?authuser=0&hl=en-US" class="extension-button" target="_blank">
+                <div class="group bg-gradient-to-br from-slate-50 to-white p-8 rounded-2xl hover:from-orange-50 hover:to-white transition-all duration-300 hover:scale-105 shadow-soft hover:shadow-large border border-gray-100 hover:border-orange-300">
+                    <h3 class="text-2xl font-bold text-primary mb-4 group-hover:text-orange-600 transition-colors">AI Marketing Consultant</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed font-medium">Get instant marketing insights and strategy suggestions. Your 24/7 marketing advisor.</p>
+                    <a href="https://chromewebstore.google.com/detail/ai-marketing-consultant/jgjimhmiddinkiohnmlinhgjaejnfafk?authuser=0&hl=en-US" class="inline-block bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 shadow-medium hover:shadow-large hover:scale-105" target="_blank">
                         Get Marketing Consultant
                     </a>
                 </div>
 
-                <div class="extension-card">
-                    <h3>SmutWriter</h3>
-                    <p>Advanced AI writing assistant for creative and engaging content. Unleash your creativity with intelligent writing suggestions.</p>
-                    <a href="https://smutwriter.com" class="extension-button" target="_blank">
+                <div class="group bg-gradient-to-br from-slate-50 to-white p-8 rounded-2xl hover:from-pink-50 hover:to-white transition-all duration-300 hover:scale-105 shadow-soft hover:shadow-large border border-gray-100 hover:border-pink-300 lg:col-span-3 md:col-span-2 max-w-md mx-auto lg:max-w-none">
+                    <h3 class="text-2xl font-bold text-primary mb-4 group-hover:text-pink-600 transition-colors">SmutWriter</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed font-medium">Advanced AI writing assistant for creative and engaging content. Unleash your creativity with intelligent writing suggestions.</p>
+                    <a href="https://smutwriter.com" class="inline-block bg-rose-600 hover:bg-rose-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 shadow-medium hover:shadow-large hover:scale-105" target="_blank">
                         Visit SmutWriter
                     </a>
                 </div>
             </div>
         </section>
 
-        <footer>
-            <p class="footer-text">Thank you for being part of our productivity revolution. We're committed to creating tools that make your digital life easier, smarter, and more efficient.</p>
+        <!-- Footer -->
+        <footer class="text-center py-12">
+            <div class="w-16 h-1 bg-gradient-to-r from-primary to-secondary mx-auto rounded-full mb-6"></div>
+            <p class="text-lg text-gray-600 font-medium leading-relaxed max-w-3xl mx-auto">
+                Thank you for being part of our productivity revolution. We're committed to creating tools that make your digital life easier, smarter, and more efficient.
+            </p>
         </footer>
     </div>
 
@@ -198,22 +283,25 @@
         window.onload = function() {
             setTimeout(function() {
                 document.getElementById("loading-container").style.display = "none";
-                document.getElementById("main-content").style.display = "block";
+                document.getElementById("main-content").classList.remove("hidden");
             }, 3000);
         }
 
         // Copy coupon code to clipboard
         function copyCodeToClipboard() {
-            const code = "WELCOME30";
+            const code = "WELCOME90";
+            const button = document.getElementById('copy-btn');
+            
             navigator.clipboard.writeText(code).then(function() {
-                const button = document.querySelector('.coupon-copy-btn');
                 const originalText = button.textContent;
+                const originalClasses = button.className;
+                
                 button.textContent = "Copied! ✓";
-                button.style.background = "rgba(0, 191, 99, 0.3)";
+                button.className = "bg-green-500 text-white font-bold px-8 py-4 rounded-xl text-lg transition-all duration-300 whitespace-nowrap shadow-medium";
                 
                 setTimeout(function() {
                     button.textContent = originalText;
-                    button.style.background = "rgba(255, 255, 255, 0.15)";
+                    button.className = originalClasses;
                 }, 2000);
             }).catch(function() {
                 // Fallback for older browsers
@@ -224,297 +312,18 @@
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
                 
-                const button = document.querySelector('.coupon-copy-btn');
                 const originalText = button.textContent;
+                const originalClasses = button.className;
+                
                 button.textContent = "Copied! ✓";
+                button.className = "bg-green-500 text-white font-bold px-8 py-4 rounded-xl text-lg transition-all duration-300 whitespace-nowrap shadow-medium";
                 
                 setTimeout(function() {
                     button.textContent = originalText;
+                    button.className = originalClasses;
                 }, 2000);
             });
         }
     </script>
-
-    <style>
-        .subheader {
-            font-size: 1.1rem;
-            color: var(--text-light);
-            margin-top: 1rem;
-        }
-
-        /* Compact Layout Styles */
-        .container {
-            padding: 2rem 1rem; /* Reduced from default */
-        }
-
-        header {
-            margin-bottom: 2rem; /* Reduced from 4rem */
-            padding-bottom: 1rem; /* Reduced */
-        }
-
-        header h1 {
-            margin-bottom: 0.75rem; /* Reduced */
-            font-size: clamp(2rem, 4vw, 3rem); /* Smaller on mobile */
-        }
-
-        .compact-section {
-            margin: 2rem auto; /* Reduced from 4rem */
-            padding: 2rem; /* Reduced from 3rem */
-        }
-
-        .compact-section h2 {
-            margin-bottom: 1.25rem; /* Reduced */
-            font-size: clamp(1.5rem, 2.5vw, 2rem); /* More compact */
-        }
-
-        .step-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem; /* Reduced from 2rem */
-            margin-top: 1.5rem; /* Reduced */
-        }
-
-        .step {
-            text-align: center;
-            padding: 1rem; /* Reduced from 1.5rem */
-            background: var(--surface);
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .step-number {
-            width: 35px; /* Slightly smaller */
-            height: 35px;
-            background: var(--primary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 0.75rem; /* Reduced margin */
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .extension-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem; /* Reduced from 2rem */
-            margin-top: 1.5rem; /* Reduced */
-        }
-
-        .extension-card {
-            background: var(--surface);
-            padding: 1.25rem; /* Reduced from 1.5rem */
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .extension-card h3 {
-            color: var(--primary);
-            margin-bottom: 0.75rem; /* Reduced */
-            font-size: 1.1rem;
-        }
-
-        .extension-card p {
-            font-size: 0.95rem;
-            line-height: 1.5;
-            margin-bottom: 1rem;
-        }
-
-        .extension-button {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 0.6rem 1.25rem; /* Slightly smaller */
-            border-radius: var(--radius-sm);
-            text-decoration: none;
-            margin-top: 0.75rem; /* Reduced */
-            transition: var(--transition-fast);
-            font-size: 0.9rem;
-        }
-
-        .extension-button:hover {
-            background: var(--secondary);
-            transform: translateY(-2px);
-        }
-
-        .footer-text {
-            text-align: center;
-            margin-top: 2rem; /* Reduced from 3rem */
-            padding-top: 1.5rem; /* Reduced */
-            border-top: 1px solid var(--primary-light);
-        }
-
-        /* Newsletter and Community Styles */
-        .newsletter-button {
-            font-size: 0.95rem;
-            padding: 0.75rem 1.5rem;
-            background: var(--primary);
-            color: white;
-            border-radius: var(--radius-sm);
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition-medium);
-            display: inline-block;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .newsletter-button:hover {
-            background: var(--secondary);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 191, 99, 0.2);
-        }
-
-        .community-links {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem; /* Reduced from 2rem */
-            margin-top: 1.5rem; /* Reduced from 2rem */
-        }
-
-        .community-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            background: #FF4500;
-            color: white;
-            padding: 1rem 1.75rem; /* Reduced from 1.25rem 2rem */
-            border-radius: var(--radius-md);
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition-medium);
-            box-shadow: var(--shadow-sm);
-            font-size: 0.95rem;
-        }
-
-        .community-button:hover {
-            background: #E03D00;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 16px rgba(255, 69, 0, 0.3);
-        }
-
-        .reddit-icon {
-            font-size: 1.2rem; /* Reduced from 1.3rem */
-        }
-
-        /* Top Grid Layout */
-        .top-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 2rem;
-            align-items: start;
-        }
-
-        .pin-section h2 {
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-
-        .side-section {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .newsletter-box, .communities-box {
-            background: var(--surface);
-            padding: 1.25rem;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--primary-light);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .newsletter-box h3, .communities-box h3 {
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        .newsletter-box p {
-            font-size: 0.9rem;
-            color: var(--text-light);
-            margin-bottom: 1rem;
-        }
-
-        .community-links-compact {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .community-button-compact {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 0.75rem 1rem;
-            border-radius: var(--radius-sm);
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition-medium);
-            font-size: 0.9rem;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .community-button-compact:hover {
-            background: linear-gradient(135deg, var(--secondary), var(--primary));
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 191, 99, 0.2);
-        }
-
-        .reddit-icon {
-            font-size: 1rem;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 1.5rem 1rem;
-            }
-
-            .donate-section {
-                padding: 1.5rem;
-                margin: 1.5rem auto;
-            }
-
-            .donate-options {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-
-            .donate-button {
-                padding: 1.25rem 2rem;
-                font-size: 1rem;
-            }
-
-            /* Mobile Top Grid */
-            .top-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .side-section {
-                gap: 1rem;
-            }
-
-            .newsletter-box, .communities-box {
-                padding: 1rem;
-            }
-
-            .community-links-compact {
-                flex-direction: row;
-                gap: 0.5rem;
-            }
-
-            .community-button-compact {
-                flex: 1;
-                justify-content: center;
-                padding: 0.6rem 0.75rem;
-                font-size: 0.85rem;
-            }
-        }
-    </style>
 </body>
 </html>
