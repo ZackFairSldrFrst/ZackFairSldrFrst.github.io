@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kevin Hui Zhang CPA - Professional Accounting Services in Vancouver, BC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Source+Sans+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="chatbot.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1e3a45',
+            accent: '#f7f6f1',
+            highlight: '#f6c270',
+          },
+          fontFamily: {
+            'serif': ['Cormorant Garamond', 'serif'],
+            'sans': ['Source Sans Pro', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .bg-gradient-custom {
+      background: linear-gradient(135deg, #1e3a45 0%, #2c5f75 100%);
+    }
+    
+    .text-shadow {
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .float-animation {
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    .hover-lift {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .hover-lift:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body class="font-sans bg-white text-gray-800 leading-relaxed">
+  <!-- Header -->
+  <header class="flex justify-between items-center px-6 lg:px-12 py-4 border-b border-gray-200 bg-white sticky top-0 z-50 backdrop-blur-sm bg-white/95">
+    <div class="flex items-center">
+      <img src="logo.webp" alt="Kevin Hui Zhang CPA" class="h-12 w-auto object-contain">
+    </div>
+    <nav class="hidden md:flex space-x-8">
+      <a href="index.html" class="text-primary font-semibold border-b-2 border-highlight">Home</a>
+      <a href="about.html" class="text-gray-700 hover:text-primary transition-colors duration-300 text-sm font-medium">About Us</a>
+      <a href="services.html" class="text-gray-700 hover:text-primary transition-colors duration-300 text-sm font-medium">Services</a>
+      <a href="blog.html" class="text-gray-700 hover:text-primary transition-colors duration-300 text-sm font-medium">Blog</a>
+      <a href="contact.html" class="text-gray-700 hover:text-primary transition-colors duration-300 text-sm font-medium">Contact</a>
+    </nav>
+    <!-- Mobile menu button -->
+    <div class="md:hidden">
+      <button id="mobile-menu-button" class="text-gray-700 hover:text-primary">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Menu -->
+  <div id="mobile-menu" class="hidden md:hidden fixed top-0 left-0 w-full h-full bg-black/50 z-40">
+    <div class="bg-white w-full shadow-lg transform transition-transform duration-300 -translate-y-full" id="mobile-menu-content">
+      <div class="px-6 py-4 space-y-4 border-b border-gray-200">
+        <a href="index.html" class="block text-primary font-semibold py-3 border-b border-highlight text-lg">Home</a>
+        <a href="about.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-3 text-lg">About Us</a>
+        <a href="services.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-3 text-lg">Services</a>
+        <a href="blog.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-3 text-lg">Blog</a>
+        <a href="contact.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-3 text-lg">Contact</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="text-center px-6 lg:px-12 py-16 lg:py-24 bg-gradient-to-br from-gray-50 to-white">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="font-serif text-5xl lg:text-7xl text-primary mb-4 float-animation">Kevin Hui Zhang CPA</h1>
+      <p class="text-xl lg:text-2xl mb-8 text-gray-700">
+        Professional accounting services that fit <span class="text-highlight font-semibold">your</span> business needs.
+      </p>
+      
+      <div class="max-w-4xl mx-auto mb-12">
+        <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+          Let us be your trusted partner in financial success — your business growth is our priority. 
+          Whether you're a startup, established corporation, or individual, our team is here to guide you every step of the way.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="services.html" class="bg-primary hover:bg-opacity-90 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+            Explore Our Services
+          </a>
+          <a href="contact.html" class="border-2 border-primary text-primary hover:bg-primary hover:text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300">
+            Get in Touch
+          </a>
+        </div>
+      </div>
+
+      <!-- Hero Image -->
+      <div class="mt-16 max-w-4xl mx-auto">
+        <div class="relative overflow-hidden rounded-2xl shadow-2xl hover-lift">
+          <img src="kevin.jpg" alt="Professional Accounting Consultation" class="w-full h-80 object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+          <div class="absolute bottom-6 left-6 text-white">
+            <h3 class="text-2xl font-serif font-semibold mb-2">Financial Excellence You Can Trust</h3>
+            <p class="text-gray-200">Comprehensive accounting solutions for your business success</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What Sets Us Apart - Main Content -->
+  <section class="bg-gradient-custom py-20 lg:py-28 text-white relative overflow-hidden">
+    <!-- Background image overlay -->
+    <div class="absolute inset-0">
+      <img src="kevin.jpg" alt="Professional Background" class="w-full h-full object-cover opacity-10">
+    </div>
+    <div class="absolute inset-0 bg-black/20"></div>
+    
+    <div class="relative max-w-6xl mx-auto px-6 lg:px-12">
+      <div class="text-center mb-16">
+        <h2 class="font-serif text-4xl lg:text-6xl mb-6 text-shadow">What Sets Us Apart</h2>
+        <p class="text-xl lg:text-2xl mb-8 text-gray-200 max-w-4xl mx-auto">
+          At Kevin Hui Zhang CPA, we don't just crunch numbers — we provide comprehensive financial guidance that drives your business forward.
+        </p>
+        <p class="text-lg text-gray-300 max-w-3xl mx-auto">
+          With years of experience and a commitment to excellence, we've built our practice on the foundation of trust, expertise, and genuine care for our clients' financial success.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-16">
+        <div class="text-left group">
+          <div class="bg-white/10 backdrop-blur-sm p-8 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 h-full">
+            <div class="w-16 h-16 bg-highlight/20 rounded-full flex items-center justify-center mb-6">
+              <svg class="w-8 h-8 text-highlight" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+              </svg>
+            </div>
+            <h4 class="text-xl font-semibold mb-4 text-highlight">Affordable Excellence</h4>
+            <p class="text-gray-200 leading-relaxed mb-4">
+              High-quality accounting services at transparent, reasonable prices. We believe every business deserves access to professional financial guidance without breaking the bank.
+            </p>
+            <p class="text-gray-300 text-sm">
+              No hidden fees, no surprises — just honest pricing for exceptional service.
+            </p>
+          </div>
+        </div>
+        
+        <div class="text-left group">
+          <div class="bg-white/10 backdrop-blur-sm p-8 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 h-full">
+            <div class="w-16 h-16 bg-highlight/20 rounded-full flex items-center justify-center mb-6">
+              <svg class="w-8 h-8 text-highlight" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+              </svg>
+            </div>
+            <h4 class="text-xl font-semibold mb-4 text-highlight">Proven Expertise</h4>
+            <p class="text-gray-200 leading-relaxed mb-4">
+              Years of experience in accounting and tax services, backed by Kevin's CPA designation and deep understanding of Canadian tax law.
+            </p>
+            <p class="text-gray-300 text-sm">
+              Our comprehensive knowledge of accounting, tax planning, and business consulting sets us apart from traditional accounting services.
+            </p>
+          </div>
+        </div>
+        
+        <div class="text-left group">
+          <div class="bg-white/10 backdrop-blur-sm p-8 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 h-full">
+            <div class="w-16 h-16 bg-highlight/20 rounded-full flex items-center justify-center mb-6">
+              <svg class="w-8 h-8 text-highlight" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h4 class="text-xl font-semibold mb-4 text-highlight">Comprehensive Services</h4>
+            <p class="text-gray-200 leading-relaxed mb-4">
+              From basic bookkeeping to complex business valuations, we offer a full spectrum of accounting and financial services under one roof.
+            </p>
+            <p class="text-gray-300 text-sm">
+              One-stop solution for all your accounting, tax, and business consulting needs.
+            </p>
+          </div>
+        </div>
+        
+        <div class="text-left group">
+          <div class="bg-white/10 backdrop-blur-sm p-8 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 h-full">
+            <div class="w-16 h-16 bg-highlight/20 rounded-full flex items-center justify-center mb-6">
+              <svg class="w-8 h-8 text-highlight" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h4 class="text-xl font-semibold mb-4 text-highlight">Flexible & Convenient</h4>
+            <p class="text-gray-200 leading-relaxed mb-4">
+              We offer flexible scheduling, remote consultations, and year-round support because we understand business doesn't stop during tax season.
+            </p>
+            <p class="text-gray-300 text-sm">
+              Your time is valuable — we work around your schedule, not the other way around.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Value Propositions -->
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <h3 class="font-serif text-3xl lg:text-4xl mb-6">Why Choose Kevin Hui Zhang CPA?</h3>
+          <div class="space-y-6">
+            <div class="flex items-start space-x-4">
+              <div class="w-3 h-3 bg-highlight rounded-full mt-2 flex-shrink-0"></div>
+              <div>
+                <h4 class="font-semibold text-lg mb-2">Comprehensive Financial Network</h4>
+                <p class="text-gray-200">We work with financial professionals and institutions to provide complete solutions for your business needs.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-4">
+              <div class="w-3 h-3 bg-highlight rounded-full mt-2 flex-shrink-0"></div>
+              <div>
+                <h4 class="font-semibold text-lg mb-2">Specialized Expertise</h4>
+                <p class="text-gray-200">From complex tax planning to business valuations and estate planning — we handle it all with precision.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-4">
+              <div class="w-3 h-3 bg-highlight rounded-full mt-2 flex-shrink-0"></div>
+              <div>
+                <h4 class="font-semibold text-lg mb-2">Client-Centered Approach</h4>
+                <p class="text-gray-200">Every client receives personalized attention and clear explanations throughout the entire financial process.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-center">
+          <div class="bg-white/10 backdrop-blur-sm p-8 rounded-2xl">
+            <div class="text-6xl font-bold text-highlight mb-4">15+</div>
+            <p class="text-xl font-semibold mb-2">Years of Experience</p>
+            <p class="text-gray-300">Serving Vancouver and the Lower Mainland with integrity and professionalism</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="py-20 lg:py-28 bg-gradient-to-br from-gray-50 to-white">
+    <div class="max-w-4xl mx-auto px-6 lg:px-12 text-center">
+      <h2 class="font-serif text-4xl lg:text-5xl text-primary mb-6">Ready to Experience the Difference?</h2>
+      <p class="text-lg text-gray-600 mb-12 leading-relaxed">
+        Join hundreds of satisfied clients who have trusted Kevin Hui Zhang CPA with their most important financial decisions. 
+        Let us show you why experience, expertise, and exceptional service matter.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="contact.html" class="bg-primary hover:bg-opacity-90 text-white px-12 py-5 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-lg">
+          Schedule a Consultation
+        </a>
+        <a href="services.html" class="border-2 border-primary text-primary hover:bg-primary hover:text-white px-12 py-5 rounded-lg font-semibold transition-all duration-300 text-lg">
+          View Our Services
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 py-16 lg:py-20">
+    <div class="max-w-6xl mx-auto px-6 lg:px-12">
+      <div class="grid md:grid-cols-3 gap-12 text-center md:text-left">
+        <div>
+          <h3 class="font-bold text-primary mb-4 text-lg">ADDRESS</h3>
+          <p class="text-gray-600 leading-relaxed">
+            4788 Brentwood Dr<br>
+            Burnaby, BC V5C 0C5
+          </p>
+        </div>
+        
+        <div>
+          <h3 class="font-bold text-primary mb-4 text-lg">CONTACT</h3>
+          <div class="space-y-2">
+            <p>
+              <a href="tel:+12368630386" class="text-primary hover:text-highlight transition-colors duration-300 font-medium">
+                (236) 863-0386
+              </a>
+            </p>
+            <p>
+              <a href="mailto:kevin@huizhangcpa.ca" class="text-primary hover:text-highlight transition-colors duration-300 font-medium">
+                kevin@huizhangcpa.ca
+              </a>
+            </p>
+          </div>
+        </div>
+        
+        <div class="flex justify-center md:justify-end">
+          <img src="cpalogo.jpg" alt="CPA Certification Badge" class="w-24 h-24 object-contain">
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-300 mt-12 pt-8 text-center">
+        <p class="text-gray-500 text-sm">© 2024 Kevin Hui Zhang CPA. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileMenuContent = document.getElementById('mobile-menu-content');
+
+      mobileMenuButton.addEventListener('click', function() {
+        if (mobileMenu.classList.contains('hidden')) {
+          // Show menu
+          mobileMenu.classList.remove('hidden');
+          setTimeout(() => {
+            mobileMenuContent.classList.remove('-translate-y-full');
+            mobileMenuContent.classList.add('translate-y-0');
+          }, 10);
+        } else {
+          // Hide menu
+          mobileMenuContent.classList.remove('translate-y-0');
+          mobileMenuContent.classList.add('-translate-y-full');
+          setTimeout(() => {
+            mobileMenu.classList.add('hidden');
+          }, 300);
+        }
+      });
+
+      // Close mobile menu when clicking on a link
+      const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+      mobileMenuLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          mobileMenuContent.classList.remove('translate-y-0');
+          mobileMenuContent.classList.add('-translate-y-full');
+          setTimeout(() => {
+            mobileMenu.classList.add('hidden');
+          }, 300);
+        });
+      });
+
+      // Close mobile menu when clicking on backdrop
+      mobileMenu.addEventListener('click', function(event) {
+        if (event.target === mobileMenu) {
+          mobileMenuContent.classList.remove('translate-y-0');
+          mobileMenuContent.classList.add('-translate-y-full');
+          setTimeout(() => {
+            mobileMenu.classList.add('hidden');
+          }, 300);
+        }
+      });
+    });
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html> 

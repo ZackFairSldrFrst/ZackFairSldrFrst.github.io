@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services - Kevin Hui Zhang CPA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Source+Sans+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="chatbot.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1e3a45',
+            accent: '#f7f6f1',
+            highlight: '#f6c270',
+          },
+          fontFamily: {
+            'serif': ['Cormorant Garamond', 'serif'],
+            'sans': ['Source Sans Pro', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .hover-lift {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .hover-lift:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+    
+    .tab-button {
+      color: #6b7280;
+      background: transparent;
+    }
+    
+    .tab-button:hover {
+      color: #1e3a45;
+      background: rgba(30, 58, 69, 0.1);
+    }
+    
+    .active-tab {
+      color: white !important;
+      background: #1e3a45 !important;
+    }
+    
+    .tab-panel {
+      display: none;
+    }
+    
+    .active-panel {
+      display: block;
+    }
+  </style>
+</head>
+<body class="font-sans bg-white text-gray-800 leading-relaxed">
+  <!-- Header -->
+  <header class="flex justify-between items-center px-6 lg:px-12 py-4 border-b border-gray-200 bg-white sticky top-0 z-50 backdrop-blur-sm bg-white/95">
+    <div class="flex items-center">
+      <img src="logo.webp" alt="Kevin Hui Zhang CPA" class="h-12 w-auto object-contain">
+    </div>
+    <nav class="hidden md:flex space-x-8">
+      <a href="index.html" class="text-gray-700 hover:text-primary transition-colors duration-300 text-sm font-medium">Home</a>
+      <a href="about.html" class="text-gray-700 hover:text-primary transition-colors duration-300 text-sm font-medium">About Us</a>
+      <a href="services.html" class="text-primary font-semibold border-b-2 border-highlight">Services</a>
+      <a href="blog.html" class="text-gray-700 hover:text-primary transition-colors duration-300 text-sm font-medium">Blog</a>
+      <a href="contact.html" class="text-gray-700 hover:text-primary transition-colors duration-300 text-sm font-medium">Contact</a>
+    </nav>
+    <!-- Mobile menu button -->
+    <div class="md:hidden">
+      <button id="mobile-menu-button" class="text-gray-700 hover:text-primary">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Menu -->
+  <div id="mobile-menu" class="hidden md:hidden fixed top-0 left-0 w-full h-full bg-black/50 z-40">
+    <div class="bg-white w-full shadow-lg transform transition-transform duration-300 -translate-y-full" id="mobile-menu-content">
+      <div class="px-6 py-4 space-y-4 border-b border-gray-200">
+        <a href="index.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-3 text-lg">Home</a>
+        <a href="about.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-3 text-lg">About Us</a>
+        <a href="services.html" class="block text-primary font-semibold py-3 border-b border-highlight text-lg">Services</a>
+        <a href="blog.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-3 text-lg">Blog</a>
+        <a href="contact.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-3 text-lg">Contact</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Services Section -->
+  <section class="bg-gradient-to-br from-gray-100 to-gray-50 py-20 lg:py-28 relative overflow-hidden">
+    <!-- Background image -->
+    <div class="absolute inset-0 opacity-5">
+      <img src="brentwood.webp" alt="Professional Background" class="w-full h-full object-cover">
+    </div>
+    
+    <div class="relative max-w-6xl mx-auto px-6 lg:px-12">
+      <div class="text-center mb-16">
+        <h1 class="font-serif text-4xl lg:text-5xl text-primary mb-6">Our Services</h1>
+        <p class="text-lg text-gray-700 mb-4">When it comes to accounting and financial services, Kevin Hui Zhang CPA is the team to trust for comprehensive solutions.</p>
+        <p class="text-gray-600 font-medium">We're here to simplify your financial management and provide you with exceptional service in —</p>
+      </div>
+
+      <!-- Tab Navigation -->
+      <div class="flex flex-wrap justify-center mb-12 bg-white/70 backdrop-blur-sm rounded-2xl p-2 shadow-lg">
+        <button class="tab-button active-tab px-6 py-3 mx-1 mb-2 rounded-xl font-semibold transition-all duration-300" data-tab="audit-review">
+          Audit & Review
+        </button>
+        <button class="tab-button px-6 py-3 mx-1 mb-2 rounded-xl font-semibold transition-all duration-300" data-tab="tax-services">
+          Tax Services
+        </button>
+        <button class="tab-button px-6 py-3 mx-1 mb-2 rounded-xl font-semibold transition-all duration-300" data-tab="accounting">
+          Accounting
+        </button>
+        <button class="tab-button px-6 py-3 mx-1 mb-2 rounded-xl font-semibold transition-all duration-300" data-tab="consulting">
+          Consulting
+        </button>
+      </div>
+
+      <!-- Tab Content -->
+      <div class="tab-content">
+        <!-- Audit & Review Tab -->
+        <div id="audit-review" class="tab-panel active-panel">
+          <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 lg:p-12 shadow-lg">
+            <h2 class="font-serif text-3xl text-primary mb-6">Audit & Review Services</h2>
+            <div class="grid lg:grid-cols-2 gap-8">
+              <div>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                  Our audit and review services provide assurance to stakeholders and help ensure the accuracy and reliability of your financial statements. Whether you need a full audit, review engagement, or compilation, we deliver thorough, professional services tailored to your specific requirements.
+                </p>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                  We work with businesses of all sizes, from startups to established corporations, providing the level of assurance that best fits your needs and budget.
+                </p>
+                <div class="bg-primary/5 p-6 rounded-xl">
+                  <h3 class="font-semibold text-primary mb-4">Our audit and review services include:</h3>
+                  <ul class="space-y-2 text-gray-700">
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Financial Statements Audit
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Financial Statements Review
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Financial Statements Compilation
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Internal Control Reviews
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Compliance Audits
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Special Purpose Audits
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="relative">
+                <div class="relative overflow-hidden rounded-2xl shadow-lg">
+                  <img src="legacy.jpg" alt="Audit and Review Services" class="w-full h-96 lg:h-[500px] object-cover">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                  <div class="absolute bottom-6 left-6 text-white">
+                    <h3 class="text-2xl font-serif font-semibold mb-2">Professional Assurance Services</h3>
+                    <p class="text-gray-200">Comprehensive audit and review solutions for your business</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-8 text-center">
+              <p class="text-gray-700 mb-4">Need assurance services for your financial statements? Contact our team today for a consultation!</p>
+              <a href="contact.html" class="bg-primary hover:bg-opacity-90 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
+                Get in Touch
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tax Services Tab -->
+        <div id="tax-services" class="tab-panel hidden">
+          <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 lg:p-12 shadow-lg">
+            <h2 class="font-serif text-3xl text-primary mb-6">Tax Services</h2>
+            <div class="grid lg:grid-cols-2 gap-8">
+              <div>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                  Our comprehensive tax services help individuals and businesses navigate the complex Canadian tax landscape. From basic tax return preparation to sophisticated tax planning strategies, we ensure you meet your obligations while maximizing your tax efficiency.
+                </p>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                  We stay current with the latest tax laws and regulations to provide you with the most effective tax strategies and ensure compliance with CRA requirements.
+                </p>
+                <div class="bg-primary/5 p-6 rounded-xl">
+                  <h3 class="font-semibold text-primary mb-4">Our tax services include:</h3>
+                  <ul class="space-y-2 text-gray-700">
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Corporation Tax Return Preparation
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Individual Tax Return Preparation
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      CRA Representation
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Corporation and Individual Tax Planning
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Estate & Trust Tax Preparation
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Sales Tax Services (GST/HST/PST)
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Tax Effects of Buying/Selling a Business
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="relative">
+                <div class="relative overflow-hidden rounded-2xl shadow-lg">
+                  <img src="notarizations.jpg" alt="Tax Services" class="w-full h-96 lg:h-[500px] object-cover">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                  <div class="absolute bottom-6 left-6 text-white">
+                    <h3 class="text-2xl font-serif font-semibold mb-2">Comprehensive Tax Solutions</h3>
+                    <p class="text-gray-200">Expert tax preparation and planning for individuals and businesses</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-8 text-center">
+              <p class="text-gray-700 mb-4">Ready to optimize your tax position? Let our experts help you navigate the tax landscape!</p>
+              <a href="contact.html" class="bg-primary hover:bg-opacity-90 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
+                Get in Touch
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accounting Tab -->
+        <div id="accounting" class="tab-panel hidden">
+          <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 lg:p-12 shadow-lg">
+            <h2 class="font-serif text-3xl text-primary mb-6">Accounting Services</h2>
+            <div class="grid lg:grid-cols-2 gap-8">
+              <div>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                  Our comprehensive accounting services provide the foundation for sound financial management. From basic bookkeeping to complex financial reporting, we help you maintain accurate records and gain valuable insights into your business performance.
+                </p>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                  Whether you need ongoing support or assistance with specific projects, our team delivers reliable, timely, and accurate accounting services tailored to your business needs.
+                </p>
+                <div class="bg-primary/5 p-6 rounded-xl">
+                  <h3 class="font-semibold text-primary mb-4">Our accounting services include:</h3>
+                  <ul class="space-y-2 text-gray-700">
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Bookkeeping / Write-up (Monthly/Quarterly/Annually)
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      General Ledger Preparation
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Financial Statement Preparation
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Payroll Services
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Accounting System Setup for New Businesses
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Bank Reconciliations
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Accounts Payable/Receivable Management
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="relative">
+                <div class="relative overflow-hidden rounded-2xl shadow-lg">
+                  <img src="property.jpg" alt="Accounting Services" class="w-full h-96 lg:h-[500px] object-cover">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                  <div class="absolute bottom-6 left-6 text-white">
+                    <h3 class="text-2xl font-serif font-semibold mb-2">Professional Accounting Solutions</h3>
+                    <p class="text-gray-200">Comprehensive accounting support for your business success</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-8 text-center">
+              <p class="text-gray-700 mb-4">Need reliable accounting support? Our team is here to help you maintain accurate financial records!</p>
+              <a href="contact.html" class="bg-primary hover:bg-opacity-90 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
+                Get in Touch
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Consulting Tab -->
+        <div id="consulting" class="tab-panel hidden">
+          <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 lg:p-12 shadow-lg">
+            <h2 class="font-serif text-3xl text-primary mb-6">Consulting Services</h2>
+            <div class="grid lg:grid-cols-2 gap-8">
+              <div>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                  Our consulting services provide strategic guidance to help you make informed business decisions. From business planning to financial analysis, we offer expert advice to support your growth and success.
+                </p>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                  Whether you're starting a new business, planning for growth, or considering a sale, our experienced team provides the insights and guidance you need to achieve your goals.
+                </p>
+                <div class="bg-primary/5 p-6 rounded-xl">
+                  <h3 class="font-semibold text-primary mb-4">Our consulting services include:</h3>
+                  <ul class="space-y-2 text-gray-700">
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Business Consulting
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Business Entity Selection
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Business Valuations
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Buying & Selling a Business
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Estate Planning
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Real Estate Consulting
+                    </li>
+                    <li class="flex items-start">
+                      <span class="w-2 h-2 bg-highlight rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Pension & Profit-Sharing Plans
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="relative">
+                <div class="relative overflow-hidden rounded-2xl shadow-lg">
+                  <img src="vancouver.jpg" alt="Consulting Services" class="w-full h-96 lg:h-[500px] object-cover">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                  <div class="absolute bottom-6 left-6 text-white">
+                    <h3 class="text-2xl font-serif font-semibold mb-2">Strategic Business Guidance</h3>
+                    <p class="text-gray-200">Expert consulting to drive your business forward</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-8 text-center">
+              <p class="text-gray-700 mb-4">Ready to take your business to the next level? Our consulting services can help you achieve your goals!</p>
+              <a href="contact.html" class="bg-primary hover:bg-opacity-90 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
+                Get in Touch
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Additional Services Section -->
+  <section class="py-20 lg:py-28 bg-white">
+    <div class="max-w-6xl mx-auto px-6 lg:px-12">
+      <div class="text-center mb-16">
+        <h2 class="font-serif text-4xl lg:text-5xl text-primary mb-6">Why Choose Our Services?</h2>
+        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+          We combine technical expertise with personalized service to deliver results that matter to your business.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="text-center group">
+          <div class="bg-gray-50 p-8 rounded-xl hover-lift h-full">
+            <div class="w-16 h-16 bg-highlight/20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg class="w-8 h-8 text-highlight" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-primary mb-4">Accuracy & Reliability</h3>
+            <p class="text-gray-600">
+              Our meticulous attention to detail ensures accurate financial records and reliable reporting for your business decisions.
+            </p>
+          </div>
+        </div>
+        
+        <div class="text-center group">
+          <div class="bg-gray-50 p-8 rounded-xl hover-lift h-full">
+            <div class="w-16 h-16 bg-highlight/20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg class="w-8 h-8 text-highlight" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-primary mb-4">Timely Service</h3>
+            <p class="text-gray-600">
+              We understand the importance of deadlines and deliver our services promptly to keep your business running smoothly.
+            </p>
+          </div>
+        </div>
+        
+        <div class="text-center group">
+          <div class="bg-gray-50 p-8 rounded-xl hover-lift h-full">
+            <div class="w-16 h-16 bg-highlight/20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg class="w-8 h-8 text-highlight" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-primary mb-4">Personalized Approach</h3>
+            <p class="text-gray-600">
+              Every client receives personalized attention and customized solutions tailored to their specific business needs and goals.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="py-20 lg:py-28 bg-gradient-to-br from-gray-50 to-white">
+    <div class="max-w-4xl mx-auto px-6 lg:px-12 text-center">
+      <h2 class="font-serif text-4xl lg:text-5xl text-primary mb-6">Ready to Get Started?</h2>
+      <p class="text-lg text-gray-600 mb-12 leading-relaxed">
+        Let us help you achieve your financial goals with our comprehensive accounting and consulting services. 
+        Contact us today to discuss how we can support your business success.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="contact.html" class="bg-primary hover:bg-opacity-90 text-white px-12 py-5 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-lg">
+          Schedule a Consultation
+        </a>
+        <a href="about.html" class="border-2 border-primary text-primary hover:bg-primary hover:text-white px-12 py-5 rounded-lg font-semibold transition-all duration-300 text-lg">
+          Learn More About Us
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 py-16 lg:py-20">
+    <div class="max-w-6xl mx-auto px-6 lg:px-12">
+      <div class="grid md:grid-cols-3 gap-12 text-center md:text-left">
+        <div>
+          <h3 class="font-bold text-primary mb-4 text-lg">ADDRESS</h3>
+          <p class="text-gray-600 leading-relaxed">
+            4788 Brentwood Dr<br>
+            Burnaby, BC V5C 0C5
+          </p>
+        </div>
+        
+        <div>
+          <h3 class="font-bold text-primary mb-4 text-lg">CONTACT</h3>
+          <div class="space-y-2">
+            <p>
+              <a href="tel:+12368630386" class="text-primary hover:text-highlight transition-colors duration-300 font-medium">
+                (236) 863-0386
+              </a>
+            </p>
+            <p>
+              <a href="mailto:kevin@huizhangcpa.ca" class="text-primary hover:text-highlight transition-colors duration-300 font-medium">
+                kevin@huizhangcpa.ca
+              </a>
+            </p>
+          </div>
+        </div>
+        
+        <div class="flex justify-center md:justify-end">
+          <img src="cpalogo.jpg" alt="CPA Certification Badge" class="w-24 h-24 object-contain">
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-300 mt-12 pt-8 text-center">
+        <p class="text-gray-500 text-sm">© 2024 Kevin Hui Zhang CPA. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileMenuContent = document.getElementById('mobile-menu-content');
+
+      mobileMenuButton.addEventListener('click', function() {
+        if (mobileMenu.classList.contains('hidden')) {
+          // Show menu
+          mobileMenu.classList.remove('hidden');
+          setTimeout(() => {
+            mobileMenuContent.classList.remove('-translate-y-full');
+            mobileMenuContent.classList.add('translate-y-0');
+          }, 10);
+        } else {
+          // Hide menu
+          mobileMenuContent.classList.remove('translate-y-0');
+          mobileMenuContent.classList.add('-translate-y-full');
+          setTimeout(() => {
+            mobileMenu.classList.add('hidden');
+          }, 300);
+        }
+      });
+
+      // Close mobile menu when clicking on a link
+      const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+      mobileMenuLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          mobileMenuContent.classList.remove('translate-y-0');
+          mobileMenuContent.classList.add('-translate-y-full');
+          setTimeout(() => {
+            mobileMenu.classList.add('hidden');
+          }, 300);
+        });
+      });
+
+      // Close mobile menu when clicking on backdrop
+      mobileMenu.addEventListener('click', function(event) {
+        if (event.target === mobileMenu) {
+          mobileMenuContent.classList.remove('translate-y-0');
+          mobileMenuContent.classList.add('-translate-y-full');
+          setTimeout(() => {
+            mobileMenu.classList.add('hidden');
+          }, 300);
+        }
+      });
+
+      // Tab functionality
+      const tabButtons = document.querySelectorAll('.tab-button');
+      const tabPanels = document.querySelectorAll('.tab-panel');
+
+      tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const targetTab = this.getAttribute('data-tab');
+          
+          // Remove active class from all buttons and panels
+          tabButtons.forEach(btn => btn.classList.remove('active-tab'));
+          tabPanels.forEach(panel => {
+            panel.classList.remove('active-panel');
+            panel.classList.add('hidden');
+          });
+          
+          // Add active class to clicked button and corresponding panel
+          this.classList.add('active-tab');
+          document.getElementById(targetTab).classList.add('active-panel');
+          document.getElementById(targetTab).classList.remove('hidden');
+        });
+      });
+    });
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html> 

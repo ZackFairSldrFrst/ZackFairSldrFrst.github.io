@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us - Kevin Hui Zhang CPA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Source+Sans+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="chatbot.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1e3a45',
+            accent: '#f7f6f1',
+            highlight: '#f6c270',
+          },
+          fontFamily: {
+            'serif': ['Cormorant Garamond', 'serif'],
+            'sans': ['Source Sans Pro', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .hover-lift {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .hover-lift:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body class="font-sans bg-white text-gray-800 leading-relaxed">
+  <!-- Header -->
+  <header class="flex justify-between items-center px-6 lg:px-12 py-4 border-b border-gray-200 bg-white sticky top-0 z-50 backdrop-blur-sm bg-white/95">
+    <div class="flex items-center">
+      <img src="logo.webp" alt="Kevin Hui Zhang CPA" class="h-12 w-auto object-contain">
+    </div>
+    <nav class="hidden md:flex space-x-8">
+      <a href="index.html" class="text-gray-700 hover:text-primary transition-colors duration-300 text-sm font-medium">Home</a>
+      <a href="about.html" class="text-gray-700 hover:text-primary transition-colors duration-300 text-sm font-medium">About Us</a>
+      <a href="services.html" class="text-gray-700 hover:text-primary transition-colors duration-300 text-sm font-medium">Services</a>
+      <a href="blog.html" class="text-gray-700 hover:text-primary transition-colors duration-300 text-sm font-medium">Blog</a>
+      <a href="contact.html" class="text-primary font-semibold border-b-2 border-highlight">Contact</a>
+    </nav>
+    <!-- Mobile menu button -->
+    <div class="md:hidden">
+      <button id="mobile-menu-button" class="text-gray-700 hover:text-primary">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Menu -->
+  <div id="mobile-menu" class="hidden md:hidden fixed top-0 left-0 w-full h-full bg-black/50 z-40">
+    <div class="bg-white w-full shadow-lg transform transition-transform duration-300 -translate-y-full" id="mobile-menu-content">
+      <div class="px-6 py-4 space-y-4 border-b border-gray-200">
+        <a href="index.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-3 text-lg">Home</a>
+        <a href="about.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-3 text-lg">About Us</a>
+        <a href="services.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-3 text-lg">Services</a>
+        <a href="blog.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-3 text-lg">Blog</a>
+        <a href="contact.html" class="block text-primary font-semibold py-3 border-b border-highlight text-lg">Contact</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Section -->
+  <section class="bg-gradient-to-br from-gray-50 to-white py-20 lg:py-28">
+    <div class="max-w-6xl mx-auto px-6 lg:px-12">
+      <div class="text-center mb-16">
+        <h1 class="font-serif text-4xl lg:text-5xl text-primary mb-6 font-semibold">Connect With Our Team</h1>
+        <p class="text-lg text-gray-700 mb-4">Need help with your taxes or accounting?</p>
+        <p class="text-lg text-gray-700 font-medium">Looking for business consulting? We're here to help!</p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-12">
+        <!-- Contact Information -->
+        <div class="space-y-8">
+          <!-- Address -->
+          <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 hover-lift">
+            <div class="flex items-start space-x-4">
+              <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+              </div>
+              <div>
+                <h2 class="font-semibold text-primary text-lg mb-2">Address</h2>
+                <p class="text-gray-700 leading-relaxed">
+                  4788 Brentwood Dr<br>
+                  Burnaby, BC V5C 0C5
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact -->
+          <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 hover-lift">
+            <div class="flex items-start space-x-4">
+              <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 7.89a2 2 0 002.83 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+              <div>
+                <h2 class="font-semibold text-primary text-lg mb-3">Contact</h2>
+                <div class="space-y-3">
+                  <div class="flex items-center space-x-3">
+                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                    </svg>
+                    <span class="text-gray-600 text-sm">Tel:</span>
+                    <a href="tel:+12368630386" class="text-primary hover:text-highlight transition-colors duration-300 font-medium">(236) 863-0386</a>
+                  </div>
+                  <div class="flex items-center space-x-3">
+                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 7.89a2 2 0 002.83 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                    <span class="text-gray-600 text-sm">Email:</span>
+                    <a href="mailto:kevin@huizhangcpa.ca" class="text-primary hover:text-highlight transition-colors duration-300 font-medium">kevin@huizhangcpa.ca</a>
+                  </div>
+                  <div class="flex items-center space-x-3">
+                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path>
+                    </svg>
+                    <span class="text-gray-600 text-sm">Fax:</span>
+                    <span class="text-gray-700">604-800-0282</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Opening Hours -->
+          <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 hover-lift">
+            <div class="flex items-start space-x-4">
+              <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+              <div class="w-full">
+                <h2 class="font-semibold text-primary text-lg mb-4">Opening Hours</h2>
+                <div class="space-y-3">
+                  <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span class="text-gray-700 font-medium">Monday - Friday</span>
+                    <span class="text-gray-600">10:00 AM – 5:00 PM</span>
+                  </div>
+                  <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span class="text-gray-700 font-medium">Saturday</span>
+                    <span class="text-highlight font-medium">By Appointment</span>
+                  </div>
+                  <div class="flex justify-between items-center py-2">
+                    <span class="text-gray-700 font-medium">Sunday</span>
+                    <span class="text-gray-500">Closed</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CTA Button -->
+          <div class="text-center pt-4">
+            <button class="bg-primary hover:bg-opacity-90 text-white px-12 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-lg w-full sm:w-auto">
+              Schedule a Consultation
+            </button>
+          </div>
+        </div>
+
+        <!-- Google Maps -->
+        <div class="bg-white p-2 rounded-2xl shadow-lg border border-gray-100">
+          <div class="relative h-96 lg:h-full min-h-[500px] rounded-xl overflow-hidden">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2609.1234567890123!2d-123.1207674!3d49.1856789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s4788%20Brentwood%20Dr%2C%20Burnaby%2C%20BC%20V5C%200C5!5e0!3m2!1sen!2sca!4v1640995200000!5m2!1sen!2sca&q=4788+Brentwood+Dr,+Burnaby,+BC+V5C+0C5"
+              width="100%" 
+              height="100%" 
+              style="border:0;" 
+              allowfullscreen="" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade"
+              class="rounded-xl">
+            </iframe>
+            <div class="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg">
+              <p class="text-sm font-semibold text-gray-800">4788 Brentwood Dr</p>
+              <p class="text-xs text-gray-600">Burnaby, BC V5C 0C5</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Additional Contact Info -->
+  <section class="py-16 lg:py-20 bg-white">
+    <div class="max-w-4xl mx-auto px-6 lg:px-12 text-center">
+      <h2 class="font-serif text-3xl lg:text-4xl text-primary mb-8 font-semibold">How Can We Help You?</h2>
+      <div class="grid md:grid-cols-3 gap-8 mb-12">
+        <div class="p-6 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-100 hover-lift">
+          <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-primary mb-2">Real Estate</h3>
+          <p class="text-gray-600 text-sm">Buying, selling, or refinancing your home? We're here to help.</p>
+        </div>
+        
+        <div class="p-6 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-100 hover-lift">
+          <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-primary mb-2">Estate Planning</h3>
+          <p class="text-gray-600 text-sm">Wills, powers of attorney, and representation agreements.</p>
+        </div>
+        
+        <div class="p-6 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-100 hover-lift">
+          <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-primary mb-2">Notarizations</h3>
+          <p class="text-gray-600 text-sm">Document authentication, affidavits, and certified copies.</p>
+        </div>
+      </div>
+      
+      <div class="bg-gradient-to-br from-primary/5 to-highlight/5 rounded-2xl p-8">
+        <h3 class="font-serif text-2xl text-primary mb-4 font-semibold">Languages We Speak</h3>
+        <div class="flex flex-wrap justify-center gap-4">
+          <span class="bg-white px-4 py-2 rounded-full text-primary font-medium shadow-sm">English</span>
+          <span class="bg-white px-4 py-2 rounded-full text-primary font-medium shadow-sm">Mandarin</span>
+          <span class="bg-white px-4 py-2 rounded-full text-primary font-medium shadow-sm">Cantonese</span>
+        </div>
+        <p class="text-gray-600 mt-4">We're committed to clear communication in the language you're most comfortable with.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 py-16 lg:py-20">
+    <div class="max-w-6xl mx-auto px-6 lg:px-12">
+      <div class="grid md:grid-cols-3 gap-12 text-center md:text-left">
+        <div>
+          <h3 class="font-bold text-primary mb-4 text-lg">ADDRESS</h3>
+          <p class="text-gray-600 leading-relaxed">
+            4788 Brentwood Dr<br>
+            Burnaby, BC V5C 0C5
+          </p>
+        </div>
+        
+        <div>
+          <h3 class="font-bold text-primary mb-4 text-lg">CONTACT</h3>
+          <div class="space-y-2">
+            <p>
+              <a href="tel:+12368630386" class="text-primary hover:text-highlight transition-colors duration-300 font-medium">
+                (236) 863-0386
+              </a>
+            </p>
+            <p>
+              <a href="mailto:kevin@huizhangcpa.ca" class="text-primary hover:text-highlight transition-colors duration-300 font-medium">
+                kevin@huizhangcpa.ca
+              </a>
+            </p>
+          </div>
+        </div>
+        
+        <div class="flex justify-center md:justify-end">
+          <img src="cpalogo.jpg" alt="CPA Certification Badge" class="w-24 h-24 object-contain">
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-300 mt-12 pt-8 text-center">
+        <p class="text-gray-500 text-sm">© 2024 Kevin Hui Zhang CPA. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileMenuContent = document.getElementById('mobile-menu-content');
+
+      mobileMenuButton.addEventListener('click', function() {
+        if (mobileMenu.classList.contains('hidden')) {
+          // Show menu
+          mobileMenu.classList.remove('hidden');
+          setTimeout(() => {
+            mobileMenuContent.classList.remove('-translate-y-full');
+            mobileMenuContent.classList.add('translate-y-0');
+          }, 10);
+        } else {
+          // Hide menu
+          mobileMenuContent.classList.remove('translate-y-0');
+          mobileMenuContent.classList.add('-translate-y-full');
+          setTimeout(() => {
+            mobileMenu.classList.add('hidden');
+          }, 300);
+        }
+      });
+
+      // Close mobile menu when clicking on a link
+      const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+      mobileMenuLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          mobileMenuContent.classList.remove('translate-y-0');
+          mobileMenuContent.classList.add('-translate-y-full');
+          setTimeout(() => {
+            mobileMenu.classList.add('hidden');
+          }, 300);
+        });
+      });
+
+      // Close mobile menu when clicking on backdrop
+      mobileMenu.addEventListener('click', function(event) {
+        if (event.target === mobileMenu) {
+          mobileMenuContent.classList.remove('translate-y-0');
+          mobileMenuContent.classList.add('-translate-y-full');
+          setTimeout(() => {
+            mobileMenu.classList.add('hidden');
+          }, 300);
+        }
+      });
+    });
+  </script>
+</body>
+</html> 

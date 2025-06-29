@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Professional Financial Insights | Kevin Hui Zhang CPA Vancouver BC</title>
+    <meta name="description" content="Expert insights on accounting, tax planning, and business consulting from Kevin Hui Zhang CPA in Vancouver, BC. Professional financial advice from experienced accountants.">
+    <meta name="keywords" content="accounting blog, tax planning, business consulting, Vancouver BC CPA, financial advice, tax preparation, business valuation, estate planning">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Source+Sans+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e3a45',
+                        accent: '#f7f6f1',
+                        highlight: '#f6c270',
+                    },
+                    fontFamily: {
+                        'serif': ['Cormorant Garamond', 'serif'],
+                        'sans': ['Source Sans Pro', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .bg-gradient-custom {
+            background: linear-gradient(135deg, #1e3a45 0%, #2c5f75 100%);
+        }
+        
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="font-sans bg-white text-gray-800 leading-relaxed">
+    <!-- Header -->
+    <header class="flex justify-between items-center px-6 lg:px-12 py-4 border-b border-gray-200 bg-white sticky top-0 z-50 backdrop-blur-sm bg-white/95">
+        <div class="flex items-center">
+            <img src="logo.webp" alt="Kevin Hui Zhang CPA" class="h-12 w-auto object-contain">
+        </div>
+        <nav class="hidden md:flex space-x-8">
+            <a href="index.html" class="text-gray-700 hover:text-primary transition-colors duration-300 text-sm font-medium">Home</a>
+            <a href="about.html" class="text-gray-700 hover:text-primary transition-colors duration-300 text-sm font-medium">About Us</a>
+            <a href="services.html" class="text-gray-700 hover:text-primary transition-colors duration-300 text-sm font-medium">Services</a>
+            <a href="blog.html" class="text-primary font-semibold border-b-2 border-highlight">Blog</a>
+            <a href="contact.html" class="text-gray-700 hover:text-primary transition-colors duration-300 text-sm font-medium">Contact</a>
+        </nav>
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+            <button id="mobile-menu-button" class="text-gray-700 hover:text-primary">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Menu -->
+    <div id="mobile-menu" class="hidden md:hidden fixed top-0 left-0 w-full h-full bg-black/50 z-40">
+        <div class="bg-white w-full shadow-lg transform transition-transform duration-300 -translate-y-full" id="mobile-menu-content">
+            <div class="px-6 py-4 space-y-4 border-b border-gray-200">
+                <a href="index.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-3 text-lg">Home</a>
+                <a href="about.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-3 text-lg">About Us</a>
+                <a href="services.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-3 text-lg">Services</a>
+                <a href="blog.html" class="block text-primary font-semibold py-3 border-b border-highlight text-lg">Blog</a>
+                <a href="contact.html" class="block text-gray-700 hover:text-primary transition-colors duration-300 py-3 text-lg">Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="text-center px-6 lg:px-12 py-12 lg:py-16 bg-gradient-to-br from-gray-50 to-white">
+        <div class="max-w-6xl mx-auto">
+            <h1 class="font-serif text-4xl lg:text-6xl text-primary mb-4">Financial Insights</h1>
+            <p class="text-lg lg:text-xl mb-6 text-gray-700">
+                Expert guidance and updates from Vancouver's <span class="text-highlight font-semibold">trusted</span> accounting professionals.
+            </p>
+            <div class="text-sm text-gray-500">
+                Professional guidance • Tax updates • Business insights
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Posts Section -->
+    <section class="py-12 lg:py-16 bg-white">
+        <div class="max-w-6xl mx-auto px-6 lg:px-12">
+            <div class="space-y-12">
+
+                <!-- Blog Post 1: Real Estate -->
+                <article class="bg-gradient-to-br from-gray-50 to-white rounded-2xl shadow-lg overflow-hidden hover-lift border border-gray-100">
+                    <div class="md:flex">
+                        <div class="md:w-1/3">
+                            <img src="property.jpg" alt="Real estate property transaction" class="w-full h-64 md:h-full object-cover">
+                        </div>
+                        <div class="md:w-2/3 p-8 lg:p-12">
+                            <div class="flex items-center mb-4 text-sm text-gray-600">
+                                <time datetime="2025-06-25" class="mr-4">June 25, 2025</time>
+                                <span class="mr-4">•</span>
+                                <span>By Kevin Hui Zhang</span>
+                            </div>
+                            <h2 class="font-serif text-3xl lg:text-4xl font-semibold mb-4 text-primary hover:text-highlight transition-colors">
+                                <a href="blog-real-estate.html" class="no-underline">Understanding Tax Planning Strategies for Small Businesses</a>
+                            </h2>
+                            <p class="text-gray-700 mb-6 leading-relaxed">
+                                Effective tax planning is crucial for small business success in British Columbia. As experienced accountants, we've seen how proper tax strategies can significantly impact a business's bottom line and long-term growth potential.
+                            </p>
+                            <p class="text-gray-700 mb-6 leading-relaxed">
+                                From corporate structure optimization to expense management and investment planning, each decision affects your tax liability. Our role extends beyond tax preparation to providing strategic guidance that maximizes your business's financial efficiency.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Tax Planning</span>
+                                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Small Business</span>
+                                <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">Financial Strategy</span>
+                            </div>
+                            <a href="#" class="inline-flex items-center text-primary hover:text-highlight font-semibold transition-colors">
+                                Read Full Article
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Blog Post 2: Estate Planning -->
+                <article class="bg-gradient-to-br from-gray-50 to-white rounded-2xl shadow-lg overflow-hidden hover-lift border border-gray-100">
+                    <div class="md:flex">
+                        <div class="md:w-1/3 md:order-2">
+                            <img src="legacy.jpg" alt="Estate planning and legacy documents" class="w-full h-64 md:h-full object-cover">
+                        </div>
+                        <div class="md:w-2/3 p-8 lg:p-12 md:order-1">
+                            <div class="flex items-center mb-4 text-sm text-gray-600">
+                                <time datetime="2025-06-25" class="mr-4">June 25, 2025</time>
+                                <span class="mr-4">•</span>
+                                <span>By Kevin Hui Zhang</span>
+                            </div>
+                            <h2 class="font-serif text-3xl lg:text-4xl font-semibold mb-4 text-primary hover:text-highlight transition-colors">
+                                <a href="blog-estate-planning.html" class="no-underline">The Importance of Estate Planning for Business Owners</a>
+                            </h2>
+                            <p class="text-gray-700 mb-6 leading-relaxed">
+                                Business owners face unique challenges when it comes to estate planning. Unlike personal assets, business interests require specialized planning to ensure smooth transitions and minimize tax implications for your heirs.
+                            </p>
+                            <p class="text-gray-700 mb-6 leading-relaxed">
+                                Major business events such as expansion, acquisition, partnership changes, or succession planning all warrant a review of your estate planning strategy. Regular updates ensure your business legacy is protected and your family's financial future is secure.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm">Estate Planning</span>
+                                <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">Business Succession</span>
+                                <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">Tax Strategy</span>
+                            </div>
+                            <a href="blog-estate-planning.html" class="inline-flex items-center text-primary hover:text-highlight font-semibold transition-colors">
+                                Read Full Article
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Blog Post 3: Notarizations -->
+                <article class="bg-gradient-to-br from-gray-50 to-white rounded-2xl shadow-lg overflow-hidden hover-lift border border-gray-100">
+                    <div class="md:flex">
+                        <div class="md:w-1/3">
+                            <img src="notarizations.jpg" alt="Document notarization and certification services" class="w-full h-64 md:h-full object-cover">
+                        </div>
+                        <div class="md:w-2/3 p-8 lg:p-12">
+                            <div class="flex items-center mb-4 text-sm text-gray-600">
+                                <time datetime="2025-06-25" class="mr-4">June 25, 2025</time>
+                                <span class="mr-4">•</span>
+                                <span>By Kevin Hui Zhang</span>
+                            </div>
+                            <h2 class="font-serif text-3xl lg:text-4xl font-semibold mb-4 text-primary hover:text-highlight transition-colors">
+                                <a href="blog-notarization.html" class="no-underline">Common Accounting Mistakes and How to Avoid Them</a>
+                            </h2>
+                            <p class="text-gray-700 mb-6 leading-relaxed">
+                                Proper accounting is the foundation of sound business management. However, common accounting mistakes can lead to financial misstatements, tax issues, and missed opportunities for business growth.
+                            </p>
+                            <p class="text-gray-700 mb-6 leading-relaxed">
+                                From improper expense categorization to inadequate record-keeping and missed tax deadlines, these errors can have significant consequences. Understanding these pitfalls and implementing proper controls can save your business time, money, and stress.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">Accounting</span>
+                                <span class="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm">Best Practices</span>
+                                <span class="bg-pink-100 text-pink-800 px-3 py-1 rounded-full text-sm">Financial Management</span>
+                            </div>
+                            <a href="blog-notarization.html" class="inline-flex items-center text-primary hover:text-highlight font-semibold transition-colors">
+                                Read Full Article
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Signup -->
+    <section class="bg-gradient-custom py-16 lg:py-20 text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-black/20"></div>
+        <div class="relative max-w-4xl mx-auto px-6 lg:px-12 text-center">
+            <h2 class="font-serif text-3xl lg:text-4xl font-semibold text-white mb-4">Stay Informed</h2>
+            <p class="text-xl text-gray-200 mb-8">
+                Subscribe to receive the latest legal insights and updates from JE Notaries
+            </p>
+            <div class="max-w-md mx-auto">
+                <div class="flex gap-4">
+                    <input type="email" placeholder="Enter your email" class="flex-1 px-4 py-3 rounded-lg border-0 focus:ring-2 focus:ring-highlight">
+                    <button class="bg-highlight text-primary px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105">
+                        Subscribe
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-16 lg:py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div class="max-w-4xl mx-auto px-6 lg:px-12 text-center">
+            <h2 class="font-serif text-4xl lg:text-5xl text-primary mb-6 font-semibold">Need Legal Assistance?</h2>
+            <p class="text-lg text-gray-600 mb-12 leading-relaxed">
+                Our experienced notaries are ready to help with all your legal document needs. 
+                Contact us today to discuss how we can support your important legal matters.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="contact.html" class="bg-primary hover:bg-opacity-90 text-white px-12 py-5 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-lg">
+                    Get in Touch
+                </a>
+                <a href="services.html" class="border-2 border-primary text-primary hover:bg-primary hover:text-white px-12 py-5 rounded-lg font-semibold transition-all duration-300 text-lg">
+                    View Our Services
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 py-16 lg:py-20">
+        <div class="max-w-6xl mx-auto px-6 lg:px-12">
+            <div class="grid md:grid-cols-3 gap-12 text-center md:text-left">
+                <div>
+                    <h3 class="font-bold text-primary mb-4 text-lg">ADDRESS</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        #231 - 8680 Cambie Road<br>
+                        Richmond, BC V6X 4K1
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-primary mb-4 text-lg">CONTACT</h3>
+                    <div class="space-y-2">
+                        <p>
+                            <a href="tel:+16042888171" class="text-primary hover:text-highlight transition-colors duration-300 font-medium">
+                                604-288-8171
+                            </a>
+                        </p>
+                        <p>
+                            <a href="mailto:jlamnp@gmail.com" class="text-primary hover:text-highlight transition-colors duration-300 font-medium">
+                                jlamnp@gmail.com
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex justify-center md:justify-end">
+                    <img src="badge.avif" alt="Official Certification Badge" class="w-24 h-24 object-contain">
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-300 mt-12 pt-8 text-center">
+                <p class="text-gray-500 text-sm">© 2024 Kevin Hui Zhang CPA. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuContent = document.getElementById('mobile-menu-content');
+
+            mobileMenuButton.addEventListener('click', function() {
+                if (mobileMenu.classList.contains('hidden')) {
+                    // Show menu
+                    mobileMenu.classList.remove('hidden');
+                    setTimeout(() => {
+                        mobileMenuContent.classList.remove('-translate-y-full');
+                        mobileMenuContent.classList.add('translate-y-0');
+                    }, 10);
+                } else {
+                    // Hide menu
+                    mobileMenuContent.classList.remove('translate-y-0');
+                    mobileMenuContent.classList.add('-translate-y-full');
+                    setTimeout(() => {
+                        mobileMenu.classList.add('hidden');
+                    }, 300);
+                }
+            });
+
+            // Close mobile menu when clicking on a link
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenuContent.classList.remove('translate-y-0');
+                    mobileMenuContent.classList.add('-translate-y-full');
+                    setTimeout(() => {
+                        mobileMenu.classList.add('hidden');
+                    }, 300);
+                });
+            });
+
+            // Close mobile menu when clicking on backdrop
+            mobileMenu.addEventListener('click', function(event) {
+                if (event.target === mobileMenu) {
+                    mobileMenuContent.classList.remove('translate-y-0');
+                    mobileMenuContent.classList.add('-translate-y-full');
+                    setTimeout(() => {
+                        mobileMenu.classList.add('hidden');
+                    }, 300);
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
