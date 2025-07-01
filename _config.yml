@@ -1,0 +1,38 @@
+# Jekyll configuration for GitHub Pages
+# This file tells Jekyll which files to exclude from processing
+
+exclude:
+  - node_modules
+  - vendor
+  - package-lock.json
+  - yarn.lock
+  - .gitignore
+  - .DS_Store
+  - README.md
+  - *.log
+  - .env
+  - .env.local
+  - .env.production
+  - .env.development
+  - .next
+  - .nuxt
+  - dist
+  - build
+  - out
+  - coverage
+  - .nyc_output
+  - .cache
+  - .parcel-cache
+  - .eslintcache
+  - .stylelintcache
+
+# Disable Jekyll processing for markdown files in node_modules
+keep_files:
+  - .nojekyll
+
+# Set the theme (optional - you can remove this if you don't want a theme)
+# theme: jekyll-theme-primer
+
+# Set the base URL (optional)
+# baseurl: ""
+# url: "https://zackfairsldrfrst.github.io" 
