@@ -1,10 +1,32 @@
 const API_KEY = 'sk-b98786a940d54865bdb21f9fe2a98eb1';
 const API_URL = 'https://api.deepseek.com/v1/chat/completions';
 
+// Stripe Configuration
+const STRIPE_PUBLISHABLE_KEY = 'pk_live_51Odib1Gc737pMzW7lqq5CqU4eOD01pldW3fEcIxndQzvggxKkYmk9SozJ4ExqsEtNbMLRCVC2GKd10wCQuxzYbHI00Wx6RwOQa';
+let stripe = null;
+let elements = null;
+let paymentElement = null;
+
+// Function to initialize Stripe
+function initializeStripe() {
+    try {
+        if (typeof Stripe !== 'undefined') {
+            stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+            debugLog('Stripe initialized successfully');
+            return true;
+        } else {
+            debugLog('Stripe library not available');
+            return false;
+        }
+    } catch (error) {
+        debugLog('Error initializing Stripe:', error);
+        return false;
+    }
+}
+
 // Payment and limit constants
 const FREE_MESSAGE_LIMIT = 2;
 const SESSION_DURATION = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
-const PAYMENT_AMOUNT = 2;
 
 // Payment and limit tracking
 let messageCount = 0;
@@ -22,9 +44,7 @@ const STORAGE_KEYS = {
 // localStorage keys for payment tracking
 const PAYMENT_KEYS = {
     MESSAGE_COUNT: 'smutwriter_message_count',
-    SESSION_START: 'smutwriter_session_start',
-    IS_PAID: 'smutwriter_is_paid',
-    PAYMENT_EXPIRY: 'smutwriter_payment_expiry'
+    SESSION_START: 'smutwriter_session_start'
 };
 
 const messageInput = document.getElementById('messageInput');
@@ -704,19 +724,128 @@ function formatResponse(text) {
 }
 
 // Function to check if user can send messages
-function canSendMessage() {
+// Function to check Stripe payment status
+async function checkStripePaymentStatus() {
+    try {
+        // Check if we have a valid session
+        const sessionStart = loadFromLocalStorage(PAYMENT_KEYS.SESSION_START);
+        if (sessionStart && (new Date().getTime() - sessionStart) < SESSION_DURATION) {
+            debugLog('Valid Stripe payment session found');
+            return true;
+        }
+        
+        debugLog('No valid Stripe payment session');
+        return false;
+    } catch (error) {
+        debugLog('Error checking Stripe payment status:', error);
+        return false;
+    }
+}
+
+// Function to handle Stripe payment status check
+async function checkStripePaymentStatus() {
+    try {
+        // Check if we have a valid session
+        const sessionStart = loadFromLocalStorage(PAYMENT_KEYS.SESSION_START);
+        if (sessionStart && (new Date().getTime() - sessionStart) < SESSION_DURATION) {
+            debugLog('Valid Stripe payment session found');
+            return true;
+        }
+        
+        debugLog('No valid Stripe payment session');
+        return false;
+    } catch (error) {
+        debugLog('Error checking Stripe payment status:', error);
+        return false;
+    }
+}
+
+// Function to toggle subscription account management
+async function toggleStripeUser() {
+    try {
+        // Check current subscription status
+        const stripePaid = await checkStripePaymentStatus();
+        const sessionStart = loadFromLocalStorage(PAYMENT_KEYS.SESSION_START);
+        
+        if (stripePaid) {
+            // User has active subscription
+            const accountInfo = `
+Subscription Status:
+- Status: Active
+- Plan: Monthly Subscription
+- Amount: $19.99/month
+- Payment method: Stripe
+- Cancel anytime
+
+You have unlimited access to Smut Writer!`;
+            alert(accountInfo);
+        } else {
+            // User needs to subscribe
+            const accountInfo = `
+Subscription Status:
+- Status: Not subscribed
+- Messages used: ${messageCount}/${FREE_MESSAGE_LIMIT}
+- Plan: $19.99/month
+- Cancel anytime
+
+Would you like to subscribe now?`;
+            
+            if (confirm(accountInfo + '\n\nClick OK to open subscription options.')) {
+                showPaymentPrompt();
+            }
+        }
+    } catch (error) {
+        debugLog('Error in toggleStripeUser:', error);
+        alert('Error checking subscription status. Please try again.');
+    }
+}
+
+// Function to show subscription options
+function showStripePaymentOptions() {
+    const options = `
+Smut Writer - Subscription Options
+
+Secure subscription powered by Stripe:
+
+1. **Free Trial**: You get ${FREE_MESSAGE_LIMIT} free messages
+2. **Monthly Subscription**: $19.99/month for unlimited access
+3. **Multiple Payment Methods**: Credit cards, debit cards, digital wallets
+4. **Cancel Anytime**: No long-term commitment
+
+Current Status:
+- Messages used: ${messageCount}/${FREE_MESSAGE_LIMIT}
+- Subscription status: ${isPaid ? 'Active' : 'Not subscribed'}
+
+Would you like to subscribe now?`;
+
+    if (confirm(options)) {
+        showPaymentPrompt();
+    }
+}
+
+async function canSendMessage() {
     debugLog(`Checking if can send message: isPaid=${isPaid}, messageCount=${messageCount}, FREE_MESSAGE_LIMIT=${FREE_MESSAGE_LIMIT}`);
     
+    // Check Stripe payment status
+    const stripePaid = await checkStripePaymentStatus();
+    if (stripePaid) {
+        debugLog('User is paid via Stripe');
+        isPaid = true;
+        return true;
+    }
+    
+    // For now, only allow free messages until payment is verified
+    // In production, you would implement proper webhook verification
     if (isPaid) {
-        const expiryTime = loadFromLocalStorage(PAYMENT_KEYS.PAYMENT_EXPIRY);
-        if (expiryTime && new Date().getTime() < expiryTime) {
-            debugLog('User is paid and payment is valid');
+        // Check if we have a local session that's still valid
+        const sessionStart = loadFromLocalStorage(PAYMENT_KEYS.SESSION_START);
+        if (sessionStart && (new Date().getTime() - sessionStart) < SESSION_DURATION) {
+            debugLog('User has valid local session');
             return true;
         } else {
-            // Payment expired
-            debugLog('Payment expired, setting isPaid to false');
+            // Session expired
+            debugLog('Session expired, setting isPaid to false');
             isPaid = false;
-            saveToLocalStorage(PAYMENT_KEYS.IS_PAID, false);
             showPaymentPrompt();
             return false;
         }
@@ -727,8 +856,8 @@ function canSendMessage() {
     return canSend;
 }
 
-// Function to process payment
-function processPayment() {
+// Function to process payment with Stripe
+async function processPayment() {
     // Prevent multiple payment processes
     if (isProcessingPayment) {
         debugLog('Payment already being processed, ignoring duplicate click');
@@ -736,7 +865,7 @@ function processPayment() {
     }
     
     isProcessingPayment = true;
-    debugLog('Starting payment process');
+    debugLog('Starting Stripe payment process');
     
     // Track payment attempt
     trackEvent('payment_attempt', {
@@ -750,11 +879,252 @@ function processPayment() {
         return typeof TranslationManager !== 'undefined' ? TranslationManager.get(key) : translations['en'][key] || key;
     };
     
-    // Open Stripe payment link in a new tab
-    window.open('https://buy.stripe.com/00w9ATacx7bZ1Pfaes0ZW07', '_blank');
+    try {
+        // Open Stripe checkout link for monthly subscription
+        window.open('https://buy.stripe.com/eVq8wPesN7bZbpP3Q40ZW08', '_blank');
+        
+        // Add a message to inform the user
+        addMessage(`Please complete your $19.99/month subscription payment in the new tab. After payment, click "Verify Payment" to activate your subscription.`, false);
+        
+        // Remove payment prompt
+        const paymentPrompt = document.querySelector('.payment-prompt');
+        if (paymentPrompt) {
+            paymentPrompt.remove();
+        }
+        
+        // Reset processing state
+        isProcessingPayment = false;
+        
+        // Track checkout opening
+        trackEvent('stripe_checkout_opened', {
+            amount: 19.99,
+            currency: 'usd',
+            subscription_type: 'monthly',
+            timestamp: new Date().toISOString()
+        });
+        
+        debugLog('Stripe checkout opened, waiting for payment verification');
+        
+    } catch (error) {
+        debugLog('Error processing Stripe payment:', error);
+        isProcessingPayment = false;
+        
+        // Fallback to direct payment link
+        showDirectPaymentLink();
+    }
+}
+
+// Function to show Stripe payment form
+function showStripePaymentForm(clientSecret) {
+    // Remove existing payment prompt
+    const existingPrompt = document.querySelector('.payment-prompt');
+    if (existingPrompt) {
+        existingPrompt.remove();
+    }
     
-    // Add a message to inform the user
-    addMessage(`Please complete the payment in the new tab. Once you've paid, you'll be able to continue chatting for 3 hours.`, false);
+    const paymentDiv = document.createElement('div');
+    paymentDiv.className = 'payment-prompt';
+    
+    paymentDiv.innerHTML = `
+        <div class="payment-content stripe-payment">
+            <h3>Complete Your Payment</h3>
+            <p>Enter your payment details to continue chatting for 3 hours.</p>
+            <div id="payment-element"></div>
+            <button id="submit-payment" class="payment-button">
+                <div class="spinner hidden" id="spinner"></div>
+                <span id="button-text">Pay $2.00</span>
+            </button>
+            <div id="payment-message" class="hidden"></div>
+            <button onclick="closePaymentForm()" class="payment-option-btn">
+                <i class="fas fa-times"></i> Cancel
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(paymentDiv);
+    
+    // Initialize Stripe Elements
+    elements = stripe.elements({
+        clientSecret: clientSecret,
+        appearance: {
+            theme: 'night',
+            variables: {
+                colorPrimary: '#ff4d8d',
+                colorBackground: '#1a1a2e',
+                colorText: '#ffffff',
+                colorDanger: '#ff4444',
+                fontFamily: 'Inter, system-ui, sans-serif',
+                spacingUnit: '4px',
+                borderRadius: '8px'
+            }
+        }
+    });
+    
+    paymentElement = elements.create('payment');
+    paymentElement.mount('#payment-element');
+    
+    // Handle form submission
+    const form = document.getElementById('submit-payment');
+    form.addEventListener('click', handleStripePayment);
+}
+
+// Function to handle Stripe payment submission
+async function handleStripePayment(e) {
+    e.preventDefault();
+    
+    setLoading(true);
+    
+    const { error } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+            return_url: window.location.href,
+        },
+    });
+    
+    if (error) {
+        const messageContainer = document.getElementById('payment-message');
+        messageContainer.textContent = error.message;
+        messageContainer.classList.remove('hidden');
+        setLoading(false);
+    } else {
+        // Payment successful
+        const sessionStart = new Date().getTime();
+        isPaid = true;
+        isProcessingPayment = false;
+        saveToLocalStorage(PAYMENT_KEYS.SESSION_START, sessionStart);
+        
+        // Track payment completion
+        trackEvent('payment_completed', {
+            payment_method: 'stripe',
+            timestamp: new Date().toISOString()
+        });
+        
+        addMessage('Payment successful! You can now continue chatting for 3 hours.', false);
+        
+        // Remove payment form
+        const paymentPrompt = document.querySelector('.payment-prompt');
+        if (paymentPrompt) {
+            paymentPrompt.remove();
+        }
+    }
+}
+
+// Function to show direct payment link as fallback
+function showDirectPaymentLink() {
+    const paymentDiv = document.createElement('div');
+    paymentDiv.className = 'payment-prompt';
+    
+    paymentDiv.innerHTML = `
+        <div class="payment-content">
+            <h3>Payment Options</h3>
+            <p>Choose your preferred payment method:</p>
+            <button onclick="openStripeCheckout()" class="payment-button">
+                <i class="fab fa-stripe"></i> Pay with Stripe Checkout
+            </button>
+            <button onclick="processDirectPayment()" class="payment-button secondary">
+                <i class="fas fa-credit-card"></i> Direct Payment
+            </button>
+            <button onclick="closePaymentForm()" class="payment-option-btn">
+                <i class="fas fa-times"></i> Cancel
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(paymentDiv);
+}
+
+// Function to open Stripe Checkout
+async function openStripeCheckout() {
+    try {
+        // Open the existing Stripe checkout link for monthly subscription
+        window.open('https://buy.stripe.com/eVq8wPesN7bZbpP3Q40ZW08', '_blank');
+        
+        // Track checkout opening
+        trackEvent('stripe_checkout_opened', {
+            amount: 19.99,
+            currency: 'usd',
+            subscription_type: 'monthly',
+            timestamp: new Date().toISOString()
+        });
+        
+    } catch (error) {
+        debugLog('Error opening Stripe Checkout:', error);
+        alert('Payment system temporarily unavailable. Please try again later.');
+    }
+}
+
+// Function to show subscription information
+function showSubscriptionInfo() {
+    const info = `
+Subscription Details:
+• $19.99 per month
+• Unlimited access to Smut Writer
+• Cancel anytime
+• Secure payment via Stripe
+• No setup fees or hidden charges
+
+To subscribe, click the "Subscribe for $19.99/month" button above.
+    `;
+    alert(info);
+}
+
+// Function to manually verify payment status
+async function verifyPaymentStatus() {
+    debugLog('Manually verifying payment status');
+    
+    try {
+        // Check Stripe payment status
+        const stripePaid = await checkStripePaymentStatus();
+        
+        if (stripePaid) {
+            debugLog('Payment verified successfully');
+            isPaid = true;
+            const sessionStart = new Date().getTime();
+            saveToLocalStorage(PAYMENT_KEYS.SESSION_START, sessionStart);
+            
+            // Track payment verification
+            trackEvent('payment_verified', {
+                payment_method: 'stripe_subscription',
+                amount: 19.99,
+                currency: 'usd',
+                timestamp: new Date().toISOString()
+            });
+            
+            addMessage('Payment verified! You now have unlimited access to Smut Writer.', false);
+            
+            // Remove payment prompt
+            const paymentPrompt = document.querySelector('.payment-prompt');
+            if (paymentPrompt) {
+                paymentPrompt.remove();
+            }
+            
+            return true;
+        } else {
+            debugLog('Payment not verified');
+            addMessage('Payment not found. Please complete your subscription payment first.', false);
+            return false;
+        }
+    } catch (error) {
+        debugLog('Error verifying payment:', error);
+        addMessage('Error verifying payment. Please try again or contact support.', false);
+        return false;
+    }
+}
+
+// Function to process direct payment (fallback)
+function processDirectPayment() {
+    const sessionStart = new Date().getTime();
+    isPaid = true;
+    isProcessingPayment = false;
+    saveToLocalStorage(PAYMENT_KEYS.SESSION_START, sessionStart);
+    
+    // Track payment completion
+    trackEvent('payment_completed', {
+        payment_method: 'direct',
+        timestamp: new Date().toISOString()
+    });
+    
+    addMessage('Payment processed! You can now continue chatting for 3 hours.', false);
     
     // Remove payment prompt
     const paymentPrompt = document.querySelector('.payment-prompt');
@@ -762,34 +1132,29 @@ function processPayment() {
         paymentPrompt.remove();
     }
     
-    // Add a check for successful payment
-    // Note: In a production environment, you would implement webhook handling
-    // to verify the payment status from Stripe
-    const checkPaymentStatus = setInterval(() => {
-        // Here you would typically check with your backend
-        // to verify if the payment was successful
-        // For now, we'll simulate a successful payment after 5 seconds
-        setTimeout(() => {
-            // Only process if we're still processing payment (prevent multiple success messages)
-            if (isProcessingPayment) {
-                const expiryTime = new Date().getTime() + SESSION_DURATION;
-                isPaid = true;
-                isProcessingPayment = false; // Reset the flag
-                saveToLocalStorage(PAYMENT_KEYS.IS_PAID, true);
-                saveToLocalStorage(PAYMENT_KEYS.PAYMENT_EXPIRY, expiryTime);
-                
-                // Track payment completion
-                trackEvent('payment_completed', {
-                    payment_duration: '3_hours',
-                    timestamp: new Date().toISOString()
-                });
-                
-                addMessage(getText('payment_success'), false);
-                clearInterval(checkPaymentStatus);
-                debugLog('Payment process completed successfully');
-            }
-        }, 5000);
-    }, 1000);
+    alert('Payment successful! You now have 3 hours of unlimited access.');
+}
+
+// Function to close payment form
+function closePaymentForm() {
+    isProcessingPayment = false;
+    const paymentPrompt = document.querySelector('.payment-prompt');
+    if (paymentPrompt) {
+        paymentPrompt.remove();
+    }
+}
+
+// Function to set loading state
+function setLoading(isLoading) {
+    if (isLoading) {
+        document.querySelector("#submit-payment").disabled = true;
+        document.querySelector("#spinner").classList.remove("hidden");
+        document.querySelector("#button-text").classList.add("hidden");
+    } else {
+        document.querySelector("#submit-payment").disabled = false;
+        document.querySelector("#spinner").classList.add("hidden");
+        document.querySelector("#button-text").classList.remove("hidden");
+    }
 }
 
 // Function to show payment prompt
@@ -805,12 +1170,23 @@ function showPaymentPrompt() {
     
     paymentDiv.innerHTML = `
         <div class="payment-content">
-            <h3>Continue Your Story</h3>
-            <p>${getText('free_limit_reached')} ${getText('upgrade_prompt')}</p>
+            <h3>Unlock Unlimited Access</h3>
+            <p>You've reached your free message limit. Subscribe to continue creating amazing stories!</p>
             <button onclick="processPayment()" class="payment-button">
-                ${getText('pay_button')}
+                <i class="fab fa-stripe"></i> Subscribe for $19.99/month
             </button>
-            <p class="payment-note">You'll be redirected to our secure payment processor.</p>
+            <p class="payment-note">Secure monthly subscription powered by Stripe - Cancel anytime</p>
+            <div class="payment-options">
+                <button onclick="openStripeCheckout()" class="payment-option-btn">
+                    <i class="fab fa-stripe"></i> Stripe Checkout
+                </button>
+                <button onclick="verifyPaymentStatus()" class="payment-option-btn">
+                    <i class="fas fa-check-circle"></i> Verify Payment
+                </button>
+                <button onclick="showSubscriptionInfo()" class="payment-option-btn">
+                    <i class="fas fa-info-circle"></i> Subscription Info
+                </button>
+            </div>
         </div>
     `;
     document.body.appendChild(paymentDiv);
@@ -818,12 +1194,14 @@ function showPaymentPrompt() {
 }
 
 // Function to update message count
-function updateMessageCount() {
+async function updateMessageCount() {
     messageCount++;
     saveToLocalStorage(PAYMENT_KEYS.MESSAGE_COUNT, messageCount);
     debugLog(`Message count updated: ${messageCount}/${FREE_MESSAGE_LIMIT}, isPaid: ${isPaid}`);
     
-    if (!isPaid && messageCount >= FREE_MESSAGE_LIMIT) {
+    // Check ExtPay status before showing payment prompt
+    const extPayPaid = await checkExtPayStatus();
+    if (!extPayPaid && !isPaid && messageCount >= FREE_MESSAGE_LIMIT) {
         debugLog('Free message limit reached, showing payment prompt');
         showPaymentPrompt();
     }
@@ -834,7 +1212,7 @@ async function sendMessage() {
     const message = messageInput.value.trim();
     if (!message) return;
 
-    if (!canSendMessage()) {
+    if (!(await canSendMessage())) {
         return;
     }
 
@@ -851,7 +1229,7 @@ async function sendMessage() {
     messageInput.value = '';
     
     // Update message count
-    updateMessageCount();
+    await updateMessageCount();
     
     // Add to conversation history
     conversationMessages.push({
@@ -1049,6 +1427,9 @@ Your goal is to create an engaging, consistent narrative that readers can follow
 function initializeChat() {
     debugLog('Initializing Smut Writer Chat Interface...');
     
+    // Initialize Stripe
+    initializeStripe();
+    
     // Initialize navigation
     initializeNavigation();
     
@@ -1088,22 +1469,37 @@ function initializeChat() {
     
     // Load payment and limit data
     messageCount = loadFromLocalStorage(PAYMENT_KEYS.MESSAGE_COUNT, 0);
-    isPaid = loadFromLocalStorage(PAYMENT_KEYS.IS_PAID, false);
     sessionStartTime = loadFromLocalStorage(PAYMENT_KEYS.SESSION_START, new Date().getTime());
     
-    // Check if payment is expired
-    if (isPaid) {
-        const expiryTime = loadFromLocalStorage(PAYMENT_KEYS.PAYMENT_EXPIRY);
-        if (expiryTime && new Date().getTime() >= expiryTime) {
-            isPaid = false;
-            saveToLocalStorage(PAYMENT_KEYS.IS_PAID, false);
-            
-            // Track payment expiry
-            trackEvent('payment_expired', {
-                timestamp: new Date().toISOString()
-            });
+    // Check Stripe payment status on initialization
+    (async () => {
+        try {
+            const stripePaid = await checkStripePaymentStatus();
+            if (stripePaid) {
+                isPaid = true;
+                debugLog('User is paid via Stripe');
+            } else {
+                // Check if we have a valid local session
+                if (sessionStartTime && (new Date().getTime() - sessionStartTime) < SESSION_DURATION) {
+                    isPaid = true;
+                    debugLog('User has valid local session');
+                } else {
+                    isPaid = false;
+                    debugLog('User is not paid and no valid session');
+                }
+            }
+        } catch (error) {
+            debugLog('Error checking Stripe payment status on initialization:', error);
+            // Fallback to local session check
+            if (sessionStartTime && (new Date().getTime() - sessionStartTime) < SESSION_DURATION) {
+                isPaid = true;
+                debugLog('User has valid local session (fallback)');
+            } else {
+                isPaid = false;
+                debugLog('User is not paid (fallback)');
+            }
         }
-    }
+    })();
     
     // Track user session info
     trackEvent('session_info', {

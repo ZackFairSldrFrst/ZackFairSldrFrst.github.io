@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="translations.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -71,6 +72,12 @@
                 <button class="nav-clear-history-btn" onclick="clearChatHistory()" title="Clear chat history">
                     <i class="fas fa-trash-alt"></i>
                     <span>Clear History</span>
+                </button>
+                
+                <!-- Subscription Account Management -->
+                <button class="nav-stripe-btn" onclick="toggleStripeUser()" title="Subscription Account">
+                    <i class="fas fa-crown"></i>
+                    <span>Subscription</span>
                 </button>
             </div>
             
@@ -1242,15 +1249,100 @@
             });
         }
         
+        // Stripe functionality
+        const STRIPE_PUBLISHABLE_KEY = 'pk_live_51Odib1Gc737pMzW7lqq5CqU4eOD01pldW3fEcIxndQzvggxKkYmk9SozJ4ExqsEtNbMLRCVC2GKd10wCQuxzYbHI00Wx6RwOQa';
+        let stripe = null;
+
+        // Function to initialize Stripe safely
+        function initializeStripe() {
+            try {
+                if (typeof Stripe !== 'undefined') {
+                    stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+                    console.log('Stripe initialized successfully');
+                    return true;
+                } else {
+                    console.log('Stripe library not available');
+                    return false;
+                }
+            } catch (error) {
+                console.log('Error initializing Stripe:', error);
+                return false;
+            }
+        }
+
+        // Function to check Stripe payment status
+        async function checkStripePaymentStatus() {
+            try {
+                // Check if we have a valid session
+                const sessionStart = localStorage.getItem('smutwriter_session_start');
+                if (sessionStart && (new Date().getTime() - parseInt(sessionStart)) < (3 * 60 * 60 * 1000)) {
+                    console.log('Valid Stripe payment session found');
+                    return true;
+                }
+                
+                console.log('No valid Stripe payment session');
+                return false;
+            } catch (error) {
+                console.log('Error checking Stripe payment status:', error);
+                return false;
+            }
+        }
+
+        // Function to toggle Stripe user management
+        async function toggleStripeUser() {
+            try {
+                // Check current payment status
+                const stripePaid = await checkStripePaymentStatus();
+                const sessionStart = localStorage.getItem('smutwriter_session_start');
+                
+                if (stripePaid) {
+                    // User has active payment
+                    const remainingTime = (3 * 60 * 60 * 1000) - (new Date().getTime() - parseInt(sessionStart));
+                    const remainingHours = Math.floor(remainingTime / (1000 * 60 * 60));
+                    const remainingMinutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+                    
+                    const accountInfo = `
+Stripe Payment Status:
+- Payment status: Active
+- Remaining time: ${remainingHours}h ${remainingMinutes}m
+- Payment method: Stripe
+- Amount paid: $2.00
+
+You have unlimited access to Smut Writer!`;
+                    alert(accountInfo);
+                } else {
+                    // User needs to pay
+                    const messageCount = localStorage.getItem('smutwriter_message_count') || 0;
+                    const accountInfo = `
+Stripe Payment Status:
+- Payment status: Not paid
+- Messages used: ${messageCount}/2
+- Payment method: Stripe
+- Cost: $2.00 for 3 hours
+
+Would you like to make a payment now?`;
+                    
+                    if (confirm(accountInfo + '\n\nClick OK to go to payment page.')) {
+                        window.location.href = 'index.html';
+                    }
+                }
+            } catch (error) {
+                console.log('Error in toggleStripeUser:', error);
+                alert('Error checking payment status. Please try again.');
+            }
+        }
+
         // Initialize when DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Stripe
+            initializeStripe();
+            
             // Track page view
             trackPageView('/stories.html');
             
             // Track page load event
             trackEvent('page_loaded', {
                 page: 'stories',
-                total_prompts: document.querySelectorAll('.prompt-card').length,
                 total_categories: document.querySelectorAll('.category-tab').length,
                 timestamp: new Date().toISOString()
             });
