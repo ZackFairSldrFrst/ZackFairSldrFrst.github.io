@@ -4,218 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Projects</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                        'bounce-gentle': 'bounceGentle 2s infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        bounceGentle: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-5px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --secondary: #64748b;
-            --background: #f8fafc;
-            --card-bg: #ffffff;
-            --text: #1e293b;
-            --text-light: #64748b;
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        .glass-effect {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
         }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--background);
-            color: var(--text);
-            line-height: 1.6;
-            min-height: 100vh;
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        .header {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            padding: 4rem 2rem;
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            letter-spacing: -0.025em;
-        }
-
-        .subtitle {
-            font-size: 1.25rem;
-            color: rgba(255, 255, 255, 0.9);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-bottom: 4rem;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 1rem;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-
-        .card-content {
-            padding: 1.5rem;
-        }
-
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 0.5rem;
-        }
-
-        .card-description {
-            color: var(--text-light);
-            font-size: 0.875rem;
-            margin-bottom: 1rem;
-        }
-
-        .card-link {
-            display: inline-block;
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.875rem;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            background: rgba(37, 99, 235, 0.1);
-            transition: all 0.2s ease;
-        }
-
-        .card-link:hover {
-            background: rgba(37, 99, 235, 0.2);
-        }
-
-        .category-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text);
-            margin: 2rem 0 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--primary);
-        }
-
-        @media (max-width: 768px) {
-            .header {
-                padding: 3rem 1rem;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-
-            .container {
-                padding: 0 1rem;
-            }
-
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Password Protection Styles */
-        .password-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            backdrop-filter: blur(10px);
-        }
-
-        .password-modal {
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-        }
-
-        .password-modal h2 {
-            color: var(--text);
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-
-        .password-modal p {
-            color: var(--text-light);
-            margin-bottom: 1.5rem;
-        }
-
-        .password-input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            text-align: center;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .password-input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .password-submit {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.2s ease;
-            width: 100%;
-        }
-
-        .password-submit:hover {
-            background: var(--primary-dark);
-        }
-
-        .password-error {
-            color: #ef4444;
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-            display: none;
-        }
-
-        .protected-content {
-            display: none;
+        .card-hover:hover {
+            transform: translateY(-8px) scale(1.02);
         }
     </style>
     <!-- Google tag (gtag.js) -->
@@ -227,223 +62,663 @@
         gtag('config', 'G-VDZNRELZ6H');
     </script>
 </head>
-<body>
+<body class="font-inter bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
     <!-- Password Protection Overlay -->
-    <div id="passwordOverlay" class="password-overlay">
-        <div class="password-modal">
-            <h2>Access Required</h2>
-            <p>Please enter the password to view this page</p>
-            <input type="password" id="passwordInput" class="password-input" placeholder="Enter password" maxlength="4">
-            <button onclick="checkPassword()" class="password-submit">Access</button>
-            <div id="passwordError" class="password-error">Incorrect password. Please try again.</div>
+    <div id="passwordOverlay" class="fixed inset-0 bg-black/80 backdrop-blur-lg flex items-center justify-center z-50">
+        <div class="bg-white/95 glass-effect rounded-2xl p-8 shadow-2xl text-center max-w-md w-11/12 mx-4 animate-fade-in">
+            <div class="mb-6">
+                <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce-gentle">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Access Required</h2>
+                <p class="text-gray-600">Please enter the password to view this page</p>
+            </div>
+            <input type="password" id="passwordInput" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-center text-lg font-medium focus:outline-none focus:border-blue-500 transition-colors mb-4" placeholder="Enter password" maxlength="4">
+            <button onclick="checkPassword()" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-3 px-6 rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 shadow-lg">
+                Access Projects
+            </button>
+            <div id="passwordError" class="text-red-500 text-sm mt-3 hidden">Incorrect password. Please try again.</div>
         </div>
     </div>
 
     <!-- Protected Content -->
-    <div id="protectedContent" class="protected-content">
-        <header class="header">
-            <h1>My Projects</h1>
-            <p class="subtitle">A collection of web applications and tools I've built</p>
+    <div id="protectedContent" class="hidden">
+        <!-- Hero Section -->
+        <header class="gradient-bg text-white py-20 px-4 relative overflow-hidden">
+            <div class="absolute inset-0 bg-black/10"></div>
+            <div class="relative z-10 max-w-6xl mx-auto text-center">
+                <div class="animate-slide-up">
+                    <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
+                        My Projects
+                    </h1>
+                    <p class="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed">
+                        A collection of web applications and tools I've built with modern technologies
+                    </p>
+                    <div class="mt-8 flex justify-center space-x-4">
+                        <div class="bg-white/20 backdrop-blur-sm rounded-full px-6 py-2 text-sm font-medium">
+                            🚀 30+ Projects
+                        </div>
+                        <div class="bg-white/20 backdrop-blur-sm rounded-full px-6 py-2 text-sm font-medium">
+                            ⚡ Modern Tech
+                        </div>
+                        <div class="bg-white/20 backdrop-blur-sm rounded-full px-6 py-2 text-sm font-medium">
+                            🎨 Beautiful UI
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Decorative elements -->
+            <div class="absolute top-10 left-10 w-20 h-20 bg-white/10 rounded-full animate-pulse"></div>
+            <div class="absolute bottom-10 right-10 w-32 h-32 bg-white/5 rounded-full animate-pulse delay-1000"></div>
         </header>
 
-        <main class="container">
-        <section>
-            <h2 class="category-title">Games & Entertainment</h2>
-            <div class="projects-grid">
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">GeoGuesser</h3>
-                        <p class="card-description">Test your geography knowledge by guessing locations around the world</p>
-                        <a href="geo-guesser/index.html" class="card-link">Play Now</a>
+        <main class="max-w-7xl mx-auto px-4 py-12">
+            <!-- Games & Entertainment Section -->
+            <section class="mb-16 animate-fade-in">
+                <div class="flex items-center mb-8">
+                    <div class="w-12 h-12 bg-gradient-to-r from-green-400 to-blue-500 rounded-xl flex items-center justify-center mr-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-800">Games & Entertainment</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-green-400 to-blue-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">🌍</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-blue-600 transition-colors">GeoGuesser</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Test your geography knowledge by guessing locations around the world</p>
+                        <a href="geo-guesser/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-500 to-blue-500 text-white font-semibold rounded-lg hover:from-green-600 hover:to-blue-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Play Now
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">Word Warriors</h3>
-                        <p class="card-description">Challenge your vocabulary in this word-based battle game</p>
-                        <a href="word-warriors/index.html" class="card-link">Play Now</a>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-purple-400 to-pink-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">⚔️</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-purple-600 transition-colors">Word Warriors</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Challenge your vocabulary in this word-based battle game</p>
+                        <a href="word-warriors/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Play Now
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">DND Roller</h3>
-                        <p class="card-description">Digital dice roller for Dungeons & Dragons and other tabletop games</p>
-                        <a href="dnd-roller/index.html" class="card-link">Try It</a>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-red-400 to-orange-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">🎲</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-red-600 transition-colors">DND Roller</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Digital dice roller for Dungeons & Dragons and other tabletop games</p>
+                        <a href="dnd-roller/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold rounded-lg hover:from-red-600 hover:to-orange-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Try It
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">Mahjong</h3>
-                        <p class="card-description">Classic tile-matching puzzle game with beautiful graphics</p>
-                        <a href="mahjong/index.html" class="card-link">Play Now</a>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-teal-400 to-cyan-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">🀄</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-teal-600 transition-colors">Mahjong</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Classic tile-matching puzzle game with beautiful graphics</p>
+                        <a href="mahjong/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-teal-500 to-cyan-500 text-white font-semibold rounded-lg hover:from-teal-600 hover:to-cyan-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Play Now
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">Escape Room</h3>
-                        <p class="card-description">Solve puzzles and escape from virtual rooms</p>
-                        <a href="escape-room/index.html" class="card-link">Start Escaping</a>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-indigo-400 to-purple-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">🚪</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-indigo-600 transition-colors">Escape Room</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Solve puzzles and escape from virtual rooms</p>
+                        <a href="escape-room/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold rounded-lg hover:from-indigo-600 hover:to-purple-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Start Escaping
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">Swiped</h3>
-                        <p class="card-description">Interactive card-based game with beautiful visuals</p>
-                        <a href="swiped/index.html" class="card-link">Play Now</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="category-title">Tools & Utilities</h2>
-            <div class="projects-grid">
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">Trip Planner</h3>
-                        <p class="card-description">Plan your next adventure with this interactive trip planning tool</p>
-                        <a href="trip-planner/index.html" class="card-link">Start Planning</a>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">Where to Eat</h3>
-                        <p class="card-description">Can't decide where to eat? Let this tool help you choose</p>
-                        <a href="where-to-eat/index.html" class="card-link">Find Food</a>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">Hinted</h3>
-                        <p class="card-description">Get hints and tips for your favorite games and puzzles</p>
-                        <a href="hinted/index.html" class="card-link">Get Hints</a>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">Countdown Timer</h3>
-                        <p class="card-description">Beautiful countdown timer with modern glass morphism design</p>
-                        <a href="countdown/index.html" class="card-link">View Countdown</a>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">Auto iMessage</h3>
-                        <p class="card-description">Automate your iMessage sending with this handy tool</p>
-                        <a href="auto-imessage/index.html" class="card-link">Try It</a>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">Tax AI</h3>
-                        <p class="card-description">AI-powered tax assistance and calculation tool</p>
-                        <a href="tax-ai/index.html" class="card-link">Get Tax Help</a>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">Business Scraper</h3>
-                        <p class="card-description">Web scraper for finding businesses without websites</p>
-                        <a href="scraper/index.html" class="card-link">Start Scraping</a>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">Support Extensions</h3>
-                        <p class="card-description">Browser extension support and management tool</p>
-                        <a href="support-extensions/index.html" class="card-link">Get Support</a>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">Split the Tab</h3>
-                        <p class="card-description">Easy expense splitting and bill management for groups and roommates</p>
-                        <a href="split-the-tab/index.html" class="card-link">Split Expenses</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="category-title">AI & Generators</h2>
-            <div class="projects-grid">
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">1Page Site Builder</h3>
-                        <p class="card-description">AI-powered one-page website generator with beautiful templates</p>
-                        <a href="1page.site/index.html" class="card-link">Build Site</a>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">AI Slides</h3>
-                        <p class="card-description">Generate beautiful presentations with AI assistance</p>
-                        <a href="ai-slides/index.html" class="card-link">Create Slides</a>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">Practice Tests</h3>
-                        <p class="card-description">AI-generated practice tests for various subjects and skills</p>
-                        <a href="practice-tests/index.html" class="card-link">Take Test</a>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">TikTok Reply Bot</h3>
-                        <p class="card-description">AI-powered automated TikTok reply system</p>
-                        <a href="tiktok-reply/" class="card-link">View Project</a>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-pink-400 to-rose-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">💫</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-pink-600 transition-colors">Swiped</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Interactive card-based game with beautiful visuals</p>
+                        <a href="swiped/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold rounded-lg hover:from-pink-600 hover:to-rose-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Play Now
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section>
-            <h2 class="category-title">Social & Communication</h2>
-            <div class="projects-grid">
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">Ask Reddit</h3>
-                        <p class="card-description">Reddit-style Q&A platform for community discussions</p>
-                        <a href="ask-reddit/public/index.html" class="card-link">Ask Away</a>
+        <!-- Tools & Utilities Section -->
+        <section class="mb-16 animate-fade-in">
+            <div class="flex items-center mb-8">
+                <div class="w-12 h-12 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-xl flex items-center justify-center mr-4">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800">Tools & Utilities</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">🗺️</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-blue-600 transition-colors">Trip Planner</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Plan your next adventure with this interactive trip planning tool</p>
+                        <a href="trip-planner/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Start Planning
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">Contact Me</h3>
-                        <p class="card-description">Professional contact form and portfolio showcase</p>
-                        <a href="contact-me/index.html" class="card-link">Contact</a>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-orange-400 to-red-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">🍕</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-orange-600 transition-colors">Where to Eat</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Can't decide where to eat? Let this tool help you choose</p>
+                        <a href="where-to-eat/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-lg hover:from-orange-600 hover:to-red-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Find Food
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">Smut Writer</h3>
-                        <p class="card-description">Creative writing platform for adult fiction</p>
-                        <a href="smutwriter.com/index.html" class="card-link">Start Writing</a>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">💡</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-yellow-600 transition-colors">Hinted</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Get hints and tips for your favorite games and puzzles</p>
+                        <a href="hinted/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-semibold rounded-lg hover:from-yellow-600 hover:to-orange-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Get Hints
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-purple-400 to-pink-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">⏰</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-purple-600 transition-colors">Countdown Timer</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Beautiful countdown timer with modern glass morphism design</p>
+                        <a href="countdown/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            View Countdown
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-green-400 to-emerald-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">💬</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-green-600 transition-colors">Auto iMessage</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Automate your iMessage sending with this handy tool</p>
+                        <a href="auto-imessage/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold rounded-lg hover:from-green-600 hover:to-emerald-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Try It
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">📄</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-emerald-600 transition-colors">TaxScan Pro</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">AI-powered tax document analysis and processing tool</p>
+                        <a href="taxscanpro/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold rounded-lg hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Scan Documents
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-indigo-400 to-blue-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">📅</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-indigo-600 transition-colors">Smart Calendar</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">AI-powered calendar management and scheduling assistant</p>
+                        <a href="smart-calendar/public/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-500 to-blue-500 text-white font-semibold rounded-lg hover:from-indigo-600 hover:to-blue-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Manage Calendar
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-pink-400 to-rose-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">✉️</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-pink-600 transition-colors">Letterly</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">AI-powered letter writing and communication assistant</p>
+                        <a href="letterly/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold rounded-lg hover:from-pink-600 hover:to-rose-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Write Letters
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-violet-400 to-purple-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">🕷️</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-violet-600 transition-colors">Business Scraper</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Web scraper for finding businesses without websites</p>
+                        <a href="scraper/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-violet-500 to-purple-500 text-white font-semibold rounded-lg hover:from-violet-600 hover:to-purple-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Start Scraping
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">🔧</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-cyan-600 transition-colors">Support Extensions</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Browser extension support and management tool</p>
+                        <a href="support-extensions/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold rounded-lg hover:from-cyan-600 hover:to-blue-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Get Support
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-lime-400 to-green-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">💰</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-lime-600 transition-colors">Split the Tab</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Easy expense splitting and bill management for groups and roommates</p>
+                        <a href="split-the-tab/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-lime-500 to-green-500 text-white font-semibold rounded-lg hover:from-lime-600 hover:to-green-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Split Expenses
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section>
-            <h2 class="category-title">Business & Professional</h2>
-            <div class="projects-grid">
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">RentAmenity</h3>
-                        <p class="card-description">Rental property amenity management and booking system</p>
-                        <a href="rentamenity/index.html" class="card-link">Explore</a>
+        <!-- AI & Generators Section -->
+        <section class="mb-16 animate-fade-in">
+            <div class="flex items-center mb-8">
+                <div class="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-500 rounded-xl flex items-center justify-center mr-4">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800">AI & Generators</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">🌐</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-blue-600 transition-colors">1Page Site Builder</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">AI-powered one-page website generator with beautiful templates</p>
+                        <a href="1page.site/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Build Site
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title">Email Builder</h3>
-                        <p class="card-description">Create professional email templates with ease</p>
-                        <a href="email-builder/pacificderm.html" class="card-link">Build Email</a>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-purple-400 to-pink-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">📊</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-purple-600 transition-colors">AI Slides</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Generate beautiful presentations with AI assistance</p>
+                        <a href="ai-slides/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Create Slides
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
                     </div>
                 </div>
-                         </div>
-         </section>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">📝</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-emerald-600 transition-colors">Practice Tests</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">AI-generated practice tests for various subjects and skills</p>
+                        <a href="practice-tests/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold rounded-lg hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Take Test
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-pink-400 to-rose-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">🎵</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-pink-600 transition-colors">TikTok Reply Bot</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">AI-powered automated TikTok reply system</p>
+                        <a href="tiktok-reply/" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold rounded-lg hover:from-pink-600 hover:to-rose-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            View Project
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-orange-400 to-red-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">🤖</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-orange-600 transition-colors">AntiWork GPT</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">AI assistant for work-life balance and career guidance</p>
+                        <a href="AntiWorkGPT/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-lg hover:from-orange-600 hover:to-red-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Get Advice
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-indigo-400 to-purple-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">🏛️</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-indigo-600 transition-colors">Notary AI</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">AI-powered notary services and document verification</p>
+                        <a href="notary-ai/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold rounded-lg hover:from-indigo-600 hover:to-purple-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Notarize
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social & Communication Section -->
+        <section class="mb-16 animate-fade-in">
+            <div class="flex items-center mb-8">
+                <div class="w-12 h-12 bg-gradient-to-r from-green-400 to-emerald-500 rounded-xl flex items-center justify-center mr-4">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800">Social & Communication</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-orange-400 to-red-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">🤔</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-orange-600 transition-colors">Ask Reddit</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Reddit-style Q&A platform for community discussions</p>
+                        <a href="ask-reddit/public/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-lg hover:from-orange-600 hover:to-red-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Ask Away
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">📞</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-blue-600 transition-colors">Contact Me</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Professional contact form and portfolio showcase</p>
+                        <a href="contact-me/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Contact
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-pink-400 to-rose-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">✍️</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-pink-600 transition-colors">Smut Writer</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Creative writing platform for adult fiction</p>
+                        <a href="smutwriter.com/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold rounded-lg hover:from-pink-600 hover:to-rose-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Start Writing
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">📋</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-emerald-600 transition-colors">JE Notaries</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Professional notary services website and booking system</p>
+                        <a href="je-notaries/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold rounded-lg hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Book Notary
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-violet-400 to-purple-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">🏗️</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-violet-600 transition-colors">Site Generator</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Professional website generator for notary and legal services</p>
+                        <a href="site-gen/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-violet-500 to-purple-500 text-white font-semibold rounded-lg hover:from-violet-600 hover:to-purple-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Generate Site
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Business & Professional Section -->
+        <section class="mb-16 animate-fade-in">
+            <div class="flex items-center mb-8">
+                <div class="w-12 h-12 bg-gradient-to-r from-slate-400 to-gray-500 rounded-xl flex items-center justify-center mr-4">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2V8a2 2 0 012-2V6"></path>
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800">Business & Professional</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">🏢</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-blue-600 transition-colors">RentAmenity</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Rental property amenity management and booking system</p>
+                        <a href="rentamenity/index.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Explore
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl card-hover border border-gray-100 overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-r from-indigo-400 to-purple-500 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">📧</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-indigo-600 transition-colors">Email Builder</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Create professional email templates with ease</p>
+                        <a href="email-builder/pacificderm.html" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold rounded-lg hover:from-indigo-600 hover:to-purple-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                            Build Email
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
         </main>
     </div>
 
