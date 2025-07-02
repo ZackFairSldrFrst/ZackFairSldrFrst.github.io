@@ -28,6 +28,14 @@
     <script src="translations.js"></script>
     <script src="https://js.stripe.com/v3/"></script>
     <script src="script.js"></script>
+    <script>
+        // Initialize translations when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof TranslationManager !== 'undefined') {
+                TranslationManager.init();
+            }
+        });
+    </script>
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -111,12 +119,12 @@
             <article class="blog-post">
                 <header class="blog-post-header">
                     <div class="blog-post-meta">
-                        <span class="blog-category">Character Development</span>
-                        <span class="blog-date">January 15, 2025</span>
-                        <span class="read-time"><i class="fas fa-clock"></i> 8 min read</span>
+                        <span class="blog-category" data-translate="blog_character">Character Development</span>
+                        <span class="blog-date" data-translate="blog_date">January 15, 2025</span>
+                        <span class="read-time"><i class="fas fa-clock"></i> <span data-translate="blog_read_time">8 min read</span></span>
                     </div>
-                    <h1><i class="fas fa-user-edit"></i> Creating Compelling Characters in Adult Fiction</h1>
-                    <p class="blog-post-excerpt">Learn how to develop three-dimensional characters that readers will fall in love with. From backstory creation to personality quirks, discover the secrets of memorable character development.</p>
+                    <h1><i class="fas fa-user-edit"></i> <span data-translate="blog_character_title">Creating Compelling Characters in Adult Fiction</span></h1>
+                    <p class="blog-post-excerpt" data-translate="blog_character_excerpt">Learn how to develop three-dimensional characters that readers will fall in love with. From backstory creation to personality quirks, discover the secrets of memorable character development.</p>
                 </header>
 
                 <div class="blog-post-content">

@@ -28,6 +28,14 @@
     <script src="translations.js"></script>
     <script src="https://js.stripe.com/v3/"></script>
     <script src="script.js"></script>
+    <script>
+        // Initialize translations when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof TranslationManager !== 'undefined') {
+                TranslationManager.init();
+            }
+        });
+    </script>
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -111,19 +119,19 @@
             <article class="blog-post">
                 <header class="blog-post-header">
                     <div class="blog-post-meta">
-                        <span class="blog-category">Romance Writing</span>
-                        <span class="blog-date">January 10, 2025</span>
-                        <span class="read-time"><i class="fas fa-clock"></i> 12 min read</span>
+                        <span class="blog-category" data-translate="blog_romance">Romance Writing</span>
+                        <span class="blog-date" data-translate="blog_date">January 10, 2025</span>
+                        <span class="read-time"><i class="fas fa-clock"></i> <span data-translate="blog_read_time">12 min read</span></span>
                     </div>
-                    <h1><i class="fas fa-heart-pulse"></i> Building Sexual Tension: The Art of Anticipation</h1>
-                    <p class="blog-post-excerpt">Discover how to create electric chemistry between characters through subtle gestures, meaningful glances, and the power of what's left unsaid. Master the slow burn.</p>
+                    <h1><i class="fas fa-heart-pulse"></i> <span data-translate="blog_tension_title">Building Sexual Tension: The Art of Anticipation</span></h1>
+                    <p class="blog-post-excerpt" data-translate="blog_tension_excerpt">Discover how to create electric chemistry between characters through subtle gestures, meaningful glances, and the power of what's left unsaid. Master the slow burn.</p>
                 </header>
 
                 <div class="blog-post-content">
-                    <p>Sexual tension is the lifeblood of romance writing. It's that electric charge that crackles between characters, making readers hold their breath and turn pages faster. But building effective sexual tension is an art—it's about creating anticipation, not just attraction. Let's explore how to master this essential element of adult fiction.</p>
+                    <p data-translate="blog_tension_intro">Sexual tension is the lifeblood of romance writing. It's that electric charge that crackles between characters, making readers hold their breath and turn pages faster. But building effective sexual tension is an art—it's about creating anticipation, not just attraction. Let's explore how to master this essential element of adult fiction.</p>
 
-                    <h2>What is Sexual Tension?</h2>
-                    <p>Sexual tension is the unspoken attraction and desire between characters that builds over time. It's the "will they or won't they" feeling that keeps readers invested. Unlike explicit scenes, sexual tension is about the buildup—the glances, the accidental touches, the charged moments that make readers yearn for more.</p>
+                    <h2 data-translate="blog_tension_what_title">What is Sexual Tension?</h2>
+                    <p data-translate="blog_tension_what_content">Sexual tension is the unspoken attraction and desire between characters that builds over time. It's the "will they or won't they" feeling that keeps readers invested. Unlike explicit scenes, sexual tension is about the buildup—the glances, the accidental touches, the charged moments that make readers yearn for more.</p>
                     
                     <p>Key characteristics of effective sexual tension:</p>
                     <ul>
@@ -133,8 +141,8 @@
                         <li><strong>Natural progression:</strong> The tension feels organic to the story and characters</li>
                     </ul>
 
-                    <h2>The Power of the Slow Burn</h2>
-                    <p>The slow burn is one of the most effective techniques for building sexual tension. Instead of rushing to physical intimacy, you gradually increase the intensity of attraction and desire. This creates a more satisfying payoff when the characters finally come together.</p>
+                    <h2 data-translate="blog_tension_slow_title">The Power of the Slow Burn</h2>
+                    <p data-translate="blog_tension_slow_content">The slow burn is one of the most effective techniques for building sexual tension. Instead of rushing to physical intimacy, you gradually increase the intensity of attraction and desire. This creates a more satisfying payoff when the characters finally come together.</p>
                     
                     <h3>Why Slow Burn Works:</h3>
                     <ul>
@@ -144,10 +152,10 @@
                         <li><strong>Anticipation:</strong> Readers enjoy the journey as much as the destination</li>
                     </ul>
 
-                    <h2>Techniques for Building Sexual Tension</h2>
+                    <h2 data-translate="blog_tension_techniques_title">Techniques for Building Sexual Tension</h2>
                     
-                    <h3>1. The Power of Proximity</h3>
-                    <p>Physical closeness is a powerful tool for building tension. Put your characters in situations where they must be near each other but can't act on their attraction.</p>
+                    <h3 data-translate="blog_tension_proximity_title">1. The Power of Proximity</h3>
+                    <p data-translate="blog_tension_proximity_content">Physical closeness is a powerful tool for building tension. Put your characters in situations where they must be near each other but can't act on their attraction.</p>
                     
                     <p>Examples of proximity scenarios:</p>
                     <ul>
@@ -162,8 +170,8 @@
                         <p><em>She reached for the same file at the same moment he did, their fingers brushing against each other. The contact was brief, barely a second, but it sent a jolt through her entire body. She pulled back quickly, but not before she saw the way his pupils dilated, the way his breath hitched ever so slightly.</em></p>
                     </blockquote>
 
-                    <h3>2. The Art of the Glance</h3>
-                    <p>Eye contact is incredibly intimate and can convey volumes without words. Use glances to show attraction, desire, and unspoken communication between characters.</p>
+                    <h3 data-translate="blog_tension_glance_title">2. The Art of the Glance</h3>
+                    <p data-translate="blog_tension_glance_content">Eye contact is incredibly intimate and can convey volumes without words. Use glances to show attraction, desire, and unspoken communication between characters.</p>
                     
                     <p>Types of meaningful glances:</p>
                     <ul>
@@ -174,8 +182,8 @@
                         <li><strong>The challenge:</strong> Bold eye contact that dares the other to look away</li>
                     </ul>
 
-                    <h3>3. Accidental Touches</h3>
-                    <p>Accidental physical contact is a classic technique for building sexual tension. These moments should feel natural and unplanned, but they create powerful reactions in both characters and readers.</p>
+                    <h3 data-translate="blog_tension_touch_title">3. Accidental Touches</h3>
+                    <p data-translate="blog_tension_touch_content">Accidental physical contact is a classic technique for building sexual tension. These moments should feel natural and unplanned, but they create powerful reactions in both characters and readers.</p>
                     
                     <p>Examples of accidental touches:</p>
                     <ul>
@@ -190,8 +198,8 @@
                         <p><em>His hand grazed her lower back as he moved past her in the narrow kitchen. The touch was so light she might have imagined it, except for the way her skin tingled where his fingers had been. She turned to look at him, but he was already focused on the coffee maker, his jaw clenched as if he was fighting some internal battle.</em></p>
                     </blockquote>
 
-                    <h3>4. Verbal Tension</h3>
-                    <p>Dialogue can be incredibly effective for building sexual tension. Use innuendo, double meanings, and charged conversations to create chemistry.</p>
+                    <h3 data-translate="blog_tension_verbal_title">4. Verbal Tension</h3>
+                    <p data-translate="blog_tension_verbal_content">Dialogue can be incredibly effective for building sexual tension. Use innuendo, double meanings, and charged conversations to create chemistry.</p>
                     
                     <p>Verbal tension techniques:</p>
                     <ul>
@@ -208,8 +216,8 @@
                         <p><em>"I know enough to know you're not telling me everything."</em></p>
                     </blockquote>
 
-                    <h3>5. Internal Monologue</h3>
-                    <p>Show your characters' internal reactions to build tension. Let readers see what they're thinking and feeling, even when they're not acting on their desires.</p>
+                    <h3 data-translate="blog_tension_internal_title">5. Internal Monologue</h3>
+                    <p data-translate="blog_tension_internal_content">Show your characters' internal reactions to build tension. Let readers see what they're thinking and feeling, even when they're not acting on their desires.</p>
                     
                     <p>Internal tension elements:</p>
                     <ul>
@@ -220,7 +228,7 @@
                         <li><strong>Anticipation:</strong> Looking forward to the next interaction</li>
                     </ul>
 
-                    <h2>Common Mistakes to Avoid</h2>
+                    <h2 data-translate="blog_tension_mistakes_title">Common Mistakes to Avoid</h2>
                     
                     <h3>1. Rushing the Tension</h3>
                     <p>Don't resolve sexual tension too quickly. The buildup is what makes the payoff satisfying. Give your characters and readers time to feel the anticipation.</p>
@@ -237,7 +245,7 @@
                     <h3>5. Ignoring Character Development</h3>
                     <p>Sexual tension should develop alongside character growth. Use it to reveal character traits and drive the plot forward.</p>
 
-                    <h2>Advanced Techniques</h2>
+                    <h2 data-translate="blog_tension_advanced_title">Advanced Techniques</h2>
                     
                     <h3>1. The Obstacle Method</h3>
                     <p>Create obstacles that prevent characters from acting on their attraction. This could be external (work, relationships, circumstances) or internal (fears, past trauma, personal rules).</p>
@@ -251,8 +259,8 @@
                     <h3>4. The Jealousy Factor</h3>
                     <p>Introduce situations that make characters jealous, helping them realize the depth of their feelings.</p>
 
-                    <h2>Pacing Your Sexual Tension</h2>
-                    <p>Like any story element, sexual tension needs proper pacing. Here's a general structure:</p>
+                    <h2 data-translate="blog_tension_pacing_title">Pacing Your Sexual Tension</h2>
+                    <p data-translate="blog_tension_pacing_content">Like any story element, sexual tension needs proper pacing. Here's a general structure:</p>
                     
                     <ol>
                         <li><strong>Initial Awareness:</strong> Characters notice each other</li>
@@ -264,7 +272,7 @@
                     </ol>
 
                     <h2>Conclusion</h2>
-                    <p>Building sexual tension is one of the most important skills for romance writers. It's about creating anticipation, not just attraction. By using techniques like proximity, glances, accidental touches, and verbal tension, you can create electric chemistry that keeps readers invested in your characters' journey.</p>
+                    <p data-translate="blog_tension_conclusion">Building sexual tension is one of the most important skills for romance writers. It's about creating anticipation, not just attraction. By using techniques like proximity, glances, accidental touches, and verbal tension, you can create electric chemistry that keeps readers invested in your characters' journey.</p>
                     
                     <p>Remember: the best sexual tension feels natural and serves the story. It should develop alongside character growth and plot progression. When done well, sexual tension can make your romance unforgettable and keep readers coming back for more.</p>
                     
@@ -272,13 +280,13 @@
 
                     <div class="blog-post-footer">
                         <div class="blog-post-tags">
-                            <span class="tag">Romance Writing</span>
+                            <span class="tag" data-translate="blog_romance">Romance Writing</span>
                             <span class="tag">Sexual Tension</span>
                             <span class="tag">Writing Techniques</span>
                             <span class="tag">Character Chemistry</span>
                         </div>
                         <div class="blog-post-share">
-                            <h4>Share this article:</h4>
+                            <h4 data-translate="blog_share_article">Share this article:</h4>
                             <a href="#" onclick="shareOnTwitter()" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
                             <a href="#" onclick="shareOnFacebook()" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
                             <a href="#" onclick="shareOnReddit()" class="share-btn reddit"><i class="fab fa-reddit"></i> Reddit</a>
@@ -289,7 +297,7 @@
 
             <aside class="blog-sidebar">
                 <div class="sidebar-widget">
-                    <h3>Related Articles</h3>
+                    <h3 data-translate="blog_related_articles">Related Articles</h3>
                     <ul>
                         <li><a href="character-development.html">Creating Compelling Characters in Adult Fiction</a></li>
                         <li><a href="three-act-structure.html">The Three-Act Structure for Romance Novels</a></li>
@@ -298,18 +306,18 @@
                 </div>
                 
                 <div class="sidebar-widget">
-                    <h3>Get Writing Tips</h3>
-                    <p>Subscribe to our newsletter for weekly writing advice and exclusive content.</p>
+                    <h3 data-translate="blog_get_tips">Get Writing Tips</h3>
+                    <p data-translate="blog_subscribe_desc">Subscribe to our newsletter for weekly writing advice and exclusive content.</p>
                     <a href="https://docs.google.com/forms/d/e/1FAIpQLSe7HbV_V71M9FuKvEAdCENJho8TN-GaGUU73PkmaOOuM1i6JQ/viewform?usp=sharing&ouid=101448214260710069814" class="newsletter-btn" target="_blank">
-                        <i class="fas fa-envelope"></i> Subscribe Now
+                        <i class="fas fa-envelope"></i> <span data-translate="blog_subscribe_now">Subscribe Now</span>
                     </a>
                 </div>
                 
                 <div class="sidebar-widget">
-                    <h3>Submit Your Story</h3>
-                    <p>Have a story you'd like to share? Submit it for a chance to be featured on our blog!</p>
+                    <h3 data-translate="blog_submit_story">Submit Your Story</h3>
+                    <p data-translate="blog_submit_desc">Have a story you'd like to share? Submit it for a chance to be featured on our blog!</p>
                     <a href="submit-story.html" class="submit-btn">
-                        <i class="fas fa-star"></i> Submit Story
+                        <i class="fas fa-star"></i> <span data-translate="blog_submit_story">Submit Story</span>
                     </a>
                 </div>
             </aside>

@@ -28,6 +28,14 @@
     <script src="translations.js"></script>
     <script src="https://js.stripe.com/v3/"></script>
     <script src="script.js"></script>
+    <script>
+        // Initialize translations when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof TranslationManager !== 'undefined') {
+                TranslationManager.init();
+            }
+        });
+    </script>
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -111,19 +119,19 @@
             <article class="blog-post">
                 <header class="blog-post-header">
                     <div class="blog-post-meta">
-                        <span class="blog-category">Plot & Structure</span>
-                        <span class="blog-date">January 12, 2025</span>
-                        <span class="read-time"><i class="fas fa-clock"></i> 10 min read</span>
+                        <span class="blog-category" data-translate="blog_plot">Plot & Structure</span>
+                        <span class="blog-date" data-translate="blog_date">January 12, 2025</span>
+                        <span class="read-time"><i class="fas fa-clock"></i> <span data-translate="blog_read_time">10 min read</span></span>
                     </div>
-                    <h1><i class="fas fa-sitemap"></i> The Three-Act Structure for Romance Novels</h1>
-                    <p class="blog-post-excerpt">Master the classic three-act structure and adapt it for adult romance. Learn how to create satisfying story arcs that keep readers engaged from meet-cute to happily ever after.</p>
+                    <h1><i class="fas fa-sitemap"></i> <span data-translate="blog_structure_title">The Three-Act Structure for Romance Novels</span></h1>
+                    <p class="blog-post-excerpt" data-translate="blog_structure_excerpt">Master the classic three-act structure and adapt it for adult romance. Learn how to create satisfying story arcs that keep readers engaged from meet-cute to happily ever after.</p>
                 </header>
 
                 <div class="blog-post-content">
-                    <p>The three-act structure is a timeless storytelling framework that works beautifully for romance novels. It provides a solid foundation for your story while allowing plenty of room for emotional depth and character development. Let's break down how to use this structure to create compelling adult romance stories that keep readers turning pages.</p>
+                    <p data-translate="blog_structure_intro">The three-act structure is a timeless storytelling framework that works beautifully for romance novels. It provides a solid foundation for your story while allowing plenty of room for emotional depth and character development. Let's break down how to use this structure to create compelling adult romance stories that keep readers turning pages.</p>
 
-                    <h2>Understanding the Three-Act Structure</h2>
-                    <p>At its core, the three-act structure divides your story into three main sections: Setup, Confrontation, and Resolution. Each act serves a specific purpose in your romance narrative and builds toward the next.</p>
+                    <h2 data-translate="blog_structure_understanding_title">Understanding the Three-Act Structure</h2>
+                    <p data-translate="blog_structure_understanding_content">At its core, the three-act structure divides your story into three main sections: Setup, Confrontation, and Resolution. Each act serves a specific purpose in your romance narrative and builds toward the next.</p>
                     
                     <div class="structure-overview">
                         <div class="act-box">
@@ -140,8 +148,8 @@
                         </div>
                     </div>
 
-                    <h2>Act I: The Setup - Setting the Stage for Love</h2>
-                    <p>The first act is all about introducing your characters and creating the initial spark. This is where readers fall in love with your protagonists and become invested in their journey.</p>
+                    <h2 data-translate="blog_structure_act1_title">Act I: The Setup - Setting the Stage for Love</h2>
+                    <p data-translate="blog_structure_act1_content">The first act is all about introducing your characters and creating the initial spark. This is where readers fall in love with your protagonists and become invested in their journey.</p>
                     
                     <h3>Key Elements of Act I:</h3>
                     <ul>
@@ -161,8 +169,8 @@
                         <li><strong>Act I Climax:</strong> The moment they decide to pursue the relationship</li>
                     </ol>
 
-                    <h2>Act II: The Confrontation - The Heart of the Story</h2>
-                    <p>Act II is where the real work happens. This is the longest section of your story and where you'll develop the relationship, introduce conflicts, and build tension. In romance, this is where the "will they or won't they" tension reaches its peak.</p>
+                    <h2 data-translate="blog_structure_act2_title">Act II: The Confrontation - The Heart of the Story</h2>
+                    <p data-translate="blog_structure_act2_content">Act II is where the real work happens. This is the longest section of your story and where you'll develop the relationship, introduce conflicts, and build tension. In romance, this is where the "will they or won't they" tension reaches its peak.</p>
                     
                     <h3>Key Elements of Act II:</h3>
                     <ul>
@@ -190,8 +198,8 @@
                         <li><strong>Darkest Hour:</strong> All seems lost for the relationship</li>
                     </ol>
 
-                    <h2>Act III: The Resolution - Happily Ever After</h2>
-                    <p>The final act is where everything comes together. This is where your characters face their biggest challenge and prove their love is worth fighting for. In romance, readers expect a satisfying resolution that leaves them feeling hopeful and fulfilled.</p>
+                    <h2 data-translate="blog_structure_act3_title">Act III: The Resolution - Happily Ever After</h2>
+                    <p data-translate="blog_structure_act3_content">The final act is where everything comes together. This is where your characters face their biggest challenge and prove their love is worth fighting for. In romance, readers expect a satisfying resolution that leaves them feeling hopeful and fulfilled.</p>
                     
                     <h3>Key Elements of Act III:</h3>
                     <ul>
@@ -210,8 +218,8 @@
                         <li><strong>Epilogue:</strong> A glimpse of their happy future together</li>
                     </ol>
 
-                    <h2>Adapting the Structure for Adult Romance</h2>
-                    <p>While the basic three-act structure works for all romance, adult romance has some specific considerations:</p>
+                    <h2 data-translate="blog_structure_adapting_title">Adapting the Structure for Adult Romance</h2>
+                    <p data-translate="blog_structure_adapting_content">While the basic three-act structure works for all romance, adult romance has some specific considerations:</p>
                     
                     <h3>Pacing Considerations:</h3>
                     <ul>
@@ -228,8 +236,8 @@
                         <li><strong>Act III:</strong> Breakup, reconciliation, commitment, future together</li>
                     </ul>
 
-                    <h2>Tips for Success</h2>
-                    <p>Here are some practical tips for using the three-act structure effectively in your romance novel:</p>
+                    <h2 data-translate="blog_structure_tips_title">Tips for Success</h2>
+                    <p data-translate="blog_structure_tips_content">Here are some practical tips for using the three-act structure effectively in your romance novel:</p>
                     
                     <h3>1. Know Your Endpoint</h3>
                     <p>Before you start writing, know how your story will end. This will help you plant the right seeds throughout your story and ensure a satisfying conclusion.</p>
@@ -246,8 +254,8 @@
                     <h3>5. Satisfy Reader Expectations</h3>
                     <p>Romance readers expect certain elements: meet-cute, growing attraction, conflict, reconciliation, and happily ever after. Use the three-act structure to deliver these elements effectively.</p>
 
-                    <h2>Common Pitfalls to Avoid</h2>
-                    <ul>
+                    <h2 data-translate="blog_structure_pitfalls_title">Common Pitfalls to Avoid</h2>
+                    <ul data-translate="blog_structure_pitfalls_content">
                         <li><strong>Rushing the Setup:</strong> Don't skip character development in Act I</li>
                         <li><strong>Weak Midpoint:</strong> The midpoint should be a major turning point, not just another scene</li>
                         <li><strong>Resolving Too Early:</strong> Don't solve major conflicts in Act II</li>
@@ -256,19 +264,19 @@
                     </ul>
 
                     <h2>Conclusion</h2>
-                    <p>The three-act structure is a powerful tool for creating compelling romance novels. It provides a solid framework while allowing plenty of room for creativity and character development. By understanding how each act serves your story, you can create romance novels that satisfy readers and keep them coming back for more.</p>
+                    <p data-translate="blog_structure_conclusion">The three-act structure is a powerful tool for creating compelling romance novels. It provides a solid framework while allowing plenty of room for creativity and character development. By understanding how each act serves your story, you can create romance novels that satisfy readers and keep them coming back for more.</p>
                     
                     <p>Remember: the structure is a guide, not a rule. Use it to organize your story, but don't be afraid to adapt it to serve your specific characters and plot. The best stories use structure to enhance the emotional journey, not constrain it.</p>
 
                     <div class="blog-post-footer">
                         <div class="blog-post-tags">
-                            <span class="tag">Plot & Structure</span>
-                            <span class="tag">Romance Writing</span>
+                            <span class="tag" data-translate="blog_plot">Plot & Structure</span>
+                            <span class="tag" data-translate="blog_romance">Romance Writing</span>
                             <span class="tag">Storytelling</span>
                             <span class="tag">Writing Tips</span>
                         </div>
                         <div class="blog-post-share">
-                            <h4>Share this article:</h4>
+                            <h4 data-translate="blog_share_article">Share this article:</h4>
                             <a href="#" onclick="shareOnTwitter()" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
                             <a href="#" onclick="shareOnFacebook()" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
                             <a href="#" onclick="shareOnReddit()" class="share-btn reddit"><i class="fab fa-reddit"></i> Reddit</a>
@@ -279,7 +287,7 @@
 
             <aside class="blog-sidebar">
                 <div class="sidebar-widget">
-                    <h3>Related Articles</h3>
+                    <h3 data-translate="blog_related_articles">Related Articles</h3>
                     <ul>
                         <li><a href="character-development.html">Creating Compelling Characters in Adult Fiction</a></li>
                         <li><a href="sexual-tension.html">Building Sexual Tension: The Art of Anticipation</a></li>
@@ -288,18 +296,18 @@
                 </div>
                 
                 <div class="sidebar-widget">
-                    <h3>Get Writing Tips</h3>
-                    <p>Subscribe to our newsletter for weekly writing advice and exclusive content.</p>
+                    <h3 data-translate="blog_get_tips">Get Writing Tips</h3>
+                    <p data-translate="blog_subscribe_desc">Subscribe to our newsletter for weekly writing advice and exclusive content.</p>
                     <a href="https://docs.google.com/forms/d/e/1FAIpQLSe7HbV_V71M9FuKvEAdCENJho8TN-GaGUU73PkmaOOuM1i6JQ/viewform?usp=sharing&ouid=101448214260710069814" class="newsletter-btn" target="_blank">
-                        <i class="fas fa-envelope"></i> Subscribe Now
+                        <i class="fas fa-envelope"></i> <span data-translate="blog_subscribe_now">Subscribe Now</span>
                     </a>
                 </div>
                 
                 <div class="sidebar-widget">
-                    <h3>Submit Your Story</h3>
-                    <p>Have a story you'd like to share? Submit it for a chance to be featured on our blog!</p>
+                    <h3 data-translate="blog_submit_story">Submit Your Story</h3>
+                    <p data-translate="blog_submit_desc">Have a story you'd like to share? Submit it for a chance to be featured on our blog!</p>
                     <a href="submit-story.html" class="submit-btn">
-                        <i class="fas fa-star"></i> Submit Story
+                        <i class="fas fa-star"></i> <span data-translate="blog_submit_story">Submit Story</span>
                     </a>
                 </div>
             </aside>

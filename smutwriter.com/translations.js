@@ -88,6 +88,40 @@ const translations = {
         'info_future_collaborations': 'Potential for future collaborations',
         
         // Blog Post Content - Character Development
+        'blog_character_title': '在成人小说中创造引人入胜的角色',
+        'blog_character_excerpt': '学习如何开发读者会爱上的三维角色。从背景故事创作到性格特点，发现难忘角色发展的秘诀。',
+        'blog_character_intro': '在成人小说中，角色是你故事的核心和灵魂。读者想要与你创造的人物建立联系、产生共鸣，甚至爱上他们。但是什么让一个角色真正引人入胜呢？以下是如何创造从页面中跃出并在读者脑海中长久停留的三维角色。',
+        'blog_character_depth_title': '1. 给他们深度和背景故事',
+        'blog_character_depth_content': '每个角色都有塑造他们现在的过去。考虑他们的成长经历、形成性经历和情感创伤。即使你不揭示每个细节，了解角色的背景故事将影响他们在整个故事中的行动和对话。',
+        'blog_character_flaws_title': '2. 展示他们的缺点和优点',
+        'blog_character_flaws_content': '完美的角色是无聊和不可信的。给你的主角（和反派！）一个让他们成为人类的优点和缺点的混合体。也许你自信的女主角秘密地害怕亲密关系，或者你迷人的男主角与嫉妒作斗争。缺点让角色变得可亲，自然地推动冲突。',
+        'blog_character_voice_title': '3. 使用独特的声音和举止',
+        'blog_character_voice_content': '让每个角色的声音独特而难忘。他们使用正式语言还是随意俚语？他们是讽刺的、害羞的还是直率的？添加读者可以轻松识别的特定怪癖和举止—也许他们在紧张时玩弄头发，总是有机智的回应，或者重复使用某些短语。',
+        'blog_character_growth_title': '4. 让他们成长和改变',
+        'blog_character_growth_content': '最好的角色在故事过程中会改变。让他们从错误中学习，面对恐惧，作为人进化。角色的旅程通常是小说的最令人满意的部分，特别是在浪漫小说中，两个角色应该一起成长。',
+        'blog_character_desires_title': '5. 让他们的欲望清晰而引人入胜',
+        'blog_character_desires_content': '每个角色都想要什么—爱、复仇、接受、自由、成功。他们的欲望推动情节并创造紧张感。问问自己：我的角色想要什么，他们愿意做什么来得到它，什么在阻止他们？',
+        'blog_character_conflicts_title': '6. 创造内部和外部冲突',
+        'blog_character_conflicts_content': '伟大的角色面临内部和外部挑战。内部冲突可能包括自我怀疑、对承诺的恐惧或冲突的欲望。外部冲突可能是家庭压力、社会期望或他们目标的障碍。',
+        'blog_character_show_title': '7. 展示而不是讲述他们的个性',
+        'blog_character_show_content': '不要告诉读者你的角色"善良"或"固执"，而是通过他们的行动、对话和选择来展示这些特征。善良的角色可能会帮助陌生人，而固执的角色即使在需要时也可能拒绝寻求帮助。',
+        'blog_character_conclusion': '引人入胜的角色是复杂的、有缺陷的、不断变化的。他们有丰富的内心生活、清晰的欲望并面临有意义的挑战。花时间从内到外了解你的角色—他们的希望、恐惧、怪癖和成长潜力。当你创造感觉真实和可亲的角色时，你的读者会渴望跟随他们到任何地方，并在故事结束后长久记住他们。',
+        
+        // Blog Post Common Elements
+        'blog_related_articles': '相关文章',
+        'blog_get_tips': '获取写作技巧',
+        'blog_subscribe_desc': '订阅我们的新闻通讯，获取每周写作建议和独家内容。',
+        'blog_subscribe_now': '立即订阅',
+        'blog_submit_story': '提交您的故事',
+        'blog_submit_desc': '有想要分享的故事吗？提交它有机会在我们的博客上被推荐！',
+        'blog_share_article': '分享这篇文章：',
+        'blog_tags': '标签',
+        'blog_by': '作者',
+        'blog_read_time': '分钟阅读',
+        'blog_category': '分类',
+        'blog_date': '日期',
+        
+        // Blog Post Content - Character Development
         'blog_character_title': 'Creating Compelling Characters in Adult Fiction',
         'blog_character_excerpt': 'Learn how to develop three-dimensional characters that readers will fall in love with. From backstory creation to personality quirks, discover the secrets of memorable character development.',
         'blog_character_intro': 'In adult fiction, characters are the heart and soul of your story. Readers want to connect, empathize, and even fall in love with the people you create. But what makes a character truly compelling? Here\'s how to craft three-dimensional characters that leap off the page and linger in your reader\'s mind long after they\'ve finished your story.',
@@ -604,7 +638,252 @@ const translations = {
         // Export/Import
         'export_success': 'Historique de chat exporté avec succès !',
         'import_success': 'Historique de chat importé avec succès !',
-        'import_error': 'Erreur lors de l\'importation de l\'historique de chat. Veuillez vérifier le format du fichier.'
+        'import_error': 'Erreur lors de l\'importation de l\'historique de chat. Veuillez vérifier le format du fichier.',
+        
+        // Navigation
+        'nav_chat': 'Chat',
+        'nav_prompts': 'Exemples de Prompts',
+        'nav_writing_tips': 'Conseils d\'Écriture',
+        'nav_submit_story': 'Soumettre une Histoire',
+        'nav_community': 'Communauté',
+        'nav_newsletter': 'Newsletter',
+        'nav_subscription': 'Abonnement',
+        
+        // Blog Page
+        'blog_title': 'Conseils et Guides d\'Écriture',
+        'blog_subtitle': 'Maîtrisez l\'art de l\'écriture de fiction pour adultes avec des conseils d\'experts, des techniques de développement de personnages et des secrets de narration',
+        'blog_all_tips': 'Tous les Conseils',
+        'blog_character': 'Développement de Personnages',
+        'blog_plot': 'Intrigue et Structure',
+        'blog_romance': 'Écriture Romantique',
+        'blog_dialogue': 'Dialogue et Voix',
+        'blog_pacing': 'Rythme et Tension',
+        'blog_read_more': 'Lire Plus',
+        'blog_min_read': 'min de lecture',
+        
+        // Submit Story Page
+        'submit_title': 'Soumettre Votre Histoire',
+        'submit_subtitle': 'Partagez votre écriture créative avec notre communauté et ayez une chance d\'être mis en avant sur Smut Writer',
+        'submit_form_title': 'Formulaire de Soumission d\'Histoire',
+        'submit_author_name': 'Votre Nom (ou nom de plume) *',
+        'submit_author_email': 'Votre Email *',
+        'submit_story_title': 'Titre de l\'Histoire *',
+        'submit_story_genre': 'Genre *',
+        'submit_story_content': 'Votre Histoire *',
+        'submit_permission': 'Je donne la permission pour que mon histoire soit mise en avant sur le blog Smut Writer (avec crédit) *',
+        'submit_multilingual': 'Bienvenue Multilingue : Les histoires dans n\'importe quelle langue sont les bienvenues ! Nous traduirons votre histoire pour nos lecteurs.',
+        'submit_button': 'Soumettre l\'Histoire',
+        'submit_words': 'mots',
+        
+        // Info Cards
+        'info_looking_for': 'Ce Que Nous Cherchons',
+        'info_looking_for_desc': 'Nous accueillons des histoires de fiction pour adultes originales de tous genres. Que ce soit romance, fantasy, science-fiction ou contemporain, nous voulons mettre en valeur votre créativité.',
+        'info_guidelines': 'Directives de Soumission',
+        'info_guidelines_original': 'Travail original uniquement',
+        'info_guidelines_length': 'Entre 500-2000 mots recommandé',
+        'info_guidelines_quality': 'Contenu bien écrit et engageant',
+        'info_guidelines_adult': 'Approprié pour les publics adultes',
+        'info_what_you_get': 'Ce Que Vous Obtenez',
+        'info_featured_placement': 'Mise en avant sur notre blog',
+        'info_author_credit': 'Crédit d\'auteur et biographie',
+        'info_community_exposure': 'Exposition à notre communauté grandissante',
+        'info_future_collaborations': 'Potentiel pour des collaborations futures',
+        
+        // Blog Post Content - Character Development
+        'blog_character_title': 'Créer des Personnages Captivants dans la Fiction pour Adultes',
+        'blog_character_excerpt': 'Apprenez à développer des personnages tridimensionnels dont les lecteurs tomberont amoureux. De la création d\'antécédents aux particularités de personnalité, découvrez les secrets du développement mémorable de personnages.',
+        'blog_character_intro': 'Dans la fiction pour adultes, les personnages sont le cœur et l\'âme de votre histoire. Les lecteurs veulent se connecter, ressentir de l\'empathie et même tomber amoureux des personnes que vous créez. Mais qu\'est-ce qui rend un personnage vraiment captivant ? Voici comment créer des personnages tridimensionnels qui sortent de la page et restent dans l\'esprit de votre lecteur longtemps après avoir terminé votre histoire.',
+        'blog_character_depth_title': '1. Donnez-leur de la Profondeur et des Antécédents',
+        'blog_character_depth_content': 'Chaque personnage a un passé qui façonne son présent. Considérez leur éducation, leurs expériences formatrices et leurs blessures émotionnelles. Même si vous ne révélez pas tous les détails, connaître les antécédents de votre personnage informera ses actions et son dialogue tout au long de votre histoire.',
+        'blog_character_flaws_title': '2. Montrez leurs Défauts et leurs Forces',
+        'blog_character_flaws_content': 'Les personnages parfaits sont ennuyeux et incroyables. Donnez à votre protagoniste (et antagoniste !) un mélange de forces et de faiblesses qui les rendent humains. Peut-être que votre héroïne confiante a secrètement peur de l\'intimité, ou que votre héros charmant lutte contre la jalousie. Les défauts rendent les personnages relatables et génèrent naturellement des conflits.',
+        'blog_character_voice_title': '3. Utilisez une Voix et des Maniérismes Distinctifs',
+        'blog_character_voice_content': 'Rendez la voix de chaque personnage unique et mémorable. Utilisent-ils un langage formel ou de l\'argot décontracté ? Sont-ils sarcastiques, timides ou directs ? Ajoutez des particularités et des maniérismes spécifiques que les lecteurs peuvent facilement identifier—peut-être qu\'ils se tordent les cheveux quand ils sont nerveux, ont toujours une réplique spirituelle, ou utilisent certaines phrases de manière répétée.',
+        'blog_character_growth_title': '4. Laissez-les Grandir et Changer',
+        'blog_character_growth_content': 'Les meilleurs personnages changent au cours de l\'histoire. Laissez-les apprendre de leurs erreurs, affronter leurs peurs et évoluer en tant que personnes. Le voyage d\'un personnage est souvent la partie la plus satisfaisante d\'un roman, surtout dans le romance où les deux personnages devraient grandir ensemble.',
+        'blog_character_desires_title': '5. Rendez leurs Désirs Clairs et Captivants',
+        'blog_character_desires_content': 'Chaque personnage veut quelque chose—amour, vengeance, acceptation, liberté, succès. Leurs désirs animent l\'intrigue et créent de la tension. Demandez-vous : Que veut mon personnage, que sont-ils prêts à faire pour l\'obtenir, et qu\'est-ce qui les arrête ?',
+        'blog_character_conflicts_title': '6. Créez des Conflits Internes et Externes',
+        'blog_character_conflicts_content': 'Les grands personnages font face à des défis internes et externes. Les conflits internes pourraient inclure le doute de soi, la peur de l\'engagement, ou des désirs conflictuels. Les conflits externes pourraient être la pression familiale, les attentes sociales, ou des obstacles à leurs objectifs.',
+        'blog_character_show_title': '7. Montrez Ne Dites Pas leur Personnalité',
+        'blog_character_show_content': 'Au lieu de dire aux lecteurs que votre personnage est "gentil" ou "têtu," montrez ces traits à travers leurs actions, dialogue et choix. Un personnage gentil pourrait aider un étranger, tandis qu\'un têtu pourrait refuser de demander de l\'aide même quand il en a besoin.',
+        'blog_character_conclusion': 'Les personnages captivants sont complexes, imparfaits et en constante évolution. Ils ont des vies intérieures riches, des désirs clairs et font face à des défis significatifs. Prenez le temps de connaître vos personnages de l\'intérieur et de l\'extérieur—leurs espoirs, peurs, particularités et potentiel de croissance. Quand vous créez des personnages qui semblent réels et relatables, vos lecteurs seront impatients de les suivre partout et se souviendront d\'eux longtemps après la fin de l\'histoire.',
+        
+        // Blog Post Content - Three Act Structure
+        'blog_structure_title': 'La Structure en Trois Actes pour les Romans d\'Amour',
+        'blog_structure_excerpt': 'Maîtrisez la structure classique en trois actes et adaptez-la pour le romance pour adultes. Apprenez à créer des arcs narratifs satisfaisants qui maintiennent les lecteurs engagés du coup de foudre au heureux pour toujours.',
+        'blog_structure_intro': 'La structure en trois actes est un cadre narratif intemporel qui fonctionne merveilleusement pour les romans d\'amour. Elle fournit une base solide pour votre histoire tout en permettant beaucoup d\'espace pour la profondeur émotionnelle et le développement de personnages. Décomposons comment utiliser cette structure pour créer des histoires romantiques pour adultes captivantes qui maintiennent les lecteurs tournant les pages.',
+        'blog_structure_understanding_title': 'Comprendre la Structure en Trois Actes',
+        'blog_structure_understanding_content': 'À sa base, la structure en trois actes divise votre histoire en trois sections principales : Installation, Confrontation et Résolution. Chaque acte sert un but spécifique dans votre récit romantique et construit vers le suivant.',
+        'blog_structure_act1_title': 'Acte I : L\'Installation - Préparer la Scène pour l\'Amour',
+        'blog_structure_act1_content': 'Le premier acte concerne l\'introduction de vos personnages et la création de l\'étincelle initiale. C\'est là que les lecteurs tombent amoureux de vos protagonistes et s\'investissent dans leur voyage.',
+        'blog_structure_act2_title': 'Acte II : La Confrontation - Le Cœur de l\'Histoire',
+        'blog_structure_act2_content': 'L\'Acte II est où le vrai travail se fait. C\'est la section la plus longue de votre histoire et où vous développerez la relation, introduirez des conflits et construirez de la tension. Dans le romance, c\'est là que la tension "vont-ils ou ne vont-ils pas" atteint son apogée.',
+        'blog_structure_act3_title': 'Acte III : La Résolution - Heureux pour Toujours',
+        'blog_structure_act3_content': 'L\'acte final est où tout se rassemble. C\'est là que vos personnages font face à leur plus grand défi et prouvent que leur amour vaut la peine de se battre. Dans le romance, les lecteurs s\'attendent à une résolution satisfaisante qui les laisse se sentant pleins d\'espoir et accomplis.',
+        'blog_structure_adapting_title': 'Adapter la Structure pour le Romance pour Adultes',
+        'blog_structure_adapting_content': 'Bien que la structure de base en trois actes fonctionne pour tout le romance, le romance pour adultes a quelques considérations spécifiques :',
+        'blog_structure_tips_title': 'Conseils pour le Succès',
+        'blog_structure_tips_content': 'Voici quelques conseils pratiques pour utiliser efficacement la structure en trois actes dans votre roman d\'amour :',
+        'blog_structure_pitfalls_title': 'Pièges Communs à Éviter',
+        'blog_structure_pitfalls_content': 'Voici quelques erreurs communes que les écrivains font en utilisant la structure en trois actes :',
+        'blog_structure_conclusion': 'La structure en trois actes est un outil puissant pour créer des romans d\'amour captivants. Elle fournit un cadre solide tout en permettant beaucoup d\'espace pour la créativité et le développement de personnages. En comprenant comment chaque acte sert votre histoire, vous pouvez créer des romans d\'amour qui satisfont les lecteurs et les font revenir pour plus.',
+        
+        // Blog Post Content - Sexual Tension
+        'blog_tension_title': 'Construire la Tension Sexuelle : L\'Art de l\'Anticipation',
+        'blog_tension_excerpt': 'Découvrez comment créer une chimie électrique entre personnages à travers des gestes subtils, des regards significatifs et le pouvoir de ce qui reste non dit. Maîtrisez la combustion lente.',
+        'blog_tension_intro': 'La tension sexuelle est le sang de l\'écriture romantique. C\'est cette charge électrique qui crépite entre personnages, faisant retenir leur souffle aux lecteurs et tourner les pages plus vite. Mais construire une tension sexuelle efficace est un art—il s\'agit de créer de l\'anticipation, pas seulement de l\'attraction. Explorons comment maîtriser cet élément essentiel de la fiction pour adultes.',
+        'blog_tension_what_title': 'Qu\'est-ce que la Tension Sexuelle ?',
+        'blog_tension_what_content': 'La tension sexuelle est l\'attraction et le désir non exprimés entre personnages qui se construisent au fil du temps. C\'est le sentiment "vont-ils ou ne vont-ils pas" qui maintient les lecteurs investis. Contrairement aux scènes explicites, la tension sexuelle concerne la construction—les regards, les touchers accidentels, les moments chargés qui font désirer plus aux lecteurs.',
+        'blog_tension_slow_title': 'Le Pouvoir de la Combustion Lente',
+        'blog_tension_slow_content': 'La combustion lente est l\'une des techniques les plus efficaces pour construire la tension sexuelle. Au lieu de se précipiter vers l\'intimité physique, vous augmentez graduellement l\'intensité de l\'attraction et du désir. Cela crée une récompense plus satisfaisante quand les personnages se réunissent finalement.',
+        'blog_tension_techniques_title': 'Techniques pour Construire la Tension Sexuelle',
+        'blog_tension_proximity_title': '1. Le Pouvoir de la Proximité',
+        'blog_tension_proximity_content': 'La proximité physique est un outil puissant pour construire la tension. Mettez vos personnages dans des situations où ils doivent être près l\'un de l\'autre mais ne peuvent pas agir sur leur attraction.',
+        'blog_tension_glance_title': '2. L\'Art du Regard',
+        'blog_tension_glance_content': 'Le contact visuel est incroyablement intime et peut transmettre des volumes sans mots. Utilisez les regards pour montrer l\'attraction, le désir et la communication non exprimée entre personnages.',
+        'blog_tension_touch_title': '3. Touchers Accidentels',
+        'blog_tension_touch_content': 'Le contact physique accidentel est une technique classique pour construire la tension sexuelle. Ces moments doivent se sentir naturels et non planifiés, mais ils créent des réactions puissantes chez les personnages et les lecteurs.',
+        'blog_tension_verbal_title': '4. Tension Verbale',
+        'blog_tension_verbal_content': 'Le dialogue peut être incroyablement efficace pour construire la tension sexuelle. Utilisez les sous-entendus, les doubles sens et les conversations chargées pour créer de la chimie.',
+        'blog_tension_internal_title': '5. Monologue Interne',
+        'blog_tension_internal_content': 'Montrez les réactions internes de vos personnages pour construire la tension. Laissez les lecteurs voir ce qu\'ils pensent et ressentent, même quand ils n\'agissent pas sur leurs désirs.',
+        'blog_tension_mistakes_title': 'Erreurs Communes à Éviter',
+        'blog_tension_mistakes_content': 'Voici quelques pièges communs lors de la construction de la tension sexuelle :',
+        'blog_tension_advanced_title': 'Techniques Avancées',
+        'blog_tension_advanced_content': 'Une fois que vous avez maîtrisé les bases, essayez ces techniques avancées :',
+        'blog_tension_pacing_title': 'Rythmer Votre Tension Sexuelle',
+        'blog_tension_pacing_content': 'Comme tout élément narratif, la tension sexuelle a besoin d\'un rythme approprié. Voici une structure générale :',
+        'blog_tension_conclusion': 'Construire la tension sexuelle est l\'une des compétences les plus importantes pour les écrivains romantiques. Il s\'agit de créer de l\'anticipation, pas seulement de l\'attraction. En utilisant des techniques comme la proximité, les regards, les touchers accidentels et la tension verbale, vous pouvez créer une chimie électrique qui maintient les lecteurs investis dans le voyage de vos personnages.',
+        
+        // Blog Post Content - Intimate Dialogue
+        'blog_dialogue_title': 'Écrire un Dialogue Naturel pour les Scènes Intimes',
+        'blog_dialogue_excerpt': 'Apprenez à écrire un dialogue qui semble authentique pendant les moments intimes. Du badinage coquin aux déclarations passionnées, faites que chaque mot compte.',
+        'blog_dialogue_intro': 'Le dialogue dans les scènes intimes peut faire ou défaire votre roman d\'amour. Quand c\'est bien fait, il semble naturel, authentique et améliore la connexion émotionnelle entre personnages. Quand c\'est mal fait, il peut sembler forcé, maladroit ou même comique. Explorons comment écrire un dialogue qui sonne vrai pendant les moments les plus intimes de votre histoire.',
+        'blog_dialogue_challenge_title': 'Le Défi du Dialogue Intime',
+        'blog_dialogue_challenge_content': 'Écrire un dialogue pour les scènes intimes est particulièrement difficile car il doit servir plusieurs objectifs simultanément :',
+        'blog_dialogue_voice_title': 'Comprendre la Voix du Personnage',
+        'blog_dialogue_voice_content': 'Avant d\'écrire un dialogue intime, vous devez comprendre les voix uniques de vos personnages. Comment parlent-ils normalement ? Quels sont leurs modèles de parole, préférences de vocabulaire et styles de communication ?',
+        'blog_dialogue_types_title': 'Types de Dialogue Intime',
+        'blog_dialogue_flirty_title': '1. Badinage Coquin',
+        'blog_dialogue_flirty_content': 'Le dialogue coquin est joueur, taquin et construit la tension sexuelle. Il est souvent léger mais avec un désir sous-jacent.',
+        'blog_dialogue_vulnerable_title': '2. Confessions Vulnérables',
+        'blog_dialogue_vulnerable_content': 'Ce sont des moments où les personnages révèlent leurs vrais sentiments, peurs ou désirs. Ils sont souvent plus silencieux et émotionnels.',
+        'blog_dialogue_passionate_title': '3. Déclarations Passionnées',
+        'blog_dialogue_passionate_content': 'Ce sont les moments où les personnages expriment leurs sentiments et désirs les plus profonds. Ils doivent sembler mérités et authentiques.',
+        'blog_dialogue_physical_title': '4. Communication Physique',
+        'blog_dialogue_physical_content': 'Pendant les moments intimes, le dialogue devient souvent plus court et plus concentré sur les sensations physiques et les réactions.',
+        'blog_dialogue_techniques_title': 'Techniques pour un Dialogue Naturel',
+        'blog_dialogue_contractions_title': '1. Utilisez les Contractions',
+        'blog_dialogue_contractions_content': 'Les vraies personnes utilisent des contractions. "Je ne sais pas" sonne plus naturel que "Je ne sais pas." C\'est particulièrement important dans les scènes intimes où les personnages doivent se sentir détendus et authentiques.',
+        'blog_dialogue_hesitations_title': '2. Incluez les Hésitations et Interruptions',
+        'blog_dialogue_hesitations_content': 'Les gens ne parlent pas toujours en phrases parfaites, surtout quand ils sont nerveux ou émotionnels. Incluez des modèles de parole naturels comme les hésitations, interruptions, répétitions et pensées incomplètes.',
+        'blog_dialogue_emotion_title': '3. Montrez l\'Émotion à Travers les Modèles de Parole',
+        'blog_dialogue_emotion_content': 'Comment les personnages parlent peut révéler leur état émotionnel : les personnages nerveux pourraient parler rapidement, les personnages confiants font des déclarations claires, les personnages vulnérables utilisent des voix douces, et les personnages passionnés utilisent un langage intense.',
+        'blog_dialogue_specific_title': '4. Utilisez un Langage Spécifique au Personnage',
+        'blog_dialogue_specific_content': 'Chaque personnage devrait avoir sa propre façon de s\'exprimer. Considérez les surnoms, phrases uniques, modèles de parole culturels et vocabulaire professionnel qui pourrait s\'infiltrer.',
+        'blog_dialogue_mistakes_title': 'Erreurs Communes de Dialogue à Éviter',
+        'blog_dialogue_mistakes_content': 'Voici quelques pièges communs lors de l\'écriture de dialogue intime :',
+        'blog_dialogue_balancing_title': 'Équilibrer le Dialogue avec l\'Action',
+        'blog_dialogue_balancing_content': 'Dans les scènes intimes, le dialogue devrait travailler en harmonie avec les actions physiques et les pensées internes. Voici comment les équilibrer :',
+        'blog_dialogue_levels_title': 'Écrire pour Différents Niveaux d\'Intimité',
+        'blog_dialogue_levels_content': 'Différents niveaux d\'intimité nécessitent différentes approches du dialogue :',
+        'blog_dialogue_tips_title': 'Conseils pour un Dialogue Authentique',
+        'blog_dialogue_tips_content': 'Voici quelques conseils pratiques pour écrire un dialogue intime authentique :',
+        'blog_dialogue_conclusion': 'Écrire un dialogue naturel pour les scènes intimes concerne la compréhension de vos personnages et les laisser parler authentiquement. Concentrez-vous sur la vérité émotionnelle, la voix du personnage et le moment spécifique. Rappelez-vous que parfois le dialogue le plus puissant est le plus simple—un "Je t\'aime" chuchoté ou un "Oui" essoufflé.',
+        
+        // Blog Post Content - Pacing Control
+        'blog_pacing_title': 'Contrôler le Rythme dans la Fiction pour Adultes',
+        'blog_pacing_excerpt': 'Maîtrisez le rythme de votre histoire. Apprenez quand accélérer pour les scènes d\'action et ralentir pour les moments émotionnels. Créez le flux et reflux parfait.',
+        'blog_pacing_intro': 'Le rythme est le battement de votre histoire—le rythme qui maintient les lecteurs engagés, le tempo qui les fait tourner les pages. Dans la fiction pour adultes, surtout le romance, maîtriser le rythme est crucial pour créer une expérience de lecture immersive. Explorons comment contrôler la vitesse et le flux de votre narration pour maintenir les lecteurs accrochés du début à la fin.',
+        'blog_pacing_what_title': 'Qu\'est-ce que le Rythme ?',
+        'blog_pacing_what_content': 'Le rythme se réfère à la vitesse à laquelle votre histoire se déroule et à quelle vitesse les lecteurs se déplacent à travers la narration. Il s\'agit de l\'équilibre entre action et réflexion, tension et libération, scènes au rythme rapide et moments plus lents et contemplatifs.',
+        'blog_pacing_elements_title': 'Les Éléments du Rythme',
+        'blog_pacing_scene_title': '1. Longueur de Scène',
+        'blog_pacing_scene_content': 'Les scènes courtes créent un rythme rapide, tandis que les scènes plus longues ralentissent les choses. Utilisez la longueur de scène stratégiquement pour contrôler le rythme de votre histoire.',
+        'blog_pacing_sentence_title': '2. Structure de Phrase',
+        'blog_pacing_sentence_content': 'La façon dont vous construisez les phrases affecte directement le rythme. Les phrases courtes et hachées créent de l\'urgence, tandis que les phrases plus longues et fluides ralentissent le rythme.',
+        'blog_pacing_chapter_title': '3. Structure de Chapitre',
+        'blog_pacing_chapter_content': 'Comment vous organisez vos chapitres peut considérablement impacter le rythme. Considérez la longueur du chapitre, les fins et les transitions.',
+        'blog_pacing_techniques_title': 'Techniques de Rythme pour Différents Éléments Narratifs',
+        'blog_pacing_action_title': '1. Scènes d\'Action',
+        'blog_pacing_action_content': 'Les scènes d\'action doivent sembler rapides et urgentes. Utilisez ces techniques pour créer de l\'élan :',
+        'blog_pacing_emotional_title': '2. Scènes Émotionnelles',
+        'blog_pacing_emotional_content': 'Les scènes émotionnelles ont besoin de temps pour respirer. Ralentissez pour permettre aux lecteurs de ressentir les émotions :',
+        'blog_pacing_intimate_title': '3. Scènes Intimes',
+        'blog_pacing_intimate_content': 'Les scènes intimes nécessitent un rythme soigneux—pas trop rapide, pas trop lent. Trouvez le bon rythme :',
+        'blog_pacing_dialogue_title': '4. Scènes de Dialogue',
+        'blog_pacing_dialogue_content': 'Le dialogue peut accélérer ou ralentir le rythme selon comment vous l\'utilisez :',
+        'blog_pacing_patterns_title': 'Modèles de Rythme dans le Romance',
+        'blog_pacing_arc_title': 'L\'Arc de Rythme Romantique',
+        'blog_pacing_arc_content': 'Les romans d\'amour suivent typiquement un modèle de rythme spécifique :',
+        'blog_pacing_tension_title': 'Rythme de Tension Sexuelle',
+        'blog_pacing_tension_content': 'Construire la tension sexuelle nécessite un contrôle soigneux du rythme :',
+        'blog_pacing_problems_title': 'Problèmes de Rythme Communs et Solutions',
+        'blog_pacing_slow_title': '1. Trop Lent (Ennuyeux)',
+        'blog_pacing_slow_content': 'Si votre histoire semble lente, essayez ces corrections :',
+        'blog_pacing_fast_title': '2. Trop Rapide (Précipité)',
+        'blog_pacing_fast_content': 'Si votre histoire semble précipitée, essayez ces corrections :',
+        'blog_pacing_inconsistent_title': '3. Rythme Incohérent',
+        'blog_pacing_inconsistent_content': 'Si votre rythme semble inégal, essayez ces corrections :',
+        'blog_pacing_advanced_title': 'Techniques de Rythme Avancées',
+        'blog_pacing_advanced_content': 'Voici quelques techniques avancées pour maîtriser le rythme :',
+        'blog_pacing_experience_title': 'Rythme et Expérience du Lecteur',
+        'blog_pacing_experience_content': 'Rappelez-vous que le rythme est finalement sur l\'expérience du lecteur. Considérez :',
+        'blog_pacing_conclusion': 'Le rythme est l\'un des outils les plus importants dans votre arsenal d\'écriture. Quand c\'est bien fait, c\'est invisible—les lecteurs se sentent simplement engagés et obligés de continuer à lire. Quand c\'est mal fait, cela peut rendre même l\'histoire la plus intéressante ennuyeuse ou précipitée.',
+        
+        // Blog Post Content - Strong Female Characters
+        'blog_female_title': 'Écrire des Personnages Féminins Forts dans le Romance',
+        'blog_female_excerpt': 'Créez des protagonistes féminines autonomisées et complexes qui font avancer l\'histoire. Apprenez à écrire des femmes qui sont à la fois vulnérables et fortes.',
+        'blog_female_intro': 'Les personnages féminins forts sont le cœur des romans d\'amour captivants. Ils ne sont pas seulement des intérêts amoureux—ils sont des personnes complexes et tridimensionnelles avec leurs propres objectifs, peurs et agence. Créer ces personnages nécessite de comprendre ce qui rend une femme vraiment forte et comment équilibrer la vulnérabilité avec l\'autonomisation. Explorons comment écrire des protagonistes féminines que les lecteurs aimeront, respecteront et soutiendront.',
+        'blog_female_what_title': 'Qu\'est-ce qui Rend un Personnage Féminin "Fort" ?',
+        'blog_female_what_content': 'Avant de plonger dans les techniques, clarifions ce que "fort" signifie vraiment dans ce contexte. Un personnage féminin fort n\'est pas nécessairement physiquement puissant ou émotionnellement invulnérable. Au lieu de cela, elle est :',
+        'blog_female_trope_title': 'Au-delà du Tropo "Personnage Féminin Fort"',
+        'blog_female_trope_content': 'Le tropo "personnage féminin fort" est devenu si commun qu\'il est souvent réduit à des stéréotypes. Évitez ces pièges communs :',
+        'blog_female_authentic_title': 'Créer des Personnages Féminins Authentiques',
+        'blog_female_agency_title': '1. Donnez-lui de l\'Agence',
+        'blog_female_agency_content': 'Votre protagoniste féminine devrait prendre ses propres décisions et faire avancer l\'histoire. Elle ne devrait pas seulement réagir à ce qui se passe autour d\'elle—elle devrait agir.',
+        'blog_female_life_title': '2. Donnez-lui une Vie en Dehors du Romance',
+        'blog_female_life_content': 'Votre personnage féminin devrait avoir des intérêts, objectifs et relations qui existent indépendamment de l\'intrigue romantique. Cela la fait se sentir comme une vraie personne.',
+        'blog_female_vulnerable_title': '3. Rendez-la Vulnérable et Forte',
+        'blog_female_vulnerable_content': 'La vraie force inclut la capacité d\'être vulnérable. Votre personnage devrait être capable de montrer de la peur, du doute et de l\'émotion tout en restant forte.',
+        'blog_female_flaws_title': '4. Donnez-lui des Défauts Réalistes',
+        'blog_female_flaws_content': 'Les personnages parfaits sont ennuyeux. Donnez à votre protagoniste féminine des défauts réalistes qui la rendent humaine et relatable.',
+        'blog_female_development_title': 'Techniques de Développement de Personnage',
+        'blog_female_interview_title': '1. L\'Entretien de Personnage',
+        'blog_female_interview_content': 'Posez des questions profondes à votre personnage pour mieux la comprendre :',
+        'blog_female_action_title': '2. Montrez-la à Travers l\'Action',
+        'blog_female_action_content': 'Ne dites pas seulement aux lecteurs que votre personnage est forte—montrez-leur à travers ses actions et choix.',
+        'blog_female_arc_title': '3. Donnez-lui un Arc de Personnage',
+        'blog_female_arc_content': 'Votre personnage féminin devrait grandir et changer au cours de l\'histoire. Que fait-elle ? Comment devient-elle plus forte ou plus sage ?',
+        'blog_female_romance_title': 'Écrire des Personnages Féminins dans le Romance',
+        'blog_female_equal_title': '1. Rendez-la un Partenaire Égal',
+        'blog_female_equal_content': 'Dans un romance sain, les deux personnages devraient être égaux. Votre protagoniste féminine ne devrait pas être sauvée par le personnage masculin—ils devraient se sauver mutuellement, ou mieux encore, se sauver ensemble.',
+        'blog_female_initiate_title': '2. Laissez-la Initier',
+        'blog_female_initiate_content': 'Ne faites pas toujours que le personnage masculin initie les moments romantiques. Laissez votre protagoniste féminine prendre l\'initiative parfois.',
+        'blog_female_sexual_title': '3. Donnez-lui une Agence Sexuelle',
+        'blog_female_sexual_content': 'Votre personnage féminin devrait avoir ses propres désirs et être un participant actif dans les scènes intimes. Elle ne devrait pas être juste un récipient passif de l\'attention du personnage masculin.',
+        'blog_female_mistakes_title': 'Erreurs Communes à Éviter',
+        'blog_female_mistakes_content': 'Voici quelques pièges communs lors de l\'écriture de personnages féminins :',
+        'blog_female_examples_title': 'Exemples de Personnages Féminins Forts',
+        'blog_female_examples_content': 'Voici quelques exemples de personnages féminins bien écrits dans le romance et ce qui les rend forts :',
+        'blog_female_tips_title': 'Conseils d\'Écriture pour des Personnages Féminins Forts',
+        'blog_female_tips_content': 'Voici quelques conseils pratiques pour créer des personnages féminins captivants :',
+        'blog_female_conclusion': 'Écrire des personnages féminins forts dans le romance concerne la création de femmes complexes et authentiques qui font avancer leurs propres histoires. Elles devraient être des participantes actives dans leurs vies et relations, avec leurs propres objectifs, défauts et arcs de croissance.',
+        
+        // Blog Post Common Elements
+        'blog_related_articles': 'Articles Connexes',
+        'blog_get_tips': 'Obtenir des Conseils d\'Écriture',
+        'blog_subscribe_desc': 'Abonnez-vous à notre newsletter pour des conseils d\'écriture hebdomadaires et du contenu exclusif.',
+        'blog_subscribe_now': 'S\'Abonner Maintenant',
+        'blog_submit_story': 'Soumettre Votre Histoire',
+        'blog_submit_desc': 'Avez-vous une histoire que vous aimeriez partager ? Soumettez-la pour avoir une chance d\'être mise en avant sur notre blog !',
+        'blog_share_article': 'Partager cet article :',
+        'blog_tags': 'Tags',
+        'blog_by': 'Par',
+        'blog_read_time': 'min de lecture',
+        'blog_category': 'Catégorie',
+        'blog_date': 'Date'
     },
     
     'de': {
@@ -643,7 +922,90 @@ const translations = {
         // Export/Import
         'export_success': 'Chat-Verlauf erfolgreich exportiert!',
         'import_success': 'Chat-Verlauf erfolgreich importiert!',
-        'import_error': 'Fehler beim Importieren des Chat-Verlaufs. Bitte überprüfe das Dateiformat.'
+        'import_error': 'Fehler beim Importieren des Chat-Verlaufs. Bitte überprüfe das Dateiformat.',
+        
+        // Navigation
+        'nav_chat': 'Chat',
+        'nav_prompts': 'Prompt-Beispiele',
+        'nav_writing_tips': 'Schreibtipps',
+        'nav_submit_story': 'Geschichte Einreichen',
+        'nav_community': 'Community',
+        'nav_newsletter': 'Newsletter',
+        'nav_subscription': 'Abonnement',
+        
+        // Blog Page
+        'blog_title': 'Schreibtipps & Anleitungen',
+        'blog_subtitle': 'Meistere die Kunst des Schreibens von Erwachsenen-Fiktion mit Expertenratschlägen, Charakterentwicklungstechniken und Geschichtenerzählungsgeheimnissen',
+        'blog_all_tips': 'Alle Tipps',
+        'blog_character': 'Charakterentwicklung',
+        'blog_plot': 'Handlung & Struktur',
+        'blog_romance': 'Romantisches Schreiben',
+        'blog_dialogue': 'Dialog & Stimme',
+        'blog_pacing': 'Tempo & Spannung',
+        'blog_read_more': 'Weiterlesen',
+        'blog_min_read': 'Min. Lesezeit',
+        
+        // Submit Story Page
+        'submit_title': 'Deine Geschichte Einreichen',
+        'submit_subtitle': 'Teile deine kreative Schrift mit unserer Community und habe die Chance, auf Smut Writer vorgestellt zu werden',
+        'submit_form_title': 'Geschichten-Einreichungsformular',
+        'submit_author_name': 'Dein Name (oder Pseudonym) *',
+        'submit_author_email': 'Deine E-Mail *',
+        'submit_story_title': 'Geschichtentitel *',
+        'submit_story_genre': 'Genre *',
+        'submit_story_content': 'Deine Geschichte *',
+        'submit_permission': 'Ich gebe die Erlaubnis, dass meine Geschichte auf dem Smut Writer Blog vorgestellt wird (mit Namensnennung) *',
+        'submit_multilingual': 'Mehrsprachige Willkommensbotschaft: Geschichten in jeder Sprache sind willkommen! Wir werden deine Geschichte für unsere Leser übersetzen.',
+        'submit_button': 'Geschichte Einreichen',
+        'submit_words': 'Wörter',
+        
+        // Info Cards
+        'info_looking_for': 'Was Wir Suchen',
+        'info_looking_for_desc': 'Wir begrüßen originale Erwachsenen-Fiktion-Geschichten aller Genres. Ob Romantik, Fantasy, Science-Fiction oder zeitgenössisch, wir wollen deine Kreativität zeigen.',
+        'info_guidelines': 'Einreichungsrichtlinien',
+        'info_guidelines_original': 'Nur Originalarbeit',
+        'info_guidelines_length': 'Zwischen 500-2000 Wörtern empfohlen',
+        'info_guidelines_quality': 'Gut geschriebener und fesselnder Inhalt',
+        'info_guidelines_adult': 'Geeignet für erwachsene Publikum',
+        'info_what_you_get': 'Was Du Bekommst',
+        'info_featured_placement': 'Vorgestellte Platzierung auf unserem Blog',
+        'info_author_credit': 'Autorenkredit und Biografie',
+        'info_community_exposure': 'Exposition zu unserer wachsenden Community',
+        'info_future_collaborations': 'Potenzial für zukünftige Zusammenarbeit',
+        
+        // Blog Post Content - Character Development
+        'blog_character_title': 'Überzeugende Charaktere in Erwachsenen-Fiktion Erschaffen',
+        'blog_character_excerpt': 'Lerne, wie man dreidimensionale Charaktere entwickelt, in die sich Leser verlieben werden. Von Hintergrunderstellung bis Persönlichkeitsmerkmale, entdecke die Geheimnisse unvergesslicher Charakterentwicklung.',
+        'blog_character_intro': 'In Erwachsenen-Fiktion sind Charaktere das Herz und die Seele deiner Geschichte. Leser wollen sich verbinden, einfühlen und sich sogar in die Menschen verlieben, die du erschaffst. Aber was macht einen Charakter wirklich überzeugend? Hier ist, wie man dreidimensionale Charaktere erschafft, die von der Seite springen und lange nach dem Ende deiner Geschichte im Gedächtnis deines Lesers bleiben.',
+        'blog_character_depth_title': '1. Gib Ihnen Tiefe und Hintergrund',
+        'blog_character_depth_content': 'Jeder Charakter hat eine Vergangenheit, die ihre Gegenwart prägt. Berücksichtige ihre Erziehung, prägende Erfahrungen und emotionale Wunden. Auch wenn du nicht jedes Detail enthüllst, wird das Kennen der Hintergrundgeschichte deines Charakters ihre Handlungen und Dialoge während deiner Geschichte beeinflussen.',
+        'blog_character_flaws_title': '2. Zeige Ihre Schwächen und Stärken',
+        'blog_character_flaws_content': 'Perfekte Charaktere sind langweilig und unglaubwürdig. Gib deinem Protagonisten (und Antagonisten!) eine Mischung aus Stärken und Schwächen, die sie menschlich machen. Vielleicht hat deine selbstbewusste Heldin heimlich Angst vor Intimität, oder dein charmanter Held kämpft mit Eifersucht. Schwächen machen Charaktere relatierbar und treiben Konflikte natürlich an.',
+        'blog_character_voice_title': '3. Verwende Unterscheidbare Stimme und Manierismen',
+        'blog_character_voice_content': 'Mache die Stimme jedes Charakters einzigartig und unvergesslich. Verwenden sie formelle Sprache oder lockeren Slang? Sind sie sarkastisch, schüchtern oder direkt? Füge spezifische Eigenheiten und Manierismen hinzu, die Leser leicht identifizieren können—vielleicht drehen sie ihre Haare, wenn sie nervös sind, haben immer eine witzige Antwort, oder verwenden bestimmte Phrasen wiederholt.',
+        'blog_character_growth_title': '4. Lass Sie Wachsen und Sich Verändern',
+        'blog_character_growth_content': 'Die besten Charaktere verändern sich im Laufe der Geschichte. Lass sie aus Fehlern lernen, ihre Ängste konfrontieren und sich als Menschen entwickeln. Die Reise eines Charakters ist oft der befriedigendste Teil eines Romans, besonders in der Romantik, wo beide Charaktere zusammen wachsen sollten.',
+        'blog_character_desires_title': '5. Mache Ihre Wünsche Klar und Überzeugend',
+        'blog_character_desires_content': 'Jeder Charakter will etwas—Liebe, Rache, Akzeptanz, Freiheit, Erfolg. Ihre Wünsche treiben die Handlung an und schaffen Spannung. Frage dich: Was will mein Charakter, was sind sie bereit zu tun, um es zu bekommen, und was hält sie auf?',
+        'blog_character_conflicts_title': '6. Erschaffe Innere und Äußere Konflikte',
+        'blog_character_conflicts_content': 'Große Charaktere stehen vor inneren und äußeren Herausforderungen. Innere Konflikte könnten Selbstzweifel, Angst vor Engagement oder widersprüchliche Wünsche beinhalten. Äußere Konflikte könnten familiärer Druck, gesellschaftliche Erwartungen oder Hindernisse für ihre Ziele sein.',
+        'blog_character_show_title': '7. Zeige Erzähle Nicht Ihre Persönlichkeit',
+        'blog_character_show_content': 'Anstatt Lesern zu erzählen, dass dein Charakter "nett" oder "stur" ist, zeige diese Eigenschaften durch ihre Handlungen, Dialoge und Entscheidungen. Ein netter Charakter könnte einem Fremden helfen, während ein sturer sich weigern könnte, um Hilfe zu bitten, auch wenn er sie braucht.',
+        'blog_character_conclusion': 'Überzeugende Charaktere sind komplex, fehlerhaft und sich ständig verändernd. Sie haben reiche Innenleben, klare Wünsche und stehen vor bedeutenden Herausforderungen. Nimm dir Zeit, deine Charaktere von innen und außen zu kennen—ihre Hoffnungen, Ängste, Eigenheiten und Wachstumspotenzial. Wenn du Charaktere erschaffst, die sich real und relatierbar anfühlen, werden deine Leser begierig sein, ihnen überallhin zu folgen und sich lange nach dem Ende der Geschichte an sie erinnern.',
+        
+        // Blog Post Common Elements
+        'blog_related_articles': 'Verwandte Artikel',
+        'blog_get_tips': 'Schreibtipps Bekommen',
+        'blog_subscribe_desc': 'Abonniere unseren Newsletter für wöchentliche Schreibratschläge und exklusive Inhalte.',
+        'blog_subscribe_now': 'Jetzt Abonnieren',
+        'blog_submit_story': 'Deine Geschichte Einreichen',
+        'blog_submit_desc': 'Hast du eine Geschichte, die du teilen möchtest? Reiche sie ein für eine Chance, auf unserem Blog vorgestellt zu werden!',
+        'blog_share_article': 'Diesen Artikel teilen:',
+        'blog_tags': 'Tags',
+        'blog_by': 'Von',
+        'blog_read_time': 'Min. Lesezeit',
+        'blog_category': 'Kategorie',
+        'blog_date': 'Datum'
     },
     
     'ja': {
@@ -682,7 +1044,90 @@ const translations = {
         // Export/Import
         'export_success': 'チャット履歴が正常にエクスポートされました！',
         'import_success': 'チャット履歴が正常にインポートされました！',
-        'import_error': 'チャット履歴のインポートでエラーが発生しました。ファイル形式を確認してください。'
+        'import_error': 'チャット履歴のインポートでエラーが発生しました。ファイル形式を確認してください。',
+        
+        // Navigation
+        'nav_chat': 'チャット',
+        'nav_prompts': 'プロンプト例',
+        'nav_writing_tips': '執筆のヒント',
+        'nav_submit_story': 'ストーリー投稿',
+        'nav_community': 'コミュニティ',
+        'nav_newsletter': 'ニュースレター',
+        'nav_subscription': 'サブスクリプション',
+        
+        // Blog Page
+        'blog_title': '執筆のヒントとガイド',
+        'blog_subtitle': '専門家のアドバイス、キャラクター開発テクニック、ストーリーテリングの秘訣で大人向けフィクション執筆の芸術をマスターしましょう',
+        'blog_all_tips': 'すべてのヒント',
+        'blog_character': 'キャラクター開発',
+        'blog_plot': 'プロットと構造',
+        'blog_romance': 'ロマンス執筆',
+        'blog_dialogue': '対話と声',
+        'blog_pacing': 'ペーシングとテンション',
+        'blog_read_more': '続きを読む',
+        'blog_min_read': '分で読了',
+        
+        // Submit Story Page
+        'submit_title': 'あなたのストーリーを投稿',
+        'submit_subtitle': '私たちのコミュニティとあなたのクリエイティブな執筆を共有し、Smut Writerで紹介されるチャンスを得ましょう',
+        'submit_form_title': 'ストーリー投稿フォーム',
+        'submit_author_name': 'あなたの名前（またはペンネーム）*',
+        'submit_author_email': 'あなたのメール*',
+        'submit_story_title': 'ストーリータイトル*',
+        'submit_story_genre': 'ジャンル*',
+        'submit_story_content': 'あなたのストーリー*',
+        'submit_permission': '私のストーリーがSmut Writerブログで紹介されることを許可します（クレジット付き）*',
+        'submit_multilingual': '多言語歓迎：どの言語のストーリーも歓迎します！読者のためにあなたのストーリーを翻訳します。',
+        'submit_button': 'ストーリー投稿',
+        'submit_words': '語',
+        
+        // Info Cards
+        'info_looking_for': '私たちが探しているもの',
+        'info_looking_for_desc': 'すべてのジャンルのオリジナルな大人向けフィクションストーリーを歓迎します。ロマンス、ファンタジー、SF、現代ものなど、あなたの創造性を紹介したいと思います。',
+        'info_guidelines': '投稿ガイドライン',
+        'info_guidelines_original': 'オリジナル作品のみ',
+        'info_guidelines_length': '500-2000語を推奨',
+        'info_guidelines_quality': 'よく書かれた魅力的なコンテンツ',
+        'info_guidelines_adult': '大人向けの適切なコンテンツ',
+        'info_what_you_get': 'あなたが得るもの',
+        'info_featured_placement': '私たちのブログでの紹介',
+        'info_author_credit': '著者クレジットとバイオ',
+        'info_community_exposure': '成長するコミュニティへの露出',
+        'info_future_collaborations': '将来のコラボレーションの可能性',
+        
+        // Blog Post Content - Character Development
+        'blog_character_title': '大人向けフィクションで魅力的なキャラクターを作成する',
+        'blog_character_excerpt': '読者が恋に落ちる三次元キャラクターを開発する方法を学びましょう。バックストーリー作成から性格の癖まで、忘れられないキャラクター開発の秘訣を発見しましょう。',
+        'blog_character_intro': '大人向けフィクションでは、キャラクターがあなたのストーリーの心と魂です。読者はあなたが作った人々とつながり、共感し、さらには恋に落ちたいと思っています。しかし、キャラクターを本当に魅力的にするものは何でしょうか？ページから飛び出し、読者がストーリーを読み終えた後も長く記憶に残る三次元キャラクターを作成する方法をご紹介します。',
+        'blog_character_depth_title': '1. 深みとバックストーリーを与える',
+        'blog_character_depth_content': 'すべてのキャラクターには現在を形作る過去があります。彼らの育ち、形成期の経験、感情的な傷を考慮してください。すべての詳細を明かさなくても、キャラクターのバックストーリーを知ることで、ストーリー全体を通して彼らの行動と対話に影響を与えます。',
+        'blog_character_flaws_title': '2. 欠点と長所を示す',
+        'blog_character_flaws_content': '完璧なキャラクターは退屈で信じられません。主人公（そして敵役！）に人間らしくする長所と短所の組み合わせを与えましょう。自信に満ちたヒロインが密かに親密さを恐れているかもしれませんし、魅力的なヒーローが嫉妬に苦しんでいるかもしれません。欠点はキャラクターを親しみやすくし、自然に葛藤を生み出します。',
+        'blog_character_voice_title': '3. 独特な声と癖を使用する',
+        'blog_character_voice_content': '各キャラクターの声をユニークで記憶に残るものにしましょう。彼らは形式的な言語を使いますか、それともカジュアルなスラングを使いますか？皮肉屋、内気、それとも率直ですか？読者が簡単に識別できる特定の癖や仕草を追加してください—神経質な時に髪をいじる、いつも機知に富んだ返しをする、または特定のフレーズを繰り返し使うなど。',
+        'blog_character_growth_title': '4. 成長と変化をさせる',
+        'blog_character_growth_content': '最高のキャラクターはストーリーの過程で変化します。彼らに間違いから学ばせ、恐れに立ち向かわせ、人間として進化させましょう。キャラクターの旅はしばしば小説の最も満足のいく部分で、特にロマンスでは両方のキャラクターが一緒に成長すべきです。',
+        'blog_character_desires_title': '5. 願望を明確で魅力的にする',
+        'blog_character_desires_content': 'すべてのキャラクターは何かを望んでいます—愛、復讐、受容、自由、成功。彼らの願望がプロットを動かし、緊張を生み出します。自問してください：私のキャラクターは何を望んでいるか、それを得るために何をする覚悟があるか、そして何が彼らを止めているか？',
+        'blog_character_conflicts_title': '6. 内的・外的葛藤を作成する',
+        'blog_character_conflicts_content': '素晴らしいキャラクターは内的・外的な課題に直面します。内的葛藤には自己疑念、コミットメントへの恐れ、または相反する願望が含まれるかもしれません。外的葛藤には家族の圧力、社会的期待、または目標への障害が含まれるかもしれません。',
+        'blog_character_show_title': '7. 性格を語るのではなく見せる',
+        'blog_character_show_content': '読者にキャラクターが「親切」または「頑固」だと伝えるのではなく、行動、対話、選択を通してこれらの特徴を示してください。親切なキャラクターは見知らぬ人を助けるかもしれませんし、頑固なキャラクターは必要でも助けを求めることを拒否するかもしれません。',
+        'blog_character_conclusion': '魅力的なキャラクターは複雑で、欠点があり、常に変化しています。彼らは豊かな内面生活、明確な願望を持ち、意味のある課題に直面しています。キャラクターを内側と外側から知る時間を取りましょう—彼らの希望、恐れ、癖、成長の可能性。現実的で親しみやすいキャラクターを作成すると、読者はどこにでもついて行きたがり、ストーリーが終わった後も長く記憶に残るでしょう。',
+        
+        // Blog Post Common Elements
+        'blog_related_articles': '関連記事',
+        'blog_get_tips': '執筆のヒントを取得',
+        'blog_subscribe_desc': '週刊の執筆アドバイスとエクスクルーシブコンテンツのためにニュースレターに登録してください。',
+        'blog_subscribe_now': '今すぐ登録',
+        'blog_submit_story': 'あなたのストーリーを投稿',
+        'blog_submit_desc': '共有したいストーリーがありますか？私たちのブログで紹介されるチャンスのために投稿してください！',
+        'blog_share_article': 'この記事を共有：',
+        'blog_tags': 'タグ',
+        'blog_by': '著者',
+        'blog_read_time': '分で読了',
+        'blog_category': 'カテゴリー',
+        'blog_date': '日付'
     },
     
     'zh': {
@@ -1037,14 +1482,24 @@ const TranslationManager = {
         // Update navigation
         this.updateNavigation();
         
-        // Update specific pages
-        if (window.location.pathname.includes('blog.html')) {
-            this.updateBlogPage();
-        }
-        
-        if (window.location.pathname.includes('submit-story.html')) {
-            this.updateSubmitStoryPage();
-        }
+            // Update specific pages
+    if (window.location.pathname.includes('blog.html')) {
+        this.updateBlogPage();
+    }
+    
+    if (window.location.pathname.includes('submit-story.html')) {
+        this.updateSubmitStoryPage();
+    }
+    
+    // Update blog post pages
+    if (window.location.pathname.includes('character-development.html') ||
+        window.location.pathname.includes('three-act-structure.html') ||
+        window.location.pathname.includes('sexual-tension.html') ||
+        window.location.pathname.includes('intimate-dialogue.html') ||
+        window.location.pathname.includes('pacing-control.html') ||
+        window.location.pathname.includes('strong-female-characters.html')) {
+        this.updateBlogPostPage();
+    }
         
         // Track language change
         if (typeof gtag !== 'undefined') {
@@ -1327,6 +1782,58 @@ ${this.get('welcome_question')}
                 item.textContent = this.get('info_future_collaborations');
             }
         });
+    },
+    
+    // Update blog post pages
+    updateBlogPostPage() {
+        // Update all elements with data-translate attributes
+        const translateElements = document.querySelectorAll('[data-translate]');
+        translateElements.forEach(element => {
+            const key = element.getAttribute('data-translate');
+            const translation = this.get(key);
+            if (translation && translation !== key) {
+                element.textContent = translation;
+            }
+        });
+        
+        // Update navigation elements
+        this.updateNavigation();
+        
+        // Update common blog elements
+        const relatedArticles = document.querySelector('.related-articles h3');
+        if (relatedArticles) {
+            relatedArticles.textContent = this.get('blog_related_articles');
+        }
+        
+        const getTipsBtn = document.querySelector('.get-tips-btn');
+        if (getTipsBtn) {
+            getTipsBtn.textContent = this.get('blog_get_tips');
+        }
+        
+        const subscribeDesc = document.querySelector('.newsletter-signup p');
+        if (subscribeDesc) {
+            subscribeDesc.textContent = this.get('blog_subscribe_desc');
+        }
+        
+        const subscribeBtn = document.querySelector('.newsletter-signup button');
+        if (subscribeBtn) {
+            subscribeBtn.textContent = this.get('blog_subscribe_now');
+        }
+        
+        const submitStoryBtn = document.querySelector('.submit-story-btn');
+        if (submitStoryBtn) {
+            submitStoryBtn.textContent = this.get('blog_submit_story');
+        }
+        
+        const submitDesc = document.querySelector('.submit-story p');
+        if (submitDesc) {
+            submitDesc.textContent = this.get('blog_submit_desc');
+        }
+        
+        const shareArticle = document.querySelector('.share-article h4');
+        if (shareArticle) {
+            shareArticle.textContent = this.get('blog_share_article');
+        }
     },
     
     // Initialize translation system
