@@ -589,6 +589,10 @@ function clearChatHistory() {
         localStorage.removeItem(STORAGE_KEYS.CHAT_HISTORY);
         localStorage.removeItem(STORAGE_KEYS.LAST_SAVE_TIME);
         
+        // Reset message count when clearing history
+        messageCount = 0;
+        saveToLocalStorage(PAYMENT_KEYS.MESSAGE_COUNT, messageCount);
+        
         conversationMessages = [];
         messagesContainer.innerHTML = `
             <div class="message bot-message">
@@ -613,7 +617,7 @@ What kind of story would you like to explore today?</span>
         // Scroll to bottom and show input after clearing history
         setTimeout(scrollToBottomAndShowInput, 100);
         
-        debugLog('Chat history cleared');
+        debugLog('Chat history cleared and message count reset');
     }
 }
 
@@ -853,6 +857,14 @@ async function canSendMessage() {
     
     const canSend = messageCount < FREE_MESSAGE_LIMIT;
     debugLog(`Free user can send message: ${canSend} (${messageCount}/${FREE_MESSAGE_LIMIT})`);
+    
+    // If user has run out of free messages, show paywall
+    if (!canSend) {
+        debugLog(`Cannot send message. Message count: ${messageCount}, Limit: ${FREE_MESSAGE_LIMIT}, isPaid: ${isPaid}`);
+        showPaymentPrompt();
+        return false;
+    }
+    
     return canSend;
 }
 
@@ -1199,9 +1211,8 @@ async function updateMessageCount() {
     saveToLocalStorage(PAYMENT_KEYS.MESSAGE_COUNT, messageCount);
     debugLog(`Message count updated: ${messageCount}/${FREE_MESSAGE_LIMIT}, isPaid: ${isPaid}`);
     
-    // Check ExtPay status before showing payment prompt
-    const extPayPaid = await checkExtPayStatus();
-    if (!extPayPaid && !isPaid && messageCount >= FREE_MESSAGE_LIMIT) {
+    // Show payment prompt when free message limit is reached
+    if (!isPaid && messageCount >= FREE_MESSAGE_LIMIT) {
         debugLog('Free message limit reached, showing payment prompt');
         showPaymentPrompt();
     }
