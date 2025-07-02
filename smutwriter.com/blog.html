@@ -426,6 +426,24 @@ ${authorName}`);
             document.getElementById('nav-menu').classList.toggle('active');
             this.classList.toggle('active');
         });
+        
+        // Language change function
+        function changeLanguage(langCode) {
+            TranslationManager.setLanguage(langCode);
+        }
+        
+        // Initialize translations when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            TranslationManager.init();
+        });
+        
+        // Clear chat history function
+        function clearChatHistory() {
+            if (confirm('Are you sure you want to clear your chat history? This action cannot be undone.')) {
+                localStorage.removeItem('chatHistory');
+                alert('Chat history cleared successfully!');
+            }
+        }
     </script>
 </body>
 </html> 

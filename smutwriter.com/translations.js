@@ -36,7 +36,56 @@ const translations = {
         // Export/Import
         'export_success': 'Chat history exported successfully!',
         'import_success': 'Chat history imported successfully!',
-        'import_error': 'Error importing chat history. Please check the file format.'
+        'import_error': 'Error importing chat history. Please check the file format.',
+        
+        // Navigation
+        'nav_chat': 'Chat',
+        'nav_prompts': 'Prompt Examples',
+        'nav_writing_tips': 'Writing Tips',
+        'nav_submit_story': 'Submit Story',
+        'nav_community': 'Community',
+        'nav_newsletter': 'Newsletter',
+        'nav_subscription': 'Subscription',
+        
+        // Blog Page
+        'blog_title': 'Writing Tips & Guides',
+        'blog_subtitle': 'Master the art of adult fiction writing with expert advice, character development techniques, and storytelling secrets',
+        'blog_all_tips': 'All Tips',
+        'blog_character': 'Character Development',
+        'blog_plot': 'Plot & Structure',
+        'blog_romance': 'Romance Writing',
+        'blog_dialogue': 'Dialogue & Voice',
+        'blog_pacing': 'Pacing & Tension',
+        'blog_read_more': 'Read More',
+        'blog_min_read': 'min read',
+        
+        // Submit Story Page
+        'submit_title': 'Submit Your Story',
+        'submit_subtitle': 'Share your creative writing with our community and get a chance to be featured on Smut Writer',
+        'submit_form_title': 'Story Submission Form',
+        'submit_author_name': 'Your Name (or pen name) *',
+        'submit_author_email': 'Your Email *',
+        'submit_story_title': 'Story Title *',
+        'submit_story_genre': 'Genre *',
+        'submit_story_content': 'Your Story *',
+        'submit_permission': 'I give permission for my story to be featured on the Smut Writer blog (with credit) *',
+        'submit_multilingual': 'Multilingual Welcome: Stories in any language are welcome! We will translate your story for our readers.',
+        'submit_button': 'Submit Story',
+        'submit_words': 'words',
+        
+        // Info Cards
+        'info_looking_for': 'What We\'re Looking For',
+        'info_looking_for_desc': 'We welcome original adult fiction stories across all genres. Whether it\'s romance, fantasy, sci-fi, or contemporary, we want to showcase your creativity.',
+        'info_guidelines': 'Submission Guidelines',
+        'info_guidelines_original': 'Original work only',
+        'info_guidelines_length': 'Between 500-2000 words recommended',
+        'info_guidelines_quality': 'Well-written and engaging content',
+        'info_guidelines_adult': 'Appropriate for adult audiences',
+        'info_what_you_get': 'What You Get',
+        'info_featured_placement': 'Featured placement on our blog',
+        'info_author_credit': 'Author credit and bio',
+        'info_community_exposure': 'Exposure to our growing community',
+        'info_future_collaborations': 'Potential for future collaborations'
     },
     
     'es': {
@@ -75,7 +124,56 @@ const translations = {
         // Export/Import
         'export_success': '¡Historial de chat exportado exitosamente!',
         'import_success': '¡Historial de chat importado exitosamente!',
-        'import_error': 'Error al importar el historial de chat. Por favor, verifica el formato del archivo.'
+        'import_error': 'Error al importar el historial de chat. Por favor, verifica el formato del archivo.',
+        
+        // Navigation
+        'nav_chat': 'Chat',
+        'nav_prompts': 'Ejemplos de Prompts',
+        'nav_writing_tips': 'Consejos de Escritura',
+        'nav_submit_story': 'Enviar Historia',
+        'nav_community': 'Comunidad',
+        'nav_newsletter': 'Boletín',
+        'nav_subscription': 'Suscripción',
+        
+        // Blog Page
+        'blog_title': 'Consejos y Guías de Escritura',
+        'blog_subtitle': 'Domina el arte de escribir ficción adulta con consejos expertos, técnicas de desarrollo de personajes y secretos de narrativa',
+        'blog_all_tips': 'Todos los Consejos',
+        'blog_character': 'Desarrollo de Personajes',
+        'blog_plot': 'Trama y Estructura',
+        'blog_romance': 'Escritura Romántica',
+        'blog_dialogue': 'Diálogo y Voz',
+        'blog_pacing': 'Ritmo y Tensión',
+        'blog_read_more': 'Leer Más',
+        'blog_min_read': 'min de lectura',
+        
+        // Submit Story Page
+        'submit_title': 'Enviar Tu Historia',
+        'submit_subtitle': 'Comparte tu escritura creativa con nuestra comunidad y ten la oportunidad de ser destacado en Smut Writer',
+        'submit_form_title': 'Formulario de Envío de Historia',
+        'submit_author_name': 'Tu Nombre (o seudónimo) *',
+        'submit_author_email': 'Tu Email *',
+        'submit_story_title': 'Título de la Historia *',
+        'submit_story_genre': 'Género *',
+        'submit_story_content': 'Tu Historia *',
+        'submit_permission': 'Doy permiso para que mi historia sea destacada en el blog de Smut Writer (con crédito) *',
+        'submit_multilingual': 'Bienvenida Multilingüe: ¡Las historias en cualquier idioma son bienvenidas! Traduciremos tu historia para nuestros lectores.',
+        'submit_button': 'Enviar Historia',
+        'submit_words': 'palabras',
+        
+        // Info Cards
+        'info_looking_for': 'Lo Que Buscamos',
+        'info_looking_for_desc': 'Recibimos historias de ficción adulta originales de todos los géneros. Ya sea romance, fantasía, ciencia ficción o contemporáneo, queremos mostrar tu creatividad.',
+        'info_guidelines': 'Pautas de Envío',
+        'info_guidelines_original': 'Solo trabajo original',
+        'info_guidelines_length': 'Entre 500-2000 palabras recomendado',
+        'info_guidelines_quality': 'Contenido bien escrito y atractivo',
+        'info_guidelines_adult': 'Apropiado para audiencias adultas',
+        'info_what_you_get': 'Lo Que Obtienes',
+        'info_featured_placement': 'Destacado en nuestro blog',
+        'info_author_credit': 'Crédito de autor y biografía',
+        'info_community_exposure': 'Exposición a nuestra comunidad en crecimiento',
+        'info_future_collaborations': 'Potencial para colaboraciones futuras'
     },
     
     'fr': {
@@ -231,7 +329,56 @@ const translations = {
         // Export/Import
         'export_success': '聊天历史记录导出成功！',
         'import_success': '聊天历史记录导入成功！',
-        'import_error': '导入聊天历史记录时出错。请检查文件格式。'
+        'import_error': '导入聊天历史记录时出错。请检查文件格式。',
+        
+        // Navigation
+        'nav_chat': '聊天',
+        'nav_prompts': '提示範例',
+        'nav_writing_tips': '寫作技巧',
+        'nav_submit_story': '提交故事',
+        'nav_community': '社群',
+        'nav_newsletter': '電子報',
+        'nav_subscription': '訂閱',
+        
+        // Blog Page
+        'blog_title': '寫作技巧與指南',
+        'blog_subtitle': '掌握成人小說寫作藝術，獲得專家建議、角色發展技巧和敘事秘訣',
+        'blog_all_tips': '所有技巧',
+        'blog_character': '角色發展',
+        'blog_plot': '情節與結構',
+        'blog_romance': '浪漫寫作',
+        'blog_dialogue': '對話與聲音',
+        'blog_pacing': '節奏與張力',
+        'blog_read_more': '閱讀更多',
+        'blog_min_read': '分鐘閱讀',
+        
+        // Submit Story Page
+        'submit_title': '提交您的故事',
+        'submit_subtitle': '與我們的社群分享您的創意寫作，有機會在 Smut Writer 上被推薦',
+        'submit_form_title': '故事提交表單',
+        'submit_author_name': '您的姓名（或筆名）*',
+        'submit_author_email': '您的電子郵件*',
+        'submit_story_title': '故事標題*',
+        'submit_story_genre': '類型*',
+        'submit_story_content': '您的故事*',
+        'submit_permission': '我同意我的故事在 Smut Writer 部落格上被推薦（附上作者署名）*',
+        'submit_multilingual': '多語言歡迎：歡迎任何語言的故事！我們將為讀者翻譯您的故事。',
+        'submit_button': '提交故事',
+        'submit_words': '字',
+        
+        // Info Cards
+        'info_looking_for': '我們在尋找什麼',
+        'info_looking_for_desc': '我們歡迎各種類型的原創成人小說故事。無論是浪漫、奇幻、科幻還是當代，我們都想展示您的創意。',
+        'info_guidelines': '提交指南',
+        'info_guidelines_original': '僅限原創作品',
+        'info_guidelines_length': '建議 500-2000 字',
+        'info_guidelines_quality': '寫作良好且引人入勝的內容',
+        'info_guidelines_adult': '適合成人觀眾',
+        'info_what_you_get': '您將獲得',
+        'info_featured_placement': '在我們的部落格上被推薦',
+        'info_author_credit': '作者署名和簡介',
+        'info_community_exposure': '接觸我們不斷成長的社群',
+        'info_future_collaborations': '未來合作的潛力'
     },
     
     'id': {
@@ -495,6 +642,18 @@ const TranslationManager = {
         // Update clear history button
         this.updateClearHistoryButton();
         
+        // Update navigation
+        this.updateNavigation();
+        
+        // Update specific pages
+        if (window.location.pathname.includes('blog.html')) {
+            this.updateBlogPage();
+        }
+        
+        if (window.location.pathname.includes('submit-story.html')) {
+            this.updateSubmitStoryPage();
+        }
+        
         // Track language change
         if (typeof gtag !== 'undefined') {
             gtag('event', 'language_changed', {
@@ -556,6 +715,226 @@ ${this.get('welcome_question')}
                 span.textContent = this.get('clear_history');
             }
         }
+    },
+    
+    // Update navigation elements
+    updateNavigation() {
+        // Update navigation links
+        const navLinks = document.querySelectorAll('.nav-link span');
+        navLinks.forEach(link => {
+            const parent = link.closest('.nav-link');
+            if (parent) {
+                const href = parent.getAttribute('href');
+                if (href === 'index.html' || href === '#') {
+                    link.textContent = this.get('nav_chat');
+                } else if (href === 'stories.html') {
+                    link.textContent = this.get('nav_prompts');
+                } else if (href === 'blog.html') {
+                    link.textContent = this.get('nav_writing_tips');
+                } else if (href === 'submit-story.html') {
+                    link.textContent = this.get('nav_submit_story');
+                } else if (href && href.includes('reddit')) {
+                    link.textContent = this.get('nav_community');
+                } else if (href && href.includes('google.com')) {
+                    link.textContent = this.get('nav_newsletter');
+                }
+            }
+        });
+        
+        // Update subscription button
+        const subscriptionBtn = document.querySelector('.nav-stripe-btn span');
+        if (subscriptionBtn) {
+            subscriptionBtn.textContent = this.get('nav_subscription');
+        }
+    },
+    
+    // Update blog page elements
+    updateBlogPage() {
+        // Update blog header
+        const blogTitle = document.querySelector('.blog-header h1');
+        if (blogTitle) {
+            blogTitle.innerHTML = `<i class="fas fa-blog"></i> ${this.get('blog_title')}`;
+        }
+        
+        const blogSubtitle = document.querySelector('.blog-header p');
+        if (blogSubtitle) {
+            blogSubtitle.textContent = this.get('blog_subtitle');
+        }
+        
+        // Update category tabs
+        const categoryTabs = document.querySelectorAll('.blog-category-tab');
+        categoryTabs.forEach(tab => {
+            const category = tab.dataset.category;
+            const span = tab.querySelector('span');
+            if (span) {
+                switch(category) {
+                    case 'all':
+                        span.textContent = this.get('blog_all_tips');
+                        break;
+                    case 'character':
+                        span.textContent = this.get('blog_character');
+                        break;
+                    case 'plot':
+                        span.textContent = this.get('blog_plot');
+                        break;
+                    case 'romance':
+                        span.textContent = this.get('blog_romance');
+                        break;
+                    case 'dialogue':
+                        span.textContent = this.get('blog_dialogue');
+                        break;
+                    case 'pacing':
+                        span.textContent = this.get('blog_pacing');
+                        break;
+                }
+            }
+        });
+        
+        // Update read more buttons
+        const readMoreBtns = document.querySelectorAll('.read-more-btn');
+        readMoreBtns.forEach(btn => {
+            const span = btn.querySelector('span');
+            if (span) {
+                span.textContent = this.get('blog_read_more');
+            }
+        });
+        
+        // Update read time text
+        const readTimes = document.querySelectorAll('.read-time');
+        readTimes.forEach(time => {
+            const text = time.textContent;
+            if (text.includes('min read')) {
+                time.innerHTML = `<i class="fas fa-clock"></i> ${text.split(' ')[0]} ${this.get('blog_min_read')}`;
+            }
+        });
+    },
+    
+    // Update submit story page elements
+    updateSubmitStoryPage() {
+        // Update page header
+        const pageTitle = document.querySelector('.submit-story-header h1');
+        if (pageTitle) {
+            pageTitle.innerHTML = `<i class="fas fa-star"></i> ${this.get('submit_title')}`;
+        }
+        
+        const pageSubtitle = document.querySelector('.submit-story-header p');
+        if (pageSubtitle) {
+            pageSubtitle.textContent = this.get('submit_subtitle');
+        }
+        
+        // Update form title
+        const formTitle = document.querySelector('.submission-form-container h2');
+        if (formTitle) {
+            formTitle.innerHTML = `<i class="fas fa-pen-to-square"></i> ${this.get('submit_form_title')}`;
+        }
+        
+        // Update form labels
+        const authorNameLabel = document.querySelector('label[for="authorName"]');
+        if (authorNameLabel) {
+            authorNameLabel.textContent = this.get('submit_author_name');
+        }
+        
+        const authorEmailLabel = document.querySelector('label[for="authorEmail"]');
+        if (authorEmailLabel) {
+            authorEmailLabel.textContent = this.get('submit_author_email');
+        }
+        
+        const storyTitleLabel = document.querySelector('label[for="storyTitle"]');
+        if (storyTitleLabel) {
+            storyTitleLabel.textContent = this.get('submit_story_title');
+        }
+        
+        const storyGenreLabel = document.querySelector('label[for="storyGenre"]');
+        if (storyGenreLabel) {
+            storyGenreLabel.textContent = this.get('submit_story_genre');
+        }
+        
+        const storyContentLabel = document.querySelector('label[for="storyContent"]');
+        if (storyContentLabel) {
+            storyContentLabel.textContent = this.get('submit_story_content');
+        }
+        
+        // Update permission checkbox
+        const permissionLabel = document.querySelector('.checkbox-label');
+        if (permissionLabel) {
+            const span = permissionLabel.querySelector('span');
+            if (span) {
+                span.textContent = this.get('submit_permission');
+            }
+        }
+        
+        // Update multilingual note
+        const languageNote = document.querySelector('.language-note p');
+        if (languageNote) {
+            languageNote.innerHTML = `<i class="fas fa-globe"></i> <strong>${this.get('submit_multilingual')}</strong>`;
+        }
+        
+        // Update submit button
+        const submitBtn = document.querySelector('.submit-story-btn');
+        if (submitBtn) {
+            submitBtn.innerHTML = `<i class="fas fa-paper-plane"></i> ${this.get('submit_button')}`;
+        }
+        
+        // Update word count
+        const wordCount = document.querySelector('.word-count');
+        if (wordCount) {
+            const count = wordCount.querySelector('span');
+            if (count) {
+                wordCount.innerHTML = `<span id="wordCount">0</span> ${this.get('submit_words')}`;
+            }
+        }
+        
+        // Update info cards
+        this.updateInfoCards();
+    },
+    
+    // Update info cards
+    updateInfoCards() {
+        // Update "What We're Looking For" card
+        const lookingForTitle = document.querySelector('.info-card h3');
+        if (lookingForTitle && lookingForTitle.textContent.includes('Looking For')) {
+            lookingForTitle.textContent = this.get('info_looking_for');
+        }
+        
+        const lookingForDesc = document.querySelector('.info-card p');
+        if (lookingForDesc && lookingForDesc.textContent.includes('original adult fiction')) {
+            lookingForDesc.textContent = this.get('info_looking_for_desc');
+        }
+        
+        // Update "Submission Guidelines" card
+        const guidelinesTitle = document.querySelectorAll('.info-card h3')[1];
+        if (guidelinesTitle && guidelinesTitle.textContent.includes('Guidelines')) {
+            guidelinesTitle.textContent = this.get('info_guidelines');
+        }
+        
+        // Update "What You Get" card
+        const whatYouGetTitle = document.querySelectorAll('.info-card h3')[2];
+        if (whatYouGetTitle && whatYouGetTitle.textContent.includes('You Get')) {
+            whatYouGetTitle.textContent = this.get('info_what_you_get');
+        }
+        
+        // Update list items
+        const listItems = document.querySelectorAll('.info-card li');
+        listItems.forEach(item => {
+            const text = item.textContent;
+            if (text.includes('Original work only')) {
+                item.textContent = this.get('info_guidelines_original');
+            } else if (text.includes('Between 500-2000 words')) {
+                item.textContent = this.get('info_guidelines_length');
+            } else if (text.includes('Well-written and engaging')) {
+                item.textContent = this.get('info_guidelines_quality');
+            } else if (text.includes('Appropriate for adult')) {
+                item.textContent = this.get('info_guidelines_adult');
+            } else if (text.includes('Featured placement')) {
+                item.textContent = this.get('info_featured_placement');
+            } else if (text.includes('Author credit')) {
+                item.textContent = this.get('info_author_credit');
+            } else if (text.includes('Exposure to our growing')) {
+                item.textContent = this.get('info_community_exposure');
+            } else if (text.includes('Potential for future')) {
+                item.textContent = this.get('info_future_collaborations');
+            }
+        });
     },
     
     // Initialize translation system

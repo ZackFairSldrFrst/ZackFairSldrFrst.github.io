@@ -5,9 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Your Story - Smut Writer</title>
     <meta name="description" content="Submit your adult fiction story for a chance to be featured on Smut Writer">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://smutwriter.com/submit-story.html">
+    <meta property="og:title" content="Submit Your Story - Smut Writer">
+    <meta property="og:description" content="Submit your adult fiction story for a chance to be featured on Smut Writer">
+    <meta property="og:image" content="https://smutwriter.com/images/submit-story-header.jpg">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HBW1GF6JYB"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-HBW1GF6JYB');
+    </script>
+    
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="translations.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="script.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -40,6 +60,41 @@
                     <i class="fab fa-reddit"></i>
                     <span>Community</span>
                 </a>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSe7HbV_V71M9FuKvEAdCENJho8TN-GaGUU73PkmaOOuM1i6JQ/viewform?usp=sharing&ouid=101448214260710069814" class="nav-link" target="_blank">
+                    <i class="fas fa-envelope"></i>
+                    <span>Newsletter</span>
+                </a>
+                
+                <!-- Language Selector -->
+                <div class="nav-language-selector">
+                    <span><i class="fas fa-globe"></i></span>
+                    <select id="languageSelector" onchange="changeLanguage(this.value)">
+                        <option value="en">English</option>
+                        <option value="es">Español</option>
+                        <option value="fr">Français</option>
+                        <option value="de">Deutsch</option>
+                        <option value="it">Italiano</option>
+                        <option value="pt">Português</option>
+                        <option value="ru">Русский</option>
+                        <option value="ja">日本語</option>
+                        <option value="ko">한국어</option>
+                        <option value="zh">中文</option>
+                        <option value="ar">العربية</option>
+                        <option value="hi">हिन्दी</option>
+                    </select>
+                </div>
+                
+                <!-- Clear History Button -->
+                <button class="nav-clear-history-btn" onclick="clearChatHistory()" title="Clear chat history">
+                    <i class="fas fa-trash-alt"></i>
+                    <span>Clear History</span>
+                </button>
+                
+                <!-- Subscription Account Management -->
+                <button class="nav-stripe-btn" onclick="toggleStripeUser()" title="Subscription Account">
+                    <i class="fas fa-crown"></i>
+                    <span>Subscription</span>
+                </button>
             </div>
             
             <div class="nav-toggle" id="nav-toggle">
@@ -240,6 +295,24 @@ ${authorName}`);
             document.getElementById('nav-menu').classList.toggle('active');
             this.classList.toggle('active');
         });
+        
+        // Language change function
+        function changeLanguage(langCode) {
+            TranslationManager.setLanguage(langCode);
+        }
+        
+        // Initialize translations when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            TranslationManager.init();
+        });
+        
+        // Clear chat history function
+        function clearChatHistory() {
+            if (confirm('Are you sure you want to clear your chat history? This action cannot be undone.')) {
+                localStorage.removeItem('chatHistory');
+                alert('Chat history cleared successfully!');
+            }
+        }
     </script>
 </body>
 </html> 
