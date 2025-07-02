@@ -25,6 +25,24 @@
     
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#ff4d8d',
+                        secondary: '#ff3377',
+                        accent: '#ff6b9d',
+                        dark: '#1a1a2e',
+                        'dark-light': '#2d2d2d',
+                        'text-light': '#e0e0e0',
+                        'text-muted': '#a0a0a0'
+                    }
+                }
+            }
+        }
+    </script>
     <script src="translations.js"></script>
     <script src="https://js.stripe.com/v3/"></script>
     <script src="script.js"></script>
@@ -114,146 +132,273 @@
         </div>
     </nav>
 
-    <main class="blog-post-main">
-        <div class="blog-post-container">
-            <article class="blog-post">
-                <header class="blog-post-header">
-                    <div class="blog-post-meta">
-                        <span class="blog-category" data-translate="blog_character">Character Development</span>
-                        <span class="blog-date" data-translate="blog_date">January 15, 2025</span>
-                        <span class="read-time"><i class="fas fa-clock"></i> <span data-translate="blog_read_time">8 min read</span></span>
+    <main class="min-h-screen bg-gradient-to-br from-gray-900 via-dark to-gray-800 pt-20 pb-8">
+        <div class="max-w-7xl mx-auto px-4 lg:px-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <article class="lg:col-span-3 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 lg:p-12 shadow-2xl relative overflow-hidden">
+                <!-- Gradient top border -->
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-accent rounded-t-3xl"></div>
+                
+                <header class="text-center mb-12">
+                    <div class="flex flex-wrap justify-center items-center gap-6 mb-6">
+                        <span class="bg-gradient-to-r from-primary to-secondary text-white px-4 py-2 rounded-full text-sm font-semibold uppercase tracking-wide shadow-lg" data-translate="blog_character">Character Development</span>
+                        <span class="text-text-muted text-sm font-medium" data-translate="blog_date">January 15, 2025</span>
+                        <span class="flex items-center gap-2 text-text-muted text-sm font-medium">
+                            <i class="fas fa-clock text-primary"></i>
+                            <span data-translate="blog_read_time">8 min read</span>
+                        </span>
                     </div>
-                    <h1><i class="fas fa-user-edit"></i> <span data-translate="blog_character_title">Creating Compelling Characters in Adult Fiction</span></h1>
-                    <p class="blog-post-excerpt" data-translate="blog_character_excerpt">Learn how to develop three-dimensional characters that readers will fall in love with. From backstory creation to personality quirks, discover the secrets of memorable character development.</p>
+                    <h1 class="text-4xl lg:text-5xl font-bold leading-tight mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                        <i class="fas fa-user-edit text-primary mr-4"></i>
+                        <span data-translate="blog_character_title">Creating Compelling Characters in Adult Fiction</span>
+                    </h1>
+                    <p class="text-xl text-text-light max-w-4xl mx-auto font-normal leading-relaxed" data-translate="blog_character_excerpt">Learn how to develop three-dimensional characters that readers will fall in love with. From backstory creation to personality quirks, discover the secrets of memorable character development.</p>
                 </header>
 
-                <div class="blog-post-content">
-                    <p>In adult fiction, characters are the heart and soul of your story. Readers want to connect, empathize, and even fall in love with the people you create. But what makes a character truly compelling? Here's how to craft three-dimensional characters that leap off the page and linger in your reader's mind long after they've finished your story.</p>
+                <div class="prose prose-lg prose-invert max-w-none">
+                    <p class="text-text-light leading-relaxed mb-6 text-justify">In adult fiction, characters are the heart and soul of your story. Readers want to connect, empathize, and even fall in love with the people you create. But what makes a character truly compelling? Here's how to craft three-dimensional characters that leap off the page and linger in your reader's mind long after they've finished your story.</p>
 
-                    <h2>1. Give Them Depth and Backstory</h2>
-                    <p>Every character has a past that shapes their present. Consider their upbringing, formative experiences, and emotional wounds. Even if you don't reveal every detail, knowing your character's backstory will inform their actions and dialogue throughout your story.</p>
+                    <h2 class="text-3xl lg:text-4xl font-bold text-white mt-12 mb-6 border-l-4 border-primary pl-6 relative">
+                        <div class="absolute left-[-4px] top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-secondary rounded"></div>
+                        1. Give Them Depth and Backstory
+                    </h2>
+                    <p class="text-text-light leading-relaxed mb-6 text-justify">Every character has a past that shapes their present. Consider their upbringing, formative experiences, and emotional wounds. Even if you don't reveal every detail, knowing your character's backstory will inform their actions and dialogue throughout your story.</p>
                     
-                    <p>Think about these questions when developing your character's history:</p>
-                    <ul>
-                        <li>What are their biggest regrets and how do they affect their current behavior?</li>
-                        <li>What secret do they keep hidden from the world?</li>
-                        <li>How do their past relationships influence their current desires and fears?</li>
-                        <li>What childhood experience shaped their view of love and intimacy?</li>
-                        <li>What are their core values and where did they come from?</li>
+                    <p class="text-text-light leading-relaxed mb-4 text-justify">Think about these questions when developing your character's history:</p>
+                    <ul class="space-y-3 mb-8 pl-6">
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            What are their biggest regrets and how do they affect their current behavior?
+                        </li>
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            What secret do they keep hidden from the world?
+                        </li>
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            How do their past relationships influence their current desires and fears?
+                        </li>
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            What childhood experience shaped their view of love and intimacy?
+                        </li>
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            What are their core values and where did they come from?
+                        </li>
                     </ul>
 
-                    <h2>2. Show Their Flaws and Strengths</h2>
-                    <p>Perfect characters are boring and unbelievable. Give your protagonist (and antagonist!) a mix of strengths and weaknesses that make them human. Maybe your confident heroine is secretly afraid of intimacy, or your charming hero struggles with jealousy. Flaws make characters relatable and drive conflict naturally.</p>
+                    <h2 class="text-3xl lg:text-4xl font-bold text-white mt-12 mb-6 border-l-4 border-primary pl-6 relative">
+                        <div class="absolute left-[-4px] top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-secondary rounded"></div>
+                        2. Show Their Flaws and Strengths
+                    </h2>
+                    <p class="text-text-light leading-relaxed mb-6 text-justify">Perfect characters are boring and unbelievable. Give your protagonist (and antagonist!) a mix of strengths and weaknesses that make them human. Maybe your confident heroine is secretly afraid of intimacy, or your charming hero struggles with jealousy. Flaws make characters relatable and drive conflict naturally.</p>
                     
-                    <p>Consider these character trait combinations:</p>
-                    <ul>
-                        <li><strong>Confident but vulnerable:</strong> A character who appears strong but has deep insecurities</li>
-                        <li><strong>Intelligent but impulsive:</strong> Someone who thinks quickly but doesn't always think through consequences</li>
-                        <li><strong>Loving but guarded:</strong> A character who wants connection but fears getting hurt</li>
-                        <li><strong>Ambitious but conflicted:</strong> Someone who knows what they want but struggles with the cost</li>
+                    <p class="text-text-light leading-relaxed mb-4 text-justify">Consider these character trait combinations:</p>
+                    <ul class="space-y-3 mb-8 pl-6">
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            <strong class="text-white">Confident but vulnerable:</strong> A character who appears strong but has deep insecurities
+                        </li>
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            <strong class="text-white">Intelligent but impulsive:</strong> Someone who thinks quickly but doesn't always think through consequences
+                        </li>
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            <strong class="text-white">Loving but guarded:</strong> A character who wants connection but fears getting hurt
+                        </li>
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            <strong class="text-white">Ambitious but conflicted:</strong> Someone who knows what they want but struggles with the cost
+                        </li>
                     </ul>
 
-                    <h2>3. Use Distinctive Voice and Mannerisms</h2>
-                    <p>Make each character's voice unique and memorable. Do they use formal language or casual slang? Are they sarcastic, shy, or blunt? Add specific quirks and mannerisms that readers can easily identify—maybe they twirl their hair when nervous, always have a witty comeback, or use certain phrases repeatedly.</p>
+                    <h2 class="text-3xl lg:text-4xl font-bold text-white mt-12 mb-6 border-l-4 border-primary pl-6 relative">
+                        <div class="absolute left-[-4px] top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-secondary rounded"></div>
+                        3. Use Distinctive Voice and Mannerisms
+                    </h2>
+                    <p class="text-text-light leading-relaxed mb-6 text-justify">Make each character's voice unique and memorable. Do they use formal language or casual slang? Are they sarcastic, shy, or blunt? Add specific quirks and mannerisms that readers can easily identify—maybe they twirl their hair when nervous, always have a witty comeback, or use certain phrases repeatedly.</p>
                     
-                    <p>Examples of distinctive character voices:</p>
-                    <blockquote>
-                        <p><em>"I'm not saying I'm Batman, I'm just saying no one has ever seen me and Batman in the same room together."</em> — A sarcastic, witty character</p>
+                    <p class="text-text-light leading-relaxed mb-4 text-justify">Examples of distinctive character voices:</p>
+                    <blockquote class="bg-primary/10 border-l-4 border-primary p-6 my-8 rounded-r-xl relative">
+                        <div class="absolute top-[-10px] left-6 text-6xl text-primary font-serif leading-none">"</div>
+                        <p class="text-text-light italic text-lg mt-4"><em>"I'm not saying I'm Batman, I'm just saying no one has ever seen me and Batman in the same room together."</em> — A sarcastic, witty character</p>
                     </blockquote>
-                    <blockquote>
-                        <p><em>"I... I don't know if I can do this. But I want to try."</em> — A hesitant but determined character</p>
+                    <blockquote class="bg-primary/10 border-l-4 border-primary p-6 my-8 rounded-r-xl relative">
+                        <div class="absolute top-[-10px] left-6 text-6xl text-primary font-serif leading-none">"</div>
+                        <p class="text-text-light italic text-lg mt-4"><em>"I... I don't know if I can do this. But I want to try."</em> — A hesitant but determined character</p>
                     </blockquote>
 
-                    <h2>4. Let Them Grow and Change</h2>
-                    <p>The best characters change over the course of the story. Let them learn from mistakes, confront their fears, and evolve as people. A character's journey is often the most satisfying part of a novel, especially in romance where both characters should grow together.</p>
+                    <h2 class="text-3xl lg:text-4xl font-bold text-white mt-12 mb-6 border-l-4 border-primary pl-6 relative">
+                        <div class="absolute left-[-4px] top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-secondary rounded"></div>
+                        4. Let Them Grow and Change
+                    </h2>
+                    <p class="text-text-light leading-relaxed mb-6 text-justify">The best characters change over the course of the story. Let them learn from mistakes, confront their fears, and evolve as people. A character's journey is often the most satisfying part of a novel, especially in romance where both characters should grow together.</p>
                     
-                    <p>Consider these character arcs:</p>
-                    <ul>
-                        <li><strong>From closed-off to open:</strong> Learning to trust and be vulnerable</li>
-                        <li><strong>From selfish to selfless:</strong> Putting others' needs before their own</li>
-                        <li><strong>From fearful to brave:</strong> Facing their deepest fears</li>
-                        <li><strong>From rigid to flexible:</strong> Learning to compromise and adapt</li>
+                    <p class="text-text-light leading-relaxed mb-4 text-justify">Consider these character arcs:</p>
+                    <ul class="space-y-3 mb-8 pl-6">
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            <strong class="text-white">From closed-off to open:</strong> Learning to trust and be vulnerable
+                        </li>
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            <strong class="text-white">From selfish to selfless:</strong> Putting others' needs before their own
+                        </li>
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            <strong class="text-white">From fearful to brave:</strong> Facing their deepest fears
+                        </li>
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            <strong class="text-white">From rigid to flexible:</strong> Learning to compromise and adapt
+                        </li>
                     </ul>
 
-                    <h2>5. Make Their Desires Clear and Compelling</h2>
-                    <p>Every character wants something—love, revenge, acceptance, freedom, success. Their desires drive the plot and create tension. Ask yourself: What does my character want, what are they willing to do to get it, and what's stopping them?</p>
+                    <h2 class="text-3xl lg:text-4xl font-bold text-white mt-12 mb-6 border-l-4 border-primary pl-6 relative">
+                        <div class="absolute left-[-4px] top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-secondary rounded"></div>
+                        5. Make Their Desires Clear and Compelling
+                    </h2>
+                    <p class="text-text-light leading-relaxed mb-6 text-justify">Every character wants something—love, revenge, acceptance, freedom, success. Their desires drive the plot and create tension. Ask yourself: What does my character want, what are they willing to do to get it, and what's stopping them?</p>
                     
-                    <p>In adult fiction, desires often include:</p>
-                    <ul>
-                        <li>Finding true love and connection</li>
-                        <li>Overcoming past trauma</li>
-                        <li>Achieving personal or professional success</li>
-                        <li>Finding their authentic self</li>
-                        <li>Building a family or community</li>
+                    <p class="text-text-light leading-relaxed mb-4 text-justify">In adult fiction, desires often include:</p>
+                    <ul class="space-y-3 mb-8 pl-6">
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            Finding true love and connection
+                        </li>
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            Overcoming past trauma
+                        </li>
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            Achieving personal or professional success
+                        </li>
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            Finding their authentic self
+                        </li>
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            Building a family or community
+                        </li>
                     </ul>
 
-                    <h2>6. Create Internal and External Conflicts</h2>
-                    <p>Great characters face both internal and external challenges. Internal conflicts might include self-doubt, fear of commitment, or conflicting desires. External conflicts could be family pressure, societal expectations, or obstacles to their goals.</p>
+                    <h2 class="text-3xl lg:text-4xl font-bold text-white mt-12 mb-6 border-l-4 border-primary pl-6 relative">
+                        <div class="absolute left-[-4px] top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-secondary rounded"></div>
+                        6. Create Internal and External Conflicts
+                    </h2>
+                    <p class="text-text-light leading-relaxed mb-6 text-justify">Great characters face both internal and external challenges. Internal conflicts might include self-doubt, fear of commitment, or conflicting desires. External conflicts could be family pressure, societal expectations, or obstacles to their goals.</p>
                     
-                    <p>Example conflict combinations:</p>
-                    <ul>
-                        <li><strong>Internal:</strong> Wants love but fears vulnerability</li>
-                        <li><strong>External:</strong> Family disapproves of their relationship</li>
-                        <li><strong>Internal:</strong> Desires success but feels guilty about ambition</li>
-                        <li><strong>External:</strong> Career demands conflict with personal life</li>
+                    <p class="text-text-light leading-relaxed mb-4 text-justify">Example conflict combinations:</p>
+                    <ul class="space-y-3 mb-8 pl-6">
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            <strong class="text-white">Internal:</strong> Wants love but fears vulnerability
+                        </li>
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            <strong class="text-white">External:</strong> Family disapproves of their relationship
+                        </li>
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            <strong class="text-white">Internal:</strong> Desires success but feels guilty about ambition
+                        </li>
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            <strong class="text-white">External:</strong> Career demands conflict with personal life
+                        </li>
                     </ul>
 
-                    <h2>7. Show Don't Tell Their Personality</h2>
-                    <p>Instead of telling readers your character is "kind" or "stubborn," show these traits through their actions, dialogue, and choices. A kind character might help a stranger, while a stubborn one might refuse to ask for help even when they need it.</p>
+                    <h2 class="text-3xl lg:text-4xl font-bold text-white mt-12 mb-6 border-l-4 border-primary pl-6 relative">
+                        <div class="absolute left-[-4px] top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-secondary rounded"></div>
+                        7. Show Don't Tell Their Personality
+                    </h2>
+                    <p class="text-text-light leading-relaxed mb-6 text-justify">Instead of telling readers your character is "kind" or "stubborn," show these traits through their actions, dialogue, and choices. A kind character might help a stranger, while a stubborn one might refuse to ask for help even when they need it.</p>
                     
-                    <p>Examples of showing character traits:</p>
-                    <ul>
-                        <li><strong>Generous:</strong> Shares their lunch with a coworker who forgot theirs</li>
-                        <li><strong>Perfectionist:</strong> Spends hours organizing their desk before starting work</li>
-                        <li><strong>Protective:</strong> Immediately steps in when someone is being treated unfairly</li>
-                        <li><strong>Insecure:</strong> Constantly seeks reassurance and validation</li>
+                    <p class="text-text-light leading-relaxed mb-4 text-justify">Examples of showing character traits:</p>
+                    <ul class="space-y-3 mb-8 pl-6">
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            <strong class="text-white">Generous:</strong> Shares their lunch with a coworker who forgot theirs
+                        </li>
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            <strong class="text-white">Perfectionist:</strong> Spends hours organizing their desk before starting work
+                        </li>
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            <strong class="text-white">Protective:</strong> Immediately steps in when someone is being treated unfairly
+                        </li>
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            <strong class="text-white">Insecure:</strong> Constantly seeks reassurance and validation
+                        </li>
                     </ul>
 
-                    <h2>Conclusion</h2>
-                    <p>Compelling characters are complex, flawed, and ever-changing. They have rich inner lives, clear desires, and face meaningful challenges. Take the time to know your characters inside and out—their hopes, fears, quirks, and growth potential. When you create characters that feel real and relatable, your readers will be eager to follow them anywhere and will remember them long after the story ends.</p>
+                    <h2 class="text-3xl lg:text-4xl font-bold text-white mt-12 mb-6 border-l-4 border-primary pl-6 relative">
+                        <div class="absolute left-[-4px] top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-secondary rounded"></div>
+                        Conclusion
+                    </h2>
+                    <p class="text-text-light leading-relaxed mb-6 text-justify">Compelling characters are complex, flawed, and ever-changing. They have rich inner lives, clear desires, and face meaningful challenges. Take the time to know your characters inside and out—their hopes, fears, quirks, and growth potential. When you create characters that feel real and relatable, your readers will be eager to follow them anywhere and will remember them long after the story ends.</p>
                     
-                    <p>Remember: the best characters don't just exist in your story—they live in your reader's imagination. Make them unforgettable.</p>
+                    <p class="text-text-light leading-relaxed mb-6 text-justify">Remember: the best characters don't just exist in your story—they live in your reader's imagination. Make them unforgettable.</p>
 
-                    <div class="blog-post-footer">
-                        <div class="blog-post-tags">
-                            <span class="tag">Character Development</span>
-                            <span class="tag">Writing Tips</span>
-                            <span class="tag">Adult Fiction</span>
-                            <span class="tag">Romance Writing</span>
+                    <div class="mt-16 pt-8 border-t border-white/10">
+                        <div class="flex flex-wrap gap-3 mb-8">
+                            <span class="bg-white/10 text-white px-4 py-2 rounded-full text-sm font-medium border border-white/20 hover:bg-primary/20 hover:border-primary transition-all duration-300 hover:translate-y-[-2px] cursor-pointer">Character Development</span>
+                            <span class="bg-white/10 text-white px-4 py-2 rounded-full text-sm font-medium border border-white/20 hover:bg-primary/20 hover:border-primary transition-all duration-300 hover:translate-y-[-2px] cursor-pointer">Writing Tips</span>
+                            <span class="bg-white/10 text-white px-4 py-2 rounded-full text-sm font-medium border border-white/20 hover:bg-primary/20 hover:border-primary transition-all duration-300 hover:translate-y-[-2px] cursor-pointer">Adult Fiction</span>
+                            <span class="bg-white/10 text-white px-4 py-2 rounded-full text-sm font-medium border border-white/20 hover:bg-primary/20 hover:border-primary transition-all duration-300 hover:translate-y-[-2px] cursor-pointer">Romance Writing</span>
                         </div>
-                        <div class="blog-post-share">
-                            <h4>Share this article:</h4>
-                            <a href="#" onclick="shareOnTwitter()" class="share-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
-                            <a href="#" onclick="shareOnFacebook()" class="share-btn facebook"><i class="fab fa-facebook"></i> Facebook</a>
-                            <a href="#" onclick="shareOnReddit()" class="share-btn reddit"><i class="fab fa-reddit"></i> Reddit</a>
+                        <div class="flex items-center gap-4 flex-wrap">
+                            <h4 class="text-white font-semibold text-base m-0">Share this article:</h4>
+                            <a href="#" onclick="shareOnTwitter()" class="flex items-center gap-2 px-6 py-3 rounded-full text-decoration-none font-medium transition-all duration-300 border border-white/20 bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 hover:translate-y-[-2px]">
+                                <i class="fab fa-twitter"></i> Twitter
+                            </a>
+                            <a href="#" onclick="shareOnFacebook()" class="flex items-center gap-2 px-6 py-3 rounded-full text-decoration-none font-medium transition-all duration-300 border border-white/20 bg-blue-600/20 text-blue-500 hover:bg-blue-600/30 hover:translate-y-[-2px]">
+                                <i class="fab fa-facebook"></i> Facebook
+                            </a>
+                            <a href="#" onclick="shareOnReddit()" class="flex items-center gap-2 px-6 py-3 rounded-full text-decoration-none font-medium transition-all duration-300 border border-white/20 bg-orange-500/20 text-orange-400 hover:bg-orange-500/30 hover:translate-y-[-2px]">
+                                <i class="fab fa-reddit"></i> Reddit
+                            </a>
                         </div>
                     </div>
                 </div>
             </article>
 
-            <aside class="blog-sidebar">
-                <div class="sidebar-widget">
-                    <h3>Related Articles</h3>
-                    <ul>
-                        <li><a href="three-act-structure.html">The Three-Act Structure for Romance Novels</a></li>
-                        <li><a href="sexual-tension.html">Building Sexual Tension: The Art of Anticipation</a></li>
-                        <li><a href="strong-female-characters.html">Writing Strong Female Characters in Romance</a></li>
+            <aside class="lg:col-span-1 space-y-6">
+                <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-xl">
+                    <h3 class="text-xl font-semibold text-white mb-4 pb-2 border-b-2 border-primary/30">Related Articles</h3>
+                    <ul class="space-y-3">
+                        <li class="border-b border-white/10 pb-3 last:border-b-0">
+                            <a href="three-act-structure.html" class="text-text-light hover:text-primary transition-all duration-300 block py-2 hover:translate-x-2">The Three-Act Structure for Romance Novels</a>
+                        </li>
+                        <li class="border-b border-white/10 pb-3 last:border-b-0">
+                            <a href="sexual-tension.html" class="text-text-light hover:text-primary transition-all duration-300 block py-2 hover:translate-x-2">Building Sexual Tension: The Art of Anticipation</a>
+                        </li>
+                        <li class="border-b border-white/10 pb-3 last:border-b-0">
+                            <a href="strong-female-characters.html" class="text-text-light hover:text-primary transition-all duration-300 block py-2 hover:translate-x-2">Writing Strong Female Characters in Romance</a>
+                        </li>
                     </ul>
                 </div>
                 
-                <div class="sidebar-widget">
-                    <h3>Get Writing Tips</h3>
-                    <p>Subscribe to our newsletter for weekly writing advice and exclusive content.</p>
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSe7HbV_V71M9FuKvEAdCENJho8TN-GaGUU73PkmaOOuM1i6JQ/viewform?usp=sharing&ouid=101448214260710069814" class="newsletter-btn" target="_blank">
-                        <i class="fas fa-envelope"></i> Subscribe Now
+                <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-xl">
+                    <h3 class="text-xl font-semibold text-white mb-4 pb-2 border-b-2 border-primary/30">Get Writing Tips</h3>
+                    <p class="text-text-light leading-relaxed mb-6">Subscribe to our newsletter for weekly writing advice and exclusive content.</p>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSe7HbV_V71M9FuKvEAdCENJho8TN-GaGUU73PkmaOOuM1i6JQ/viewform?usp=sharing&ouid=101448214260710069814" class="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-primary to-secondary text-white px-6 py-4 rounded-lg font-semibold transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl" target="_blank">
+                        <i class="fas fa-envelope"></i>
+                        Subscribe Now
                     </a>
                 </div>
                 
-                <div class="sidebar-widget">
-                    <h3>Submit Your Story</h3>
-                    <p>Have a story you'd like to share? Submit it for a chance to be featured on our blog!</p>
-                    <a href="submit-story.html" class="submit-btn">
-                        <i class="fas fa-star"></i> Submit Story
+                <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-xl">
+                    <h3 class="text-xl font-semibold text-white mb-4 pb-2 border-b-2 border-primary/30">Submit Your Story</h3>
+                    <p class="text-text-light leading-relaxed mb-6">Have a story you'd like to share? Submit it for a chance to be featured on our blog!</p>
+                    <a href="submit-story.html" class="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-4 rounded-lg font-semibold transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl">
+                        <i class="fas fa-star"></i>
+                        Submit Story
                     </a>
                 </div>
             </aside>

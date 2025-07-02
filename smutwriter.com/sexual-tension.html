@@ -25,6 +25,24 @@
     
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#ff4d8d',
+                        secondary: '#ff3377',
+                        accent: '#ff6b9d',
+                        dark: '#1a1a2e',
+                        'dark-light': '#2d2d2d',
+                        'text-light': '#e0e0e0',
+                        'text-muted': '#a0a0a0'
+                    }
+                }
+            }
+        }
+    </script>
     <script src="translations.js"></script>
     <script src="https://js.stripe.com/v3/"></script>
     <script src="script.js"></script>
@@ -114,31 +132,55 @@
         </div>
     </nav>
 
-    <main class="blog-post-main">
-        <div class="blog-post-container">
-            <article class="blog-post">
-                <header class="blog-post-header">
-                    <div class="blog-post-meta">
-                        <span class="blog-category" data-translate="blog_romance">Romance Writing</span>
-                        <span class="blog-date" data-translate="blog_date">January 10, 2025</span>
-                        <span class="read-time"><i class="fas fa-clock"></i> <span data-translate="blog_read_time">12 min read</span></span>
+    <main class="min-h-screen bg-gradient-to-br from-gray-900 via-dark to-gray-800 pt-20 pb-8">
+        <div class="max-w-7xl mx-auto px-4 lg:px-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <article class="lg:col-span-3 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 lg:p-12 shadow-2xl relative overflow-hidden">
+                <!-- Gradient top border -->
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-accent rounded-t-3xl"></div>
+                
+                <header class="text-center mb-12">
+                    <div class="flex flex-wrap justify-center items-center gap-6 mb-6">
+                        <span class="bg-gradient-to-r from-primary to-secondary text-white px-4 py-2 rounded-full text-sm font-semibold uppercase tracking-wide shadow-lg" data-translate="blog_romance">Romance Writing</span>
+                        <span class="text-text-muted text-sm font-medium" data-translate="blog_date">January 10, 2025</span>
+                        <span class="flex items-center gap-2 text-text-muted text-sm font-medium">
+                            <i class="fas fa-clock text-primary"></i>
+                            <span data-translate="blog_read_time">12 min read</span>
+                        </span>
                     </div>
-                    <h1><i class="fas fa-heart-pulse"></i> <span data-translate="blog_tension_title">Building Sexual Tension: The Art of Anticipation</span></h1>
-                    <p class="blog-post-excerpt" data-translate="blog_tension_excerpt">Discover how to create electric chemistry between characters through subtle gestures, meaningful glances, and the power of what's left unsaid. Master the slow burn.</p>
+                    <h1 class="text-4xl lg:text-5xl font-bold leading-tight mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                        <i class="fas fa-heart-pulse text-primary mr-4"></i>
+                        <span data-translate="blog_tension_title">Building Sexual Tension: The Art of Anticipation</span>
+                    </h1>
+                    <p class="text-xl text-text-light max-w-4xl mx-auto font-normal leading-relaxed" data-translate="blog_tension_excerpt">Discover how to create electric chemistry between characters through subtle gestures, meaningful glances, and the power of what's left unsaid. Master the slow burn.</p>
                 </header>
 
-                <div class="blog-post-content">
-                    <p data-translate="blog_tension_intro">Sexual tension is the lifeblood of romance writing. It's that electric charge that crackles between characters, making readers hold their breath and turn pages faster. But building effective sexual tension is an art—it's about creating anticipation, not just attraction. Let's explore how to master this essential element of adult fiction.</p>
+                <div class="prose prose-lg prose-invert max-w-none">
+                    <p class="text-text-light leading-relaxed mb-6 text-justify" data-translate="blog_tension_intro">Sexual tension is the lifeblood of romance writing. It's that electric charge that crackles between characters, making readers hold their breath and turn pages faster. But building effective sexual tension is an art—it's about creating anticipation, not just attraction. Let's explore how to master this essential element of adult fiction.</p>
 
-                    <h2 data-translate="blog_tension_what_title">What is Sexual Tension?</h2>
-                    <p data-translate="blog_tension_what_content">Sexual tension is the unspoken attraction and desire between characters that builds over time. It's the "will they or won't they" feeling that keeps readers invested. Unlike explicit scenes, sexual tension is about the buildup—the glances, the accidental touches, the charged moments that make readers yearn for more.</p>
+                    <h2 class="text-3xl lg:text-4xl font-bold text-white mt-12 mb-6 border-l-4 border-primary pl-6 relative" data-translate="blog_tension_what_title">
+                        <div class="absolute left-[-4px] top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-secondary rounded"></div>
+                        What is Sexual Tension?
+                    </h2>
+                    <p class="text-text-light leading-relaxed mb-6 text-justify" data-translate="blog_tension_what_content">Sexual tension is the unspoken attraction and desire between characters that builds over time. It's the "will they or won't they" feeling that keeps readers invested. Unlike explicit scenes, sexual tension is about the buildup—the glances, the accidental touches, the charged moments that make readers yearn for more.</p>
                     
-                    <p>Key characteristics of effective sexual tension:</p>
-                    <ul>
-                        <li><strong>Unresolved desire:</strong> Characters want each other but can't or won't act on it</li>
-                        <li><strong>Building anticipation:</strong> Each interaction increases the stakes</li>
-                        <li><strong>Emotional investment:</strong> Readers care about when and how the tension will resolve</li>
-                        <li><strong>Natural progression:</strong> The tension feels organic to the story and characters</li>
+                    <p class="text-text-light leading-relaxed mb-4 text-justify">Key characteristics of effective sexual tension:</p>
+                    <ul class="space-y-3 mb-8 pl-6">
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            <strong class="text-white">Unresolved desire:</strong> Characters want each other but can't or won't act on it
+                        </li>
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            <strong class="text-white">Building anticipation:</strong> Each interaction increases the stakes
+                        </li>
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            <strong class="text-white">Emotional investment:</strong> Readers care about when and how the tension will resolve
+                        </li>
+                        <li class="text-text-light leading-relaxed relative">
+                            <span class="absolute left-[-1.5rem] text-primary font-bold">•</span>
+                            <strong class="text-white">Natural progression:</strong> The tension feels organic to the story and characters
+                        </li>
                     </ul>
 
                     <h2 data-translate="blog_tension_slow_title">The Power of the Slow Burn</h2>
@@ -295,29 +337,37 @@
                 </div>
             </article>
 
-            <aside class="blog-sidebar">
-                <div class="sidebar-widget">
-                    <h3 data-translate="blog_related_articles">Related Articles</h3>
-                    <ul>
-                        <li><a href="character-development.html">Creating Compelling Characters in Adult Fiction</a></li>
-                        <li><a href="three-act-structure.html">The Three-Act Structure for Romance Novels</a></li>
-                        <li><a href="intimate-dialogue.html">Writing Natural Dialogue for Intimate Scenes</a></li>
+            <aside class="lg:col-span-1 space-y-6">
+                <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-xl">
+                    <h3 class="text-xl font-semibold text-white mb-4 pb-2 border-b-2 border-primary/30" data-translate="blog_related_articles">Related Articles</h3>
+                    <ul class="space-y-3">
+                        <li class="border-b border-white/10 pb-3 last:border-b-0">
+                            <a href="character-development.html" class="text-text-light hover:text-primary transition-all duration-300 block py-2 hover:translate-x-2">Creating Compelling Characters in Adult Fiction</a>
+                        </li>
+                        <li class="border-b border-white/10 pb-3 last:border-b-0">
+                            <a href="three-act-structure.html" class="text-text-light hover:text-primary transition-all duration-300 block py-2 hover:translate-x-2">The Three-Act Structure for Romance Novels</a>
+                        </li>
+                        <li class="border-b border-white/10 pb-3 last:border-b-0">
+                            <a href="intimate-dialogue.html" class="text-text-light hover:text-primary transition-all duration-300 block py-2 hover:translate-x-2">Writing Natural Dialogue for Intimate Scenes</a>
+                        </li>
                     </ul>
                 </div>
                 
-                <div class="sidebar-widget">
-                    <h3 data-translate="blog_get_tips">Get Writing Tips</h3>
-                    <p data-translate="blog_subscribe_desc">Subscribe to our newsletter for weekly writing advice and exclusive content.</p>
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSe7HbV_V71M9FuKvEAdCENJho8TN-GaGUU73PkmaOOuM1i6JQ/viewform?usp=sharing&ouid=101448214260710069814" class="newsletter-btn" target="_blank">
-                        <i class="fas fa-envelope"></i> <span data-translate="blog_subscribe_now">Subscribe Now</span>
+                <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-xl">
+                    <h3 class="text-xl font-semibold text-white mb-4 pb-2 border-b-2 border-primary/30" data-translate="blog_get_tips">Get Writing Tips</h3>
+                    <p class="text-text-light leading-relaxed mb-6" data-translate="blog_subscribe_desc">Subscribe to our newsletter for weekly writing advice and exclusive content.</p>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSe7HbV_V71M9FuKvEAdCENJho8TN-GaGUU73PkmaOOuM1i6JQ/viewform?usp=sharing&ouid=101448214260710069814" class="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-primary to-secondary text-white px-6 py-4 rounded-lg font-semibold transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl" target="_blank">
+                        <i class="fas fa-envelope"></i>
+                        <span data-translate="blog_subscribe_now">Subscribe Now</span>
                     </a>
                 </div>
                 
-                <div class="sidebar-widget">
-                    <h3 data-translate="blog_submit_story">Submit Your Story</h3>
-                    <p data-translate="blog_submit_desc">Have a story you'd like to share? Submit it for a chance to be featured on our blog!</p>
-                    <a href="submit-story.html" class="submit-btn">
-                        <i class="fas fa-star"></i> <span data-translate="blog_submit_story">Submit Story</span>
+                <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-xl">
+                    <h3 class="text-xl font-semibold text-white mb-4 pb-2 border-b-2 border-primary/30" data-translate="blog_submit_story">Submit Your Story</h3>
+                    <p class="text-text-light leading-relaxed mb-6" data-translate="blog_submit_desc">Have a story you'd like to share? Submit it for a chance to be featured on our blog!</p>
+                    <a href="submit-story.html" class="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-4 rounded-lg font-semibold transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl">
+                        <i class="fas fa-star"></i>
+                        <span data-translate="blog_submit_story">Submit Story</span>
                     </a>
                 </div>
             </aside>

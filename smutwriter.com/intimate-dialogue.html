@@ -25,6 +25,24 @@
     
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#ff4d8d',
+                        secondary: '#ff3377',
+                        accent: '#ff6b9d',
+                        dark: '#1a1a2e',
+                        'dark-light': '#2d2d2d',
+                        'text-light': '#e0e0e0',
+                        'text-muted': '#a0a0a0'
+                    }
+                }
+            }
+        }
+    </script>
     <script src="translations.js"></script>
     <script src="https://js.stripe.com/v3/"></script>
     <script src="script.js"></script>
@@ -106,9 +124,11 @@
         </div>
     </nav>
 
-    <main class="blog-post-main">
-        <div class="blog-post-container">
-            <article class="blog-post">
+    <main class="min-h-screen bg-gradient-to-br from-gray-900 via-dark to-gray-800 pt-20 pb-8">
+        <div class="max-w-7xl mx-auto px-4 lg:px-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <article class="lg:col-span-3 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 lg:p-12 shadow-2xl relative overflow-hidden">
+                <!-- Gradient top border -->
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-accent rounded-t-3xl"></div>
                 <header class="blog-post-header">
                     <div class="blog-post-meta">
                         <span class="blog-category">Dialogue & Voice</span>
@@ -119,7 +139,7 @@
                     <p class="blog-post-excerpt">Learn how to write dialogue that feels authentic during intimate moments. From flirty banter to passionate declarations, make every word count.</p>
                 </header>
 
-                <div class="blog-post-content">
+                <div class="prose prose-lg prose-invert max-w-none">
                     <p>Dialogue in intimate scenes can make or break your romance novel. When done well, it feels natural, authentic, and enhances the emotional connection between characters. When done poorly, it can feel forced, awkward, or even comical. Let's explore how to write dialogue that rings true during the most intimate moments of your story.</p>
 
                     <h2>The Challenge of Intimate Dialogue</h2>
@@ -344,29 +364,37 @@
                 </div>
             </article>
 
-            <aside class="blog-sidebar">
-                <div class="sidebar-widget">
-                    <h3>Related Articles</h3>
-                    <ul>
-                        <li><a href="character-development.html">Creating Compelling Characters in Adult Fiction</a></li>
-                        <li><a href="sexual-tension.html">Building Sexual Tension: The Art of Anticipation</a></li>
-                        <li><a href="pacing-control.html">Controlling Pacing in Adult Fiction</a></li>
+            <aside class="lg:col-span-1 space-y-6">
+                <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-xl">
+                    <h3 class="text-xl font-semibold text-white mb-4 pb-2 border-b-2 border-primary/30">Related Articles</h3>
+                    <ul class="space-y-3">
+                        <li class="border-b border-white/10 pb-3 last:border-b-0">
+                            <a href="character-development.html" class="text-text-light hover:text-primary transition-all duration-300 block py-2 hover:translate-x-2">Creating Compelling Characters in Adult Fiction</a>
+                        </li>
+                        <li class="border-b border-white/10 pb-3 last:border-b-0">
+                            <a href="sexual-tension.html" class="text-text-light hover:text-primary transition-all duration-300 block py-2 hover:translate-x-2">Building Sexual Tension: The Art of Anticipation</a>
+                        </li>
+                        <li class="border-b border-white/10 pb-3 last:border-b-0">
+                            <a href="pacing-control.html" class="text-text-light hover:text-primary transition-all duration-300 block py-2 hover:translate-x-2">Controlling Pacing in Adult Fiction</a>
+                        </li>
                     </ul>
                 </div>
                 
-                <div class="sidebar-widget">
-                    <h3>Get Writing Tips</h3>
-                    <p>Subscribe to our newsletter for weekly writing advice and exclusive content.</p>
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSe7HbV_V71M9FuKvEAdCENJho8TN-GaGUU73PkmaOOuM1i6JQ/viewform?usp=sharing&ouid=101448214260710069814" class="newsletter-btn" target="_blank">
-                        <i class="fas fa-envelope"></i> Subscribe Now
+                <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-xl">
+                    <h3 class="text-xl font-semibold text-white mb-4 pb-2 border-b-2 border-primary/30">Get Writing Tips</h3>
+                    <p class="text-text-light leading-relaxed mb-6">Subscribe to our newsletter for weekly writing advice and exclusive content.</p>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSe7HbV_V71M9FuKvEAdCENJho8TN-GaGUU73PkmaOOuM1i6JQ/viewform?usp=sharing&ouid=101448214260710069814" class="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-primary to-secondary text-white px-6 py-4 rounded-lg font-semibold transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl" target="_blank">
+                        <i class="fas fa-envelope"></i>
+                        Subscribe Now
                     </a>
                 </div>
                 
-                <div class="sidebar-widget">
-                    <h3>Submit Your Story</h3>
-                    <p>Have a story you'd like to share? Submit it for a chance to be featured on our blog!</p>
-                    <a href="submit-story.html" class="submit-btn">
-                        <i class="fas fa-star"></i> Submit Story
+                <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-xl">
+                    <h3 class="text-xl font-semibold text-white mb-4 pb-2 border-b-2 border-primary/30">Submit Your Story</h3>
+                    <p class="text-text-light leading-relaxed mb-6">Have a story you'd like to share? Submit it for a chance to be featured on our blog!</p>
+                    <a href="submit-story.html" class="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-4 rounded-lg font-semibold transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl">
+                        <i class="fas fa-star"></i>
+                        Submit Story
                     </a>
                 </div>
             </aside>
