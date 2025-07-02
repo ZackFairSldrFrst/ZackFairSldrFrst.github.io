@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Your Story - Smut Writer</title>
+    <meta name="description" content="Submit your adult fiction story for a chance to be featured on Smut Writer">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="translations.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <i class="fas fa-pen-fancy"></i>
+                    <span>Smut Writer</span>
+                </a>
+            </div>
+            
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-comments"></i>
+                    <span>Chat</span>
+                </a>
+                <a href="stories.html" class="nav-link">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Prompt Examples</span>
+                </a>
+                <a href="blog.html" class="nav-link">
+                    <i class="fas fa-blog"></i>
+                    <span>Writing Tips</span>
+                </a>
+                <a href="submit-story.html" class="nav-link active">
+                    <i class="fas fa-star"></i>
+                    <span>Submit Story</span>
+                </a>
+                <a href="https://reddit.com/r/SmutWriter" class="nav-link" target="_blank">
+                    <i class="fab fa-reddit"></i>
+                    <span>Community</span>
+                </a>
+            </div>
+            
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="submit-story-main">
+        <div class="submit-story-container">
+            <div class="submit-story-header">
+                <h1><i class="fas fa-star"></i> Submit Your Story</h1>
+                <p>Share your creative writing with our community and get a chance to be featured on Smut Writer</p>
+            </div>
+            
+            <div class="submission-info">
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3>What We're Looking For</h3>
+                    <p>We welcome original adult fiction stories across all genres. Whether it's romance, fantasy, sci-fi, or contemporary, we want to showcase your creativity.</p>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-ruler"></i>
+                    </div>
+                    <h3>Submission Guidelines</h3>
+                    <ul>
+                        <li>Original work only</li>
+                        <li>Between 500-2000 words recommended</li>
+                        <li>Well-written and engaging content</li>
+                        <li>Appropriate for adult audiences</li>
+                    </ul>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h3>What You Get</h3>
+                    <ul>
+                        <li>Featured placement on our blog</li>
+                        <li>Author credit and bio</li>
+                        <li>Exposure to our growing community</li>
+                        <li>Potential for future collaborations</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="story-submission-section">
+                <div class="submission-form-container">
+                    <h2><i class="fas fa-pen-to-square"></i> Story Submission Form</h2>
+                    
+                    <form class="story-submission-form" id="storyForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="authorName">Your Name (or pen name) *</label>
+                                <input type="text" id="authorName" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="authorEmail">Your Email *</label>
+                                <input type="email" id="authorEmail" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="storyTitle">Story Title *</label>
+                                <input type="text" id="storyTitle" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="storyGenre">Genre *</label>
+                                <select id="storyGenre" required>
+                                    <option value="">Select a genre</option>
+                                    <option value="romance">Romance</option>
+                                    <option value="fantasy">Fantasy</option>
+                                    <option value="office">Office</option>
+                                    <option value="college">College</option>
+                                    <option value="historical">Historical</option>
+                                    <option value="scifi">Sci-Fi</option>
+                                    <option value="mystery">Mystery</option>
+                                    <option value="adventure">Adventure</option>
+                                    <option value="supernatural">Supernatural</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="storyContent">Your Story *</label>
+                            <textarea id="storyContent" rows="15" required></textarea>
+                            <div class="word-count">
+                                <span id="wordCount">0</span> words
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="permissionCheck" required>
+                                <span class="checkmark"></span>
+                                I give permission for my story to be featured on the Smut Writer blog (with credit) *
+                            </label>
+                        </div>
+                        
+                        <div class="language-note">
+                            <p><i class="fas fa-globe"></i> <strong>Multilingual Welcome:</strong> Stories in any language are welcome! We will translate your story for our readers.</p>
+                        </div>
+                        
+                        <button type="submit" class="submit-story-btn">
+                            <i class="fas fa-paper-plane"></i>
+                            Submit Story
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Word count functionality
+        document.getElementById('storyContent').addEventListener('input', function() {
+            const text = this.value;
+            const wordCount = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+            document.getElementById('wordCount').textContent = wordCount;
+        });
+
+        // Form submission
+        document.getElementById('storyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitStory();
+        });
+
+        function submitStory() {
+            const authorName = document.getElementById('authorName').value.trim();
+            const storyTitle = document.getElementById('storyTitle').value.trim();
+            const storyGenre = document.getElementById('storyGenre').value;
+            const storyContent = document.getElementById('storyContent').value.trim();
+            const authorEmail = document.getElementById('authorEmail').value.trim();
+            const permissionCheck = document.getElementById('permissionCheck').checked;
+
+            // Validation
+            if (!authorName || !storyTitle || !storyGenre || !storyContent || !authorEmail) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            if (!permissionCheck) {
+                alert('Please check the permission box to submit your story.');
+                return;
+            }
+
+            if (storyContent.length < 100) {
+                alert('Please provide a story with at least 100 characters.');
+                return;
+            }
+
+            const wordCount = storyContent.trim().split(/\s+/).length;
+            if (wordCount < 50) {
+                alert('Please provide a story with at least 50 words.');
+                return;
+            }
+
+            // Prepare email content
+            const emailSubject = encodeURIComponent(`Story Submission: ${storyTitle}`);
+            const emailBody = encodeURIComponent(`Hello,
+
+I'm submitting a story for consideration on the Smut Writer blog.
+
+Author Name: ${authorName}
+Story Title: ${storyTitle}
+Genre: ${storyGenre}
+Author Email: ${authorEmail}
+Word Count: ${wordCount}
+
+Story Content:
+${storyContent}
+
+Thank you for considering my submission!
+
+Best regards,
+${authorName}`);
+
+            // Open email client
+            const mailtoLink = `mailto:zackfairsldrfrst@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+            window.open(mailtoLink);
+
+            // Show success message
+            alert('Thank you for your submission! Your email client should open with the story details. Please send the email to complete your submission.');
+        }
+
+        // Mobile menu toggle
+        document.getElementById('nav-toggle').addEventListener('click', function() {
+            document.getElementById('nav-menu').classList.toggle('active');
+            this.classList.toggle('active');
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writing Tips & Guides - Smut Writer Blog</title>
+    <meta name="description" content="Master the art of adult fiction writing with expert tips, character development guides, and romance writing techniques. Learn how to create compelling stories that captivate readers.">
+    <meta name="keywords" content="adult fiction writing, romance writing tips, character development, story writing, erotica writing, creative writing">
+    <meta name="author" content="Smut Writer">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://smutwriter.com/blog.html">
+    <meta property="og:title" content="Writing Tips & Guides - Smut Writer Blog">
+    <meta property="og:description" content="Master the art of adult fiction writing with expert tips and guides">
+    <meta property="og:image" content="https://smutwriter.com/images/blog-header.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://smutwriter.com/blog.html">
+    <meta property="twitter:title" content="Writing Tips & Guides - Smut Writer Blog">
+    <meta property="twitter:description" content="Master the art of adult fiction writing with expert tips and guides">
+    <meta property="twitter:image" content="https://smutwriter.com/images/blog-header.jpg">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HBW1GF6JYB"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-HBW1GF6JYB');
+    </script>
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="translations.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <i class="fas fa-pen-fancy"></i>
+                    <span>Smut Writer</span>
+                </a>
+            </div>
+            
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-comments"></i>
+                    <span>Chat</span>
+                </a>
+                <a href="stories.html" class="nav-link">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Prompt Examples</span>
+                </a>
+                <a href="blog.html" class="nav-link active">
+                    <i class="fas fa-blog"></i>
+                    <span>Writing Tips</span>
+                </a>
+                <a href="submit-story.html" class="nav-link">
+                    <i class="fas fa-star"></i>
+                    <span>Submit Story</span>
+                </a>
+                <a href="https://reddit.com/r/SmutWriter" class="nav-link" target="_blank">
+                    <i class="fab fa-reddit"></i>
+                    <span>Community</span>
+                </a>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSe7HbV_V71M9FuKvEAdCENJho8TN-GaGUU73PkmaOOuM1i6JQ/viewform?usp=sharing&ouid=101448214260710069814" class="nav-link" target="_blank">
+                    <i class="fas fa-envelope"></i>
+                    <span>Newsletter</span>
+                </a>
+                
+                <!-- Language Selector -->
+                <div class="nav-language-selector">
+                    <span><i class="fas fa-globe"></i></span>
+                    <select id="languageSelector" onchange="changeLanguage(this.value)">
+                        <option value="en">English</option>
+                        <option value="es">Español</option>
+                        <option value="fr">Français</option>
+                        <option value="de">Deutsch</option>
+                        <option value="it">Italiano</option>
+                        <option value="pt">Português</option>
+                        <option value="ru">Русский</option>
+                        <option value="ja">日本語</option>
+                        <option value="ko">한국어</option>
+                        <option value="zh">中文</option>
+                        <option value="ar">العربية</option>
+                        <option value="hi">हिन्दी</option>
+                    </select>
+                </div>
+                
+                <!-- Clear History Button -->
+                <button class="nav-clear-history-btn" onclick="clearChatHistory()" title="Clear chat history">
+                    <i class="fas fa-trash-alt"></i>
+                    <span>Clear History</span>
+                </button>
+                
+                <!-- Subscription Account Management -->
+                <button class="nav-stripe-btn" onclick="toggleStripeUser()" title="Subscription Account">
+                    <i class="fas fa-crown"></i>
+                    <span>Subscription</span>
+                </button>
+            </div>
+            
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="blog-main">
+        <div class="blog-container">
+            <div class="blog-header">
+                <h1><i class="fas fa-blog"></i> Writing Tips & Guides</h1>
+                <p>Master the art of adult fiction writing with expert advice, character development techniques, and storytelling secrets</p>
+            </div>
+            
+            <div class="blog-categories">
+                <button class="blog-category-tab active" data-category="all">
+                    <i class="fas fa-th-large"></i>
+                    <span>All Tips</span>
+                </button>
+                <button class="blog-category-tab" data-category="character">
+                    <i class="fas fa-user"></i>
+                    <span>Character Development</span>
+                </button>
+                <button class="blog-category-tab" data-category="plot">
+                    <i class="fas fa-route"></i>
+                    <span>Plot & Structure</span>
+                </button>
+                <button class="blog-category-tab" data-category="romance">
+                    <i class="fas fa-heart"></i>
+                    <span>Romance Writing</span>
+                </button>
+                <button class="blog-category-tab" data-category="dialogue">
+                    <i class="fas fa-comments"></i>
+                    <span>Dialogue & Voice</span>
+                </button>
+                <button class="blog-category-tab" data-category="pacing">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Pacing & Tension</span>
+                </button>
+            </div>
+            
+            <div class="blog-grid" id="blogGrid">
+                <!-- Character Development -->
+                <article class="blog-card" data-category="character">
+                    <div class="blog-card-image">
+                        <i class="fas fa-user-edit"></i>
+                    </div>
+                    <div class="blog-card-content">
+                        <div class="blog-card-meta">
+                            <span class="blog-category">Character Development</span>
+                            <span class="blog-date">January 15, 2025</span>
+                        </div>
+                        <h2>Creating Compelling Characters in Adult Fiction</h2>
+                        <p>Learn how to develop three-dimensional characters that readers will fall in love with. From backstory creation to personality quirks, discover the secrets of memorable character development.</p>
+                        <div class="blog-card-footer">
+                            <span class="read-time"><i class="fas fa-clock"></i> 8 min read</span>
+                            <button class="read-more-btn" onclick="openBlogPost('character-development')">
+                                Read More <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Plot & Structure -->
+                <article class="blog-card" data-category="plot">
+                    <div class="blog-card-image">
+                        <i class="fas fa-sitemap"></i>
+                    </div>
+                    <div class="blog-card-content">
+                        <div class="blog-card-meta">
+                            <span class="blog-category">Plot & Structure</span>
+                            <span class="blog-date">January 12, 2025</span>
+                        </div>
+                        <h2>The Three-Act Structure for Romance Novels</h2>
+                        <p>Master the classic three-act structure and adapt it for adult romance. Learn how to create satisfying story arcs that keep readers engaged from meet-cute to happily ever after.</p>
+                        <div class="blog-card-footer">
+                            <span class="read-time"><i class="fas fa-clock"></i> 10 min read</span>
+                            <button class="read-more-btn" onclick="openBlogPost('three-act-structure')">
+                                Read More <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Romance Writing -->
+                <article class="blog-card" data-category="romance">
+                    <div class="blog-card-image">
+                        <i class="fas fa-heart-pulse"></i>
+                    </div>
+                    <div class="blog-card-content">
+                        <div class="blog-card-meta">
+                            <span class="blog-category">Romance Writing</span>
+                            <span class="blog-date">January 10, 2025</span>
+                        </div>
+                        <h2>Building Sexual Tension: The Art of Anticipation</h2>
+                        <p>Discover how to create electric chemistry between characters through subtle gestures, meaningful glances, and the power of what's left unsaid. Master the slow burn.</p>
+                        <div class="blog-card-footer">
+                            <span class="read-time"><i class="fas fa-clock"></i> 12 min read</span>
+                            <button class="read-more-btn" onclick="openBlogPost('sexual-tension')">
+                                Read More <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Dialogue -->
+                <article class="blog-card" data-category="dialogue">
+                    <div class="blog-card-image">
+                        <i class="fas fa-quote-left"></i>
+                    </div>
+                    <div class="blog-card-content">
+                        <div class="blog-card-meta">
+                            <span class="blog-category">Dialogue & Voice</span>
+                            <span class="blog-date">January 8, 2025</span>
+                        </div>
+                        <h2>Writing Natural Dialogue for Intimate Scenes</h2>
+                        <p>Learn how to write dialogue that feels authentic during intimate moments. From flirty banter to passionate declarations, make every word count.</p>
+                        <div class="blog-card-footer">
+                            <span class="read-time"><i class="fas fa-clock"></i> 7 min read</span>
+                            <button class="read-more-btn" onclick="openBlogPost('intimate-dialogue')">
+                                Read More <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Pacing -->
+                <article class="blog-card" data-category="pacing">
+                    <div class="blog-card-image">
+                        <i class="fas fa-wave-square"></i>
+                    </div>
+                    <div class="blog-card-content">
+                        <div class="blog-card-meta">
+                            <span class="blog-category">Pacing & Tension</span>
+                            <span class="blog-date">January 5, 2025</span>
+                        </div>
+                        <h2>Controlling Pacing in Adult Fiction</h2>
+                        <p>Master the rhythm of your story. Learn when to speed up for action scenes and slow down for emotional moments. Create the perfect ebb and flow.</p>
+                        <div class="blog-card-footer">
+                            <span class="read-time"><i class="fas fa-clock"></i> 9 min read</span>
+                            <button class="read-more-btn" onclick="openBlogPost('pacing-control')">
+                                Read More <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Character -->
+                <article class="blog-card" data-category="character">
+                    <div class="blog-card-image">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="blog-card-content">
+                        <div class="blog-card-meta">
+                            <span class="blog-category">Character Development</span>
+                            <span class="blog-date">January 3, 2025</span>
+                        </div>
+                        <h2>Writing Strong Female Characters in Romance</h2>
+                        <p>Create empowered, complex female protagonists who drive the story forward. Learn how to write women who are both vulnerable and strong.</p>
+                        <div class="blog-card-footer">
+                            <span class="read-time"><i class="fas fa-clock"></i> 11 min read</span>
+                            <button class="read-more-btn" onclick="openBlogPost('strong-female-characters')">
+                                Read More <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Featured Story Submission Section -->
+            <div class="featured-story-section">
+                <div class="featured-story-header">
+                    <h2><i class="fas fa-star"></i> Submit Your Story</h2>
+                    <p>Have a story you'd like to see featured on our blog? Share it with us and get a chance to be published!</p>
+                </div>
+                
+                <div class="story-submission-form">
+                    <div class="form-group">
+                        <label for="authorName">Your Name (or pen name):</label>
+                        <input type="text" id="authorName" placeholder="Enter your name or pen name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="storyTitle">Story Title:</label>
+                        <input type="text" id="storyTitle" placeholder="Enter your story title">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="storyGenre">Genre:</label>
+                        <select id="storyGenre">
+                            <option value="">Select a genre</option>
+                            <option value="romance">Romance</option>
+                            <option value="fantasy">Fantasy</option>
+                            <option value="office">Office</option>
+                            <option value="college">College</option>
+                            <option value="historical">Historical</option>
+                            <option value="scifi">Sci-Fi</option>
+                            <option value="mystery">Mystery</option>
+                            <option value="adventure">Adventure</option>
+                            <option value="supernatural">Supernatural</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="storyContent">Your Story:</label>
+                        <textarea id="storyContent" rows="10" placeholder="Paste your story here... (We recommend keeping it under 2000 words for featured stories)"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="authorEmail">Your Email (for contact):</label>
+                        <input type="email" id="authorEmail" placeholder="Enter your email address">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="permissionCheck">
+                            <span class="checkmark"></span>
+                            I give permission for my story to be featured on the Smut Writer blog (with credit)
+                        </label>
+                    </div>
+                    
+                    <button class="submit-story-btn" onclick="submitStory()">
+                        <i class="fas fa-paper-plane"></i>
+                        Submit Story
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        // Blog category filtering
+        document.querySelectorAll('.blog-category-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                document.querySelectorAll('.blog-category-tab').forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                const category = tab.dataset.category;
+                filterBlogPosts(category);
+            });
+        });
+
+        function filterBlogPosts(category) {
+            const blogCards = document.querySelectorAll('.blog-card');
+            
+            blogCards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function openBlogPost(postId) {
+            // For now, this could open a detailed blog post page
+            // You can expand this later with actual blog post content
+            alert('Blog post feature coming soon! This would open a detailed article about: ' + postId);
+        }
+
+        function submitStory() {
+            const authorName = document.getElementById('authorName').value.trim();
+            const storyTitle = document.getElementById('storyTitle').value.trim();
+            const storyGenre = document.getElementById('storyGenre').value;
+            const storyContent = document.getElementById('storyContent').value.trim();
+            const authorEmail = document.getElementById('authorEmail').value.trim();
+            const permissionCheck = document.getElementById('permissionCheck').checked;
+
+            // Validation
+            if (!authorName || !storyTitle || !storyGenre || !storyContent || !authorEmail) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            if (!permissionCheck) {
+                alert('Please check the permission box to submit your story.');
+                return;
+            }
+
+            if (storyContent.length < 100) {
+                alert('Please provide a story with at least 100 characters.');
+                return;
+            }
+
+            // Prepare email content
+            const emailSubject = encodeURIComponent(`Story Submission: ${storyTitle}`);
+            const emailBody = encodeURIComponent(`Hello,
+
+I'm submitting a story for consideration on the Smut Writer blog.
+
+Author Name: ${authorName}
+Story Title: ${storyTitle}
+Genre: ${storyGenre}
+Author Email: ${authorEmail}
+
+Story Content:
+${storyContent}
+
+Thank you for considering my submission!
+
+Best regards,
+${authorName}`);
+
+            // Open email client
+            const mailtoLink = `mailto:zackfairsldrfrst@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+            window.open(mailtoLink);
+
+            // Show success message
+            alert('Thank you for your submission! Your email client should open with the story details. Please send the email to complete your submission.');
+        }
+
+        // Mobile menu toggle
+        document.getElementById('nav-toggle').addEventListener('click', function() {
+            document.getElementById('nav-menu').classList.toggle('active');
+            this.classList.toggle('active');
+        });
+    </script>
+</body>
+</html> 
