@@ -1,0 +1,539 @@
+/**
+ * AI Sales Agent Widget - Admin Styles
+ */
+
+/* Admin Container Layout */
+.ai-sales-agent-admin-container {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.ai-sales-agent-admin-main {
+    flex: 1;
+    max-width: 800px;
+}
+
+.ai-sales-agent-admin-sidebar {
+    width: 300px;
+    flex-shrink: 0;
+}
+
+/* Admin Boxes */
+.ai-sales-agent-admin-box {
+    background: white;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.ai-sales-agent-admin-box h3 {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #23282d;
+}
+
+.ai-sales-agent-admin-box ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ai-sales-agent-admin-box li {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.ai-sales-agent-admin-box li:last-child {
+    border-bottom: none;
+}
+
+.ai-sales-agent-admin-box .button {
+    margin-top: 10px;
+    width: 100%;
+}
+
+/* API Status */
+#api-status {
+    margin-top: 10px;
+}
+
+#api-status .notice {
+    margin: 0;
+    padding: 10px;
+}
+
+/* Voices List */
+.voices-list {
+    margin-top: 15px;
+}
+
+.voices-list h4 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.voices-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.voice-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.voice-item:hover {
+    background: #f0f0f0;
+}
+
+.voice-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.voice-info strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+}
+
+.voice-info small {
+    display: block;
+    font-size: 11px;
+    color: #666;
+    margin-top: 2px;
+}
+
+.select-voice {
+    flex-shrink: 0;
+    margin-left: 10px;
+}
+
+/* Leads Management */
+.ai-sales-agent-leads-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: white;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+}
+
+.ai-sales-agent-leads-stats {
+    display: flex;
+    gap: 20px;
+}
+
+.stat-item {
+    font-size: 14px;
+}
+
+.stat-item strong {
+    color: #23282d;
+}
+
+.ai-sales-agent-leads-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.search-form {
+    display: flex;
+    gap: 8px;
+}
+
+.search-form input[type="search"] {
+    min-width: 200px;
+}
+
+/* Leads Filters */
+.ai-sales-agent-leads-filters {
+    margin-bottom: 20px;
+    padding: 0;
+    border-bottom: 1px solid #ccd0d4;
+}
+
+.ai-sales-agent-leads-filters a {
+    display: inline-block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #0073aa;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+.ai-sales-agent-leads-filters a:hover {
+    color: #005a87;
+    background: #f9f9f9;
+}
+
+.ai-sales-agent-leads-filters a.current {
+    color: #23282d;
+    border-bottom-color: #0073aa;
+    background: #f9f9f9;
+}
+
+/* Lead Status Colors */
+.lead-status {
+    padding: 4px 8px;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    font-size: 12px;
+}
+
+.lead-status option[value="new"] {
+    color: #0073aa;
+}
+
+.lead-status option[value="contacted"] {
+    color: #ff8c00;
+}
+
+.lead-status option[value="qualified"] {
+    color: #28a745;
+}
+
+.lead-status option[value="converted"] {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.lead-status option[value="lost"] {
+    color: #dc3545;
+}
+
+/* Modal Styles */
+.ai-sales-agent-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ai-sales-agent-modal-content {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.ai-sales-agent-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    line-height: 1;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.ai-sales-agent-modal-close:hover {
+    background: #f0f0f0;
+    color: #333;
+}
+
+#lead-details {
+    padding: 30px;
+}
+
+#lead-details h3 {
+    margin: 0 0 20px 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #23282d;
+}
+
+/* Lead Details Grid */
+.lead-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.detail-item.full-width {
+    grid-column: 1 / -1;
+}
+
+.detail-item label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detail-item span {
+    font-size: 14px;
+    color: #333;
+    padding: 8px 0;
+}
+
+.detail-item a {
+    color: #0073aa;
+    text-decoration: none;
+}
+
+.detail-item a:hover {
+    text-decoration: underline;
+}
+
+.message-content {
+    background: #f9f9f9;
+    padding: 12px;
+    border-radius: 4px;
+    border-left: 3px solid #0073aa;
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+/* Status Badges */
+.status-new {
+    color: #0073aa;
+    font-weight: 600;
+}
+
+.status-contacted {
+    color: #ff8c00;
+    font-weight: 600;
+}
+
+.status-qualified {
+    color: #28a745;
+    font-weight: 600;
+}
+
+.status-converted {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.status-lost {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+/* Lead Actions */
+.lead-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.delete-lead {
+    background: #dc3545;
+    border-color: #dc3545;
+    color: white;
+}
+
+.delete-lead:hover {
+    background: #c82333;
+    border-color: #c82333;
+}
+
+/* Settings Form Enhancements */
+.form-table th {
+    width: 200px;
+}
+
+.form-table td {
+    padding: 15px 10px;
+}
+
+.form-table input[type="text"],
+.form-table input[type="email"],
+.form-table input[type="password"],
+.form-table textarea,
+.form-table select {
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-table input[type="color"] {
+    width: 60px;
+    height: 40px;
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.form-table textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .ai-sales-agent-admin-container {
+        flex-direction: column;
+    }
+    
+    .ai-sales-agent-admin-sidebar {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .ai-sales-agent-leads-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
+    
+    .ai-sales-agent-leads-stats {
+        justify-content: space-between;
+    }
+    
+    .ai-sales-agent-leads-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .search-form {
+        width: 100%;
+    }
+    
+    .search-form input[type="search"] {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .lead-details-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .ai-sales-agent-modal-content {
+        width: 95%;
+        margin: 20px;
+    }
+    
+    #lead-details {
+        padding: 20px;
+    }
+}
+
+/* Loading States */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #0073aa;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Notice Enhancements */
+.notice {
+    margin: 15px 0;
+}
+
+.notice p {
+    margin: 0;
+}
+
+/* Table Enhancements */
+.wp-list-table .column-actions {
+    width: 100px;
+}
+
+.wp-list-table .button {
+    margin: 0 2px;
+}
+
+/* Form Validation */
+.form-table input:invalid,
+.form-table textarea:invalid {
+    border-color: #dc3545;
+}
+
+.form-table input:focus:invalid,
+.form-table textarea:focus:invalid {
+    box-shadow: 0 0 0 1px #dc3545;
+}
+
+/* Accessibility */
+.screen-reader-text {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    word-wrap: normal !important;
+}
+
+/* Focus styles */
+.ai-sales-agent-modal-close:focus,
+.button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+    outline: 2px solid #0073aa;
+    outline-offset: 2px;
+} 

@@ -1,0 +1,601 @@
+/**
+ * AI Sales Agent Widget - Frontend Styles
+ */
+
+/* Widget Container */
+.ai-sales-agent-widget {
+    position: fixed;
+    z-index: 999999;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #333;
+    --widget-color: #007cba;
+    --widget-hover-color: #005a87;
+    --border-radius: 12px;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Position variants */
+.ai-sales-agent-bottom-right {
+    bottom: 20px;
+    right: 20px;
+}
+
+.ai-sales-agent-bottom-left {
+    bottom: 20px;
+    left: 20px;
+}
+
+.ai-sales-agent-top-right {
+    top: 20px;
+    right: 20px;
+}
+
+.ai-sales-agent-top-left {
+    top: 20px;
+    left: 20px;
+}
+
+/* Toggle Button */
+.ai-sales-agent-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--widget-color);
+    color: white;
+    padding: 12px 16px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: var(--transition);
+    min-width: 200px;
+    max-width: 300px;
+}
+
+.ai-sales-agent-toggle:hover {
+    background: var(--widget-hover-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+}
+
+.ai-sales-agent-toggle-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.ai-sales-agent-toggle-text {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Chat Interface */
+.ai-sales-agent-chat {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    width: 350px;
+    height: 500px;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px) scale(0.95);
+    transition: var(--transition);
+    margin-bottom: 10px;
+}
+
+.ai-sales-agent-widget.open .ai-sales-agent-chat {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+/* Chat Header */
+.ai-sales-agent-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: var(--widget-color);
+    color: white;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    position: relative;
+}
+
+.ai-sales-agent-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.ai-sales-agent-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.ai-sales-agent-info h3 {
+    margin: 0 0 2px 0;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.ai-sales-agent-info p {
+    margin: 0;
+    font-size: 12px;
+    opacity: 0.9;
+    line-height: 1.3;
+}
+
+.ai-sales-agent-close {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ai-sales-agent-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Messages Container */
+.ai-sales-agent-messages {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 350px;
+}
+
+.ai-sales-agent-messages::-webkit-scrollbar {
+    width: 4px;
+}
+
+.ai-sales-agent-messages::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 2px;
+}
+
+.ai-sales-agent-messages::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 2px;
+}
+
+.ai-sales-agent-messages::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Message Styles */
+.ai-sales-agent-message {
+    display: flex;
+    flex-direction: column;
+    max-width: 80%;
+}
+
+.ai-sales-agent-user-message {
+    align-self: flex-end;
+}
+
+.ai-sales-agent-assistant-message {
+    align-self: flex-start;
+}
+
+.ai-sales-agent-message-content {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.ai-sales-agent-message-text {
+    padding: 10px 14px;
+    border-radius: 18px;
+    font-size: 14px;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+.ai-sales-agent-user-message .ai-sales-agent-message-text {
+    background: var(--widget-color);
+    color: white;
+    border-bottom-right-radius: 6px;
+}
+
+.ai-sales-agent-assistant-message .ai-sales-agent-message-text {
+    background: #f0f0f0;
+    color: #333;
+    border-bottom-left-radius: 6px;
+}
+
+.ai-sales-agent-message-time {
+    font-size: 11px;
+    color: #999;
+    margin-top: 4px;
+    padding: 0 4px;
+}
+
+.ai-sales-agent-user-message .ai-sales-agent-message-time {
+    text-align: right;
+}
+
+.ai-sales-agent-assistant-message .ai-sales-agent-message-time {
+    text-align: left;
+}
+
+/* Audio Play Button */
+.ai-sales-agent-play-audio {
+    background: var(--widget-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+
+.ai-sales-agent-play-audio:hover {
+    background: var(--widget-hover-color);
+    transform: scale(1.1);
+}
+
+.ai-sales-agent-play-audio.playing {
+    background: #28a745;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Typing Indicator */
+.ai-sales-agent-typing {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: #f0f0f0;
+    border-radius: 18px;
+    border-bottom-left-radius: 6px;
+    align-self: flex-start;
+    max-width: 80%;
+}
+
+.ai-sales-agent-typing-dots {
+    display: flex;
+    gap: 4px;
+}
+
+.ai-sales-agent-typing-dots span {
+    width: 6px;
+    height: 6px;
+    background: #999;
+    border-radius: 50%;
+    animation: typing 1.4s infinite ease-in-out;
+}
+
+.ai-sales-agent-typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+.ai-sales-agent-typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes typing {
+    0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+    40% { transform: scale(1); opacity: 1; }
+}
+
+.ai-sales-agent-typing-text {
+    font-size: 12px;
+    color: #666;
+}
+
+/* Input Area */
+.ai-sales-agent-input {
+    padding: 16px;
+    border-top: 1px solid #e0e0e0;
+    background: #fafafa;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+.ai-sales-agent-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 24px;
+    padding: 4px;
+    transition: border-color 0.2s;
+}
+
+.ai-sales-agent-input-wrapper:focus-within {
+    border-color: var(--widget-color);
+    box-shadow: 0 0 0 2px rgba(0, 124, 186, 0.1);
+}
+
+.ai-sales-agent-text-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    background: transparent;
+}
+
+.ai-sales-agent-text-input::placeholder {
+    color: #999;
+}
+
+.ai-sales-agent-send {
+    background: var(--widget-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+
+.ai-sales-agent-send:hover {
+    background: var(--widget-hover-color);
+    transform: scale(1.05);
+}
+
+.ai-sales-agent-send:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Lead Form */
+.ai-sales-agent-lead-form {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    width: 350px;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px) scale(0.95);
+    transition: var(--transition);
+    margin-bottom: 10px;
+    padding: 20px;
+}
+
+.ai-sales-agent-lead-form.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.ai-sales-agent-lead-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.ai-sales-agent-lead-header h3 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.ai-sales-agent-lead-header p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+    line-height: 1.4;
+}
+
+.ai-sales-agent-lead-form-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ai-sales-agent-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ai-sales-agent-form-group label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+}
+
+.ai-sales-agent-form-group input,
+.ai-sales-agent-form-group textarea {
+    padding: 10px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+    font-family: inherit;
+}
+
+.ai-sales-agent-form-group input:focus,
+.ai-sales-agent-form-group textarea:focus {
+    outline: none;
+    border-color: var(--widget-color);
+    box-shadow: 0 0 0 2px rgba(0, 124, 186, 0.1);
+}
+
+.ai-sales-agent-form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.ai-sales-agent-form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.ai-sales-agent-cancel,
+.ai-sales-agent-submit {
+    flex: 1;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.ai-sales-agent-cancel {
+    background: #f0f0f0;
+    color: #666;
+}
+
+.ai-sales-agent-cancel:hover {
+    background: #e0e0e0;
+}
+
+.ai-sales-agent-submit {
+    background: var(--widget-color);
+    color: white;
+}
+
+.ai-sales-agent-submit:hover {
+    background: var(--widget-hover-color);
+}
+
+.ai-sales-agent-submit:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .ai-sales-agent-widget {
+        --border-radius: 8px;
+    }
+    
+    .ai-sales-agent-toggle {
+        min-width: 160px;
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+    
+    .ai-sales-agent-chat,
+    .ai-sales-agent-lead-form {
+        width: 320px;
+        height: 450px;
+    }
+    
+    .ai-sales-agent-messages {
+        max-height: 300px;
+    }
+    
+    .ai-sales-agent-bottom-right,
+    .ai-sales-agent-bottom-left {
+        bottom: 10px;
+    }
+    
+    .ai-sales-agent-bottom-right {
+        right: 10px;
+    }
+    
+    .ai-sales-agent-bottom-left {
+        left: 10px;
+    }
+    
+    .ai-sales-agent-top-right,
+    .ai-sales-agent-top-left {
+        top: 10px;
+    }
+    
+    .ai-sales-agent-top-right {
+        right: 10px;
+    }
+    
+    .ai-sales-agent-top-left {
+        left: 10px;
+    }
+}
+
+/* Animation for widget appearance */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.ai-sales-agent-widget {
+    animation: slideIn 0.5s ease-out;
+}
+
+/* Focus styles for accessibility */
+.ai-sales-agent-toggle:focus,
+.ai-sales-agent-close:focus,
+.ai-sales-agent-send:focus,
+.ai-sales-agent-play-audio:focus,
+.ai-sales-agent-cancel:focus,
+.ai-sales-agent-submit:focus {
+    outline: 2px solid var(--widget-color);
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .ai-sales-agent-widget {
+        --widget-color: #000;
+        --widget-hover-color: #333;
+    }
+    
+    .ai-sales-agent-toggle,
+    .ai-sales-agent-header {
+        border: 2px solid #000;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .ai-sales-agent-widget * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+} 
